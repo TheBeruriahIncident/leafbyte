@@ -3,7 +3,7 @@
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/20/17.
-//  Copyright © 2017 Blue Folder Project. All rights reserved.
+//  Copyright © 2017 The Blue Folder Project. All rights reserved.
 //
 
 import UIKit

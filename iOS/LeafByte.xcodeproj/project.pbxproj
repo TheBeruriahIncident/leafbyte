@@ -189,7 +189,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = "Blue Folder Project";
+				ORGANIZATIONNAME = "The Blue Folder Project";
 				TargetAttributes = {
 					4621EE361FEB70AD004C3011 = {
 						CreatedOnToolsVersion = 9.2;
@@ -429,7 +429,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByte;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -443,7 +443,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByte;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -458,7 +458,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByteTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -474,7 +474,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByteTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -489,7 +489,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByteUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByteUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByteUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -504,7 +504,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = LeafByteUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluefolderproject.LeafByteUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByteUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
