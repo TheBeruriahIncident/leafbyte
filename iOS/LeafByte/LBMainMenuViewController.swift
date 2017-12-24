@@ -48,7 +48,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         }
                 
         // Dismiss the picker.
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: false, completion: {() in self.performSegue(withIdentifier: "imageChosen", sender: self)})
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
