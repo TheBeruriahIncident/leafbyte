@@ -427,6 +427,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
@@ -441,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_ACTIVITY_MODE = "";
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
