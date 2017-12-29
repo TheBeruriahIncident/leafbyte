@@ -67,12 +67,40 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         present(imagePicker, animated: true, completion: nil)
     }
     
+    var image: UIImage?
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("segueing!")
+        if segue.identifier == "imageChosen"
+        {
+            print("in catch")
+            guard let navController = segue.destination as? UINavigationController else {
+                print(type(of: segue.destination))
+                return
+                //fatalError("Expected a seque from the main menu to threshold but instead went to: \(segue.destination)")
+            }
+            
+            guard let destination = navController.topViewController as? LBThresholdViewController else {
+                return
+            }
+            
+            let unwrapped = image!
+            print("image2 is \(unwrapped)")
+            destination.image = unwrapped
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         // The info dictionary may contain multiple representations of the image. You want to use the original.
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
+        
+        
     
+        image = selectedImage
+        
+        print("image is \(image!)")
         
 //        let group = DispatchGroup()
 //        group.enter()
