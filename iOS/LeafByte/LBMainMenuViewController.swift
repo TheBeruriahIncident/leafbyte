@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LBMainMenuViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/20/17.
@@ -17,6 +17,27 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
+        
+        //self.navigationController?.popToRootViewController(animated: false)
+    }
+    
+    var open = false
+    
+    @IBAction func backToMainMenu(segue: UIStoryboardSegue){
+        print("here?!")
+        //open = true
+        
+    }
+
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if (open) {
+            open = false
+            present(imagePicker, animated: false, completion: nil)
+        }
+        //self.navigationController?.popToRootViewController(animated: false)
     }
     
     @IBAction func takePicture(_ sender: Any) {
@@ -37,6 +58,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func choosePictureFromLibrary(_ sender: Any) {
+        //imagePicker.modalPresentationStyle = .overCurrentContext
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
@@ -46,13 +68,29 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
-                
+    
+        
+//        let group = DispatchGroup()
+//        group.enter()
+//
+//        DispatchQueue.main.async( execute: {
+//            self.performSegue(withIdentifier: "imageChosen", sender: self)
+//            group.leave()
+//        })
+//
+//
+//        group.notify(queue: .main) {
+//            self.dismiss(animated: true, completion: nil)
+//        }
+//
+        
+        
         // Dismiss the picker.
         dismiss(animated: false, completion: {() in self.performSegue(withIdentifier: "imageChosen", sender: self)})
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
 }
-
