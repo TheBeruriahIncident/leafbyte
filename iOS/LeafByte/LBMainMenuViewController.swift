@@ -24,11 +24,15 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
     var open = false
     
     @IBAction func backToMainMenu(segue: UIStoryboardSegue){
-        print("here?!")
         //open = true
         
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UIView.setAnimationsEnabled(true)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -86,7 +90,10 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         
         
         // Dismiss the picker.
-        dismiss(animated: false, completion: {() in self.performSegue(withIdentifier: "imageChosen", sender: self)})
+        dismiss(animated: false, completion: {() in
+            UIView.setAnimationsEnabled(false)
+            self.performSegue(withIdentifier: "imageChosen", sender: self)
+        })
         
     }
     
