@@ -11,11 +11,28 @@ import UIKit
 class LBThresholdViewController: UIViewController, UINavigationControllerDelegate {
     
     var image: UIImage?
+    let filter = ThresholdFilter()
     
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        imageView.image = image
+        filter.inputImage = CIImage(image: image!)
+        setValue(threshold: 0.95)
+    }
+    
+    func setValue(threshold: Float) {
+        filter.threshold = threshold
+        slider.value = 1 - threshold
+        
+        imageView.image = convert(cmage: filter.outputImage)
+    }
+    
+    func convert(cmage:CIImage) -> UIImage
+    {
+        let context:CIContext = CIContext.init(options: nil)
+        let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
+        let image:UIImage = UIImage.init(cgImage: cgImage)
+        return image
     }
     
     @IBAction func backFromThreshold(_ sender: Any) {
@@ -29,5 +46,11 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         }
     }
     
+    @IBAction func sliderChanged(_ sender: UISlider) {
+        setValue(threshold: 1 - sender.value)
+    }
+    
+    
+    @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var imageView: UIImageView!
 }

@@ -89,6 +89,9 @@
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI">
                                 <rect key="frame" x="64" y="552" width="246" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
+                                </connections>
                             </slider>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF">
                                 <rect key="frame" x="41" y="104" width="299" height="350"/>
@@ -114,6 +117,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Sfh-f1-P2L" id="yHG-Pn-Hn5"/>
+                        <outlet property="slider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UIStoryboardUnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
                     </connections>
                 </viewController>
@@ -214,6 +218,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lE8-qE-QCA"/>
+        <segue reference="WL3-WY-YVa"/>
     </inferredMetricsTieBreakers>
 </document>
