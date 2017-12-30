@@ -17,6 +17,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         super.viewDidLoad()
         
         filter.inputImage = CIImage(image: image!)
+
+        // TODO: use otsu's method for better initial threshold
         setValue(threshold: 0.95)
     }
     
