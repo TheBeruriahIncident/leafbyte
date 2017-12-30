@@ -21,27 +21,12 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         //self.navigationController?.popToRootViewController(animated: false)
     }
     
-    var open = false
-    
-    @IBAction func backToMainMenu(segue: UIStoryboardSegue){
-        //open = true
-        
-    }
+    @IBAction func backToMainMenu(segue: UIStoryboardSegue){}
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         UIView.setAnimationsEnabled(true)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if (open) {
-            open = false
-            present(imagePicker, animated: false, completion: nil)
-        }
-        //self.navigationController?.popToRootViewController(animated: false)
     }
     
     @IBAction func takePicture(_ sender: Any) {
@@ -70,10 +55,8 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
     var image: UIImage?
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("segueing!")
         if segue.identifier == "imageChosen"
         {
-            print("in catch")
             guard let navController = segue.destination as? UINavigationController else {
                 print(type(of: segue.destination))
                 return
@@ -84,9 +67,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
                 return
             }
             
-            let unwrapped = image!
-            print("image2 is \(unwrapped)")
-            destination.image = unwrapped
+            destination.image = image!
         }
     }
     
@@ -95,27 +76,8 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
-        
-        
     
         image = selectedImage
-        
-        print("image is \(image!)")
-        
-//        let group = DispatchGroup()
-//        group.enter()
-//
-//        DispatchQueue.main.async( execute: {
-//            self.performSegue(withIdentifier: "imageChosen", sender: self)
-//            group.leave()
-//        })
-//
-//
-//        group.notify(queue: .main) {
-//            self.dismiss(animated: true, completion: nil)
-//        }
-//
-        
         
         // Dismiss the picker.
         dismiss(animated: false, completion: {() in
