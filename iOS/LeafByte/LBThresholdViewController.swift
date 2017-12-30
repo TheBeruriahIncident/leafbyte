@@ -8,13 +8,17 @@
 
 import UIKit
 
-class LBThresholdViewController: UIViewController, UINavigationControllerDelegate {
+class LBThresholdViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
     
     var image: UIImage?
     let filter = ThresholdFilter()
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = 1.0;
+        scrollView.maximumZoomScale = 3.0
         
         filter.inputImage = CIImage(image: image!)
 
@@ -52,7 +56,12 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         setValue(threshold: 1 - sender.value)
     }
     
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
     
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var imageView: UIImageView!
 }

@@ -94,11 +94,11 @@
                                 </connections>
                             </slider>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF">
-                                <rect key="frame" x="41" y="104" width="299" height="350"/>
+                                <rect key="frame" x="38" y="128" width="299" height="350"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L">
-                                        <rect key="frame" x="29" y="111" width="240" height="128"/>
+                                        <rect key="frame" x="-39" y="71" width="338" height="174"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -117,6 +117,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Sfh-f1-P2L" id="yHG-Pn-Hn5"/>
+                        <outlet property="scrollView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
                         <outlet property="slider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UIStoryboardUnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
                     </connections>
