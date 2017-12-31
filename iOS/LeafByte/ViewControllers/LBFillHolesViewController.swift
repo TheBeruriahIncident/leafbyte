@@ -34,11 +34,6 @@ class LBFillHolesViewController: UIViewController {
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
-        context?.setFillColor(cyan: 100,
-                              magenta: 100,
-                              yellow: 100,
-                              black: 100,
-                              alpha: 100)
         
         drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
         
