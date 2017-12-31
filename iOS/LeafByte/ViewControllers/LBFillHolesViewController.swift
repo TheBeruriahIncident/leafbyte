@@ -18,7 +18,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         
         scrollView.delegate = self
         scrollView.minimumZoomScale = 0.9;
-        scrollView.maximumZoomScale = 3.0
+        scrollView.maximumZoomScale = 10.0
         
         baseImageView.image = baseImage
         baseImageView.contentMode = .scaleAspectFit
