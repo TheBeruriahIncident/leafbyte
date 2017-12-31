@@ -9,19 +9,28 @@
 import CoreGraphics
 import UIKit
 
-class LBFillHolesViewController: UIViewController {
+class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     
     var baseImage: UIImage?
     
     override func viewDidLoad(){
         super.viewDidLoad()
         
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = 1.0;
+        scrollView.maximumZoomScale = 3.0
+        
         baseImageView.image = baseImage
         baseImageView.contentMode = .scaleAspectFit
+        setScrolling(true)
     }
     
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var drawingImageView: UIImageView!
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return wrapper
+    }
     
     var swiped = false
     var lastPoint = CGPoint.zero
@@ -32,6 +41,13 @@ class LBFillHolesViewController: UIViewController {
     }
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+        print("ins draw line")
+        print(isScrolling)
+        if (isScrolling) {
+            return
+        }
+        print("after return")
+        
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
         
@@ -44,6 +60,7 @@ class LBFillHolesViewController: UIViewController {
         drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
+        print("end")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,4 +78,28 @@ class LBFillHolesViewController: UIViewController {
             drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
         }
     }
+    
+    func setScrolling(_ scrolling: Bool) {
+        isScrolling = scrolling
+        
+        scrollView.isScrollEnabled = scrolling
+        
+        if (scrolling) {
+            button.setTitle("Switch to drawing", for: .normal)
+        } else {
+            button.setTitle("Switch to scrolling", for: .normal)
+        }
+        
+        print(isScrolling)
+    }
+    
+    var isScrolling = true
+    
+    @IBAction func touchButton(_ sender: Any) {
+            setScrolling(!isScrolling)
+    }
+    
+    @IBOutlet weak var wrapper: UIView!
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
 }
