@@ -18,6 +18,7 @@
 		463A28341FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28331FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift */; };
 		4656C6CB1FF829C400AC6821 /* AdaptiveThresholdFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CA1FF829C400AC6821 /* AdaptiveThresholdFilter.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdFilter.swift */; };
+		4656C6D31FF95CDA00AC6821 /* DelegatingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6D21FF95CDA00AC6821 /* DelegatingScrollView.swift */; };
 		46C424BA1FEF5AAE00301F59 /* LBThresholdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* LBThresholdViewController.swift */; };
 		46C424BC1FEF688500301F59 /* UIStoryboardSegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BB1FEF688500301F59 /* UIStoryboardSegueFromRight.swift */; };
 		46C424BE1FEF6A3E00301F59 /* UIStoryboardUnwindSegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BD1FEF6A3E00301F59 /* UIStoryboardUnwindSegueFromRight.swift */; };
@@ -58,6 +59,7 @@
 		463A28331FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardNoAnimationSegue.swift; sourceTree = "<group>"; };
 		4656C6CA1FF829C400AC6821 /* AdaptiveThresholdFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveThresholdFilter.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdFilter.swift; sourceTree = "<group>"; };
+		4656C6D21FF95CDA00AC6821 /* DelegatingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatingScrollView.swift; sourceTree = "<group>"; };
 		46C424B91FEF5AAE00301F59 /* LBThresholdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBThresholdViewController.swift; sourceTree = "<group>"; };
 		46C424BB1FEF688500301F59 /* UIStoryboardSegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardSegueFromRight.swift; sourceTree = "<group>"; };
 		46C424BD1FEF6A3E00301F59 /* UIStoryboardUnwindSegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardUnwindSegueFromRight.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				4621EE461FEB70AD004C3011 /* Info.plist */,
 				4656C6CF1FF869E900AC6821 /* Segues */,
 				4656C6CE1FF869B600AC6821 /* Filters */,
+				4656C6D21FF95CDA00AC6821 /* DelegatingScrollView.swift */,
 			);
 			path = LeafByte;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4621EE3D1FEB70AD004C3011 /* LBMainMenuViewController.swift in Sources */,
+				4656C6D31FF95CDA00AC6821 /* DelegatingScrollView.swift in Sources */,
 				4656C6CB1FF829C400AC6821 /* AdaptiveThresholdFilter.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* LBFillHolesViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdFilter.swift in Sources */,
