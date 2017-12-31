@@ -16,12 +16,10 @@ class ThresholdFilter: CIFilter
     var thresholdKernel =  CIColorKernel(source:
         "kernel vec4 thresholdKernel(sampler image, float inputThreshold)\n" +
         "{\n" +
-        "  float pass = 1.0;\n" +
-        "  float fail = 0.0;\n" +
-        "  const vec4    vec_Y = vec4( 0.299, 0.587, 0.114, 0.0 );\n" +
+        "  const vec4    vec_Y = vec4( 0.333, 0.333, 0.333, 0.0 );\n" +
         "  vec4        src = sample(image, samplerCoord(image));\n" +
         "  float        Y = dot( src, vec_Y );\n" +
-        "  src.rgb = vec3( compare( Y - inputThreshold, fail, pass));\n" +
+        "  src.rgb = Y < inputThreshold ? src.rgb : vec3(1.0);\n" +
         "  return src;\n" +
         "}")
     
