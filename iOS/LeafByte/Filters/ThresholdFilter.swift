@@ -14,13 +14,10 @@ class ThresholdFilter: CIFilter
     var threshold: Float = 0.95
     
     var thresholdKernel =  CIColorKernel(source:
-        "kernel vec4 thresholdKernel(sampler image, float inputThreshold)\n" +
-        "{\n" +
-        "  const vec4    vec_Y = vec4( 0.333, 0.333, 0.333, 0.0 );\n" +
-        "  vec4        src = sample(image, samplerCoord(image));\n" +
-        "  float        Y = dot( src, vec_Y );\n" +
-        "  src.rgb = Y < inputThreshold ? src.rgb : vec3(1.0);\n" +
-        "  return src;\n" +
+        "kernel vec4 thresholdKernel(sampler image, float threshold) {" +
+        "  vec4 pixel = sample(image, samplerCoord(image));" +
+        "  float sum = pixel.r + pixel.g + pixel.b;" +
+        "  return sum < threshold ? pixel : vec4(1.0);" +
         "}")
     
     override var outputImage: CIImage! {
@@ -29,7 +26,9 @@ class ThresholdFilter: CIFilter
                 return nil
         }
         let extent = inputImage.extent
-        let arguments : [Any] = [inputImage, threshold]
+        // multiply by three since red, green, and blue are being summed
+        // (this saves us from putting an extra divide into the kernel for a true average)
+        let arguments : [Any] = [inputImage, threshold * 3]
         return thresholdKernel.apply(extent: extent, arguments: arguments)
     }
 }
