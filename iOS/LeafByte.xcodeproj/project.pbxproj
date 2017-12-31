@@ -113,9 +113,8 @@
 			children = (
 				4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */,
 				4656C6D01FF869F600AC6821 /* ViewControllers */,
-				4621EE3E1FEB70AD004C3011 /* Main.storyboard */,
+				4656C6D11FF87EAC00AC6821 /* Storyboards */,
 				4621EE411FEB70AD004C3011 /* Assets.xcassets */,
-				4621EE431FEB70AD004C3011 /* LaunchScreen.storyboard */,
 				4621EE461FEB70AD004C3011 /* Info.plist */,
 				4656C6CF1FF869E900AC6821 /* Segues */,
 				4656C6CE1FF869B600AC6821 /* Filters */,
@@ -168,6 +167,15 @@
 				463A28311FEF6D5B008EB1FC /* LBFillHolesViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		4656C6D11FF87EAC00AC6821 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				4621EE3E1FEB70AD004C3011 /* Main.storyboard */,
+				4621EE431FEB70AD004C3011 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
