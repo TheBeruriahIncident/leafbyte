@@ -26,8 +26,8 @@ class ThresholdFilter: CIFilter
                 return nil
         }
         let extent = inputImage.extent
-        // multiply by three since red, green, and blue are being summed
-        // (this saves us from putting an extra divide into the kernel for a true average)
+        // multiply by 3 since red, green, and blue are being summed
+        // we could simply average the three components, but this saves us dividing by 3 for every pixel
         let arguments : [Any] = [inputImage, threshold * 3]
         return thresholdKernel.apply(extent: extent, arguments: arguments)
     }
