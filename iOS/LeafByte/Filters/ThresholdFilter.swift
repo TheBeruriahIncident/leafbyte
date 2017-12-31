@@ -19,10 +19,10 @@ class ThresholdFilter: CIFilter
         "  float pass = 1.0;\n" +
         "  float fail = 0.0;\n" +
         "  const vec4    vec_Y = vec4( 0.299, 0.587, 0.114, 0.0 );\n" +
-        "  vec4        src = unpremultiply( sample(image, samplerCoord(image)) );\n" +
+        "  vec4        src = sample(image, samplerCoord(image));\n" +
         "  float        Y = dot( src, vec_Y );\n" +
         "  src.rgb = vec3( compare( Y - inputThreshold, fail, pass));\n" +
-        "  return premultiply(src);\n" +
+        "  return src;\n" +
         "}")
     
     override var outputImage: CIImage! {
