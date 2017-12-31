@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Accelerate
 
 class LBThresholdViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
     
@@ -16,6 +17,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     override func viewDidLoad(){
         super.viewDidLoad()
         
+        let threshold = otsu(forHistogram: getHistogram())
         scrollView.delegate = self
         scrollView.minimumZoomScale = 0.9;
         scrollView.maximumZoomScale = 10.0
@@ -24,8 +26,41 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         imageView.contentMode = .scaleAspectFit
 
-        // TODO: use otsu's method for better initial threshold
-        setValue(threshold: 0.95)
+        setValue(threshold: threshold)
+    }
+    
+    func otsu(forHistogram histogram: [UInt]) -> Float {
+        return 0.95
+    }
+    
+    func getHistogram() -> [UInt] {
+        let img: CGImage = image!.cgImage!
+        
+        //create vImage_Buffer with data from CGImageRef
+        let inProvider: CGDataProvider = img.dataProvider!
+        let inBitmapData: CFData = inProvider.data!
+        
+        var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
+        
+        let alpha = [UInt](repeating: 0, count: 256)
+        let red = [UInt](repeating: 0, count: 256)
+        let green = [UInt](repeating: 0, count: 256)
+        let blue = [UInt](repeating: 0, count: 256)
+        
+        let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha) as UnsafeMutablePointer<vImagePixelCount>?
+        let redPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: red) as UnsafeMutablePointer<vImagePixelCount>?
+        let greenPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: green) as UnsafeMutablePointer<vImagePixelCount>?
+        let bluePtr = UnsafeMutablePointer<vImagePixelCount>(mutating: blue) as UnsafeMutablePointer<vImagePixelCount>?
+        
+        let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
+        
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
+        let error = vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
+        
+        // TODO: this memory management makes me nervous, have I allocated anything?
+        
+        let total = zip(red, zip(green, blue)).map { $0 + $1.0 + $1.1 }
+        return total
     }
     
     func setValue(threshold: Float) {
