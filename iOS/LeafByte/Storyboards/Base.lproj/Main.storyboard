@@ -154,6 +154,10 @@
                                 <rect key="frame" x="42" y="110" width="291" height="421"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vz2-Bn-w9W" userLabel="Drawing Image">
+                                <rect key="frame" x="42" y="110" width="291" height="421"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
@@ -161,6 +165,7 @@
                     <navigationItem key="navigationItem" title="Fill those holes" id="IGS-wx-LA2"/>
                     <connections>
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
+                        <outlet property="drawingImageView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
