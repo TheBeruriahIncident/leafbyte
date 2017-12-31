@@ -86,7 +86,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Confirm"/>
                                 <connections>
-                                    <segue destination="ueh-Tb-xxm" kind="show" id="WL3-WY-YVa"/>
+                                    <segue destination="ueh-Tb-xxm" kind="show" identifier="thresholdSet" id="WL3-WY-YVa"/>
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI">
@@ -133,7 +133,7 @@
         <!--Fill those holes-->
         <scene sceneID="RBc-bI-pyN">
             <objects>
-                <viewController id="ueh-Tb-xxm" sceneMemberID="viewController">
+                <viewController id="ueh-Tb-xxm" customClass="LBFillHolesViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tVl-5H-cS7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -150,11 +150,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Next image"/>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nfp-9O-9PC" userLabel="Base Image">
+                                <rect key="frame" x="42" y="110" width="291" height="421"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
                     <navigationItem key="navigationItem" title="Fill those holes" id="IGS-wx-LA2"/>
+                    <connections>
+                        <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

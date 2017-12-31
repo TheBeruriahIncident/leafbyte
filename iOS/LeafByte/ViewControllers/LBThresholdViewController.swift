@@ -21,6 +21,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         scrollView.maximumZoomScale = 3.0
         
         filter.inputImage = CIImage(image: image!)
+        
+        imageView.contentMode = .scaleAspectFit
 
         // TODO: use otsu's method for better initial threshold
         setValue(threshold: 0.95)
@@ -60,6 +62,16 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         return imageView
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "thresholdSet"
+        {
+            guard let destination = segue.destination as? LBFillHolesViewController else {
+                return
+            }
+            
+            destination.baseImage = imageView.image
+        }
+    }
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var slider: UISlider!
