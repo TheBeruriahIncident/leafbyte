@@ -17,7 +17,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         super.viewDidLoad()
         
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 1.0;
+        scrollView.minimumZoomScale = 0.9;
         scrollView.maximumZoomScale = 3.0
         
         filter.inputImage = CIImage(image: image!)
