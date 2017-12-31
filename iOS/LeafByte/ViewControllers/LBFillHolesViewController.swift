@@ -41,12 +41,10 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
-        print("ins draw line")
-        print(isScrolling)
         if (isScrolling) {
             return
         }
-        print("after return")
+        //print("drawing " + String(describing: fromPoint) + " to " + String(describing: toPoint))
         
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
@@ -60,7 +58,6 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
-        print("end")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -82,15 +79,14 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     func setScrolling(_ scrolling: Bool) {
         isScrolling = scrolling
         
-        scrollView.isScrollEnabled = scrolling
+        scrollView.isUserInteractionEnabled = scrolling
+        
         
         if (scrolling) {
             button.setTitle("Switch to drawing", for: .normal)
         } else {
             button.setTitle("Switch to scrolling", for: .normal)
         }
-        
-        print(isScrolling)
     }
     
     var isScrolling = true

@@ -9,8 +9,9 @@
 import UIKit
 
 class DelegatingScrollView: UIScrollView {
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (self.isDragging) {
+        if (self.isScrollEnabled) {
             super.touchesBegan(touches, with: event)
         }
         
@@ -18,15 +19,17 @@ class DelegatingScrollView: UIScrollView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (self.isDragging) {
+        print ("touchesMoved")
+        if (self.isScrollEnabled) {
             super.touchesMoved(touches, with: event)
         }
         
+        print ("delegating to " + String(describing: type(of: self.next!)))
         self.next?.touchesMoved(touches, with: event)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (self.isDragging) {
+        if (self.isScrollEnabled) {
             super.touchesEnded(touches, with: event)
         }
         
