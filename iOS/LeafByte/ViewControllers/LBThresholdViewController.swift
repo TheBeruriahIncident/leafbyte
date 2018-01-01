@@ -24,6 +24,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         // https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
         filter.inputImage = CIImage(image: image!, options: [kCIImageColorSpace: NSNull()])
+        // TODO: do we need this other thing?
+        filter.inputImageColorful = CIImage(image: image!)
         
         imageView.contentMode = .scaleAspectFit
 
