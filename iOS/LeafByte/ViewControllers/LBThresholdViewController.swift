@@ -62,6 +62,35 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     }
     
     func getHistogram() -> [Int] {
+        
+        let size = image!.size
+        let dataSize = size.width * size.height * 4
+        var pixelData = [UInt8](repeating: 0, count: Int(dataSize))
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext(data: &pixelData,
+                                width: Int(size.width),
+                                height: Int(size.height),
+                                bitsPerComponent: 8,
+                                bytesPerRow: 4 * Int(size.width),
+                                space: colorSpace,
+                                bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
+        let cgImage = image!.cgImage // TODO: this is sketch and won't always succeed, right??
+        context?.draw(cgImage!, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        var histogram = [Int](repeating: 0, count: 256)
+        for pixel in pixelData {
+            let blue = pixel & 255
+            let green = (pixel >> 8) & 255
+            let red = (pixel >> 16) & 255
+            let intensity = Int(blue + green + red) / 3
+            histogram[intensity] += 1
+        }
+        
+        return histogram
+    }
+    
+    func getHistogram2() -> [Int] {
+        // TODO: this is sketch and won't always succeed, right??
         let img: CGImage = image!.cgImage!
         
         //create vImage_Buffer with data from CGImageRef
