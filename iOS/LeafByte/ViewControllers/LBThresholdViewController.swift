@@ -29,11 +29,39 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         setValue(threshold: threshold)
     }
     
-    func otsu(forHistogram histogram: [UInt]) -> Float {
-        return 0.95
+    func otsu(forHistogram histogram: [Int]) -> Float {
+        // TODO: check this and use better variables, be better about types
+        
+        // Use Otsu's method to calculate an initial global threshold
+        // Uses the optimized form that maximizes inter-class variance as at https://en.wikipedia.org/wiki/Otsu%27s_method
+        let total = histogram.reduce(0, +)
+        
+        var sumB = 0
+        var wB = 0
+        var maximum = 0.0
+        var level = 0
+        let sum1 = zip(Array(0...255), histogram).reduce(0, { $0 + ($1.0 * $1.1) })
+        
+        for index in 0...255 {
+            wB = wB + histogram[index]
+            let wF = total - wB
+            if (wB == 0 || wF == 0) {
+                continue;
+            }
+            sumB += index * histogram[index]
+            let mF = Double(sum1 - sumB) / Double(wF)
+            let between = Double(wB * wF) * pow(((Double(sumB) / Double(wB)) - mF), 2);
+            if ( between >= maximum ) {
+                level = index
+                maximum = between
+            }
+        }
+        
+        print (level)
+        return Float(level) / 256
     }
     
-    func getHistogram() -> [UInt] {
+    func getHistogram() -> [Int] {
         let img: CGImage = image!.cgImage!
         
         //create vImage_Buffer with data from CGImageRef
@@ -59,7 +87,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         // TODO: this memory management makes me nervous, have I allocated anything?
         
-        let total = zip(red, zip(green, blue)).map { $0 + $1.0 + $1.1 }
+        let total = zip(red, zip(green, blue)).map { Int($0 + $1.0 + $1.1) }
         return total
     }
     
