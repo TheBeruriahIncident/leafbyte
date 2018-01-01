@@ -13,10 +13,11 @@ class ThresholdFilter: CIFilter
     var inputImage : CIImage?
     var threshold: Float = 0.95
     
+    // http://www.lps.usp.br/hae/apostila/basico/YUV-wikipedia.pdf
     var thresholdKernel =  CIColorKernel(source:
         "kernel vec4 thresholdKernel(sampler image, float threshold) {" +
         "  vec4 pixel = sample(image, samplerCoord(image));" +
-        "  float sum = pixel.r + pixel.g + pixel.b;" +
+        "  float sum = .299 * pixel.r + .587 * pixel.g + .114 * pixel.b;" +
         "  return sum < threshold ? pixel : vec4(1.0);" +
         "}")
     
@@ -28,7 +29,7 @@ class ThresholdFilter: CIFilter
         let extent = inputImage.extent
         // multiply by 3 since red, green, and blue are being summed
         // we could simply average the three components, but this saves us dividing by 3 for every pixel
-        let arguments : [Any] = [inputImage, threshold * 3]
+        let arguments : [Any] = [inputImage, threshold]
         return thresholdKernel.apply(extent: extent, arguments: arguments)
     }
 }
