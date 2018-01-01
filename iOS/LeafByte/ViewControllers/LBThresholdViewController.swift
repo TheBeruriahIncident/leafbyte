@@ -22,7 +22,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         scrollView.minimumZoomScale = 0.9;
         scrollView.maximumZoomScale = 10.0
         
-        filter.inputImage = CIImage(image: image!)
+        // https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
+        filter.inputImage = CIImage(image: image!, options: [kCIImageColorSpace: NSNull()])
         
         imageView.contentMode = .scaleAspectFit
 
