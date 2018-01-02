@@ -6,6 +6,7 @@
 //  Copyright © 2017 The Blue Folder Project. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -32,7 +33,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func takePicture(_ sender: Any) {
         // TODO: handle case where no given access
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
-            let alertController = UIAlertController.init(title: nil, message: "No available camera.", preferredStyle: .alert)
+            let alertController = UIAlertController.init(title: nil, message: "No available camera", preferredStyle: .alert)
             
             let okAction = UIAlertAction.init(title: "OK", style: .default, handler: {(alert: UIAlertAction!) in
             })
@@ -42,8 +43,21 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
             return
         }
         
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            if response {
+                self.imagePicker.sourceType = .camera
+                self.present(self.imagePicker, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController.init(title: "Camera access denied", message: "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.", preferredStyle: .alert)
+                
+                let okAction = UIAlertAction.init(title: "OK", style: .default, handler: {(alert: UIAlertAction!) in
+                })
+                
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+        }
     }
     
     @IBAction func choosePictureFromLibrary(_ sender: Any) {
