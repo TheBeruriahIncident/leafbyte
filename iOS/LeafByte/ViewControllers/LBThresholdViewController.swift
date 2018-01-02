@@ -99,46 +99,12 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         let inProvider: CGDataProvider = img.dataProvider!
         let inBitmapData: CFData = inProvider.data!
         
-        //print("height \(img.height) width \(img.width)")
-        
         
         var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
         var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
-
-//        for i in 0...100 {
-//            let firstPixel = inBuffer.data.load(fromByteOffset: i * 4, as: UInt32.self)
-//            print("full value \(firstPixel), a \(firstPixel >> 24), r \((firstPixel >> 16) & 255) , g \((firstPixel >> 8) & 255), b \(firstPixel & 255)")
-//        }
-        
-//        var firstPixel = inBuffer.data.load(fromByteOffset: 0, as: UInt32.self)
-//        print("full value \(firstPixel), a \(firstPixel >> 24), r \((firstPixel >> 16) & 255) , g \((firstPixel >> 8) & 255), b \(firstPixel & 255)")
         
         // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
         let divisor: Int32 = 256
-//        let matrix: [Int16] = [0, 0, 0, 0,
-//                               0, 0, 0, 0,
-//                               0, 0, 0, 0,
-//                               0, 0, 0, 0]
-//        let matrixS: [[Int16]] = [
-//            [1, 0, 0, 0],
-//            [0, 1, 0, 0],
-//            [0, 0, 1, 0],
-//            [0, 0, 0, 1]
-//        ]
-        
-//        let matrixS: [[Int16]] = [
-//            [0, 0, 0, 0],
-//            [0, 0, 0, 0],
-//            [0, 1, 0, 0],
-//            [0, 0, 0, 0]
-//        ]
-
-//        let matrixS: [[Int16]] = [
-//            [256,   0,      0,      0],//sub in divisor
-//            [0,     66,     129,    25],
-//            [0,     -38,    -74,    112],
-//            [0,     112,     -94,    -18]
-//        ]
 
         let matrixS: [[Int16]] = [
             [1000,   0,      0,      0],//sub in divisor
@@ -146,15 +112,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             [0,     0,    0,    0],
             [0,     0,     0,    0]
         ]
-
         
-        
-//        let matrixS: [[Int16]] = [
-//            [256,   1,      0,      0],//sub in divisor
-//            [0,     66,     -38,    112],
-//            [0,     129,    -74,    -94],
-//            [0,     25,     112,    -18]
-//        ]
         var matrix: [Int16] = [Int16](repeating: 0, count: 16)
         
         for i in 0...3 {
@@ -162,33 +120,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                 matrix[(3 - j) * 4 + (3 - i)] = matrixS[i][j]
             }
         }
-
-//        let matrix: [Int16] = [256, 0, 0, 0,
-//                               0, 66, -38, 112,
-//                               0, 129, -74, -94,
-//                               0, 25, 112, -18]
-//        let matrix: [Int16] = [-18, 112, 25, 0, //flipped both ways
-//                               -94, -74, 129, 0,
-//                               112, -38, 66, 0,
-//                               0, 0, 0, 256]
-//        let matrix: [Int16] = [256, 0, 0, 0,
-//                               0, 66, 129, 25,
-//                               0, -38, -74, 112,
-//                               0, 112, -94, -18]
-        //let postBias: [Int32] = [divisor/2, 4224, 32896, 32896]
-        //let postBias: [Int32] = [0, 0, 9, 0]
-        let postBias: [Int32] = [32896, 32896, 4224, divisor/2]
-        //vImageMatrixMultiply_ARGB8888(&inBuffer2, &inBuffer, matrix, 256, nil, postBias, UInt32(kvImageNoFlags))
         vImageMatrixMultiply_ARGB8888(&inBuffer2, &inBuffer, matrix, 1000, nil, nil, UInt32(kvImageNoFlags))
-        //vImageMatrixMultiply_ARGB8888(&inBuffer2, &inBuffer, matrix, 2, nil, nil, UInt32(kvImageNoFlags))
-        
-//        firstPixel = inBuffer.data.load(fromByteOffset: 0, as: UInt32.self)
-//        print("full value \(firstPixel), a \(firstPixel >> 24), y \((firstPixel >> 16) & 255) , u \((firstPixel >> 8) & 255), v \(firstPixel & 255)")
-        
-//        for i in 0...100 {
-//            let test = inBuffer.data.load(fromByteOffset: i * 4, as: UInt32.self)
-//            print("y \((test >> 16) & 255)")
-//        }
         
         let alpha = [UInt](repeating: 0, count: 256)
         let red = [UInt](repeating: 0, count: 256)
@@ -207,14 +139,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         // TODO: this memory management makes me nervous, have I allocated anything?
         
-    //        print(alpha)
-    //        print(red)
-    //        print(green)
-    //        print(blue)
-        
         let total = blue.map { Int($0) }
-        //print (total)
-        //let total = zip(red, zip(green, blue)).map { Int($0 + $1.0 + $1.1) }
         return total
     }
     
@@ -224,22 +149,6 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         imageView.image = convert(cmage: filter.outputImage)
         findScale()
-//        let pixelData: CFData = CIImage(image: imageView.image!)!.cgImage!.dataProvider!.data!
-//        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
-//
-//        print(Int((image?.size.height)!))
-//        print(Int((CIImage(image: imageView.image!)!.cgImage!.height)))
-//
-//        for y in 2418...2422 {
-//            for x in 0...30 {
-//                let offset = ((Int((image?.size.width)!) * y) + x) * 4
-//                let red = data[offset]
-//                let green = data[(offset + 1)]
-//                let blue = data[offset + 2]
-//                let alpha = data[offset + 3]
-//                print ("\(red) \(green) \(blue) \(alpha)")
-//            }
-//        }
     }
     
     func findScale() {
@@ -328,37 +237,10 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                     }
                     groupIds[y][x] = newGroup
                     groupSizes[newGroup] = 1
-                    
-                    if (newGroup == 1314) {
-                        let pixelData2: CFData = CIImage(image: image!)!.cgImage!.dataProvider!.data!
-                        let data2: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData2)
-                        
-                        let offset1 = ((width * (y - 1)) + x) * 4
-                        let red1 = data[offset1]
-                        let green1 = data[(offset1 + 1)]
-                        let blue1 = data[offset1 + 2]
-                        
-                        let offset = ((width * y) + x) * 4
-                        let red = data[offset]
-                        let green = data[(offset + 1)]
-                        let blue = data[offset + 2]
-                        
-                        let red2 = data2[offset]
-                        let green2 = data2[(offset + 1)]
-                        let blue2 = data2[offset + 2]
-                        
-                        let offset11 = ((width * (y + 1)) + x) * 4
-                        let red11 = data[offset1]
-                        let green11 = data[(offset1 + 1)]
-                        let blue11 = data[offset1 + 2]
-                        
-                        print("whyyy")
-                    }
                 }
             }
         }
         
-        print(equivalentGroups)
         for equivalentGroup in equivalentGroups {
             let first = equivalentGroup.first
             for group in equivalentGroup {
@@ -368,8 +250,6 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                 }
             }
         }
-        
-        print(groupSizes.sorted(by: { $0.1 < $1.1 }))
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
@@ -381,10 +261,6 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                     }
                 }
             }
-        }
-        
-        for foo in groupIds {
-            print(foo)
         }
     }
     
