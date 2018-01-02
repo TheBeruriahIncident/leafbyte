@@ -25,7 +25,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         // https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
         filter.inputImage = CIImage(image: image!, options: [kCIImageColorSpace: NSNull()])
         // TODO: do we need this other thing?
-        filter.inputImageColorful = CIImage(image: image!)
+        filter.inputImageColorful = CIImage(image: image!)//, options: [kCIImageColorSpace: NSNull()])
         
         imageView.contentMode = .scaleAspectFit
 
@@ -223,6 +223,187 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         slider.value = 1 - threshold
         
         imageView.image = convert(cmage: filter.outputImage)
+        findScale()
+//        let pixelData: CFData = CIImage(image: imageView.image!)!.cgImage!.dataProvider!.data!
+//        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+//
+//        print(Int((image?.size.height)!))
+//        print(Int((CIImage(image: imageView.image!)!.cgImage!.height)))
+//
+//        for y in 2418...2422 {
+//            for x in 0...30 {
+//                let offset = ((Int((image?.size.width)!) * y) + x) * 4
+//                let red = data[offset]
+//                let green = data[(offset + 1)]
+//                let blue = data[offset + 2]
+//                let alpha = data[offset + 3]
+//                print ("\(red) \(green) \(blue) \(alpha)")
+//            }
+//        }
+    }
+    
+    func findScale() {
+        let cgImage = CIImage(image: imageView.image!)!.cgImage!
+        let pixelData: CFData = cgImage.dataProvider!.data!
+        // switch to 32 so can read the whole pixel at once
+        let width = cgImage.width//Int((image?.size.width)!)
+        let height = cgImage.height//Int((image?.size.height)!)
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        
+        var groupIds = Array(repeating: Array(repeating: 0, count: width), count: height)
+        var occupiedGroup = 1
+        var emptyGroup = -1
+        
+        var groupSizes = [Int: Int]()
+        
+        // TODO: how to best represent this??
+        var equivalentGroups = [Set<Int>]()
+        
+        for y in 0...height - 1 {
+            for x in 0...width - 1 {
+                let occupied = isOccupied(x, y, data, width)
+                // TODO: consider 8 connectivity instead of 4
+                // using 4-connectvity
+                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width)
+                    ? groupIds[y][x - 1]
+                    : nil
+                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, data, width)
+                    ? groupIds[y - 1][x]
+                    : nil
+                
+                // TODO: simplify? use set?
+                if westGroup != nil {
+                    if northGroup != nil {
+                        if westGroup != northGroup {
+                            //merge groups
+                            
+                            var westGroupEquivalence: Set<Int>?
+                            var westGroupEquivalenceIndex: Int?
+                            var northGroupEquivalence: Set<Int>?
+                            var northGroupEquivalenceIndex: Int?
+                            for (index, equivalentGroup) in equivalentGroups.enumerated() {
+                                if equivalentGroup.contains(westGroup!) {
+                                    westGroupEquivalence = equivalentGroup
+                                    westGroupEquivalenceIndex = index
+                                }
+                                if equivalentGroup.contains(northGroup!) {
+                                    northGroupEquivalence = equivalentGroup
+                                    northGroupEquivalenceIndex = index
+                                }
+                            }
+                            
+                            if (westGroupEquivalence == nil && northGroupEquivalence == nil) {
+                                equivalentGroups.append([westGroup!, northGroup!])
+                            } else if (westGroupEquivalence != nil && northGroupEquivalence != nil) {
+                                if (westGroupEquivalence != northGroupEquivalence) {
+                                    equivalentGroups[westGroupEquivalenceIndex!].formUnion(northGroupEquivalence!)
+                                    equivalentGroups.remove(at: northGroupEquivalenceIndex!)
+                                }
+                            } else if (westGroupEquivalence != nil) {
+                                equivalentGroups[westGroupEquivalenceIndex!].insert(northGroup!)
+                            } else if (northGroupEquivalence != nil) {
+                                equivalentGroups[northGroupEquivalenceIndex!].insert(westGroup!)
+                            } else {
+                                assert(false) // shouldn't get here
+                            }
+                        }
+                        groupSizes[northGroup!]! += 1
+                        groupIds[y][x] = northGroup!
+                    } else {
+                        groupSizes[westGroup!]! += 1
+                        groupIds[y][x] = westGroup!
+                    }
+                } else if northGroup != nil {
+                    groupSizes[northGroup!]! += 1
+                    groupIds[y][x] = northGroup!
+                } else {
+                    //NEW GROUP
+                    var newGroup: Int
+                    if (occupied) {
+                        newGroup = occupiedGroup
+                        occupiedGroup += 1
+                    } else {
+                        newGroup = emptyGroup
+                        emptyGroup -= 1
+                    }
+                    groupIds[y][x] = newGroup
+                    groupSizes[newGroup] = 1
+                    
+                    if (newGroup == 1314) {
+                        let pixelData2: CFData = CIImage(image: image!)!.cgImage!.dataProvider!.data!
+                        let data2: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData2)
+                        
+                        let offset1 = ((width * (y - 1)) + x) * 4
+                        let red1 = data[offset1]
+                        let green1 = data[(offset1 + 1)]
+                        let blue1 = data[offset1 + 2]
+                        
+                        let offset = ((width * y) + x) * 4
+                        let red = data[offset]
+                        let green = data[(offset + 1)]
+                        let blue = data[offset + 2]
+                        
+                        let red2 = data2[offset]
+                        let green2 = data2[(offset + 1)]
+                        let blue2 = data2[offset + 2]
+                        
+                        let offset11 = ((width * (y + 1)) + x) * 4
+                        let red11 = data[offset1]
+                        let green11 = data[(offset1 + 1)]
+                        let blue11 = data[offset1 + 2]
+                        
+                        print("whyyy")
+                    }
+                }
+            }
+        }
+        
+        print(equivalentGroups)
+        for equivalentGroup in equivalentGroups {
+            let first = equivalentGroup.first
+            for group in equivalentGroup {
+                if group != first! {
+                    groupSizes[first!]! += groupSizes[group]!
+                    groupSizes[group] = nil
+                }
+            }
+        }
+        
+        print(groupSizes.sorted(by: { $0.1 < $1.1 }))
+        
+        for y in 0...height - 1 {
+            for x in 0...width - 1 {
+                let currentGroup = groupIds[y][x]
+                
+                for foo in equivalentGroups {
+                    if foo.contains(currentGroup) {
+                        groupIds[y][x] = foo.first!
+                    }
+                }
+            }
+        }
+        
+        for foo in groupIds {
+            print(foo)
+        }
+    }
+    
+    func getBaseGroup(_ equivalentGroups: [Int: Int], _ group: Int) -> Int {
+        if let baseGroup = equivalentGroups[group] {
+            return getBaseGroup(equivalentGroups, baseGroup)
+        }
+        
+        return group
+    }
+    
+    func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int) -> Bool {
+        // should be able to change the pointer type and load all 4 at once
+        let offset = ((width * y) + x) * 4
+        let red = data[offset]
+        let green = data[(offset + 1)]
+        let blue = data[offset + 2]
+        
+         return red != 255 || green != 255 || blue != 255
     }
     
     func convert(cmage:CIImage) -> UIImage
