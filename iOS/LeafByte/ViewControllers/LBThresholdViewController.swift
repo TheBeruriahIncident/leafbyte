@@ -60,7 +60,6 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             }
         }
         
-        print (level)
         return Float(level) / 256
     }
     
