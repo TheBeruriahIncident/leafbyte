@@ -1,5 +1,5 @@
 //
-//  LBMainMenuViewController.swift
+//  MainMenuViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/20/17.
@@ -9,7 +9,7 @@
 import AVFoundation
 import UIKit
 
-class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let imagePicker = UIImagePickerController()
     
@@ -82,7 +82,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
                 //fatalError("Expected a seque from the main menu to threshold but instead went to: \(segue.destination)")
             }
             
-            guard let destination = navController.topViewController as? LBThresholdViewController else {
+            guard let destination = navController.topViewController as? ThresholdingViewController else {
                 return
             }
             

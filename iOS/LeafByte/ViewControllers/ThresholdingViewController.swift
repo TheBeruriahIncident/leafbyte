@@ -1,5 +1,5 @@
 //
-//  LBThresholdViewController.swift
+//  ThresholdingViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/23/17.
@@ -9,7 +9,7 @@
 import UIKit
 import Accelerate
 
-class LBThresholdViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
+class ThresholdingViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
     
     var sourceType: UIImagePickerControllerSourceType?
     
@@ -435,7 +435,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     }
     
     @IBAction func fromMainMenu(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? LBMainMenuViewController, let image = sourceViewController.image {
+        if let sourceViewController = sender.source as? MainMenuViewController, let image = sourceViewController.image {
             
             imageView.image = image
         }
@@ -452,7 +452,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "thresholdSet"
         {
-            guard let destination = segue.destination as? LBFillHolesViewController else {
+            guard let destination = segue.destination as? HoleFillingViewController else {
                 return
             }
             

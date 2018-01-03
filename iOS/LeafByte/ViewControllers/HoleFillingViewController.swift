@@ -1,5 +1,5 @@
 //
-//  LBFillHolesViewController.swift
+//  HoleFillingViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/24/17.
@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class LBFillHolesViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class HoleFillingViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let imagePicker = UIImagePickerController()
     
@@ -467,7 +467,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate, UIImage
 //                //fatalError("Expected a seque from the main menu to threshold but instead went to: \(segue.destination)")
 //            }
             
-            guard let destination = segue.destination as? LBThresholdViewController else {
+            guard let destination = segue.destination as? ThresholdingViewController else {
                 return
             }
             
