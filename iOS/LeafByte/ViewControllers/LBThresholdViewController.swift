@@ -14,6 +14,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     var image: UIImage?
     let filter = ThresholdFilter()
     
+    var scale: Int?
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         
@@ -263,7 +265,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                 if !leafFound {
                     leafFound = true
                 } else {
-                    print("size \(groupAndSize.value)")
+                    //print("size \(groupAndSize.value)")
                     scaleGroup = groupAndSize.key
                     break
                 }
@@ -286,7 +288,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         let yFactor = Float((imageView.image?.size.height)!) / Float((imageView.image?.size.height)! / aspect)
         let xOffset = Float((imageView.frame.size.width - (imageView.image?.size.width)! * aspect) / 2)
         let yOffset = Float((imageView.frame.size.height - (imageView.image?.size.height)! * aspect) / 2)
-        print("\(xFactor)  \(yFactor) \(xOffset) \(yOffset)")
+        //print("\(xFactor)  \(yFactor) \(xOffset) \(yOffset)")
         
         context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
@@ -302,7 +304,9 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), data: data, width, height)
             let b = getFarthestPoint(a, data: data, width, height)
             
-            print("\(a)  \(b)")
+            scale = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
+            
+            //print("\(a)  \(b)")
             
             let xAToUse = Int(Float(a.x) * xFactor + xOffset)
             let yAToUse = Int(Float(a.y) * yFactor + yOffset)
@@ -310,8 +314,8 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             let xBToUse = Int(Float(b.x) * xFactor + xOffset)
             let yBToUse = Int(Float(b.y) * yFactor + yOffset)
             
-            print("\(xAToUse)  \(yAToUse)")
-            print("\(xBToUse)  \(yBToUse)")
+            //print("\(xAToUse)  \(yAToUse)")
+            //print("\(xBToUse)  \(yBToUse)")
             
             context!.move(to: CGPoint(x: xAToUse, y: yAToUse))
             context!.addLine(to: CGPoint(x: xBToUse, y: yBToUse))
@@ -447,6 +451,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             }
             
             destination.baseImage = imageView.image
+            destination.scale = scale
         }
     }
     
