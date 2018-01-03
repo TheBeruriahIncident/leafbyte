@@ -29,6 +29,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var drawingImageView: UIImageView!
+    @IBOutlet weak var filledHolesImageView: UIImageView!
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return wrapper
@@ -243,13 +244,14 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         var leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        print(groupsAndSizes)
-        
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
                 if (scale != nil) {
                     if leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                         eatenArea += getArea(pixels: groupAndSize.value)
+                        let (startX, startY) = groupToPoint[groupAndSize.key]!
+                        colorIn(CGPoint(x: startX, y: startY), data: data, width, height)
+                        break
                     }
                 }
             }
@@ -260,6 +262,65 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     
     func getArea(pixels: Int) -> Float {
         return pow(2.0 / Float(scale!), 2) * Float(pixels)
+    }
+    
+    func colorIn(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) {
+        
+        UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        filledHolesImageView.image?.draw(in: CGRect(x: 0, y: 0, width: filledHolesImageView.frame.size.width, height: filledHolesImageView.frame.size.height))
+        
+        
+        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
+        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
+        let aspect = fmin(scaleW, scaleH)
+        
+        
+        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
+        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
+        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
+        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
+        
+        context!.setFillColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        
+        
+        var explored = [CGPoint]()
+        var queue = [start]
+        
+        while !queue.isEmpty {
+            let point = queue.remove(at: 0)
+            let x = Int(point.x)
+            let y = Int(point.y)
+            
+            if (x > 0 && !isOccupied(x - 1, y, data, width) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
+                queue.append(CGPoint(x: x - 1, y: y))
+            }
+            if (x < width - 1 && !isOccupied(x + 1, y, data, width) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
+                queue.append(CGPoint(x: x + 1, y: y))
+            }
+            
+            if (y > 0 && !isOccupied(x, y - 1, data, width) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
+                queue.append(CGPoint(x: x, y: y - 1))
+            }
+            if (y < height - 1 && !isOccupied(x, y + 1, data, width) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
+                queue.append(CGPoint(x: x, y: y + 1))
+            }
+            
+            let xToUse = Int(Float(point.x) * xFactor + xOffset)
+            let yToUse = Int(Float(point.y) * yFactor + yOffset)
+            
+            // TODO: can I do in bulk, or draw single point??
+            print("drawing \(point) at \(xToUse), \(yToUse)")
+            context!.fill(CGRect(x: xToUse, y: yToUse, width: 1, height: 1))
+            
+            
+            explored.append(point)
+        }
+        
+        filledHolesImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
     }
     
     @IBOutlet weak var wrapper: UIView!

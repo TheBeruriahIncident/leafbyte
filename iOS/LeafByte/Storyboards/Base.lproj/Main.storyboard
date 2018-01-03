@@ -179,6 +179,10 @@
                                                 <rect key="frame" x="9" y="19" width="291" height="421"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EYm-Xs-kTB" userLabel="Filled Holes Image">
+                                                <rect key="frame" x="9" y="19" width="291" height="421"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
@@ -201,6 +205,7 @@
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
                         <outlet property="button" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
                         <outlet property="drawingImageView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
+                        <outlet property="filledHolesImageView" destination="EYm-Xs-kTB" id="BDb-eN-feS"/>
                         <outlet property="scrollView" destination="XUO-j6-TH2" id="qHj-7I-taA"/>
                         <outlet property="wrapper" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
                     </connections>
