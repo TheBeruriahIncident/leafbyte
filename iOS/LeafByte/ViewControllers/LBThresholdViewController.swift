@@ -317,8 +317,12 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             //print("\(xAToUse)  \(yAToUse)")
             //print("\(xBToUse)  \(yBToUse)")
             
-            context!.move(to: CGPoint(x: xAToUse, y: yAToUse))
-            context!.addLine(to: CGPoint(x: xBToUse, y: yBToUse))
+            context?.interpolationQuality = CGInterpolationQuality.none
+            context?.setAllowsAntialiasing(false)
+            context?.setShouldAntialias(false)
+            
+            context!.move(to: CGPoint(x: Double(xAToUse) + 0.5, y: Double(yAToUse) + 0.5))
+            context!.addLine(to: CGPoint(x: Double(xBToUse) + 0.5, y: Double(yBToUse) + 0.5))
             context!.strokePath()
         }
         

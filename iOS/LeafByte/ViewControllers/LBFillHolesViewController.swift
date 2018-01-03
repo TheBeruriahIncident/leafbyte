@@ -61,10 +61,14 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
         
+        context?.interpolationQuality = CGInterpolationQuality.none
+        context?.setAllowsAntialiasing(false)
+        context?.setShouldAntialias(false)
+        
         drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
         
-        context!.move(to: fromPoint)
-        context!.addLine(to: toPoint)
+        context!.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
+        context!.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
 //        context!.move(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 0))
 //        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: drawingImageView.frame.size.height))
 //        context!.move(to: CGPoint(x: 0, y: 0))
@@ -160,10 +164,6 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func findSizes() {
-        if scale == nil {
-            return
-        }
-        
         let cgImage = CIImage(image: baseImage!)!.cgImage!
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
