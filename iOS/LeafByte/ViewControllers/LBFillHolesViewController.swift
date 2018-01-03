@@ -305,21 +305,36 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         }
         
         let groupsAndSizes = groupSizes.sorted { $0.1 > $1.1 }
+        var backgroundGroup: Int?
         var leafGroup: Int?
         var leafSize: Int?; // assume the biggest blob is leaf, second is the scale
         var scaleGroup: Int?
         for groupAndSize in groupsAndSizes {
-            if (groupAndSize.key > 0) {
+            if (groupAndSize.key > 0 && leafGroup == nil) {
                 leafGroup = groupAndSize.key
                 leafSize = groupAndSize.value
+            }
+            if (groupAndSize.key < 0 && backgroundGroup == nil) {
+                backgroundGroup = groupAndSize.key
+            }
+            
+            if (leafGroup != nil && backgroundGroup != nil) {
                 break
             }
         }
         
         var leafGroups: Set<Int>?
+        var backgroundGroups: Set<Int>?
         for equivalentGroup in equivalentGroups {
             if equivalentGroup.contains(leafGroup!) {
                 leafGroups = equivalentGroup
+            }
+            if equivalentGroup.contains(backgroundGroup!) {
+                backgroundGroups = equivalentGroup
+            }
+            
+            if (leafGroups != nil && backgroundGroups != nil) {
+                break
             }
         }
         
@@ -335,7 +350,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
                 if (scale != nil) {
-                    if leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
+                    if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                         eatenArea += getArea(pixels: groupAndSize.value)
                         let (startX, startY) = groupToPoint[groupAndSize.key]!
                         colorIn(CGPoint(x: startX, y: startY), data: data, width, height, dataDrawing: dataDrawing, widthDrawing)
