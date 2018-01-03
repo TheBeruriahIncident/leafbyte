@@ -28,6 +28,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         filter.inputImageColorful = CIImage(image: image!)//, options: [kCIImageColorSpace: NSNull()])
         
         imageView.contentMode = .scaleAspectFit
+        extraImageLayer.contentMode = .scaleAspectFit
 
         setValue(threshold: threshold)
     }
@@ -159,6 +160,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         let height = cgImage.height//Int((image?.size.height)!)
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
+        var groupToPoint = [Int: (Int, Int)]()
         var groupIds = Array(repeating: Array(repeating: 0, count: width), count: height)
         var occupiedGroup = 1
         var emptyGroup = -1
@@ -237,6 +239,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                     }
                     groupIds[y][x] = newGroup
                     groupSizes[newGroup] = 1
+                    groupToPoint[newGroup] = (x, y)
                 }
             }
         }
@@ -251,18 +254,106 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             }
         }
         
-        for y in 0...height - 1 {
-            for x in 0...width - 1 {
-                let currentGroup = groupIds[y][x]
-                
-                for foo in equivalentGroups {
-                    if foo.contains(currentGroup) {
-                        groupIds[y][x] = foo.first!
-                    }
+        let groupsAndSizes = groupSizes.sorted { $0.1 > $1.1 }
+        var leafFound = false; // assume the biggest blob is leaf, second is the scale
+        var scaleGroup: Int?
+        for groupAndSize in groupsAndSizes {
+            if (groupAndSize.key > 0) {
+                if !leafFound {
+                    leafFound = true
+                } else {
+                    scaleGroup = groupAndSize.key
+                    break
                 }
             }
         }
+        
+        extraImageLayer.image = nil
+        UIGraphicsBeginImageContext(extraImageLayer.frame.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        extraImageLayer.image?.draw(in: CGRect(x: 0, y: 0, width: extraImageLayer.frame.size.width, height: extraImageLayer.frame.size.height))
+        
+        
+        let scaleW = imageView.frame.size.width / (imageView.image?.size.width)!
+        let scaleH = imageView.frame.size.height / (imageView.image?.size.height)!
+        let aspect = fmin(scaleW, scaleH)
+        
+        
+        let xFactor = Float((imageView.image?.size.width)!) / Float((imageView.image?.size.width)! / aspect)
+        let yFactor = Float((imageView.image?.size.height)!) / Float((imageView.image?.size.height)! / aspect)
+        let xOffset = Float((imageView.frame.size.width - (imageView.image?.size.width)! * aspect) / 2)
+        let yOffset = Float((imageView.frame.size.height - (imageView.image?.size.height)! * aspect) / 2)
+        print("\(xFactor)  \(yFactor) \(xOffset) \(yOffset)")
+        
+        context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        
+        if (scaleGroup != nil) {
+            var scaleClass: Set<Int>
+            for equivalentGroup in equivalentGroups {
+                if (equivalentGroup.contains(scaleGroup!)) {
+                    scaleClass = equivalentGroup
+                }
+            }
+            let (xStart, yStart) = groupToPoint[scaleGroup!]!
+            
+            print("\(xStart)  \(yStart)")
+            
+            let xToUse = Int(Float(xStart) * xFactor + xOffset)
+            let yToUse = Int(Float(yStart) * yFactor + yOffset)
+            
+            print("\(xToUse)  \(yToUse)")
+            
+            context!.move(to: CGPoint(x: xToUse, y: yToUse))
+            context!.addLine(to: CGPoint(x: Double(xOffset), y: Double(yOffset)))
+            context!.strokePath()
+        }
+        
+
+        
+        
+//        context?.setStrokeColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+//        context!.move(to: CGPoint(x: xStart, y: yStart))
+//        context!.addLine(to: CGPoint(x: 0, y: 0))
+//        context!.strokePath()
+        
+        
+//
+//
+//        context?.setStrokeColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+//
+//        context!.move(to: CGPoint(x: extraImageLayer.frame.size.width, y: extraImageLayer.frame.size.height))
+//        context!.addLine(to: CGPoint(x: 0, y: 0))
+//        context!.strokePath()
+//
+//        context!.move(to: CGPoint(x: extraImageLayer.frame.size.width, y: 0))
+//        context!.addLine(to: CGPoint(x: 0, y: extraImageLayer.frame.size.height))
+//        context!.strokePath()
+//
+//        context?.setStrokeColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
+//        context!.move(to: CGPoint(x: Int(300 * xFactor), y: Int(400 * yFactor)))
+//        context!.addLine(to: CGPoint(x: 0, y: 0))
+//        context!.strokePath()
+        
+        extraImageLayer.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+//        for y in 0...height - 1 {
+//            for x in 0...width - 1 {
+//                let currentGroup = groupIds[y][x]
+//
+//                for foo in equivalentGroups {
+//                    if foo.contains(currentGroup) {
+//                        groupIds[y][x] = foo.first!
+//                    }
+//                }
+//            }
+//        }
     }
+    
+    @IBOutlet weak var wrapper: UIView!
+    @IBOutlet weak var extraImageLayer: UIImageView!
     
     func getBaseGroup(_ equivalentGroups: [Int: Int], _ group: Int) -> Int {
         if let baseGroup = equivalentGroups[group] {
@@ -271,6 +362,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         
         return group
     }
+    
     
     func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int) -> Bool {
         // should be able to change the pointer type and load all 4 at once
@@ -306,7 +398,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+        return wrapper
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
