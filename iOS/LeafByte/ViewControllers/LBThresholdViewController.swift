@@ -96,7 +96,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
     
     func getHistogram() -> [Int] {
         // TODO: this is sketch and won't always succeed, right??
-        let img: CGImage = image!.cgImage!
+        let img: CGImage = (CIImage(image: image!)?.cgImage!)!
         
         //create vImage_Buffer with data from CGImageRef
         let inProvider: CGDataProvider = img.dataProvider!

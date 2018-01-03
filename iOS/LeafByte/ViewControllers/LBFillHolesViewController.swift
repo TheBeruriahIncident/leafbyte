@@ -9,7 +9,9 @@
 import CoreGraphics
 import UIKit
 
-class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
+class LBFillHolesViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    let imagePicker = UIImagePickerController()
     
     var baseImage: UIImage?
     var scale: Int?
@@ -20,6 +22,9 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
         scrollView.minimumZoomScale = 0.9;
         scrollView.maximumZoomScale = 10.0
+        
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = false
         
         baseImageView.image = baseImage
         baseImageView.contentMode = .scaleAspectFit
@@ -442,4 +447,55 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var wrapper: UIView!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
+    
+    
+    
+    
+    
+    @IBAction func nextImage(_ sender: Any) {
+        let sourceType = UIImagePickerControllerSourceType.photoLibrary
+        
+        // TODO: handle losing access between these two points
+        imagePicker.sourceType = sourceType
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "imageChosen"
+        {
+//            guard let navController = segue.destination as? UINavigationController else {
+//                print(type(of: segue.destination))
+//                return
+//                //fatalError("Expected a seque from the main menu to threshold but instead went to: \(segue.destination)")
+//            }
+            
+            guard let destination = segue.destination as? LBThresholdViewController else {
+                return
+            }
+            
+            destination.image = nextImage!
+        }
+    }
+    
+    var nextImage: UIImage?
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        // The info dictionary may contain multiple representations of the image. You want to use the original.
+        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        }
+        
+        nextImage = selectedImage
+        
+        // Dismiss the picker.
+        dismiss(animated: false, completion: {() in
+            UIView.setAnimationsEnabled(false)
+            self.performSegue(withIdentifier: "imageChosen", sender: self)
+        })
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }
