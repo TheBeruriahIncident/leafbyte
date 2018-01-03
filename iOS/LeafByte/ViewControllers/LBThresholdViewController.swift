@@ -173,6 +173,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         for y in 0...height - 1 {
             for x in 0...width - 1 {
                 let occupied = isOccupied(x, y, data, width)
+                
                 // TODO: consider 8 connectivity instead of 4
                 // using 4-connectvity
                 let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width)
@@ -262,6 +263,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
                 if !leafFound {
                     leafFound = true
                 } else {
+                    print("size \(groupAndSize.value)")
                     scaleGroup = groupAndSize.key
                     break
                 }
@@ -297,15 +299,22 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             }
             let (xStart, yStart) = groupToPoint[scaleGroup!]!
             
-            print("\(xStart)  \(yStart)")
+            let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), data: data, width, height)
+            let b = getFarthestPoint(a, data: data, width, height)
             
-            let xToUse = Int(Float(xStart) * xFactor + xOffset)
-            let yToUse = Int(Float(yStart) * yFactor + yOffset)
+            print("\(a)  \(b)")
             
-            print("\(xToUse)  \(yToUse)")
+            let xAToUse = Int(Float(a.x) * xFactor + xOffset)
+            let yAToUse = Int(Float(a.y) * yFactor + yOffset)
             
-            context!.move(to: CGPoint(x: xToUse, y: yToUse))
-            context!.addLine(to: CGPoint(x: Double(xOffset), y: Double(yOffset)))
+            let xBToUse = Int(Float(b.x) * xFactor + xOffset)
+            let yBToUse = Int(Float(b.y) * yFactor + yOffset)
+            
+            print("\(xAToUse)  \(yAToUse)")
+            print("\(xBToUse)  \(yBToUse)")
+            
+            context!.move(to: CGPoint(x: xAToUse, y: yAToUse))
+            context!.addLine(to: CGPoint(x: xBToUse, y: yBToUse))
             context!.strokePath()
         }
         
@@ -363,6 +372,35 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
         return group
     }
     
+    func getFarthestPoint(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) -> CGPoint {
+        var explored = [CGPoint]()
+        var queue = [start]
+        
+        // make this faster, maybe with a distance heuristic
+        while !queue.isEmpty {
+            let point = queue.remove(at: 0)
+            let x = Int(point.x)
+            let y = Int(point.y)
+            
+            if (x > 0 && isOccupied(x - 1, y, data, width) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
+                queue.append(CGPoint(x: x - 1, y: y))
+            }
+            if (x < width - 1 && isOccupied(x + 1, y, data, width) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
+                queue.append(CGPoint(x: x + 1, y: y))
+            }
+            
+            if (y > 0 && isOccupied(x, y - 1, data, width) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
+                queue.append(CGPoint(x: x, y: y - 1))
+            }
+            if (y < height - 1 && isOccupied(x, y + 1, data, width) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
+                queue.append(CGPoint(x: x, y: y + 1))
+            }
+            
+            explored.append(point)
+        }
+        
+        return explored.popLast()!
+    }
     
     func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int) -> Bool {
         // should be able to change the pointer type and load all 4 at once
