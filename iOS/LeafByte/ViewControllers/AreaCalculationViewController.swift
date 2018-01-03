@@ -1,5 +1,5 @@
 //
-//  HoleFillingViewController.swift
+//  AreaCalculationViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/24/17.
@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class HoleFillingViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let imagePicker = UIImagePickerController()
     

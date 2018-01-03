@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +15,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainMenuViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7J-0u-w5M">
@@ -60,16 +64,16 @@
             </objects>
             <point key="canvasLocation" x="117.59999999999999" y="117.39130434782609"/>
         </scene>
-        <!--Threshold-->
+        <!--Thresholding View Controller-->
         <scene sceneID="UmV-zk-Nlx">
             <objects>
-                <viewController id="bUK-Ir-gu8" customClass="ThresholdingViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Thresholding View Controller" id="bUK-Ir-gu8" customClass="ThresholdingViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LlW-OF-SZu">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KpH-9X-feA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Threshold" id="hgA-rz-aeB">
@@ -117,7 +121,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="8Uc-b0-2VM"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Threshold" id="LhX-tD-QbO">
+                    <navigationItem key="navigationItem" title="Thresholding" id="LhX-tD-QbO">
                         <barButtonItem key="backBarButtonItem" title="Back" id="lh1-U7-txx"/>
                         <barButtonItem key="leftBarButtonItem" title="Back" id="SQ5-Tg-JcD">
                             <connections>
@@ -139,16 +143,16 @@
             </objects>
             <point key="canvasLocation" x="1072.8" y="948.57571214392806"/>
         </scene>
-        <!--Fill those holes-->
+        <!--Area Calculation View Controller-->
         <scene sceneID="RBc-bI-pyN">
             <objects>
-                <viewController id="ueh-Tb-xxm" customClass="HoleFillingViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Area Calculation View Controller" id="ueh-Tb-xxm" customClass="AreaCalculationViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tVl-5H-cS7">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Fill holes" id="xWE-WB-0i3"/>
@@ -206,7 +210,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Fill those holes" id="IGS-wx-LA2"/>
+                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2"/>
                     <connections>
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
                         <outlet property="button" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
@@ -227,7 +231,7 @@
             <objects>
                 <viewController id="ayx-Do-FJf" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pet-gA-Fqc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ie-h5-vIJ">
@@ -284,7 +288,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WL3-WY-YVa"/>
+        <segue reference="lE8-qE-QCA"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

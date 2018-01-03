@@ -14,7 +14,7 @@
 		4621EE451FEB70AD004C3011 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4621EE431FEB70AD004C3011 /* LaunchScreen.storyboard */; };
 		4621EE501FEB70AD004C3011 /* LeafByteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE4F1FEB70AD004C3011 /* LeafByteTests.swift */; };
 		4621EE5B1FEB70AD004C3011 /* LeafByteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */; };
-		463A28321FEF6D5B008EB1FC /* HoleFillingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* HoleFillingViewController.swift */; };
+		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
 		463A28341FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28331FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift */; };
 		4656C6CB1FF829C400AC6821 /* AdaptiveThresholdFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CA1FF829C400AC6821 /* AdaptiveThresholdFilter.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdFilter.swift */; };
@@ -55,7 +55,7 @@
 		4621EE561FEB70AD004C3011 /* LeafByteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafByteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafByteUITests.swift; sourceTree = "<group>"; };
 		4621EE5C1FEB70AD004C3011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		463A28311FEF6D5B008EB1FC /* HoleFillingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleFillingViewController.swift; sourceTree = "<group>"; };
+		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
 		463A28331FF166A9008EB1FC /* UIStoryboardNoAnimationSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardNoAnimationSegue.swift; sourceTree = "<group>"; };
 		4656C6CA1FF829C400AC6821 /* AdaptiveThresholdFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveThresholdFilter.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdFilter.swift; sourceTree = "<group>"; };
@@ -165,9 +165,9 @@
 		4656C6D01FF869F600AC6821 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
 				46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */,
-				463A28311FEF6D5B008EB1FC /* HoleFillingViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -318,7 +318,7 @@
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				4656C6D31FF95CDA00AC6821 /* DelegatingScrollView.swift in Sources */,
 				4656C6CB1FF829C400AC6821 /* AdaptiveThresholdFilter.swift in Sources */,
-				463A28321FEF6D5B008EB1FC /* HoleFillingViewController.swift in Sources */,
+				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdFilter.swift in Sources */,
 				4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */,
 				46C424BC1FEF688500301F59 /* UIStoryboardSegueFromRight.swift in Sources */,

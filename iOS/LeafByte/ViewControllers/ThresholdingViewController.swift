@@ -452,7 +452,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "thresholdSet"
         {
-            guard let destination = segue.destination as? HoleFillingViewController else {
+            guard let destination = segue.destination as? AreaCalculationViewController else {
                 return
             }
             
