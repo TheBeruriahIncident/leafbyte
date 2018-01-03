@@ -345,7 +345,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         var leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        print("coloring in")
+        //print("coloring in")
         UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
@@ -361,7 +361,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         filledHolesImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        print("leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten")
+        summary.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
     }
     
     func getArea(pixels: Int) -> Float {
@@ -421,6 +421,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
             explored.append(point)
         }
     }
+    @IBOutlet weak var summary: UILabel!
     
     @IBOutlet weak var wrapper: UIView!
     @IBOutlet weak var button: UIButton!
