@@ -349,23 +349,29 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
-                if (scale != nil) {
-                    if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
-                        eatenArea += getArea(pixels: groupAndSize.value)
-                        let (startX, startY) = groupToPoint[groupAndSize.key]!
-                        colorIn(CGPoint(x: startX, y: startY), data: data, width, height, dataDrawing: dataDrawing, widthDrawing)
-                    }
+                if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
+                    eatenArea += getArea(pixels: groupAndSize.value)
+                    let (startX, startY) = groupToPoint[groupAndSize.key]!
+                    colorIn(CGPoint(x: startX, y: startY), data: data, width, height, dataDrawing: dataDrawing, widthDrawing)
                 }
             }
         }
         filledHolesImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        summary.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
+        if scale != nil {
+            summary.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
+        } else {
+            summary.text = "leaf is \(eatenArea / leafArea * 100 )% eaten"
+        }
     }
     
     func getArea(pixels: Int) -> Float {
-        return pow(2.0 / Float(scale!), 2) * Float(pixels)
+        if (scale != nil) {
+            return pow(2.0 / Float(scale!), 2) * Float(pixels)
+        } else {
+            return Float(pixels)
+        }
     }
     
     func colorIn(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int, dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) {
