@@ -24,7 +24,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         baseImageView.image = baseImage
         baseImageView.contentMode = .scaleAspectFit
         setScrolling(true)
-        findSizes()
+        //findSizes()
     }
     
     @IBOutlet weak var baseImageView: UIImageView!
@@ -56,6 +56,19 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         
         context!.move(to: fromPoint)
         context!.addLine(to: toPoint)
+//        context!.move(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 0))
+//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: drawingImageView.frame.size.height))
+//        context!.move(to: CGPoint(x: 0, y: 0))
+//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 0))
+//
+//        context!.move(to: CGPoint(x: 0, y: 1))
+//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 1))
+//
+//        context!.move(to: CGPoint(x: 0, y: 2))
+//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 2))
+        
+//        context!.move(to: CGPoint(x: 0, y: 30))
+//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width, y: 30))
         context!.strokePath()
         
         drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
@@ -77,6 +90,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         if !swiped {
             drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
         }
+        findSizes()
     }
     
     func setScrolling(_ scrolling: Bool) {
@@ -98,7 +112,34 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
             setScrolling(!isScrolling)
     }
     
-    func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int) -> Bool {
+    func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int, _ dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) -> Bool {
+        
+        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
+        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
+        let aspect = fmin(scaleW, scaleH)
+        
+        
+        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
+        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
+        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
+        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
+        
+        let xToUse = Int(Float(x) * xFactor + xOffset)
+        let yToUse = Int(Float(y) * yFactor + yOffset)
+        
+        // WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS???????????? CHECK ALL OTHER PLACES WHATATATAT
+        let offsetDrawing = (((widthDrawing + 5) * yToUse) + xToUse) * 4
+//        let redDrawing = dataDrawing[offsetDrawing]
+//        let greenDrawing = dataDrawing[(offsetDrawing + 1)]
+//        let blueDrawing = dataDrawing[offsetDrawing + 2]
+        let alphaDrawing = dataDrawing[offsetDrawing + 3]
+        
+        
+        if alphaDrawing != 0 {
+            //print("now thinks \(xToUse) \(yToUse)")
+            return true
+        }
+        
         // should be able to change the pointer type and load all 4 at once
         let offset = ((width * y) + x) * 4
         let red = data[offset]
@@ -120,6 +161,47 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         let height = cgImage.height//Int((image?.size.height)!)
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
+        let cgImageDrawing = CIImage(image: drawingImageView.image!)!.cgImage!
+        let pixelDataDrawing: CFData = cgImageDrawing.dataProvider!.data!
+        let widthDrawing = cgImageDrawing.width
+        let heightDrawing = cgImageDrawing.height
+        let dataDrawing: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelDataDrawing)
+        
+        
+//        print(widthDrawing)
+//        print(cgImageDrawing.width)
+//        print(heightDrawing)
+//        print(cgImageDrawing.height)
+
+//        for y in 0...heightDrawing - 1 {
+//            for x in 0...widthDrawing - 1 {
+//                let offset = (((widthDrawing + 5) * y) + x) * 4 // WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS????????????
+//                let red = dataDrawing[offset]
+//                let green = dataDrawing[(offset + 1)]
+//                let blue = dataDrawing[offset + 2]
+//                let alpha = dataDrawing[offset + 3]
+//
+//                let occupied = alpha != 0//red != 255 || green != 255 || blue != 255
+//
+//                //print("\(red) \(green) \(blue) \(alpha)")
+////                if occupied {
+////                    print("occupied \(x) \(y)")
+////                }
+//                print(occupied ? "1" : "0", terminator: "")
+//            }
+//            print("")
+//        }
+//
+//        print("doggo")
+//
+//        return
+//
+        
+        
+        
+        
+        
+        
         var groupToPoint = [Int: (Int, Int)]()
         var emptyGroupToNeighboringOccupiedGroup = [Int: Int]()
         var groupIds = Array(repeating: Array(repeating: 0, count: width), count: height)
@@ -133,14 +215,14 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
-                let occupied = isOccupied(x, y, data, width)
+                let occupied = isOccupied(x, y, data, width, dataDrawing, widthDrawing)
                 
                 // TODO: consider 8 connectivity instead of 4
                 // using 4-connectvity
-                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width)
+                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width, dataDrawing, widthDrawing)
                     ? groupIds[y][x - 1]
                     : nil
-                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, data, width)
+                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, data, width, dataDrawing, widthDrawing)
                     ? groupIds[y - 1][x]
                     : nil
                 
@@ -241,9 +323,14 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
+//        for foo in groupIds {
+//            print(foo)
+//        }
+        
         var leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
+        print("coloring in")
         UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
@@ -251,7 +338,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
                     if leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                         eatenArea += getArea(pixels: groupAndSize.value)
                         let (startX, startY) = groupToPoint[groupAndSize.key]!
-                        colorIn(CGPoint(x: startX, y: startY), data: data, width, height)
+                        colorIn(CGPoint(x: startX, y: startY), data: data, width, height, dataDrawing: dataDrawing, widthDrawing)
                     }
                 }
             }
@@ -266,7 +353,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         return pow(2.0 / Float(scale!), 2) * Float(pixels)
     }
     
-    func colorIn(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) {
+    func colorIn(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int, dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) {
         
         let context = UIGraphicsGetCurrentContext()
         
@@ -294,17 +381,17 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
             let x = Int(point.x)
             let y = Int(point.y)
             
-            if (x > 0 && !isOccupied(x - 1, y, data, width) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
+            if (x > 0 && !isOccupied(x - 1, y, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
                 queue.append(CGPoint(x: x - 1, y: y))
             }
-            if (x < width - 1 && !isOccupied(x + 1, y, data, width) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
+            if (x < width - 1 && !isOccupied(x + 1, y, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
                 queue.append(CGPoint(x: x + 1, y: y))
             }
             
-            if (y > 0 && !isOccupied(x, y - 1, data, width) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
+            if (y > 0 && !isOccupied(x, y - 1, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
                 queue.append(CGPoint(x: x, y: y - 1))
             }
-            if (y < height - 1 && !isOccupied(x, y + 1, data, width) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
+            if (y < height - 1 && !isOccupied(x, y + 1, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
                 queue.append(CGPoint(x: x, y: y + 1))
             }
             
