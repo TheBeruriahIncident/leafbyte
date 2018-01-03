@@ -24,7 +24,16 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
         baseImageView.image = baseImage
         baseImageView.contentMode = .scaleAspectFit
         setScrolling(true)
-        //findSizes()
+        
+        // TODO: is there a less stupid way to initialize the image??
+        UIGraphicsBeginImageContext(drawingImageView.frame.size)
+        let context = UIGraphicsGetCurrentContext()
+        drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
+        drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        
+        findSizes()
     }
     
     @IBOutlet weak var baseImageView: UIImageView!
@@ -89,8 +98,9 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
             drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
+        } else {
+            findSizes()
         }
-        findSizes()
     }
     
     func setScrolling(_ scrolling: Bool) {
