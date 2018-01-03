@@ -175,8 +175,8 @@
 		4656C6D11FF87EAC00AC6821 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				4621EE3E1FEB70AD004C3011 /* Main.storyboard */,
 				4621EE431FEB70AD004C3011 /* LaunchScreen.storyboard */,
+				4621EE3E1FEB70AD004C3011 /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
