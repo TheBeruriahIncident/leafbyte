@@ -450,13 +450,11 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate, UIImage
     
     
     
-    
+    var sourceType: UIImagePickerControllerSourceType?
     
     @IBAction func nextImage(_ sender: Any) {
-        let sourceType = UIImagePickerControllerSourceType.photoLibrary
-        
         // TODO: handle losing access between these two points
-        imagePicker.sourceType = sourceType
+        imagePicker.sourceType = sourceType!
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -474,6 +472,7 @@ class LBFillHolesViewController: UIViewController, UIScrollViewDelegate, UIImage
             }
             
             destination.image = nextImage!
+            destination.sourceType = sourceType
         }
     }
     

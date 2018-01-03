@@ -11,6 +11,8 @@ import Accelerate
 
 class LBThresholdViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
     
+    var sourceType: UIImagePickerControllerSourceType?
+    
     var image: UIImage?
     let filter = ThresholdFilter()
     
@@ -456,6 +458,7 @@ class LBThresholdViewController: UIViewController, UINavigationControllerDelegat
             
             destination.baseImage = imageView.image
             destination.scale = scale
+            destination.sourceType = sourceType
         }
     }
     

@@ -45,6 +45,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         
         AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
             if response {
+                self.sourceType = .camera
                 self.imagePicker.sourceType = .camera
                 self.present(self.imagePicker, animated: true, completion: nil)
             } else {
@@ -60,8 +61,12 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
+    var sourceType: UIImagePickerControllerSourceType?
+    
     @IBAction func choosePictureFromLibrary(_ sender: Any) {
         //imagePicker.modalPresentationStyle = .overCurrentContext
+        sourceType = .photoLibrary
+        
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
@@ -82,6 +87,7 @@ class LBMainMenuViewController: UIViewController, UIImagePickerControllerDelegat
             }
             
             destination.image = image!
+            destination.sourceType = sourceType
         }
     }
     
