@@ -22,10 +22,8 @@ class LeafByteTests: XCTestCase {
         
         let indexableImage = IndexableImage(ciToCgImage(thresholdedCiImage))
         
-        indexableImage.printInBinary()
-        
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
-        XCTAssert(!indexableImage.getPixel(x: 1200, y: 1200).isWhite())
+        XCTAssert(!indexableImage.getPixel(x: 1400, y: 1400).isWhite())
     }
     
     private func loadImage(named name: String) -> UIImage {
