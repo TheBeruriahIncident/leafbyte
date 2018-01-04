@@ -65,34 +65,6 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         return Float(level) / 256
     }
     
-    func getHistogram2() -> [Int] {
-        
-        let size = image!.size
-        let dataSize = size.width * size.height * 4
-        var pixelData = [UInt8](repeating: 0, count: Int(dataSize))
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let context = CGContext(data: &pixelData,
-                                width: Int(size.width),
-                                height: Int(size.height),
-                                bitsPerComponent: 8,
-                                bytesPerRow: 4 * Int(size.width),
-                                space: colorSpace,
-                                bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
-        let cgImage = image!.cgImage // TODO: this is sketch and won't always succeed, right??
-        context?.draw(cgImage!, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        
-        var histogram = [Int](repeating: 0, count: 256)
-        for pixel in pixelData {
-            let blue = pixel & 255
-            let green = (pixel >> 8) & 255
-            let red = (pixel >> 16) & 255
-            let intensity = Int(blue + green + red) / 3
-            histogram[intensity] += 1
-        }
-        
-        return histogram
-    }
-    
     func getHistogram() -> [Int] {
         // TODO: this is sketch and won't always succeed, right??
         let img: CGImage = (CIImage(image: image!)?.cgImage!)!
@@ -305,16 +277,11 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
             
             scale = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
             
-            //print("\(a)  \(b)")
-            
             let xAToUse = Int(Float(a.x) * xFactor + xOffset)
             let yAToUse = Int(Float(a.y) * yFactor + yOffset)
             
             let xBToUse = Int(Float(b.x) * xFactor + xOffset)
             let yBToUse = Int(Float(b.y) * yFactor + yOffset)
-            
-            //print("\(xAToUse)  \(yAToUse)")
-            //print("\(xBToUse)  \(yBToUse)")
             
             context?.interpolationQuality = CGInterpolationQuality.none
             context?.setAllowsAntialiasing(false)
@@ -325,59 +292,14 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
             context!.strokePath()
         }
         
-
-        
-        
-//        context?.setStrokeColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-//        context!.move(to: CGPoint(x: xStart, y: yStart))
-//        context!.addLine(to: CGPoint(x: 0, y: 0))
-//        context!.strokePath()
-        
-        
-//
-//
-//        context?.setStrokeColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-//
-//        context!.move(to: CGPoint(x: extraImageLayer.frame.size.width, y: extraImageLayer.frame.size.height))
-//        context!.addLine(to: CGPoint(x: 0, y: 0))
-//        context!.strokePath()
-//
-//        context!.move(to: CGPoint(x: extraImageLayer.frame.size.width, y: 0))
-//        context!.addLine(to: CGPoint(x: 0, y: extraImageLayer.frame.size.height))
-//        context!.strokePath()
-//
-//        context?.setStrokeColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//        context!.move(to: CGPoint(x: Int(300 * xFactor), y: Int(400 * yFactor)))
-//        context!.addLine(to: CGPoint(x: 0, y: 0))
-//        context!.strokePath()
         
         extraImageLayer.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
-        
-//        for y in 0...height - 1 {
-//            for x in 0...width - 1 {
-//                let currentGroup = groupIds[y][x]
-//
-//                for foo in equivalentGroups {
-//                    if foo.contains(currentGroup) {
-//                        groupIds[y][x] = foo.first!
-//                    }
-//                }
-//            }
-//        }
     }
     
     @IBOutlet weak var wrapper: UIView!
     @IBOutlet weak var extraImageLayer: UIImageView!
-    
-    func getBaseGroup(_ equivalentGroups: [Int: Int], _ group: Int) -> Int {
-        if let baseGroup = equivalentGroups[group] {
-            return getBaseGroup(equivalentGroups, baseGroup)
-        }
-        
-        return group
-    }
     
     func getFarthestPoint(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) -> CGPoint {
         var explored = [CGPoint]()
@@ -419,8 +341,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
          return red != 255 || green != 255 || blue != 255
     }
     
-    func convert(cmage:CIImage) -> UIImage
-    {
+    func convert(cmage:CIImage) -> UIImage {
         let cgImage:CGImage = ciToCgImage(cmage)
         let image:UIImage = UIImage.init(cgImage: cgImage)
         return image
