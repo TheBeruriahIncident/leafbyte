@@ -173,12 +173,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         filter.threshold = threshold
         thresholdSlider.value = 1 - threshold
         
-        baseImageView.image = convert(cmage: filter.outputImage)
+        baseImageView.image = ciToUiImage(filter.outputImage)
         findScale()
     }
     
     func findScale() {
-        let cgImage = CIImage(image: baseImageView.image!)!.cgImage!
+        let cgImage = uiToCgImage(baseImageView.image!)
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
         let width = cgImage.width//Int((image?.size.width)!)
@@ -391,11 +391,4 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
          return red != 255 || green != 255 || blue != 255
     }
-    
-    func convert(cmage:CIImage) -> UIImage {
-        let cgImage:CGImage = ciToCgImage(cmage)
-        let image:UIImage = UIImage.init(cgImage: cgImage)
-        return image
-    }
-    
 }

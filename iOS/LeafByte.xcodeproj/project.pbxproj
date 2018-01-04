@@ -21,7 +21,7 @@
 		46C424BC1FEF688500301F59 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BB1FEF688500301F59 /* SegueFromRight.swift */; };
 		46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BD1FEF6A3E00301F59 /* UnwindSegueFromRight.swift */; };
 		46DB8A821FFE8AE200EF59BE /* leafWithScale.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46DB8A811FFE8AE200EF59BE /* leafWithScale.jpg */; };
-		46DB8A861FFE9AA900EF59BE /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DB8A851FFE9AA900EF59BE /* ImageUtils.swift */; };
+		46DB8A861FFE9AA900EF59BE /* ImageConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */; };
 		46DB8A881FFE9C0C00EF59BE /* IndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */; };
 		46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DB8A891FFE9DAF00EF59BE /* Pixel.swift */; };
 /* End PBXBuildFile section */
@@ -64,7 +64,7 @@
 		46C424BB1FEF688500301F59 /* SegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		46C424BD1FEF6A3E00301F59 /* UnwindSegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwindSegueFromRight.swift; sourceTree = "<group>"; };
 		46DB8A811FFE8AE200EF59BE /* leafWithScale.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = leafWithScale.jpg; sourceTree = "<group>"; };
-		46DB8A851FFE9AA900EF59BE /* ImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
+		46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConversions.swift; sourceTree = "<group>"; };
 		46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexableImage.swift; sourceTree = "<group>"; };
 		46DB8A891FFE9DAF00EF59BE /* Pixel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pixel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,7 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
-				46DB8A851FFE9AA900EF59BE /* ImageUtils.swift */,
+				46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */,
 				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
 			);
 			path = Utils;
@@ -342,7 +342,7 @@
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
 				468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */,
-				46DB8A861FFE9AA900EF59BE /* ImageUtils.swift in Sources */,
+				46DB8A861FFE9AA900EF59BE /* ImageConversions.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
 				4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */,
