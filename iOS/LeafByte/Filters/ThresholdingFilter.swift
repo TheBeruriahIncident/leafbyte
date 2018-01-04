@@ -20,17 +20,15 @@ class ThresholdingFilter: CIFilter {
     
     // This string represents a routine in the Core Image kernel language that transforms the image one pixel at a time ( https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageUnitTutorial/WritingKernels/WritingKernels.html ).
     private let thresholdingKernel =  CIColorKernel(source:
-        // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
-        "  const vec3 rgbToLuma = vec3(0.114, 0.587, 0.299);" +
-        // (1, 1, 1) is the color white, and 1 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it solid
-        "const vec4 whitePixel = vec4(1.0);" +
-        "" +
-        // After defining constants to use across all pixels, this is the actual thresholding.
         "kernel vec4 thresholdKernel(sampler originalImage, sampler saturatedImage, float threshold) {" +
         // Since this kernel is applied to each pixel individually, extract the pixels in question.
         "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
         "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
+        // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
+        "  const vec3 rgbToLuma = vec3(0.114, 0.587, 0.299);" +
         "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
+        // (1, 1, 1) is the color white, and 1 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it solid
+        "const vec4 whitePixel = vec4(1.0);" +
         // If the pixel is not intense enough, return white; otherwise, return a pixel of the actual (saturated) image, darkened to make it more distinct from white.
         "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : whitePixel;" +
         "}")!
