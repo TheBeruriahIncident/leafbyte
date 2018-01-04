@@ -10,8 +10,5 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {
-    
-    @IBAction func backFromSettings(_ sender: Any) {
-        self.performSegue(withIdentifier: "backToMainMenu", sender: self)
-    }
+
 }
