@@ -78,15 +78,15 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RZ-7f-3CS">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RZ-7f-3CS" userLabel="Complete Button">
                                 <rect key="frame" x="272" y="606" width="79" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Confirm"/>
                                 <connections>
-                                    <segue destination="ueh-Tb-xxm" kind="show" identifier="thresholdSet" id="WL3-WY-YVa"/>
+                                    <segue destination="ueh-Tb-xxm" kind="show" identifier="thresholdingComplete" id="WL3-WY-YVa"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI">
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
                                 <rect key="frame" x="64" y="552" width="246" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
@@ -118,9 +118,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="8Uc-b0-2VM"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Thresholding" id="LhX-tD-QbO">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="lh1-U7-txx"/>
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="SQ5-Tg-JcD">
+                    <navigationItem key="navigationItem" title="Thresholding" id="LhX-tD-QbO" userLabel="Navigation Bar">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="SQ5-Tg-JcD" userLabel="Back Button">
                             <connections>
                                 <action selector="backFromThreshold:" destination="bUK-Ir-gu8" id="h30-J3-oIi"/>
                             </connections>
@@ -231,7 +230,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ie-h5-vIJ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ie-h5-vIJ" userLabel="Title">
                                 <rect key="frame" x="166" y="26" width="88" height="39"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -286,6 +285,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="WL3-WY-YVa"/>
-        <segue reference="gAP-T7-MBM"/>
+        <segue reference="03T-NI-k5w"/>
     </inferredMetricsTieBreakers>
 </document>
