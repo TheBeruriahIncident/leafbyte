@@ -77,6 +77,13 @@
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="thresholdingComplete" id="WL3-WY-YVa"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
+                                <rect key="frame" x="64" y="569" width="246" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
+                                </connections>
+                            </slider>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">
                                 <rect key="frame" x="0.0" y="64" width="375" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -98,21 +105,18 @@
                                     </view>
                                 </subviews>
                             </scrollView>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
-                                <rect key="frame" x="64" y="569" width="246" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="sliderChanged:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
-                                </connections>
-                            </slider>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="8Uc-b0-2VM"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Thresholding" id="LhX-tD-QbO" userLabel="Navigation Bar">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="SQ5-Tg-JcD" userLabel="Back Button">
+                    <navigationItem key="navigationItem" title="Thresholding" id="hvJ-Y3-oXj" userLabel="Navigation Content">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="zfi-8V-mUx" userLabel="Back Button">
                             <connections>
-                                <action selector="backFromThreshold:" destination="bUK-Ir-gu8" id="h30-J3-oIi"/>
+                                <action selector="backFromThreshold:" destination="bUK-Ir-gu8" id="bfW-eO-osm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -141,9 +145,6 @@
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Fill holes" id="xWE-WB-0i3"/>
-                                </items>
                             </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2">
                                 <rect key="frame" x="16" y="81" width="343" height="497"/>
@@ -197,7 +198,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2"/>
+                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content"/>
                     <connections>
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
                         <outlet property="button" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
@@ -255,27 +256,9 @@
             </objects>
             <point key="canvasLocation" x="118" y="949"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="0nS-WX-Xl3">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="42J-5P-Cq4" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="WHN-oV-xGI">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ueh-Tb-xxm" kind="relationship" relationship="rootViewController" id="lE8-qE-QCA"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="z0B-ou-gVB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="118" y="1782"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="WL3-WY-YVa"/>
-        <segue reference="03T-NI-k5w"/>
+        <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
