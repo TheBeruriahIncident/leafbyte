@@ -20,7 +20,7 @@ class ThresholdFilter: CIFilter
         "  vec4 pixel = sample(image, samplerCoord(image));" +
         "  vec4 pixelColorful = sample(imageColorful, samplerCoord(imageColorful));" +
         "  float sum = .299 * pixel.r + .587 * pixel.g + .114 * pixel.b;" +
-        "  return sum < threshold ? vec4((pixelColorful.r + .0)/30.0, (pixelColorful.g + .0)/30.0, (pixelColorful.b + .0)/30.0, 1) : vec4(1.0);" +
+        "  return sum < threshold ? vec4((pixelColorful.r + .0)/3.0, (pixelColorful.g + .0)/3.0, (pixelColorful.b + .0)/3.0, 1) : vec4(1.0);" +
         "}")
     
     override var outputImage: CIImage! {
