@@ -26,5 +26,6 @@ class LeafByteUITests: XCTestCase {
         
         app.tables.cells.element(boundBy: 1).tap()
         // I don't know how to make the UIAutomation proceed through the ImagePicker, so the test stops here.
+        // TODO: maybe use a sample flow to get around the ImagePicker
     }
 }
