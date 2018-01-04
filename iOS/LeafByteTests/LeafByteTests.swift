@@ -10,27 +10,32 @@ import XCTest
 @testable import LeafByte
 
 class LeafByteTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
+    func testThresholdFilter() {        
+        let image = loadImage(named: "leafWithScale")
+        
+        var thresholdedCiImage: CIImage!
         self.measure {
-            // Put the code you want to measure the time of here.
+            let filter = ThresholdingFilter()
+            filter.setInputImage(image)
+            thresholdedCiImage = filter.outputImage
         }
+        
+        let indexableImage = IndexableImage(ciToCgImage(thresholdedCiImage))
+        
+        indexableImage.printInBinary()
+        
+        XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
+        XCTAssert(!indexableImage.getPixel(x: 1200, y: 1200).isWhite())
     }
     
+    private func loadImage(named name: String) -> UIImage {
+        let bundle = Bundle(for: type(of: self))
+        guard let path = bundle.path(forResource: name, ofType: "jpg") else {
+            fatalError("Image \(name) not found")
+        }
+        guard let image = UIImage(contentsOfFile: path) else {
+            fatalError("Image \(name) could not be loaded")
+        }
+        return image
+    }
 }

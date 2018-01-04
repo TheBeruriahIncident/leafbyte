@@ -14,7 +14,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     var sourceType: UIImagePickerControllerSourceType?
     
     var image: UIImage?
-    let filter = ThresholdFilter()
+    let filter = ThresholdingFilter()
     
     var scale: Int?
     
@@ -26,10 +26,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         scrollView.minimumZoomScale = 0.9;
         scrollView.maximumZoomScale = 10.0
         
-        // https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
-        filter.inputImageOriginalColorSpace = CIImage(image: image!, options: [kCIImageColorSpace: NSNull()])
-        // TODO: do we need this other thing?
-        filter.inputImageSaturated = CIImage(image: image!)//, options: [kCIImageColorSpace: NSNull()])
+        filter.setInputImage(image!)
         
         imageView.contentMode = .scaleAspectFit
         extraImageLayer.contentMode = .scaleAspectFit
@@ -424,8 +421,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     
     func convert(cmage:CIImage) -> UIImage
     {
-        let context:CIContext = CIContext.init(options: nil)
-        let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
+        let cgImage:CGImage = ciToCgImage(cmage)
         let image:UIImage = UIImage.init(cgImage: cgImage)
         return image
     }
