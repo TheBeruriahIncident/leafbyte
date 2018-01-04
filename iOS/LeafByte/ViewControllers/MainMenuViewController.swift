@@ -69,7 +69,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         present(imagePicker, animated: true, completion: nil)
     }
     
-    var image: UIImage?
+    var selectedImage: UIImage?
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "imageChosen"
@@ -84,7 +84,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 return
             }
             
-            destination.image = image!
+            destination.image = selectedImage!
             destination.sourceType = sourceType
         }
     }
@@ -92,16 +92,19 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // There may contain multiple versions of the image in info; we want the original (
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
+        // Even if the user doesn't edit, this will retrieve the unedited image.
+        guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
+            fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
         }
     
         // TODO: resize the image
-        image = selectedImage
+        self.selectedImage = selectedImage
         
-        // Dismiss the picker.
         dismiss(animated: false, completion: {() in
+            // Dismissing and then seguing goes from the image picker to the main menu view to the threshold view.
+            // It looks weird to be back at the main menu, so make this transition as short as possible by disabling animation.
+            // Animation is re-renabled in this class's viewDidDisappear.
             UIView.setAnimationsEnabled(false)
             self.performSegue(withIdentifier: "imageChosen", sender: self)
         })

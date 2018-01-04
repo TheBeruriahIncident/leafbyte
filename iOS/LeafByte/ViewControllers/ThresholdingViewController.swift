@@ -149,7 +149,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         slider.value = 1 - threshold
         
         imageView.image = convert(cmage: filter.outputImage)
-        findScale()
+        //findScale()
     }
     
     func findScale() {
