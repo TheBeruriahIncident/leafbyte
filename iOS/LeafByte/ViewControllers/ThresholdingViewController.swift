@@ -46,7 +46,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         // TODO: these should not be here and should probably be async
         let threshold = otsu(forHistogram: getHistogram())
-        setValue(threshold: threshold)
+        setThreshold(threshold)
     }
 
     // This is called before transitioning from this view to another view.
@@ -78,7 +78,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func sliderMoved(_ sender: UISlider) {
-        setValue(threshold: 1 - sender.value)
+        setThreshold(1 - sender.value)
     }
     
 
@@ -169,7 +169,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         return total
     }
     
-    func setValue(threshold: Float) {
+    func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
         thresholdSlider.value = 1 - threshold
         
