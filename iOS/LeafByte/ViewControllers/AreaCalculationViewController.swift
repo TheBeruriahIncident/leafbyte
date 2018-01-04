@@ -13,8 +13,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     let imagePicker = UIImagePickerController()
     
-    var baseImage: UIImage?
-    var scale: Int?
+    var image: UIImage?
+    var scaleMarkPixelLength: Int?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
         
-        baseImageView.image = baseImage
+        baseImageView.image = image
         baseImageView.contentMode = .scaleAspectFit
         setScrolling(true)
         
@@ -168,7 +168,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     func findSizes() {
-        let cgImage = CIImage(image: baseImage!)!.cgImage!
+        let cgImage = CIImage(image: image!)!.cgImage!
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
         let width = cgImage.width//Int((image?.size.width)!)
@@ -371,7 +371,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         filledHolesImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        if scale != nil {
+        if scaleMarkPixelLength != nil {
             summary.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
         } else {
             summary.text = "leaf is \(eatenArea / leafArea * 100 )% eaten"
@@ -379,8 +379,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     func getArea(pixels: Int) -> Float {
-        if (scale != nil) {
-            return pow(2.0 / Float(scale!), 2) * Float(pixels)
+        if (scaleMarkPixelLength != nil) {
+            return pow(2.0 / Float(scaleMarkPixelLength!), 2) * Float(pixels)
         } else {
             return Float(pixels)
         }

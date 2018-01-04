@@ -86,7 +86,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="Threshold"/>
                                 <connections>
-                                    <action selector="sliderChanged:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
+                                    <action selector="sliderMoved:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
                                 </connections>
                             </slider>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">

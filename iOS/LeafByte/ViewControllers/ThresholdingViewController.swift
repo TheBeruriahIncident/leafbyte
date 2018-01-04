@@ -9,7 +9,7 @@
 import UIKit
 import Accelerate
 
-class ThresholdingViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
+class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Fields
     
     // Both of these are passed from the main menu view.
@@ -18,8 +18,9 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     
     let filter = ThresholdingFilter()
     
-    // This is calculated in this view (if possible) and passed forward.
-    var scale: Int?
+    // This is the number of pixels across the scale mark in the image.
+    // It's calculated in this view (if possible) and passed forward.
+    var scaleMarkPixelLength: Int?
     
     // MARK: - Outlets
     
@@ -28,12 +29,12 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
-
+    
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        let threshold = otsu(forHistogram: getHistogram())
         gestureRecognizingView.delegate = self
         gestureRecognizingView.minimumZoomScale = 0.9;
         gestureRecognizingView.maximumZoomScale = 10.0
@@ -42,9 +43,49 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
-
+        
+        // TODO: these should not be here and should probably be async
+        let threshold = otsu(forHistogram: getHistogram())
         setValue(threshold: threshold)
     }
+
+    // This is called before transitioning from this view to another view.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
+        if segue.identifier == "thresholdingComplete"
+        {
+            guard let destination = segue.destination as? AreaCalculationViewController else {
+                fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
+            }
+            
+            destination.sourceType = sourceType
+            destination.image = baseImageView.image
+            destination.scaleMarkPixelLength = scaleMarkPixelLength
+        }
+    }
+    
+    // MARK: - UIScrollViewDelegate overrides
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return scrollableView
+    }
+    
+    // MARK: - Actions
+    
+    // This is called from the back button.
+    @IBAction func backFromThreshold(_ sender: Any) {
+        self.performSegue(withIdentifier: "backToMainMenu", sender: self)
+    }
+    
+    @IBAction func sliderMoved(_ sender: UISlider) {
+        setValue(threshold: 1 - sender.value)
+    }
+    
+
+    
+
+    
+    
     
     func otsu(forHistogram histogram: [Int]) -> Float {
         // TODO: check this and use better variables, be better about types
@@ -287,7 +328,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
             let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), data: data, width, height)
             let b = getFarthestPoint(a, data: data, width, height)
             
-            scale = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
+            scaleMarkPixelLength = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
             
             let xAToUse = Int(Float(a.x) * xFactor + xOffset)
             let yAToUse = Int(Float(a.y) * yFactor + yOffset)
@@ -357,28 +398,4 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         return image
     }
     
-    @IBAction func backFromThreshold(_ sender: Any) {
-        self.performSegue(withIdentifier: "backToMainMenu", sender: self)
-    }
-    
-    @IBAction func sliderChanged(_ sender: UISlider) {
-        setValue(threshold: 1 - sender.value)
-    }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollableView
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "thresholdingComplete"
-        {
-            guard let destination = segue.destination as? AreaCalculationViewController else {
-                return
-            }
-            
-            destination.baseImage = baseImageView.image
-            destination.scale = scale
-            destination.sourceType = sourceType
-        }
-    }
 }
