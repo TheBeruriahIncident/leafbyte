@@ -8,31 +8,36 @@
 
 import CoreImage
 
+// This Core Image Filter ( https://developer.apple.com/documentation/coreimage/cifilter ) is used to remove the image background via thresholding ( https://en.wikipedia.org/wiki/Thresholding_(image_processing) ).
+// Because Core Image saturates images to make them more vibrant by default, we take in both a saturated form of the image and one in the original color space.
+// This allows us to do the thresholding using the unmanipulated image but only show pixels from the more vibrant image.
 class ThresholdFilter: CIFilter
 {
-    var inputImage : CIImage?
-    var inputImageColorful : CIImage?
-    var threshold: Float = 0.95
+    var inputImageOriginalColorSpace: CIImage!
+    var inputImageSaturated: CIImage!
     
-    // http://www.lps.usp.br/hae/apostila/basico/YUV-wikipedia.pdf
+    var threshold: Float = 0.5
+    
+    // This string represents a routine in the Core Image kernel language that transforms the image one pixel at a time ( https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageUnitTutorial/WritingKernels/WritingKernels.html ).
     var thresholdKernel =  CIColorKernel(source:
-        "kernel vec4 thresholdKernel(sampler image, sampler imageColorful, float threshold) {" +
-        "  vec4 pixel = sample(image, samplerCoord(image));" +
-        "  vec4 pixelColorful = sample(imageColorful, samplerCoord(imageColorful));" +
-        "  float sum = .299 * pixel.r + .587 * pixel.g + .114 * pixel.b;" +
-        "  return sum < threshold ? vec4((pixelColorful.r + .0)/3.0, (pixelColorful.g + .0)/3.0, (pixelColorful.b + .0)/3.0, 1) : vec4(1.0);" +
-        "}")
+        // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
+        "  const vec3 rgbToLuma = vec3(0.114, 0.587, 0.299);" +
+        // (1, 1, 1) is the color white, and 1 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it solid
+        "const vec4 whitePixel = vec4(1.0);" +
+        "" +
+        // After defining constants to use across all pixels, this is the actual thresholding.
+        "kernel vec4 thresholdKernel(sampler originalImage, sampler saturatedImage, float threshold) {" +
+        // Since this kernel is applied to each pixel individually, extract the pixels in question.
+        "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
+        "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
+        "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
+        // If the pixel is not intense enough, return white; otherwise, return a pixel of the actual (saturated) image, darkened to make it more distinct from white.
+        "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : whitePixel;" +
+        "}")!
     
     override var outputImage: CIImage! {
-        guard let inputImage = inputImage,
-            let inputImageColorful = inputImageColorful,
-            let thresholdKernel = thresholdKernel else {
-                return nil
-        }
-        
-        let extent = inputImage.extent
-        let arguments : [Any] = [inputImage, inputImageColorful, threshold]
-        return thresholdKernel.apply(extent: extent, arguments: arguments)
+        let arguments : [Any] = [inputImageOriginalColorSpace, inputImageSaturated, threshold]
+        return thresholdKernel.apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)
     }
 }
 
