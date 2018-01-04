@@ -6,7 +6,6 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {

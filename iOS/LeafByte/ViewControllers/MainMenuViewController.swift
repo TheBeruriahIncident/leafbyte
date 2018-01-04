@@ -17,9 +17,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        
-        //self.navigationController?.popToRootViewController(animated: false)
+        imagePicker.allowsEditing = true
     }
     
     @IBAction func backToMainMenu(segue: UIStoryboardSegue){}
@@ -90,13 +88,16 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             destination.sourceType = sourceType
         }
     }
+
+    // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // The info dictionary may contain multiple representations of the image. You want to use the original.
+        // There may contain multiple versions of the image in info; we want the original (
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
     
+        // TODO: resize the image
         image = selectedImage
         
         // Dismiss the picker.
@@ -104,9 +105,9 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             UIView.setAnimationsEnabled(false)
             self.performSegue(withIdentifier: "imageChosen", sender: self)
         })
-        
     }
     
+    // If the image picker is canceled, dismiss it.
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
