@@ -434,13 +434,6 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         self.performSegue(withIdentifier: "backToMainMenu", sender: self)
     }
     
-    @IBAction func fromMainMenu(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? MainMenuViewController, let image = sourceViewController.image {
-            
-            imageView.image = image
-        }
-    }
-    
     @IBAction func sliderChanged(_ sender: UISlider) {
         setValue(threshold: 1 - sender.value)
     }
