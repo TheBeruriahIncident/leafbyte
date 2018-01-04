@@ -10,26 +10,38 @@ import UIKit
 import Accelerate
 
 class ThresholdingViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
+    // MARK: - Fields
     
+    // Both of these are passed from the main menu view.
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     
     let filter = ThresholdingFilter()
     
+    // This is calculated in this view (if possible) and passed forward.
     var scale: Int?
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var gestureRecognizingView: UIScrollView!
+    @IBOutlet weak var scrollableView: UIView!
+    @IBOutlet weak var baseImageView: UIImageView!
+    @IBOutlet weak var scaleMarkingView: UIImageView!
+    @IBOutlet weak var thresholdSlider: UISlider!
+
     
     override func viewDidLoad(){
         super.viewDidLoad()
         
         let threshold = otsu(forHistogram: getHistogram())
-        scrollView.delegate = self
-        scrollView.minimumZoomScale = 0.9;
-        scrollView.maximumZoomScale = 10.0
+        gestureRecognizingView.delegate = self
+        gestureRecognizingView.minimumZoomScale = 0.9;
+        gestureRecognizingView.maximumZoomScale = 10.0
         
         filter.setInputImage(image!)
         
-        imageView.contentMode = .scaleAspectFit
-        extraImageLayer.contentMode = .scaleAspectFit
+        baseImageView.contentMode = .scaleAspectFit
+        scaleMarkingView.contentMode = .scaleAspectFit
 
         setValue(threshold: threshold)
     }
@@ -118,14 +130,14 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     
     func setValue(threshold: Float) {
         filter.threshold = threshold
-        slider.value = 1 - threshold
+        thresholdSlider.value = 1 - threshold
         
-        imageView.image = convert(cmage: filter.outputImage)
-        //findScale()
+        baseImageView.image = convert(cmage: filter.outputImage)
+        findScale()
     }
     
     func findScale() {
-        let cgImage = CIImage(image: imageView.image!)!.cgImage!
+        let cgImage = CIImage(image: baseImageView.image!)!.cgImage!
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
         let width = cgImage.width//Int((image?.size.width)!)
@@ -242,22 +254,22 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
             }
         }
         
-        extraImageLayer.image = nil
-        UIGraphicsBeginImageContext(extraImageLayer.frame.size)
+        scaleMarkingView.image = nil
+        UIGraphicsBeginImageContext(scaleMarkingView.frame.size)
         let context = UIGraphicsGetCurrentContext()
         
-        extraImageLayer.image?.draw(in: CGRect(x: 0, y: 0, width: extraImageLayer.frame.size.width, height: extraImageLayer.frame.size.height))
+        scaleMarkingView.image?.draw(in: CGRect(x: 0, y: 0, width: scaleMarkingView.frame.size.width, height: scaleMarkingView.frame.size.height))
         
         
-        let scaleW = imageView.frame.size.width / (imageView.image?.size.width)!
-        let scaleH = imageView.frame.size.height / (imageView.image?.size.height)!
+        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
+        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
         let aspect = fmin(scaleW, scaleH)
         
         
-        let xFactor = Float((imageView.image?.size.width)!) / Float((imageView.image?.size.width)! / aspect)
-        let yFactor = Float((imageView.image?.size.height)!) / Float((imageView.image?.size.height)! / aspect)
-        let xOffset = Float((imageView.frame.size.width - (imageView.image?.size.width)! * aspect) / 2)
-        let yOffset = Float((imageView.frame.size.height - (imageView.image?.size.height)! * aspect) / 2)
+        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
+        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
+        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
+        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
         //print("\(xFactor)  \(yFactor) \(xOffset) \(yOffset)")
         
         context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
@@ -293,13 +305,11 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         }
         
         
-        extraImageLayer.image = UIGraphicsGetImageFromCurrentImageContext()
+        scaleMarkingView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
     }
     
-    @IBOutlet weak var wrapper: UIView!
-    @IBOutlet weak var extraImageLayer: UIImageView!
     
     func getFarthestPoint(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) -> CGPoint {
         var explored = [CGPoint]()
@@ -356,7 +366,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return wrapper
+        return scrollableView
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -366,13 +376,9 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
                 return
             }
             
-            destination.baseImage = imageView.image
+            destination.baseImage = baseImageView.image
             destination.scale = scale
             destination.sourceType = sourceType
         }
     }
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var slider: UISlider!
-    @IBOutlet weak var imageView: UIImageView!
 }
