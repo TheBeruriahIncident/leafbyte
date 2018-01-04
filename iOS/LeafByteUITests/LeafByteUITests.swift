@@ -18,12 +18,13 @@ class LeafByteUITests: XCTestCase {
         XCUIApplication().launch()
     }
     
-    func testNavigatingToSettings() {
+    func testBeginningOfApp() {
         let app = XCUIApplication()
         app.buttons["Settings"].tap()
         app.navigationBars["Settings"].buttons["Back"].tap()
         app.buttons["Photo Library"].tap()
         
+        app.tables.cells.element(boundBy: 1).tap()
         // I don't know how to make the UIAutomation proceed through the ImagePicker, so the test stops here.
     }
 }
