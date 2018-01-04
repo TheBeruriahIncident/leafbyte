@@ -42,7 +42,7 @@
                                 <accessibility key="accessibilityConfiguration" label="Settings"/>
                                 <state key="normal" title="Settings"/>
                                 <connections>
-                                    <segue destination="87W-xz-Klv" kind="show" customClass="UIStoryboardSegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
+                                    <segue destination="87W-xz-Klv" kind="show" customClass="SegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LeafByte" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="Title">
@@ -131,7 +131,7 @@
                         <outlet property="scrollView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
                         <outlet property="slider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <outlet property="wrapper" destination="W7I-Wp-QLc" id="Mft-Ax-Z21"/>
-                        <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UIStoryboardUnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
+                        <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZL4-RO-deo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -241,7 +241,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Back" id="b5g-Ga-ipG" userLabel="Back Button">
                             <connections>
                                 <action selector="backFromSettings:" destination="vL6-8S-A2W" id="K6m-5z-3R7"/>
-                                <segue destination="vL6-8S-A2W" kind="unwind" identifier="backToMainMenu" customClass="UIStoryboardUnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="BkN-wm-Kfg"/>
+                                <segue destination="vL6-8S-A2W" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="BkN-wm-Kfg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -289,6 +289,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="WL3-WY-YVa"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
