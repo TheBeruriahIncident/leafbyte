@@ -40,6 +40,7 @@ class ThresholdingFilter: CIFilter {
     }
     
     // MARK: CIFilter overrides
+    
     override var outputImage: CIImage! {
         let arguments : [Any] = [inputImageOriginalColorSpace, inputImageSaturated, threshold]
         return thresholdingKernel.apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)

@@ -27,6 +27,7 @@ struct Pixel: Equatable {
     }
     
     // MARK: Equatable overrides
+    
     static func == (lhs: Pixel, rhs: Pixel) -> Bool {
         return lhs.red == rhs.red
             && lhs.green == rhs.green

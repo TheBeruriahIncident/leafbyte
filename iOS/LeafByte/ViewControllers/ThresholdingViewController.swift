@@ -11,9 +11,9 @@ import Accelerate
 
 class ThresholdingViewController: UIViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
     
-    var sourceType: UIImagePickerControllerSourceType?
+    var sourceType: UIImagePickerControllerSourceType!
+    var image: UIImage!
     
-    var image: UIImage?
     let filter = ThresholdingFilter()
     
     var scale: Int?

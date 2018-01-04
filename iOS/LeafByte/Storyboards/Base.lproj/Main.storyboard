@@ -24,7 +24,7 @@
                                 <accessibility key="accessibilityConfiguration" label="Camera"/>
                                 <state key="normal" title="Take a picture"/>
                                 <connections>
-                                    <action selector="takePicture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8iX-hV-eBB"/>
+                                    <action selector="pickImageFromCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8iX-hV-eBB"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
@@ -33,7 +33,7 @@
                                 <accessibility key="accessibilityConfiguration" label="Photo Library"/>
                                 <state key="normal" title="Choose a picture"/>
                                 <connections>
-                                    <action selector="choosePictureFromLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vpd-GI-yRy"/>
+                                    <action selector="pickImageFromPhotoLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vpd-GI-yRy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7J-0u-w5M" userLabel="Settings Button">
@@ -289,7 +289,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WL3-WY-YVa"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
