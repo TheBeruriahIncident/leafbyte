@@ -21,6 +21,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-sd-kIs" userLabel="Camera Button">
                                 <rect key="frame" x="51" y="535" width="113" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Camera"/>
                                 <state key="normal" title="Take a picture"/>
                                 <connections>
                                     <action selector="takePicture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8iX-hV-eBB"/>
@@ -29,6 +30,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
                                 <rect key="frame" x="207" y="534" width="138" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Photo Library"/>
                                 <state key="normal" title="Choose a picture"/>
                                 <connections>
                                     <action selector="choosePictureFromLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vpd-GI-yRy"/>
@@ -37,6 +39,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7J-0u-w5M" userLabel="Settings Button">
                                 <rect key="frame" x="275" y="71" width="70" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Settings"/>
                                 <state key="normal" title="Settings"/>
                                 <connections>
                                     <segue destination="87W-xz-Klv" kind="show" customClass="UIStoryboardSegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
@@ -72,6 +75,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RZ-7f-3CS" userLabel="Complete Button">
                                 <rect key="frame" x="272" y="617" width="79" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Complete"/>
                                 <state key="normal" title="Confirm"/>
                                 <connections>
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="thresholdingComplete" id="WL3-WY-YVa"/>
@@ -80,6 +84,7 @@
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
                                 <rect key="frame" x="64" y="569" width="246" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Threshold"/>
                                 <connections>
                                     <action selector="sliderChanged:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
                                 </connections>
@@ -174,6 +179,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
                                 <rect key="frame" x="16" y="637" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="touchButton:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="VBr-Fj-GyK"/>
@@ -189,6 +195,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-ad-Z94" userLabel="Complete Button">
                                 <rect key="frame" x="247" y="637" width="86" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Complete"/>
                                 <state key="normal" title="Next image"/>
                                 <connections>
                                     <action selector="nextImage:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="rdX-D3-N69"/>
@@ -282,7 +289,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WL3-WY-YVa"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
