@@ -109,7 +109,6 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
         
         // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
-        let divisor: Int32 = 256
 
         let matrixS: [[Int16]] = [
             [1000,   0,      0,      0],//sub in divisor
@@ -140,7 +139,7 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
         
         let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
-        let error = vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
+        vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
         
         // TODO: this memory management makes me nervous, have I allocated anything?
         
@@ -295,10 +294,11 @@ class ThresholdingViewController: UIViewController, UINavigationControllerDelega
         context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
         if (scaleGroup != nil) {
-            var scaleClass: Set<Int>
+            // TODO: we should be using scale class not group
+            //var scaleClass: Set<Int>
             for equivalentGroup in equivalentGroups {
                 if (equivalentGroup.contains(scaleGroup!)) {
-                    scaleClass = equivalentGroup
+                    //scaleClass = equivalentGroup
                 }
             }
             let (xStart, yStart) = groupToPoint[scaleGroup!]!

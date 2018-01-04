@@ -32,7 +32,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // TODO: is there a less stupid way to initialize the image??
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
-        let context = UIGraphicsGetCurrentContext()
         drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
         drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -179,7 +178,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let cgImageDrawing = CIImage(image: drawingImageView.image!)!.cgImage!
         let pixelDataDrawing: CFData = cgImageDrawing.dataProvider!.data!
         let widthDrawing = cgImageDrawing.width
-        let heightDrawing = cgImageDrawing.height
         let dataDrawing: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelDataDrawing)
         
         
@@ -323,7 +321,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         var backgroundGroup: Int?
         var leafGroup: Int?
         var leafSize: Int?; // assume the biggest blob is leaf, second is the scale
-        var scaleGroup: Int?
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key > 0 && leafGroup == nil) {
                 leafGroup = groupAndSize.key
@@ -357,7 +354,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
 //            print(foo)
 //        }
         
-        var leafArea = getArea(pixels: leafSize!)
+        let leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
         //print("coloring in")
