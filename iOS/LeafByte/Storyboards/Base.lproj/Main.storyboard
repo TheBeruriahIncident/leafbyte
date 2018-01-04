@@ -39,7 +39,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Settings"/>
                                 <connections>
-                                    <segue destination="87W-xz-Klv" kind="show" id="cpy-vO-pvs"/>
+                                    <segue destination="87W-xz-Klv" kind="show" customClass="UIStoryboardSegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LeafByte" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="Title">
@@ -234,7 +234,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Back" id="b5g-Ga-ipG" userLabel="Back Button">
                             <connections>
                                 <action selector="backFromSettings:" destination="vL6-8S-A2W" id="K6m-5z-3R7"/>
-                                <segue destination="vL6-8S-A2W" kind="unwind" unwindAction="backToMainMenuWithSegue:" id="BkN-wm-Kfg"/>
+                                <segue destination="vL6-8S-A2W" kind="unwind" identifier="backToMainMenu" customClass="UIStoryboardUnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="BkN-wm-Kfg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
