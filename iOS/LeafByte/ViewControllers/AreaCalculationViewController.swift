@@ -12,34 +12,38 @@ import UIKit
 class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
-    var sourceType: UIImagePickerControllerSourceType?
+    // These are passed from the thresholding view.
+    var sourceType: UIImagePickerControllerSourceType!
+    var image: UIImage!
+    var scaleMarkPixelLength: Int?
     
+    // Tracks whether the last gesture (including any ongoing one) was a swipe.
+    var swiped = false
+    // The last touched point, to enable drawing lines while swiping.
+    var lastTouchedPoint = CGPoint.zero
+    
+    // The current mode can be scrolling or drawing.
+    var inScrollingMode = true
+    
+    let imagePicker = UIImagePickerController()
+    // This is set while choosing the next image and is passed to the next thresholding view.
     var nextImage: UIImage?
     
-    var swiped = false
-    var lastPoint = CGPoint.zero
-    
-    var isScrolling = true
-
-    let imagePicker = UIImagePickerController()
-    
-    var image: UIImage?
-    var scaleMarkPixelLength: Int?
-
     // MARK: - Outlets
     
+    @IBOutlet weak var gestureRecognizingView: UIScrollView!
+    @IBOutlet weak var scrollableView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
-    @IBOutlet weak var drawingImageView: UIImageView!
-    @IBOutlet weak var filledHolesImageView: UIImageView!
-    @IBOutlet weak var summary: UILabel!
-    @IBOutlet weak var wrapper: UIView!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var userDrawingView: UIImageView!
+    @IBOutlet weak var leafHolesView: UIImageView!
+    
+    @IBOutlet weak var modeToggleButton: UIButton!
+    @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
     
     @IBAction func touchButton(_ sender: Any) {
-        setScrolling(!isScrolling)
+        setScrolling(!inScrollingMode)
     }
     
     @IBAction func nextImage(_ sender: Any) {
@@ -53,9 +57,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        scrollView.delegate = self
-        scrollView.minimumZoomScale = 0.9;
-        scrollView.maximumZoomScale = 10.0
+        gestureRecognizingView.delegate = self
+        gestureRecognizingView.minimumZoomScale = 0.9;
+        gestureRecognizingView.maximumZoomScale = 10.0
         
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
@@ -65,9 +69,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setScrolling(true)
         
         // TODO: is there a less stupid way to initialize the image??
-        UIGraphicsBeginImageContext(drawingImageView.frame.size)
-        drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
-        drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsBeginImageContext(userDrawingView.frame.size)
+        userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
+        userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         
@@ -89,27 +93,27 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - UIScrollViewDelegate overrides
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return wrapper
+        return scrollableView
     }
     
     // MARK: - UIResponder overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = false
-        lastPoint = (touches.first?.location(in: drawingImageView))!
+        lastTouchedPoint = (touches.first?.location(in: userDrawingView))!
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = true
-        let currentPoint = touches.first?.location(in: drawingImageView)
-        drawLineFrom(fromPoint: lastPoint, toPoint: currentPoint!)
+        let currentPoint = touches.first?.location(in: userDrawingView)
+        drawLineFrom(fromPoint: lastTouchedPoint, toPoint: currentPoint!)
         
-        lastPoint = currentPoint!
+        lastTouchedPoint = currentPoint!
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
-            drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
+            drawLineFrom(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
         } else {
             findSizes()
         }
@@ -140,38 +144,38 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - Helpers
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
-        if (isScrolling) {
+        if (inScrollingMode) {
             return
         }
         
-        UIGraphicsBeginImageContext(drawingImageView.frame.size)
+        UIGraphicsBeginImageContext(userDrawingView.frame.size)
         let context = UIGraphicsGetCurrentContext()
         
         context?.interpolationQuality = CGInterpolationQuality.none
         context?.setAllowsAntialiasing(false)
         context?.setShouldAntialias(false)
         
-        drawingImageView.image?.draw(in: CGRect(x: 0, y: 0, width: drawingImageView.frame.size.width, height: drawingImageView.frame.size.height))
+        userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
         
         context!.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
         context!.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
         context!.strokePath()
         
-        drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
     }
     
     func setScrolling(_ scrolling: Bool) {
-        isScrolling = scrolling
+        inScrollingMode = scrolling
         
-        scrollView.isUserInteractionEnabled = scrolling
+        gestureRecognizingView.isUserInteractionEnabled = scrolling
         
         
         if (scrolling) {
-            button.setTitle("Switch to drawing", for: .normal)
+            modeToggleButton.setTitle("Switch to drawing", for: .normal)
         } else {
-            button.setTitle("Switch to scrolling", for: .normal)
+            modeToggleButton.setTitle("Switch to scrolling", for: .normal)
         }
     }
     
@@ -231,7 +235,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let height = cgImage.height
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
-        let cgImageDrawing = CIImage(image: drawingImageView.image!)!.cgImage!
+        let cgImageDrawing = CIImage(image: userDrawingView.image!)!.cgImage!
         let pixelDataDrawing: CFData = cgImageDrawing.dataProvider!.data!
         let widthDrawing = cgImageDrawing.width
         let dataDrawing: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelDataDrawing)
@@ -375,7 +379,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
+        UIGraphicsBeginImageContext(leafHolesView.frame.size)
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
@@ -385,13 +389,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 }
             }
         }
-        filledHolesImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        leafHolesView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         if scaleMarkPixelLength != nil {
-            summary.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
+            resultsText.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
         } else {
-            summary.text = "leaf is \(eatenArea / leafArea * 100 )% eaten"
+            resultsText.text = "leaf is \(eatenArea / leafArea * 100 )% eaten"
         }
     }
     
@@ -407,7 +411,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let context = UIGraphicsGetCurrentContext()
         
-        filledHolesImageView.image?.draw(in: CGRect(x: 0, y: 0, width: filledHolesImageView.frame.size.width, height: filledHolesImageView.frame.size.height))
+        leafHolesView.image?.draw(in: CGRect(x: 0, y: 0, width: leafHolesView.frame.size.width, height: leafHolesView.frame.size.height))
         
         
         let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
