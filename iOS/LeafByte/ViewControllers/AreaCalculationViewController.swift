@@ -64,29 +64,32 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         setupImagePicker(imagePicker: imagePicker, self: self)
         
-        baseImageView.image = image
         baseImageView.contentMode = .scaleAspectFit
+        baseImageView.image = image
+        
         setScrollingMode(true)
         
-        // TODO: is there a less stupid way to initialize the image??
+        // TODO: is there a less stupid way to initialize the image?? maybe won't need
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
         userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
         userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        
+        // TODO: this probably shouldn't be here
         findSizes()
     }
     
+    // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen"
         {
             guard let destination = segue.destination as? ThresholdingViewController else {
-                return
+                fatalError("Expected the next view to be the thresholding view but is \(segue.destination)")
             }
             
-            destination.image = nextImage!
             destination.sourceType = sourceType
+            destination.image = nextImage
         }
     }
     
@@ -105,16 +108,18 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = true
-        let currentPoint = touches.first?.location(in: userDrawingView)
-        drawLineFrom(fromPoint: lastTouchedPoint, toPoint: currentPoint!)
+        let currentPoint = (touches.first?.location(in: userDrawingView))!
+        drawLineFrom(fromPoint: lastTouchedPoint, toPoint: currentPoint)
         
-        lastTouchedPoint = currentPoint!
+        lastTouchedPoint = currentPoint
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
+            // If it's not a swipe, no line has been drawn.
             drawLineFrom(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
         } else {
+            // Only swipes are likely to change the enclosed area.
             findSizes()
         }
     }
@@ -122,21 +127,30 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // The info dictionary may contain multiple representations of the image. You want to use the original.
+        // TODO: Pull out commonalities here
+        
+        // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
+        // Even if the user doesn't edit, this will retrieve the unedited image.
+        // TODO: scale seems to be off on UIImagePickerControllerEditedImage, figure
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+            fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
         }
         
+        // Save the selectedImage off so that during the segue, we can set it onto the thresholding view.
+        // TODO: resize the image https://stackoverflow.com/questions/12258280/capturing-photos-with-specific-resolution-using-the-uiimagepickercontroller https://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
         nextImage = selectedImage
         
-        // Dismiss the picker.
         dismiss(animated: false, completion: {() in
+            // Dismissing and then seguing goes from the image picker to the main menu view to the thresholding view.
+            // It looks weird to be back at the main menu, so make this transition as short as possible by disabling animation.
+            // Animation is re-renabled in this class's viewDidDisappear.
             UIView.setAnimationsEnabled(false)
             self.performSegue(withIdentifier: "imageChosen", sender: self)
         })
         
     }
     
+    // If the image picker is canceled, dismiss it.
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -144,6 +158,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - Helpers
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+        // Do not draw in scrolling mode.
         if (inScrollingMode) {
             return
         }
@@ -166,13 +181,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         UIGraphicsEndImageContext()
     }
     
-    func setScrollingMode(_ scrolling: Bool) {
-        inScrollingMode = scrolling
+    func setScrollingMode(_ inScrollingMode: Bool) {
+        self.inScrollingMode = inScrollingMode
         
-        gestureRecognizingView.isUserInteractionEnabled = scrolling
+        gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
         
-        
-        if (scrolling) {
+        if (inScrollingMode) {
             modeToggleButton.setTitle("Switch to drawing", for: .normal)
         } else {
             modeToggleButton.setTitle("Switch to scrolling", for: .normal)

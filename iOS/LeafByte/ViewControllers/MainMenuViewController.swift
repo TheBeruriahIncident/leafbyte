@@ -56,8 +56,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(navigationController.topViewController!)")
             }
             
-            destination.image = selectedImage
             destination.sourceType = sourceType
+            destination.image = selectedImage
         }
     }
     
@@ -71,6 +71,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        // TODO: Pull out commonalities here
+        
         // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
         // Even if the user doesn't edit, this will retrieve the unedited image.
         // TODO: scale seems to be off on UIImagePickerControllerEditedImage, figure
