@@ -64,32 +64,14 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // See imagePickerController() for why animations may be disabled; make sure they're enabled before leaving.
+        // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
     }
 
     // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // TODO: Pull out commonalities here
-        
-        // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
-        // Even if the user doesn't edit, this will retrieve the unedited image.
-        guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
-            fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
-        }
-    
-        // Save the selectedImage off so that during the segue, we can set it onto the thresholding view.
-        // Note that we scale it down to make the following operations happen in tolerable time.
-        self.selectedImage = resizeImage(selectedImage, within: CGSize(width: 400, height: 400))
-        
-        dismiss(animated: false, completion: {() in
-            // Dismissing and then seguing goes from the image picker to the main menu view to the thresholding view.
-            // It looks weird to be back at the main menu, so make this transition as short as possible by disabling animation.
-            // Animation is re-renabled in this class's viewDidDisappear.
-            UIView.setAnimationsEnabled(false)
-            self.performSegue(withIdentifier: "imageChosen", sender: self)
-        })
+        finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
     
     // If the image picker is canceled, dismiss it.

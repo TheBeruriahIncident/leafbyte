@@ -27,7 +27,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     let imagePicker = UIImagePickerController()
     // This is set while choosing the next image and is passed to the next thresholding view.
-    var nextImage: UIImage?
+    var selectedImage: UIImage?
     
     // MARK: - Outlets
     
@@ -90,8 +90,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
             
             destination.sourceType = sourceType
-            destination.image = nextImage
+            destination.image = selectedImage
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
+        UIView.setAnimationsEnabled(true)
     }
     
     // MARK: - UIScrollViewDelegate overrides
@@ -125,27 +132,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - UIImagePickerControllerDelegate overrides
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // TODO: Pull out commonalities here
-        
-        // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
-        // Even if the user doesn't edit, this will retrieve the unedited image.
-        // TODO: scale seems to be off on UIImagePickerControllerEditedImage, figure
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
-        }
-        
-        // Save the selectedImage off so that during the segue, we can set it onto the thresholding view.
-        // TODO: resize the image https://stackoverflow.com/questions/12258280/capturing-photos-with-specific-resolution-using-the-uiimagepickercontroller https://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
-        nextImage = selectedImage
-        
-        dismiss(animated: false, completion: {() in
-            // Dismissing and then seguing goes from the image picker to the main menu view to the thresholding view.
-            // It looks weird to be back at the main menu, so make this transition as short as possible by disabling animation.
-            // Animation is re-renabled in this class's viewDidDisappear.
-            UIView.setAnimationsEnabled(false)
-            self.performSegue(withIdentifier: "imageChosen", sender: self)
-        })
-        
+        finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
     
     // If the image picker is canceled, dismiss it.
