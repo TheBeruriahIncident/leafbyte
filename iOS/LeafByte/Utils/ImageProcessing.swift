@@ -14,14 +14,12 @@ func getSuggestedThreshold(_ image: CGImage) -> Float {
 }
 
 private func getLumaHistogram(image: CGImage) -> [Int] {
-    let img = image
-    //create vImage_Buffer with data from CGImageRef
-    let inProvider: CGDataProvider = img.dataProvider!
+    let inProvider: CGDataProvider = image.dataProvider!
     let inBitmapData: CFData = inProvider.data!
     
     
-    var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
-    var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
+    var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
+    var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
     
     // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
     

@@ -45,8 +45,9 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         scaleMarkingView.contentMode = .scaleAspectFit
         
         // TODO: these should not be here and should probably be async
-        let threshold = getSuggestedThreshold(uiToCgImage(image!))
-        setThreshold(threshold)
+        // Guess a good threshold to start at; the user can adjust with the slider later.
+        let suggestedThreshold = getSuggestedThreshold(uiToCgImage(image!))
+        setThreshold(suggestedThreshold)
     }
 
     // This is called before transitioning from this view to another view.
