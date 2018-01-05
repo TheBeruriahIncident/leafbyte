@@ -13,7 +13,7 @@ func getSuggestedThreshold(image: CGImage) -> Float {
     return otsusMethod(histogram: getLumaHistogram(image: image))
 }
 
-// Turn image into a histogram of luma, or intensity.
+// Turns an image into a histogram of luma, or intensity.
 // The histogram is represented an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 private func getLumaHistogram(image: CGImage) -> [Int] {
     let pixelData = image.dataProvider!.data!
@@ -23,31 +23,32 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
         width: vImagePixelCount(image.width),
         rowBytes: image.bytesPerRow)
     
-    
-    // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
-    // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB )
+    // We're about to call vImageMatrixMultiply_ARGB8888, the best documentation of which I've found is in the SDK source: https://github.com/phracker/MacOSX-SDKs/blob/master/MacOSX10.7.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/Headers/Transform.h#L21 .
+    // Essentially each pixel in the image is a row vector [R, G, B, A] and is post-multiplied by a matrix to create a new transformed image.
+    // Because luma = RGB * [.299, .587, .114]' ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ), we can use this multiplication to get a luma value for each pixel.
+    // The following matrix will replace the first channel of each pixel (previously red) with luma, while zeroing everything else (since nothing else matters to us).
     let matrix: [Int16] = [299, 0, 0, 0,
                            587, 0, 0, 0,
                            114, 0, 0, 0,
-                           0, 0, 0, 0]
+                           0,   0, 0, 0]
+    // Our matrix can only have integers, but this is accomodated for by having a post-divisor applied to the result of the multiplication.
+    // As such, we're actually doing luma = RGB * [299, 587, 114]' / 1000 .
     let divisor: Int32 = 1000
-    
-    // same in and out, in place
+    // This transformation operates in-place pixel by pixel, so we can use the same vImage for input and output.
     vImageMatrixMultiply_ARGB8888(&vImage, &vImage, matrix, divisor, nil, nil, UInt32(kvImageNoFlags))
     
-    let alpha = [UInt](repeating: 0, count: 256)
-    let luma = [UInt](repeating: 0, count: 256)
+    // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
+    // Since luma is the only channel we care about (we zeroed the rest), we'll use a garbage array to catch the other histograms.
+    let lumaHistogram = [UInt](repeating: 0, count: 256)
+    let lumaHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: lumaHistogram) as UnsafeMutablePointer<vImagePixelCount>?
+    let garbageHistogram = [UInt](repeating: 0, count: 256)
+    let garbageHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: garbageHistogram) as UnsafeMutablePointer<vImagePixelCount>?
+    let histogramArray = [lumaHistogramPointer, garbageHistogramPointer, garbageHistogramPointer, garbageHistogramPointer]
+    let histogramArrayPointer = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: histogramArray)
     
-    let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha) as UnsafeMutablePointer<vImagePixelCount>?
-    let lumaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: luma) as UnsafeMutablePointer<vImagePixelCount>?
+    vImageHistogramCalculation_ARGB8888(&vImage, histogramArrayPointer, UInt32(kvImageNoFlags))
     
-    let rgba = [lumaPtr, alphaPtr, alphaPtr, alphaPtr]
-    
-    let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
-    vImageHistogramCalculation_ARGB8888(&vImage, histogram, UInt32(kvImageNoFlags))
-    
-    let total = luma.map { Int($0) }
-    return total
+    return lumaHistogram.map { Int($0) }
 }
 
 private func otsusMethod(histogram: [Int]) -> Float {
