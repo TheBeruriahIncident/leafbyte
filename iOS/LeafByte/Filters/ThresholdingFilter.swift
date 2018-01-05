@@ -25,7 +25,7 @@ class ThresholdingFilter: CIFilter {
         "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
         "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
         // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
-        "  const vec3 rgbToLuma = vec3(0.114, 0.587, 0.299);" +
+        "  const vec3 rgbToLuma = vec3(0.299, 0.587, 0.114);" +
         "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
         // (1, 1, 1) is the color white, and 1 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it solid
         "const vec4 whitePixel = vec4(1.0);" +

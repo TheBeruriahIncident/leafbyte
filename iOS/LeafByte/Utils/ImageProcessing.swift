@@ -13,48 +13,40 @@ func getSuggestedThreshold(image: CGImage) -> Float {
     return otsusMethod(histogram: getLumaHistogram(image: image))
 }
 
+// Turn image into a histogram of luma, or intensity.
+// The histogram is represented an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 private func getLumaHistogram(image: CGImage) -> [Int] {
     let pixelData = image.dataProvider!.data!
+    var vImage = vImage_Buffer(
+        data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)),
+        height: vImagePixelCount(image.height),
+        width: vImagePixelCount(image.width),
+        rowBytes: image.bytesPerRow)
     
-    var vImage = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
     
     // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
+    // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB )
+    let matrix: [Int16] = [299, 0, 0, 0,
+                           587, 0, 0, 0,
+                           114, 0, 0, 0,
+                           0, 0, 0, 0]
+    let divisor: Int32 = 1000
     
-    let matrixS: [[Int16]] = [
-        [1000,   0,      0,      0],//sub in divisor
-        [0,     114,     587,    299],
-        [0,     0,    0,    0],
-        [0,     0,     0,    0]
-    ]
-    
-    var matrix: [Int16] = [Int16](repeating: 0, count: 16)
-    
-    for i in 0...3 {
-        for j in 0...3 {
-            matrix[(3 - j) * 4 + (3 - i)] = matrixS[i][j]
-        }
-    }
     // same in and out, in place
-    vImageMatrixMultiply_ARGB8888(&vImage, &vImage, matrix, 1000, nil, nil, UInt32(kvImageNoFlags))
+    vImageMatrixMultiply_ARGB8888(&vImage, &vImage, matrix, divisor, nil, nil, UInt32(kvImageNoFlags))
     
     let alpha = [UInt](repeating: 0, count: 256)
-    let red = [UInt](repeating: 0, count: 256)
-    let green = [UInt](repeating: 0, count: 256)
-    let blue = [UInt](repeating: 0, count: 256)
+    let luma = [UInt](repeating: 0, count: 256)
     
     let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha) as UnsafeMutablePointer<vImagePixelCount>?
-    let redPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: red) as UnsafeMutablePointer<vImagePixelCount>?
-    let greenPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: green) as UnsafeMutablePointer<vImagePixelCount>?
-    let bluePtr = UnsafeMutablePointer<vImagePixelCount>(mutating: blue) as UnsafeMutablePointer<vImagePixelCount>?
+    let lumaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: luma) as UnsafeMutablePointer<vImagePixelCount>?
     
-    let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
+    let rgba = [lumaPtr, alphaPtr, alphaPtr, alphaPtr]
     
     let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
     vImageHistogramCalculation_ARGB8888(&vImage, histogram, UInt32(kvImageNoFlags))
     
-    // TODO: this memory management makes me nervous, have I allocated anything?
-    
-    let total = blue.map { Int($0) }
+    let total = luma.map { Int($0) }
     return total
 }
 
