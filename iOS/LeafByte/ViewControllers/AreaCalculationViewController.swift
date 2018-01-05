@@ -60,7 +60,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         if (isScrolling) {
             return
         }
-        //print("drawing " + String(describing: fromPoint) + " to " + String(describing: toPoint))
         
         UIGraphicsBeginImageContext(drawingImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
@@ -73,19 +72,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         context!.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
         context!.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
-//        context!.move(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 0))
-//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: drawingImageView.frame.size.height))
-//        context!.move(to: CGPoint(x: 0, y: 0))
-//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 0))
-//
-//        context!.move(to: CGPoint(x: 0, y: 1))
-//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 1))
-//
-//        context!.move(to: CGPoint(x: 0, y: 2))
-//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width / 2, y: 2))
-        
-//        context!.move(to: CGPoint(x: 0, y: 30))
-//        context!.addLine(to: CGPoint(x: drawingImageView.frame.size.width, y: 30))
         context!.strokePath()
         
         drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext()
@@ -145,16 +131,11 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let xToUse = Int(Float(x) * xFactor + xOffset)
         let yToUse = Int(Float(y) * yFactor + yOffset)
         
-        // WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS???????????? CHECK ALL OTHER PLACES WHATATATAT
+        // TODO: WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS???????????? CHECK ALL OTHER PLACES WHATATATAT
         let offsetDrawing = (((widthDrawing + 5) * yToUse) + xToUse) * 4
-//        let redDrawing = dataDrawing[offsetDrawing]
-//        let greenDrawing = dataDrawing[(offsetDrawing + 1)]
-//        let blueDrawing = dataDrawing[offsetDrawing + 2]
         let alphaDrawing = dataDrawing[offsetDrawing + 3]
         
-        
         if alphaDrawing != 0 {
-            //print("now thinks \(xToUse) \(yToUse)")
             return true
         }
         
@@ -171,48 +152,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let cgImage = uiToCgImage(image!)
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
-        let width = cgImage.width//Int((image?.size.width)!)
-        let height = cgImage.height//Int((image?.size.height)!)
+        let width = cgImage.width
+        let height = cgImage.height
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
         let cgImageDrawing = CIImage(image: drawingImageView.image!)!.cgImage!
         let pixelDataDrawing: CFData = cgImageDrawing.dataProvider!.data!
         let widthDrawing = cgImageDrawing.width
         let dataDrawing: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelDataDrawing)
-        
-        
-//        print(widthDrawing)
-//        print(cgImageDrawing.width)
-//        print(heightDrawing)
-//        print(cgImageDrawing.height)
-
-//        for y in 0...heightDrawing - 1 {
-//            for x in 0...widthDrawing - 1 {
-//                let offset = (((widthDrawing + 5) * y) + x) * 4 // WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS????????????
-//                let red = dataDrawing[offset]
-//                let green = dataDrawing[(offset + 1)]
-//                let blue = dataDrawing[offset + 2]
-//                let alpha = dataDrawing[offset + 3]
-//
-//                let occupied = alpha != 0//red != 255 || green != 255 || blue != 255
-//
-//                //print("\(red) \(green) \(blue) \(alpha)")
-////                if occupied {
-////                    print("occupied \(x) \(y)")
-////                }
-//                print(occupied ? "1" : "0", terminator: "")
-//            }
-//            print("")
-//        }
-//
-//        print("doggo")
-//
-//        return
-//
-        
-        
-        
-        
         
         
         var groupToPoint = [Int: (Int, Int)]()
@@ -350,14 +297,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
         }
         
-//        for foo in groupIds {
-//            print(foo)
-//        }
-        
         let leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        //print("coloring in")
         UIGraphicsBeginImageContext(filledHolesImageView.frame.size)
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
@@ -432,7 +374,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             let yToUse = Int(Float(point.y) * yFactor + yOffset)
             
             // TODO: can I do in bulk, or draw single point??
-            //print("drawing \(point) at \(xToUse), \(yToUse)")
             context!.fill(CGRect(x: xToUse, y: yToUse, width: 1, height: 1))
             
             
@@ -458,12 +399,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "imageChosen"
         {
-//            guard let navController = segue.destination as? UINavigationController else {
-//                print(type(of: segue.destination))
-//                return
-//                //fatalError("Expected a seque from the main menu to threshold but instead went to: \(segue.destination)")
-//            }
-            
             guard let destination = segue.destination as? ThresholdingViewController else {
                 return
             }
