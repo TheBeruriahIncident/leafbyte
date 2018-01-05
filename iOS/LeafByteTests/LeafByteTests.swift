@@ -10,20 +10,32 @@ import XCTest
 @testable import LeafByte
 
 class LeafByteTests: XCTestCase {
-    func testThresholdFilter() {        
+    func testThresholdingFilter() {
         let image = loadImage(named: "leafWithScale")
         
-        var thresholdedCiImage: CIImage!
+        var thresholdedImage: CIImage!
         self.measure {
             let filter = ThresholdingFilter()
             filter.setInputImage(image)
-            thresholdedCiImage = filter.outputImage
+            thresholdedImage = filter.outputImage
         }
         
-        let indexableImage = IndexableImage(ciToCgImage(thresholdedCiImage))
+        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
         
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
         XCTAssert(!indexableImage.getPixel(x: 1400, y: 1400).isWhite())
+    }
+    
+    func testSuggestedThreshold() {
+        let uiImage = loadImage(named: "leafWithScale")
+        let cgImage = uiToCgImage(uiImage)
+        
+        var suggestedThreshold: Float!
+        self.measure {
+            suggestedThreshold = getSuggestedThreshold(image: cgImage)
+        }
+        
+        XCTAssertEqual(139, Int(suggestedThreshold * 255))
     }
     
     private func loadImage(named name: String) -> UIImage {

@@ -46,7 +46,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         // TODO: these should not be here and should probably be async
         // Guess a good threshold to start at; the user can adjust with the slider later.
-        let suggestedThreshold = getSuggestedThreshold(uiToCgImage(image!))
+        let suggestedThreshold = getSuggestedThreshold(image: uiToCgImage(image!))
         setThreshold(suggestedThreshold)
     }
 

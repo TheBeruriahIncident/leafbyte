@@ -9,7 +9,7 @@
 import Accelerate
 import CoreGraphics
 
-func getSuggestedThreshold(_ image: CGImage) -> Float {
+func getSuggestedThreshold(image: CGImage) -> Float {
     return otsusMethod(histogram: getLumaHistogram(image: image))
 }
 
@@ -60,7 +60,6 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     return total
 }
 
-
 private func otsusMethod(histogram: [Int]) -> Float {
     // TODO: check this and use better variables, be better about types
     
@@ -89,5 +88,5 @@ private func otsusMethod(histogram: [Int]) -> Float {
         }
     }
     
-    return Float(level) / 256
+    return Float(level) / 255
 }
