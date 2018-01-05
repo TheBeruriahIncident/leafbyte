@@ -82,9 +82,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         setThreshold(1 - sender.value)
     }
     
-
     
-
+    
+    
+    
+    
+    
     
     
     func setThreshold(_ threshold: Float) {
@@ -96,12 +99,9 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func findScale() {
-        let cgImage = uiToCgImage(baseImageView.image!)
-        let pixelData: CFData = cgImage.dataProvider!.data!
-        // switch to 32 so can read the whole pixel at once
-        let width = cgImage.width//Int((image?.size.width)!)
-        let height = cgImage.height//Int((image?.size.height)!)
-        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        let image = IndexableImage(uiToCgImage(baseImageView.image!))
+        let width = image.width
+        let height = image.height
         
         var groupToPoint = [Int: (Int, Int)]()
         var groupIds = Array(repeating: Array(repeating: 0, count: width), count: height)
@@ -115,14 +115,14 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
-                let occupied = isOccupied(x, y, data, width)
+                let occupied = image.getPixel(x: x, y: y).isNonWhite()
                 
                 // TODO: consider 8 connectivity instead of 4
                 // using 4-connectvity
-                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width)
+                let westGroup = x > 0 && occupied == image.getPixel(x: x - 1, y: y).isNonWhite()
                     ? groupIds[y][x - 1]
                     : nil
-                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, data, width)
+                let northGroup = y > 0 && occupied == image.getPixel(x: x, y: y - 1).isNonWhite()
                     ? groupIds[y - 1][x]
                     : nil
                 
@@ -243,8 +243,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             }
             let (xStart, yStart) = groupToPoint[scaleGroup!]!
             
-            let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), data: data, width, height)
-            let b = getFarthestPoint(a, data: data, width, height)
+            let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), image: image, width, height)
+            let b = getFarthestPoint(a, image: image, width, height)
             
             scaleMarkPixelLength = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
             
@@ -270,7 +270,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     
-    func getFarthestPoint(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int) -> CGPoint {
+    func getFarthestPoint(_ start: CGPoint, image: IndexableImage, _ width: Int, _ height: Int) -> CGPoint {
         var explored = [CGPoint]()
         var queue = [start]
         
@@ -280,17 +280,17 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             let x = Int(point.x)
             let y = Int(point.y)
             
-            if (x > 0 && isOccupied(x - 1, y, data, width) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
+            if (x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
                 queue.append(CGPoint(x: x - 1, y: y))
             }
-            if (x < width - 1 && isOccupied(x + 1, y, data, width) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
+            if (x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
                 queue.append(CGPoint(x: x + 1, y: y))
             }
             
-            if (y > 0 && isOccupied(x, y - 1, data, width) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
+            if (y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
                 queue.append(CGPoint(x: x, y: y - 1))
             }
-            if (y < height - 1 && isOccupied(x, y + 1, data, width) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
+            if (y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
                 queue.append(CGPoint(x: x, y: y + 1))
             }
             
@@ -298,15 +298,5 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         }
         
         return explored.popLast()!
-    }
-    
-    func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int) -> Bool {
-        // should be able to change the pointer type and load all 4 at once
-        let offset = ((width * y) + x) * 4
-        let red = data[offset]
-        let green = data[(offset + 1)]
-        let blue = data[offset + 2]
-        
-         return red != 255 || green != 255 || blue != 255
-    }
+    }    
 }

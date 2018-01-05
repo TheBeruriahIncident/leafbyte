@@ -26,6 +26,10 @@ struct Pixel: Equatable {
         return self == Pixel.WHITE
     }
     
+    func isNonWhite() -> Bool {
+        return self != Pixel.WHITE
+    }
+    
     // MARK: Equatable overrides
     
     static func == (lhs: Pixel, rhs: Pixel) -> Bool {

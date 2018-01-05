@@ -11,9 +11,9 @@ import CoreGraphics
 // An image that allows transparently looking up pixels.
 class IndexableImage {
     // This is never directly used, but since pixelDataPointer is an UnsafePointer, we need to keep this to prevent garbage collection of the pixel data ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
-    let pixelData: CFData
+    private let pixelData: CFData
     // TODO: reduce memory loads by changing this to 32 bit
-    let pixelDataPointer: UnsafePointer<UInt8>
+    private let pixelDataPointer: UnsafePointer<UInt8>
     let width: Int
     let height: Int
     
