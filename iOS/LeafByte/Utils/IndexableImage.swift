@@ -45,8 +45,8 @@ class IndexableImage {
                     // White pixels are 0s, non-white pixels are 1s.
                     isZero = pixel.isWhite()
                 case .visible:
-                    // Transparent pixels are 0s, non-transparent pixels are 1s.
-                    isZero = pixel.alpha == 0
+                    // Invisible pixels are 0s, visible pixels are 1s.
+                    isZero = pixel.isInvisible()
                 }
                 
                 print(isZero ? "0" : "1", terminator: "")

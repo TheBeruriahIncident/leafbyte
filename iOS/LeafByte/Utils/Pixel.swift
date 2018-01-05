@@ -22,6 +22,14 @@ struct Pixel: Equatable {
         self.alpha = alpha
     }
     
+    func isVisible() -> Bool {
+        return self.alpha != 0
+    }
+    
+    func isInvisible() -> Bool {
+        return self.alpha == 0
+    }
+    
     func isWhite() -> Bool {
         return self == Pixel.white
     }
