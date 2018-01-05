@@ -6,8 +6,8 @@
 //  Copyright © 2017 The Blue Folder Project. All rights reserved.
 //
 
-import UIKit
 import Accelerate
+import UIKit
 
 class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Fields

@@ -42,14 +42,19 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     // MARK: - Actions
     
-    @IBAction func touchButton(_ sender: Any) {
-        setScrolling(!inScrollingMode)
+    @IBAction func toggleScrollingMode(_ sender: Any) {
+        setScrollingMode(!inScrollingMode)
     }
     
     @IBAction func nextImage(_ sender: Any) {
         // TODO: handle losing access between these two points
-        imagePicker.sourceType = sourceType!
-        present(imagePicker, animated: true, completion: nil)
+        imagePicker.sourceType = sourceType
+        
+        if sourceType == .camera {
+            requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+        } else {
+            present(imagePicker, animated: true, completion: nil)
+        }
     }
     
     // MARK: - UIViewController overrides
@@ -66,7 +71,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         baseImageView.image = image
         baseImageView.contentMode = .scaleAspectFit
-        setScrolling(true)
+        setScrollingMode(true)
         
         // TODO: is there a less stupid way to initialize the image??
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
@@ -166,7 +171,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         UIGraphicsEndImageContext()
     }
     
-    func setScrolling(_ scrolling: Bool) {
+    func setScrollingMode(_ scrolling: Bool) {
         inScrollingMode = scrolling
         
         gestureRecognizingView.isUserInteractionEnabled = scrolling

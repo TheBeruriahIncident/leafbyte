@@ -23,17 +23,11 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
-            presentAlert(title: nil, message: "No available camera")
+            presentAlert(self: self, title: nil, message: "No available camera")
             return
         }
         
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
-            if response {
-                self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
-            } else {
-                self.presentAlert(title: "Camera access denied", message: "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.")
-            }
-        }
+        requestCameraAccess(self: self, onSuccess: { self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera) })
     }
     
     @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
@@ -105,14 +99,6 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     // MARK: - Helpers
-    
-    func presentAlert(title: String?, message: String) {
-        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction.init(title: "OK", style: .default)
-        alertController.addAction(okAction)
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
     
     func presentImagePicker(sourceType: UIImagePickerControllerSourceType) {
         self.sourceType = sourceType
