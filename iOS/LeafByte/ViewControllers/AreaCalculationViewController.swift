@@ -229,6 +229,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     func findSizes() {
         let cgImage = uiToCgImage(image!)
+        
         let pixelData: CFData = cgImage.dataProvider!.data!
         // switch to 32 so can read the whole pixel at once
         let width = cgImage.width
