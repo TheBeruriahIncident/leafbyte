@@ -16,14 +16,14 @@ class UnwindSegueFromRight: UIStoryboardSegue {
         let destination = self.destination
         
         source.view.superview?.insertSubview(destination.view, belowSubview: source.view)
-        source.view.transform = CGAffineTransform.init(translationX: 0, y: 0)
+        source.view.transform = CGAffineTransform(translationX: 0, y: 0)
         
         UIView.animate(
             withDuration: 0.25,
             delay: 0.0,
             options: [],
             animations: {
-                source.view.transform = CGAffineTransform.init(translationX: source.view.frame.size.width, y: 0)
+                source.view.transform = CGAffineTransform(translationX: source.view.frame.size.width, y: 0)
             },
             completion: { finished in
                 source.dismiss(animated: false, completion: nil)
