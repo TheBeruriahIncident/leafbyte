@@ -81,8 +81,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     
         // Save the selectedImage off so that during the segue, we can set it onto the thresholding view.
-        // TODO: resize the image https://stackoverflow.com/questions/12258280/capturing-photos-with-specific-resolution-using-the-uiimagepickercontroller https://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
-        self.selectedImage = selectedImage
+        // Note that we scale it down to make the following operations happen in tolerable time.
+        self.selectedImage = resizeImage(selectedImage, within: CGSize(width: 400, height: 400))
         
         dismiss(animated: false, completion: {() in
             // Dismissing and then seguing goes from the image picker to the main menu view to the thresholding view.

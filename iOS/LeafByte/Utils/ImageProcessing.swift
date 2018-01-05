@@ -19,8 +19,17 @@ private let NUMBER_OF_HISTOGRAM_BUCKETS = 256
 // The histogram is represented an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 private func getLumaHistogram(image: CGImage) -> [Int] {
     let pixelData = image.dataProvider!.data!
-    var vImage = vImage_Buffer(
+    var initialVImage = vImage_Buffer(
         data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)),
+        height: vImagePixelCount(image.height),
+        width: vImagePixelCount(image.width),
+        rowBytes: image.bytesPerRow)
+    
+    // vImageMatrixMultiply_ARGB8888 operates in place, pixel-by-pixel, so it's sometimes possible to use the same vImage for input and output.
+    // However, images from UIGraphicsGetImageFromCurrentImageContext, which is where the initial image comes from, are readonly.
+    let mutableBuffer = CFDataCreateMutable(nil, image.bytesPerRow * image.height)
+    var lumaVImage = vImage_Buffer(
+        data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(mutableBuffer)),
         height: vImagePixelCount(image.height),
         width: vImagePixelCount(image.width),
         rowBytes: image.bytesPerRow)
@@ -36,8 +45,7 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     // Our matrix can only have integers, but this is accomodated for by having a post-divisor applied to the result of the multiplication.
     // As such, we're actually doing luma = RGB * [299, 587, 114]' / 1000 .
     let divisor: Int32 = 1000
-    // This transformation operates in-place pixel by pixel, so we can use the same vImage for input and output.
-    vImageMatrixMultiply_ARGB8888(&vImage, &vImage, matrix, divisor, nil, nil, UInt32(kvImageNoFlags))
+    vImageMatrixMultiply_ARGB8888(&initialVImage, &lumaVImage, matrix, divisor, nil, nil, UInt32(kvImageNoFlags))
     
     // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
     // Since luma is the only channel we care about (we zeroed the rest), we'll use a garbage array to catch the other histograms.
@@ -48,7 +56,7 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     let histogramArray = [lumaHistogramPointer, garbageHistogramPointer, garbageHistogramPointer, garbageHistogramPointer]
     let histogramArrayPointer = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: histogramArray)
     
-    vImageHistogramCalculation_ARGB8888(&vImage, histogramArrayPointer, UInt32(kvImageNoFlags))
+    vImageHistogramCalculation_ARGB8888(&lumaVImage, histogramArrayPointer, UInt32(kvImageNoFlags))
     
     return lumaHistogram.map { Int($0) }
 }
