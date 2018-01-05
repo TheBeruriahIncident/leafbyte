@@ -252,10 +252,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             let xBToUse = Int(Float(b.x) * xFactor + xOffset)
             let yBToUse = Int(Float(b.y) * yFactor + yOffset)
             
+            // TODO: factor this out
             context?.interpolationQuality = CGInterpolationQuality.none
             context?.setAllowsAntialiasing(false)
             context?.setShouldAntialias(false)
             
+            // TODO: factor these out to isolate 0.5??
             context!.move(to: CGPoint(x: Double(xAToUse) + 0.5, y: Double(yAToUse) + 0.5))
             context!.addLine(to: CGPoint(x: Double(xBToUse) + 0.5, y: Double(yBToUse) + 0.5))
             context!.strokePath()

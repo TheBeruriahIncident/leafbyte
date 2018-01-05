@@ -164,17 +164,18 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
         
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
-        let context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()!
         
-        context?.interpolationQuality = CGInterpolationQuality.none
-        context?.setAllowsAntialiasing(false)
-        context?.setShouldAntialias(false)
+        context.interpolationQuality = CGInterpolationQuality.none
+        context.setAllowsAntialiasing(false)
+        context.setShouldAntialias(false)
         
+        // TODO: does this need to happen every time? clean up context graphics in general
         userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
         
-        context!.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
-        context!.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
-        context!.strokePath()
+        context.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
+        context.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
+        context.strokePath()
         
         userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
         
