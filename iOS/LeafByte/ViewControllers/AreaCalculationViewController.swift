@@ -195,52 +195,38 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     
     
-    func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int, _ dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) -> Bool {
+    func isOccupied(_ x: Int, _ y: Int, baseImage: IndexableImage, userDrawing: IndexableImage) -> Bool {
         
-        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
-        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
+        let frameSize = userDrawingView.frame.size
+        let imageSize = (baseImageView.image?.size)!
+        
+        let scaleW = frameSize.width / imageSize.width
+        let scaleH = frameSize.height / imageSize.height
         let aspect = fmin(scaleW, scaleH)
         
-        
-        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
-        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
-        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
-        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
+        let xFactor = Float(imageSize.width) / Float(imageSize.width / aspect)
+        let yFactor = Float(imageSize.height) / Float(imageSize.height / aspect)
+        let xOffset = Float((frameSize.width - imageSize.width * aspect) / 2)
+        let yOffset = Float((frameSize.height - imageSize.height * aspect) / 2)
         
         let xToUse = Int(Float(x) * xFactor + xOffset)
         let yToUse = Int(Float(y) * yFactor + yOffset)
         
-        // TODO: WTF WTF WTF, WHY DOES A RANDOM 5 FIX THIS???????????? CHECK ALL OTHER PLACES WHATATATAT
-        let offsetDrawing = (((widthDrawing + 5) * yToUse) + xToUse) * 4
-        let alphaDrawing = dataDrawing[offsetDrawing + 3]
-        
-        if alphaDrawing != 0 {
+        if userDrawing.getPixel(x: xToUse, y: yToUse).isVisible() {
             return true
         }
         
-        // should be able to change the pointer type and load all 4 at once
-        let offset = ((width * y) + x) * 4
-        let red = data[offset]
-        let green = data[(offset + 1)]
-        let blue = data[offset + 2]
-        
-        return red != 255 || green != 255 || blue != 255
+        return baseImage.getPixel(x: x, y: y).isNonWhite()
     }
     
     func findSizes() {
         let cgImage = uiToCgImage(image!)
+        let baseImage = IndexableImage(uiToCgImage(image!))
+        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         
-        let pixelData: CFData = cgImage.dataProvider!.data!
-        // switch to 32 so can read the whole pixel at once
+        
         let width = cgImage.width
         let height = cgImage.height
-        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
-        
-        let cgImageDrawing = CIImage(image: userDrawingView.image!)!.cgImage!
-        let pixelDataDrawing: CFData = cgImageDrawing.dataProvider!.data!
-        let widthDrawing = cgImageDrawing.width
-        let dataDrawing: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelDataDrawing)
-        
         
         var groupToPoint = [Int: (Int, Int)]()
         var emptyGroupToNeighboringOccupiedGroup = [Int: Int]()
@@ -255,14 +241,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
-                let occupied = isOccupied(x, y, data, width, dataDrawing, widthDrawing)
+                let occupied = isOccupied(x, y, baseImage: baseImage, userDrawing: userDrawing)
                 
                 // TODO: consider 8 connectivity instead of 4
                 // using 4-connectvity
-                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, data, width, dataDrawing, widthDrawing)
+                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, baseImage: baseImage, userDrawing: userDrawing)
                     ? groupIds[y][x - 1]
                     : nil
-                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, data, width, dataDrawing, widthDrawing)
+                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, baseImage: baseImage, userDrawing: userDrawing)
                     ? groupIds[y - 1][x]
                     : nil
                 
@@ -386,7 +372,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = groupToPoint[groupAndSize.key]!
-                    colorIn(CGPoint(x: startX, y: startY), data: data, width, height, dataDrawing: dataDrawing, widthDrawing)
+                    colorIn(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing)
                 }
             }
         }
@@ -408,7 +394,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func colorIn(_ start: CGPoint, data: UnsafePointer<UInt8>, _ width: Int, _ height: Int, dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) {
+    func colorIn(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage) {
         
         let context = UIGraphicsGetCurrentContext()
         
@@ -436,17 +422,17 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             let x = Int(point.x)
             let y = Int(point.y)
             
-            if (x > 0 && !isOccupied(x - 1, y, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
+            if (x > 0 && !isOccupied(x - 1, y, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
                 queue.append(CGPoint(x: x - 1, y: y))
             }
-            if (x < width - 1 && !isOccupied(x + 1, y, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
+            if (x < width - 1 && !isOccupied(x + 1, y, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
                 queue.append(CGPoint(x: x + 1, y: y))
             }
             
-            if (y > 0 && !isOccupied(x, y - 1, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
+            if (y > 0 && !isOccupied(x, y - 1, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
                 queue.append(CGPoint(x: x, y: y - 1))
             }
-            if (y < height - 1 && !isOccupied(x, y + 1, data, width, dataDrawing, widthDrawing) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
+            if (y < height - 1 && !isOccupied(x, y + 1, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
                 queue.append(CGPoint(x: x, y: y + 1))
             }
             
