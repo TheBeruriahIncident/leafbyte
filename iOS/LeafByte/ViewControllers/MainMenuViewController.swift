@@ -42,9 +42,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imagePicker.delegate = self
-        // By allowing editing, we can allow users to crop for "free".
-        imagePicker.allowsEditing = true
+        setupImagePicker(imagePicker: imagePicker, self: self)
     }
     
     // This is called before transitioning from this view to another view.

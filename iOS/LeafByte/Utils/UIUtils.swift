@@ -9,6 +9,14 @@
 import AVFoundation
 import UIKit
 
+func presentAlert(self viewController: UIViewController, title: String?, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "OK", style: .default)
+    alertController.addAction(okAction)
+    
+    viewController.present(alertController, animated: true, completion: nil)
+}
+
 func requestCameraAccess(self viewController: UIViewController, onSuccess: @escaping () -> Void) {
     AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
         if response {
@@ -19,10 +27,14 @@ func requestCameraAccess(self viewController: UIViewController, onSuccess: @esca
     }
 }
 
-func presentAlert(self viewController: UIViewController, title: String?, message: String) {
-    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "OK", style: .default)
-    alertController.addAction(okAction)
-    
-    viewController.present(alertController, animated: true, completion: nil)
+func setupGestureRecognizingView(gestureRecognizingView: UIScrollView, self viewController: UIScrollViewDelegate) {
+    gestureRecognizingView.delegate = viewController
+    gestureRecognizingView.minimumZoomScale = 0.9;
+    gestureRecognizingView.maximumZoomScale = 10.0
+}
+
+func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
+    imagePicker.delegate = viewController
+    // By allowing editing, our users get the ability to crop out shadows for "free".
+    imagePicker.allowsEditing = true
 }

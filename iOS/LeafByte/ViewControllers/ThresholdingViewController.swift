@@ -46,9 +46,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        gestureRecognizingView.delegate = self
-        gestureRecognizingView.minimumZoomScale = 0.9;
-        gestureRecognizingView.maximumZoomScale = 10.0
+        setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         
         filter.setInputImage(image!)
         

@@ -47,7 +47,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func nextImage(_ sender: Any) {
-        // TODO: handle losing access between these two points
         imagePicker.sourceType = sourceType
         
         if sourceType == .camera {
@@ -62,12 +61,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        gestureRecognizingView.delegate = self
-        gestureRecognizingView.minimumZoomScale = 0.9;
-        gestureRecognizingView.maximumZoomScale = 10.0
-        
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
+        setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
+        setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.image = image
         baseImageView.contentMode = .scaleAspectFit
