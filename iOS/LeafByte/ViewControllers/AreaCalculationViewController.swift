@@ -151,6 +151,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
         let context = UIGraphicsGetCurrentContext()!
         
+        // TODO: make sure this makes sense later
+        // Drawing with width two means that the line will always be connected by 4 connectivity, simplifying the connected components code.
         context.setLineWidth(2)
         context.interpolationQuality = CGInterpolationQuality.none
         context.setAllowsAntialiasing(false)
