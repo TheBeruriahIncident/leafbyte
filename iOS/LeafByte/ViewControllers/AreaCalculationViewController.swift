@@ -10,11 +10,45 @@ import CoreGraphics
 import UIKit
 
 class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // MARK: - Fields
     
+    var sourceType: UIImagePickerControllerSourceType?
+    
+    var nextImage: UIImage?
+    
+    var swiped = false
+    var lastPoint = CGPoint.zero
+    
+    var isScrolling = true
+
     let imagePicker = UIImagePickerController()
     
     var image: UIImage?
     var scaleMarkPixelLength: Int?
+
+    // MARK: - Outlets
+    
+    @IBOutlet weak var baseImageView: UIImageView!
+    @IBOutlet weak var drawingImageView: UIImageView!
+    @IBOutlet weak var filledHolesImageView: UIImageView!
+    @IBOutlet weak var summary: UILabel!
+    @IBOutlet weak var wrapper: UIView!
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    // MARK: - Actions
+    
+    @IBAction func touchButton(_ sender: Any) {
+        setScrolling(!isScrolling)
+    }
+    
+    @IBAction func nextImage(_ sender: Any) {
+        // TODO: handle losing access between these two points
+        imagePicker.sourceType = sourceType!
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -40,21 +74,70 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         findSizes()
     }
     
-    @IBOutlet weak var baseImageView: UIImageView!
-    @IBOutlet weak var drawingImageView: UIImageView!
-    @IBOutlet weak var filledHolesImageView: UIImageView!
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "imageChosen"
+        {
+            guard let destination = segue.destination as? ThresholdingViewController else {
+                return
+            }
+            
+            destination.image = nextImage!
+            destination.sourceType = sourceType
+        }
+    }
+    
+    // MARK: - UIScrollViewDelegate overrides
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return wrapper
     }
     
-    var swiped = false
-    var lastPoint = CGPoint.zero
+    // MARK: - UIResponder overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = false
         lastPoint = (touches.first?.location(in: drawingImageView))!
     }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        swiped = true
+        let currentPoint = touches.first?.location(in: drawingImageView)
+        drawLineFrom(fromPoint: lastPoint, toPoint: currentPoint!)
+        
+        lastPoint = currentPoint!
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if !swiped {
+            drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
+        } else {
+            findSizes()
+        }
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate overrides
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        // The info dictionary may contain multiple representations of the image. You want to use the original.
+        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        }
+        
+        nextImage = selectedImage
+        
+        // Dismiss the picker.
+        dismiss(animated: false, completion: {() in
+            UIView.setAnimationsEnabled(false)
+            self.performSegue(withIdentifier: "imageChosen", sender: self)
+        })
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Helpers
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         if (isScrolling) {
@@ -79,24 +162,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         UIGraphicsEndImageContext()
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        swiped = true
-        let currentPoint = touches.first?.location(in: drawingImageView)
-        drawLineFrom(fromPoint: lastPoint, toPoint: currentPoint!)
-        
-        lastPoint = currentPoint!
-        
-        
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !swiped {
-            drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
-        } else {
-            findSizes()
-        }
-    }
-    
     func setScrolling(_ scrolling: Bool) {
         isScrolling = scrolling
         
@@ -110,11 +175,21 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    var isScrolling = true
     
-    @IBAction func touchButton(_ sender: Any) {
-            setScrolling(!isScrolling)
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func isOccupied(_ x: Int, _ y: Int, _ data: UnsafePointer<UInt8>, _ width: Int, _ dataDrawing: UnsafePointer<UInt8>, _ widthDrawing: Int) -> Bool {
         
@@ -380,53 +455,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             explored.append(point)
         }
     }
-    @IBOutlet weak var summary: UILabel!
     
-    @IBOutlet weak var wrapper: UIView!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    
-    
-    
-    var sourceType: UIImagePickerControllerSourceType?
-    
-    @IBAction func nextImage(_ sender: Any) {
-        // TODO: handle losing access between these two points
-        imagePicker.sourceType = sourceType!
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "imageChosen"
-        {
-            guard let destination = segue.destination as? ThresholdingViewController else {
-                return
-            }
-            
-            destination.image = nextImage!
-            destination.sourceType = sourceType
-        }
-    }
-    
-    var nextImage: UIImage?
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        // The info dictionary may contain multiple representations of the image. You want to use the original.
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-        }
-        
-        nextImage = selectedImage
-        
-        // Dismiss the picker.
-        dismiss(animated: false, completion: {() in
-            UIView.setAnimationsEnabled(false)
-            self.performSegue(withIdentifier: "imageChosen", sender: self)
-        })
-        
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
+
 }

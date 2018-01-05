@@ -19,6 +19,30 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     var sourceType: UIImagePickerControllerSourceType?
     var selectedImage: UIImage?
     
+    // MARK: - Actions
+    
+    @IBAction func pickImageFromCamera(_ sender: Any) {
+        if !UIImagePickerController.isSourceTypeAvailable(.camera){
+            presentAlert(title: nil, message: "No available camera")
+            return
+        }
+        
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            if response {
+                self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
+            } else {
+                self.presentAlert(title: "Camera access denied", message: "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.")
+            }
+        }
+    }
+    
+    @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
+        presentImagePicker(sourceType: UIImagePickerControllerSourceType.photoLibrary)
+    }
+    
+    // Despite having no content, this must exist to enable the programmatic segues back to this view.
+    @IBAction func backToMainMenu(segue: UIStoryboardSegue) {}
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
@@ -51,30 +75,6 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         // See imagePickerController() for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
     }
-    
-    // MARK: - Actions
-    
-    @IBAction func pickImageFromCamera(_ sender: Any) {
-        if !UIImagePickerController.isSourceTypeAvailable(.camera){
-            presentAlert(title: nil, message: "No available camera")
-            return
-        }
-        
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
-            if response {
-                self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
-            } else {
-                self.presentAlert(title: "Camera access denied", message: "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.")
-            }
-        }
-    }
-    
-    @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
-        presentImagePicker(sourceType: UIImagePickerControllerSourceType.photoLibrary)
-    }
-    
-    // Despite having no content, this must exist to enable the programmatic segues back to this view.
-    @IBAction func backToMainMenu(segue: UIStoryboardSegue) {}
 
     // MARK: - UIImagePickerControllerDelegate overrides
     

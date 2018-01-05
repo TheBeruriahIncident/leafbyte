@@ -30,6 +30,17 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
     
+    // MARK: - Actions
+    
+    // This is called from the back button in the navigation bar.
+    @IBAction func backFromThreshold(_ sender: Any) {
+        self.performSegue(withIdentifier: "backToMainMenu", sender: self)
+    }
+    
+    @IBAction func sliderMoved(_ sender: UISlider) {
+        setThreshold(1 - sender.value)
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad(){
@@ -69,17 +80,6 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return scrollableView
-    }
-    
-    // MARK: - Actions
-    
-    // This is called from the back button in the navigation bar.
-    @IBAction func backFromThreshold(_ sender: Any) {
-        self.performSegue(withIdentifier: "backToMainMenu", sender: self)
-    }
-    
-    @IBAction func sliderMoved(_ sender: UISlider) {
-        setThreshold(1 - sender.value)
     }
     
     
