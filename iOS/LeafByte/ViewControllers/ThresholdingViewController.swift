@@ -45,7 +45,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         scaleMarkingView.contentMode = .scaleAspectFit
         
         // TODO: these should not be here and should probably be async
-        let threshold = otsu(forHistogram: getHistogram())
+        let threshold = getSuggestedThreshold(uiToCgImage(image!))
         setThreshold(threshold)
     }
 
@@ -72,7 +72,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Actions
     
-    // This is called from the back button.
+    // This is called from the back button in the navigation bar.
     @IBAction func backFromThreshold(_ sender: Any) {
         self.performSegue(withIdentifier: "backToMainMenu", sender: self)
     }
@@ -85,88 +85,6 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
 
     
-    
-    
-    func otsu(forHistogram histogram: [Int]) -> Float {
-        // TODO: check this and use better variables, be better about types
-        
-        // Use Otsu's method to calculate an initial global threshold
-        // Uses the optimized form that maximizes inter-class variance as at https://en.wikipedia.org/wiki/Otsu%27s_method
-        let total = histogram.reduce(0, +)
-        
-        var sumB = 0
-        var wB = 0
-        var maximum = 0.0
-        var level = 0
-        let sum1 = zip(Array(0...255), histogram).reduce(0, { $0 + ($1.0 * $1.1) })
-        
-        for index in 0...255 {
-            wB = wB + histogram[index]
-            let wF = total - wB
-            if (wB == 0 || wF == 0) {
-                continue;
-            }
-            sumB += index * histogram[index]
-            let mF = Double(sum1 - sumB) / Double(wF)
-            let between = Double(wB * wF) * pow(((Double(sumB) / Double(wB)) - mF), 2);
-            if ( between >= maximum ) {
-                level = index
-                maximum = between
-            }
-        }
-        
-        return Float(level) / 256
-    }
-    
-    func getHistogram() -> [Int] {
-        let img: CGImage = uiToCgImage(image!)
-        
-        //create vImage_Buffer with data from CGImageRef
-        let inProvider: CGDataProvider = img.dataProvider!
-        let inBitmapData: CFData = inProvider.data!
-        
-        
-        var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
-        var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(img.height), width: vImagePixelCount(img.width), rowBytes: img.bytesPerRow)
-        
-        // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
-
-        let matrixS: [[Int16]] = [
-            [1000,   0,      0,      0],//sub in divisor
-            [0,     114,     587,    299],
-            [0,     0,    0,    0],
-            [0,     0,     0,    0]
-        ]
-        
-        var matrix: [Int16] = [Int16](repeating: 0, count: 16)
-        
-        for i in 0...3 {
-            for j in 0...3 {
-                matrix[(3 - j) * 4 + (3 - i)] = matrixS[i][j]
-            }
-        }
-        vImageMatrixMultiply_ARGB8888(&inBuffer2, &inBuffer, matrix, 1000, nil, nil, UInt32(kvImageNoFlags))
-        
-        let alpha = [UInt](repeating: 0, count: 256)
-        let red = [UInt](repeating: 0, count: 256)
-        let green = [UInt](repeating: 0, count: 256)
-        let blue = [UInt](repeating: 0, count: 256)
-        
-        let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha) as UnsafeMutablePointer<vImagePixelCount>?
-        let redPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: red) as UnsafeMutablePointer<vImagePixelCount>?
-        let greenPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: green) as UnsafeMutablePointer<vImagePixelCount>?
-        let bluePtr = UnsafeMutablePointer<vImagePixelCount>(mutating: blue) as UnsafeMutablePointer<vImagePixelCount>?
-        
-        let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
-        
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
-        vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
-        
-        // TODO: this memory management makes me nervous, have I allocated anything?
-        
-        let total = blue.map { Int($0) }
-        return total
-    }
     
     func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
