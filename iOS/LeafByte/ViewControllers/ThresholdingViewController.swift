@@ -93,7 +93,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         thresholdSlider.value = 1 - threshold
         
         baseImageView.image = ciToUiImage(filter.outputImage)
-        findScale()
+        //findScale()
     }
     
     func findScale() {

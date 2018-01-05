@@ -46,6 +46,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setScrollingMode(!inScrollingMode)
     }
     
+    @IBAction func calculate(_ sender: Any) {
+        findSizes()
+    }
+    
     @IBAction func nextImage(_ sender: Any) {
         imagePicker.sourceType = sourceType
         
@@ -74,9 +78,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
         userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
-        // TODO: this probably shouldn't be here
-        findSizes()
     }
     
     // This is called before transitioning from this view to another view.
@@ -118,9 +119,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         if !swiped {
             // If it's not a swipe, no line has been drawn.
             drawLineFrom(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
-        } else {
-            // Only swipes are likely to change the enclosed area.
-            findSizes()
         }
     }
     
