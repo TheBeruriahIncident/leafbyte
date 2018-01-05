@@ -119,8 +119,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func getHistogram() -> [Int] {
-        // TODO: this is sketch and won't always succeed, right??
-        let img: CGImage = (CIImage(image: image!)?.cgImage!)!
+        let img: CGImage = uiToCgImage(image!)
         
         //create vImage_Buffer with data from CGImageRef
         let inProvider: CGDataProvider = img.dataProvider!
