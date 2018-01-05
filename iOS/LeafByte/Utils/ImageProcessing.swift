@@ -14,12 +14,9 @@ func getSuggestedThreshold(image: CGImage) -> Float {
 }
 
 private func getLumaHistogram(image: CGImage) -> [Int] {
-    let inProvider: CGDataProvider = image.dataProvider!
-    let inBitmapData: CFData = inProvider.data!
+    let pixelData = image.dataProvider!.data!
     
-    
-    var inBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
-    var inBuffer2 = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(inBitmapData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
+    var vImage = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)), height: vImagePixelCount(image.height), width: vImagePixelCount(image.width), rowBytes: image.bytesPerRow)
     
     // https://github.com/PokerChang/ios-card-detector/blob/master/Accelerate.framework/Frameworks/vImage.framework/Headers/Transform.h#L20
     
@@ -37,7 +34,8 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
             matrix[(3 - j) * 4 + (3 - i)] = matrixS[i][j]
         }
     }
-    vImageMatrixMultiply_ARGB8888(&inBuffer2, &inBuffer, matrix, 1000, nil, nil, UInt32(kvImageNoFlags))
+    // same in and out, in place
+    vImageMatrixMultiply_ARGB8888(&vImage, &vImage, matrix, 1000, nil, nil, UInt32(kvImageNoFlags))
     
     let alpha = [UInt](repeating: 0, count: 256)
     let red = [UInt](repeating: 0, count: 256)
@@ -52,7 +50,7 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
     
     let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
-    vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
+    vImageHistogramCalculation_ARGB8888(&vImage, histogram, UInt32(kvImageNoFlags))
     
     // TODO: this memory management makes me nervous, have I allocated anything?
     

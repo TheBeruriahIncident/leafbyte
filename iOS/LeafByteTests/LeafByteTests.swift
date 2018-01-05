@@ -35,7 +35,7 @@ class LeafByteTests: XCTestCase {
             suggestedThreshold = getSuggestedThreshold(image: cgImage)
         }
         
-        XCTAssertEqual(139, Int(suggestedThreshold * 255))
+        XCTAssertEqual(139, Int(round(suggestedThreshold * 255)))
     }
     
     private func loadImage(named name: String) -> UIImage {
