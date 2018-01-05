@@ -151,6 +151,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
         let context = UIGraphicsGetCurrentContext()!
         
+        context.setLineWidth(2)
         context.interpolationQuality = CGInterpolationQuality.none
         context.setAllowsAntialiasing(false)
         context.setShouldAntialias(false)
