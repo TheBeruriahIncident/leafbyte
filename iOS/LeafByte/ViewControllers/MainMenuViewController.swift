@@ -75,8 +75,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         
         // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
         // Even if the user doesn't edit, this will retrieve the unedited image.
-        // TODO: scale seems to be off on UIImagePickerControllerEditedImage, figure
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+        guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
             fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
         }
     
