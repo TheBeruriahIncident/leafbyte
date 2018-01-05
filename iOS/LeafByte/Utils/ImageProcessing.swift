@@ -13,6 +13,8 @@ func getSuggestedThreshold(image: CGImage) -> Float {
     return otsusMethod(histogram: getLumaHistogram(image: image))
 }
 
+private let NUMBER_OF_HISTOGRAM_BUCKETS = 256
+
 // Turns an image into a histogram of luma, or intensity.
 // The histogram is represented an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 private func getLumaHistogram(image: CGImage) -> [Int] {
@@ -39,9 +41,9 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     
     // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
     // Since luma is the only channel we care about (we zeroed the rest), we'll use a garbage array to catch the other histograms.
-    let lumaHistogram = [UInt](repeating: 0, count: 256)
+    let lumaHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
     let lumaHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: lumaHistogram) as UnsafeMutablePointer<vImagePixelCount>?
-    let garbageHistogram = [UInt](repeating: 0, count: 256)
+    let garbageHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
     let garbageHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: garbageHistogram) as UnsafeMutablePointer<vImagePixelCount>?
     let histogramArray = [lumaHistogramPointer, garbageHistogramPointer, garbageHistogramPointer, garbageHistogramPointer]
     let histogramArrayPointer = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: histogramArray)
@@ -51,33 +53,40 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
     return lumaHistogram.map { Int($0) }
 }
 
+// Use Otsu's method, an algorithm that takes a histogram of intensities (that it assumes is roughly bimodal, corresponding to foreground and background) and tries to find the cut that separates the two modes ( https://en.wikipedia.org/wiki/Otsu%27s_method ).
+// Note that this implementation is the optimized form that maximizes inter-class variance as opposed to minimizing intra-class variance (also described at the above link).
 private func otsusMethod(histogram: [Int]) -> Float {
-    // TODO: check this and use better variables, be better about types
+    // The following equations and algorithm are taken from https://en.wikipedia.org/wiki/Otsu%27s_method#Otsu's_Method , and variable names here refer to variable names in equations there.
     
-    // Use Otsu's method to calculate an initial global threshold
-    // Uses the optimized form that maximizes inter-class variance as at https://en.wikipedia.org/wiki/Otsu%27s_method
-    let total = histogram.reduce(0, +)
+    // We can transform omega0 and mu0Numerator as we go through the loop. Both omega1 and mu1Numerator are easily derivable, since both omegas and muNumerators sum to constants.
+    var omega0 = 0
+    let sumOfOmegas = histogram.reduce(0, +)
+    var mu0Numerator = 0
+    // This calculates a dot product.
+    let sumOfMuNumerators = zip(Array(0...NUMBER_OF_HISTOGRAM_BUCKETS - 1), histogram).reduce(0, { (accumulator, pair) in
+        accumulator + (pair.0 * pair.1) })
     
-    var sumB = 0
-    var wB = 0
-    var maximum = 0.0
-    var level = 0
-    let sum1 = zip(Array(0...255), histogram).reduce(0, { $0 + ($1.0 * $1.1) })
+    var maximumInterClassVariance = 0.0
+    var bestCut = 0
     
-    for index in 0...255 {
-        wB = wB + histogram[index]
-        let wF = total - wB
-        if (wB == 0 || wF == 0) {
-            continue;
+    for index in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
+        omega0 = omega0 + histogram[index]
+        let omega1 = sumOfOmegas - omega0
+        if (omega0 == 0 || omega1 == 0) {
+            continue
         }
-        sumB += index * histogram[index]
-        let mF = Double(sum1 - sumB) / Double(wF)
-        let between = Double(wB * wF) * pow(((Double(sumB) / Double(wB)) - mF), 2);
-        if ( between >= maximum ) {
-            level = index
-            maximum = between
+        
+        mu0Numerator += index * histogram[index]
+        let mu1Numerator = sumOfMuNumerators - mu0Numerator
+        let mu0 = Double(mu0Numerator) / Double(omega0)
+        let mu1 = Double(mu1Numerator) / Double(omega1)
+        let interClassVariance = Double(omega0 * omega1) * pow(mu0 - mu1, 2)
+        
+        if ( interClassVariance >= maximumInterClassVariance ) {
+            maximumInterClassVariance = interClassVariance
+            bestCut = index
         }
     }
     
-    return Float(level) / 255
+    return Float(bestCut) / Float(NUMBER_OF_HISTOGRAM_BUCKETS - 1)
 }
