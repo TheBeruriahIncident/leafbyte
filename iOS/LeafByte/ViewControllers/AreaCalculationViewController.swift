@@ -205,21 +205,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let scaleW = frameSize.width / imageSize.width
         let scaleH = frameSize.height / imageSize.height
-        let aspect = fmin(scaleW, scaleH)
+        let aspect = min(scaleW, scaleH)
         
-        let xFactor = Float(imageSize.width) / Float(imageSize.width / aspect)
-        let yFactor = Float(imageSize.height) / Float(imageSize.height / aspect)
         let xOffset = Float((frameSize.width - imageSize.width * aspect) / 2)
         let yOffset = Float((frameSize.height - imageSize.height * aspect) / 2)
         
-        let xToUse = Int(Float(x) * xFactor + xOffset)
-        let yToUse = Int(Float(y) * yFactor + yOffset)
+        let xToUse = Int(Float(x) * Float(aspect) + xOffset)
+        let yToUse = Int(Float(y) * Float(aspect) + yOffset)
         
-        if userDrawing.getPixel(x: xToUse, y: yToUse).isVisible() {
-            return true
-        }
-        
-        return baseImage.getPixel(x: x, y: y).isNonWhite()
+        return baseImage.getPixel(x: x, y: y).isNonWhite() || userDrawing.getPixel(x: xToUse, y: yToUse).isVisible()
     }
     
     func findSizes() {
