@@ -210,27 +210,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     
     func isOccupied(_ x: Int, _ y: Int, baseImage: IndexableImage, userDrawing: IndexableImage) -> Bool {
-        
-        let frameSize = userDrawingView.frame.size
-        let imageSize = (baseImageView.image?.size)!
-        
-        let scaleW = frameSize.width / imageSize.width
-        let scaleH = frameSize.height / imageSize.height
-        let aspect = min(scaleW, scaleH)
-        
-        let xOffset = Float((frameSize.width - imageSize.width * aspect) / 2)
-        let yOffset = Float((frameSize.height - imageSize.height * aspect) / 2)
-        
-        let xToUse = Int(Float(x) * Float(aspect) + xOffset)
-        let yToUse = Int(Float(y) * Float(aspect) + yOffset)
-        
-        return baseImage.getPixel(x: x, y: y).isNonWhite() || userDrawing.getPixel(x: xToUse, y: yToUse).isVisible()
+        return baseImage.getPixel(x: x, y: y).isNonWhite() || userDrawing.getPixel(x: x, y: y).isVisible()
     }
     
     func findSizes() {
         let cgImage = uiToCgImage(image!)
         let baseImage = IndexableImage(uiToCgImage(image!))
-        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
+        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         
         
         let width = cgImage.width
