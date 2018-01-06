@@ -209,19 +209,17 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     
     
-    func isOccupied(_ x: Int, _ y: Int, baseImage: IndexableImage, userDrawing: IndexableImage) -> Bool {
-        return baseImage.getPixel(x: x, y: y).isNonWhite() || userDrawing.getPixel(x: x, y: y).isVisible()
-    }
-    
     func findSizes() {
-        let cgImage = uiToCgImage(image!)
         let baseImage = IndexableImage(uiToCgImage(image!))
-        let projection = Projection(fromImageInView: baseImageView.image!, toView: baseImageView)
-        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: projection)
+        let combinedImage = BooleanIndexableImage(width: baseImage.width, height: baseImage.height)
+        combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
         
+        let userDrawingProjection = Projection(fromImageInView: baseImageView.image!, toView: baseImageView)
+        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: userDrawingProjection)
+        combinedImage.addImage(userDrawing, withPixelToBoolConversion: { $0.isVisible() })
         
-        let width = cgImage.width
-        let height = cgImage.height
+        let width = combinedImage.width
+        let height = combinedImage.height
         
         var groupToPoint = [Int: (Int, Int)]()
         var emptyGroupToNeighboringOccupiedGroup = [Int: Int]()
@@ -235,13 +233,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
-                let occupied = isOccupied(x, y, baseImage: baseImage, userDrawing: userDrawing)
+                let occupied = combinedImage.getPixel(x: x, y: y)
                 
                 // using 4-connectvity for speed
-                let westGroup = x > 0 && occupied == isOccupied(x - 1, y, baseImage: baseImage, userDrawing: userDrawing)
+                let westGroup = x > 0 && occupied == combinedImage.getPixel(x: x - 1, y: y)
                     ? groupIds[y][x - 1]
                     : nil
-                let northGroup = y > 0 && occupied == isOccupied(x, y - 1, baseImage: baseImage, userDrawing: userDrawing)
+                let northGroup = y > 0 && occupied == combinedImage.getPixel(x: x, y: y - 1)
                     ? groupIds[y - 1][x]
                     : nil
                 
@@ -332,7 +330,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: projection)
+        let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         drawingManager.setColorToRed()
         
         for groupAndSize in groupsAndSizes {
@@ -340,7 +338,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = groupToPoint[groupAndSize.key]!
-                    floodFill(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing, drawingManager: drawingManager)
+                    floodFill(CGPoint(x: startX, y: startY), width, height, image: combinedImage, drawingManager: drawingManager)
                 }
             }
         }
@@ -361,7 +359,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage, drawingManager: DrawingManager) {
+    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, image: BooleanIndexableImage, drawingManager: DrawingManager) {
         var explored = [Int: [(Int, Int)]]() // y to a list of range
         // TODO: should be a set??
         // TODO: actually, why am I getting repeated values at all
@@ -377,10 +375,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             var xLeft = x
             var enteringNewSectionNorth = true
             var enteringNewSectionSouth = true
-            while xLeft > 0 && !isOccupied(xLeft - 1, y, baseImage: baseImage, userDrawing: userDrawing) {
+            while xLeft > 0 && !image.getPixel(x: xLeft - 1, y: y) {
                 xLeft -= 1
                 
-                if isOccupied(xLeft, y + 1, baseImage: baseImage, userDrawing: userDrawing) {
+                if image.getPixel(x: xLeft, y: y + 1) {
                     enteringNewSectionNorth = true
                 } else {
                     if enteringNewSectionNorth {
@@ -390,7 +388,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                         enteringNewSectionNorth = false
                     }
                 }
-                if isOccupied(xLeft, y - 1, baseImage: baseImage, userDrawing: userDrawing) {
+                if image.getPixel(x: xLeft, y: y - 1) {
                     enteringNewSectionSouth = true
                 } else {
                     if enteringNewSectionSouth {
@@ -403,10 +401,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
             
             var xRight = x
-            while xRight > 0 && !isOccupied(xRight + 1, y, baseImage: baseImage, userDrawing: userDrawing) {
+            while xRight > 0 && !image.getPixel(x: xRight + 1, y: y) {
                 xRight += 1
                 
-                if isOccupied(xRight, y + 1, baseImage: baseImage, userDrawing: userDrawing) {
+                if image.getPixel(x: xRight, y: y + 1) {
                     enteringNewSectionNorth = true
                 } else {
                     if enteringNewSectionNorth {
@@ -416,7 +414,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                         enteringNewSectionNorth = false
                     }
                 }
-                if isOccupied(xRight, y - 1, baseImage: baseImage, userDrawing: userDrawing) {
+                if image.getPixel(x: xRight, y: y - 1) {
                     enteringNewSectionSouth = true
                 } else {
                     if enteringNewSectionSouth {
@@ -429,7 +427,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
             
             drawingManager.drawLine(from: CGPoint(x: xLeft, y: y), to: CGPoint(x: xRight, y: y))
-                        
+            
             if explored[y] != nil {
                 explored[y]!.append((xLeft, xRight))
             } else {

@@ -53,17 +53,17 @@ class IndexableImage {
             for x in 0...width - 1 {
                 let pixel = getPixel(x: x, y: y)
                 
-                var isZero: Bool!
+                var isOne: Bool!
                 switch mode {
                 case .blackAndWhite:
                     // White pixels are 0s, non-white pixels are 1s.
-                    isZero = pixel.isWhite()
+                    isOne = pixel.isNonWhite()
                 case .visible:
                     // Invisible pixels are 0s, visible pixels are 1s.
-                    isZero = pixel.isInvisible()
+                    isOne = pixel.isVisible()
                 }
                 
-                print(isZero ? "0" : "1", terminator: "")
+                print(isOne ? "1" : "0", terminator: "")
             }
             print("")
         }
