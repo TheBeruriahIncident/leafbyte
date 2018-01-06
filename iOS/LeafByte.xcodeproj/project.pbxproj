@@ -139,10 +139,11 @@
 				4621EE411FEB70AD004C3011 /* Assets.xcassets */,
 				46F1063920007ABC000B4B83 /* Data Structures */,
 				4656C6CE1FF869B600AC6821 /* Filters */,
+				46DB8A841FFE9A8A00EF59BE /* GenericUtils */,
+				4623585E20016AF9005EA36E /* ImageUtils */,
 				4621EE461FEB70AD004C3011 /* Info.plist */,
 				4656C6CF1FF869E900AC6821 /* Segues */,
 				4656C6D11FF87EAC00AC6821 /* Storyboards */,
-				46DB8A841FFE9A8A00EF59BE /* Utils */,
 				4656C6D01FF869F600AC6821 /* ViewControllers */,
 			);
 			path = LeafByte;
@@ -166,6 +167,20 @@
 				4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */,
 			);
 			path = LeafByteUITests;
+			sourceTree = "<group>";
+		};
+		4623585E20016AF9005EA36E /* ImageUtils */ = {
+			isa = PBXGroup;
+			children = (
+				46F1064420013D6E000B4B83 /* BooleanIndexableImage.swift */,
+				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
+				46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */,
+				46DB8A8B1FFEF88200EF59BE /* ImageProcessing.swift */,
+				46DB8A8F1FFFD74900EF59BE /* ImageUtils.swift */,
+				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
+				46F1063E2001250E000B4B83 /* Projection.swift */,
+			);
+			path = ImageUtils;
 			sourceTree = "<group>";
 		};
 		4656C6CE1FF869B600AC6821 /* Filters */ = {
@@ -213,21 +228,14 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
-		46DB8A841FFE9A8A00EF59BE /* Utils */ = {
+		46DB8A841FFE9A8A00EF59BE /* GenericUtils */ = {
 			isa = PBXGroup;
 			children = (
-				46F1064420013D6E000B4B83 /* BooleanIndexableImage.swift */,
 				46F10642200133CF000B4B83 /* DrawingManager.swift */,
 				46F1064020012F06000B4B83 /* Extensions.swift */,
-				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
-				46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */,
-				46DB8A8B1FFEF88200EF59BE /* ImageProcessing.swift */,
-				46DB8A8F1FFFD74900EF59BE /* ImageUtils.swift */,
-				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
-				46F1063E2001250E000B4B83 /* Projection.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
 			);
-			path = Utils;
+			path = GenericUtils;
 			sourceTree = "<group>";
 		};
 		46F1063920007ABC000B4B83 /* Data Structures */ = {
