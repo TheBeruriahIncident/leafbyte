@@ -28,7 +28,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
         width: Int(newSize.width),
         height: Int(newSize.height),
         bitsPerComponent: cgImage.bitsPerComponent,
-        bytesPerRow: cgImage.bytesPerRow,
+        bytesPerRow: 0,
         space: cgImage.colorSpace!,
         bitmapInfo: cgImage.bitmapInfo.rawValue)!
     context.interpolationQuality = .high

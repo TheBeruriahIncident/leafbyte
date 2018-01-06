@@ -11,7 +11,8 @@ import UIKit
 
 func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (UIImage) -> Void) {
     // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
-    guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+    // TODO: switch back to original
+    guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
         fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
     }
     
@@ -58,5 +59,6 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
     imagePicker.delegate = viewController
     // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
     // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
-    imagePicker.allowsEditing = false
+    // TODO: stuff is breaking when I switch back to false, figure
+    imagePicker.allowsEditing = true
 }
