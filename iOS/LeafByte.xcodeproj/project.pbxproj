@@ -30,6 +30,7 @@
 		46F1063B20007D1A000B4B83 /* UnionFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063A20007D1A000B4B83 /* UnionFind.swift */; };
 		46F1063D20007E8A000B4B83 /* DataStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063C20007E8A000B4B83 /* DataStructureTests.swift */; };
 		46F1063F2001250E000B4B83 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063E2001250E000B4B83 /* Projection.swift */; };
+		46F1064120012F06000B4B83 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064020012F06000B4B83 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		46F1063A20007D1A000B4B83 /* UnionFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnionFind.swift; sourceTree = "<group>"; };
 		46F1063C20007E8A000B4B83 /* DataStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructureTests.swift; sourceTree = "<group>"; };
 		46F1063E2001250E000B4B83 /* Projection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
+		46F1064020012F06000B4B83 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
 				46F1063E2001250E000B4B83 /* Projection.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
+				46F1064020012F06000B4B83 /* Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				46C424BC1FEF688500301F59 /* SegueFromRight.swift in Sources */,
 				46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */,
 				46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */,
+				46F1064120012F06000B4B83 /* Extensions.swift in Sources */,
 				46DB8A8E1FFF332C00EF59BE /* UIUtils.swift in Sources */,
 				46DB8A901FFFD74900EF59BE /* ImageUtils.swift in Sources */,
 			);

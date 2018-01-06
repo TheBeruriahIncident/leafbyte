@@ -478,14 +478,3 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
 
 }
-
-extension CGPoint: Hashable {
-    public var hashValue: Int {
-        return self.x.hashValue &* 7 &+ self.y.hashValue
-    }
-}
-
-// Hashable requires Equatable, so define the equality function for CGPoints.
-public func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
-    return lhs.equalTo(rhs)
-}
