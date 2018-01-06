@@ -10,7 +10,7 @@ import UIKit
 
 func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     // Check if resizing is necessary.
-    if (image.size.width <= newBounds.width && image.size.height <= newBounds.height) {
+    if image.size.width <= newBounds.width && image.size.height <= newBounds.height {
         return image
     }
     
@@ -21,11 +21,19 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     
     let newSize = CGSize(width: image.size.width * resizingRatio, height: image.size.height * resizingRatio)
     
-    // Draw into an appropriately sized context to resize.
-    UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-    image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
-    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext();
+    let cgImage = uiToCgImage(image)
     
-    return newImage!
+    let context = CGContext(
+        data: nil,
+        width: Int(newSize.width),
+        height: Int(newSize.height),
+        bitsPerComponent: cgImage.bitsPerComponent,
+        bytesPerRow: cgImage.bytesPerRow,
+        space: cgImage.colorSpace!,
+        bitmapInfo: cgImage.bitmapInfo.rawValue)!
+    context.interpolationQuality = .high
+    context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
+    
+    // TODO: I bet I can get away without this conversion
+    return cgToUiImage(context.makeImage()!)
 }
