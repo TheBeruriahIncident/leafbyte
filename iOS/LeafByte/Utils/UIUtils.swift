@@ -10,9 +10,8 @@ import AVFoundation
 import UIKit
 
 func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (UIImage) -> Void) {
-    // There may contain multiple versions of the image in info; since we're allowing editing, we want the edited image.
-    // Even if the user doesn't edit, this will retrieve the unedited image.
-    guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
+    // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
+    guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
         fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
     }
     
@@ -57,6 +56,7 @@ func setupGestureRecognizingView(gestureRecognizingView: UIScrollView, self view
 
 func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
     imagePicker.delegate = viewController
-    // By allowing editing, our users get the ability to crop out shadows for "free".
-    imagePicker.allowsEditing = true
+    // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
+    // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
+    imagePicker.allowsEditing = false
 }
