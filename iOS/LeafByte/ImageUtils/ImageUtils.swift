@@ -57,18 +57,19 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
         // TODO: return early
         let x = Int(point.x)
         let y = Int(point.y)
-//        if isFilled(x: x, y: y, referringTo: filledRanges) {
-//            continue
-//        }
+        if isFilled(x: x, y: y, referringTo: filledRanges) {
+            continue
+        }
         
+        // TODO: be safer about these y values
         // TODO handle starting top bottom once
         
-//        if !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
-//            queue.insert(CGPoint(x: x, y: y + 1))
-//        }
-//        if !isFilled(x: x, y: y - 1, referringTo: filledRanges) {
-//            queue.insert(CGPoint(x: x, y: y - 1))
-//        }
+        if y < image.height - 1 && !isFilled(x: x, y: y + 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y + 1) {
+            queue.insert(CGPoint(x: x, y: y + 1))
+        }
+        if y > 0 && !isFilled(x: x, y: y - 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y - 1) {
+            queue.insert(CGPoint(x: x, y: y - 1))
+        }
         
         var xLeft = x
         var enteringNewSectionNorth = true
@@ -76,52 +77,61 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
         while xLeft > 0 && !image.getPixel(x: xLeft - 1, y: y) {
             xLeft -= 1
             
-            if image.getPixel(x: xLeft, y: y + 1) {
-                enteringNewSectionNorth = true
-            } else {
-                if enteringNewSectionNorth {
-                    if !isFilled(x: xLeft, y: y + 1, referringTo: filledRanges) {
-                        queue.insert(CGPoint(x: xLeft, y: y + 1))
+            if y < image.height - 1 {
+                if image.getPixel(x: xLeft, y: y + 1) {
+                    enteringNewSectionNorth = true
+                } else {
+                    if enteringNewSectionNorth {
+                        if !isFilled(x: xLeft, y: y + 1, referringTo: filledRanges) {
+                            queue.insert(CGPoint(x: xLeft, y: y + 1))
+                        }
+                        enteringNewSectionNorth = false
                     }
-                    enteringNewSectionNorth = false
                 }
             }
-            if image.getPixel(x: xLeft, y: y - 1) {
-                enteringNewSectionSouth = true
-            } else {
-                if enteringNewSectionSouth {
-                    if !isFilled(x: xLeft, y: y - 1, referringTo: filledRanges) {
-                        queue.insert(CGPoint(x: xLeft, y: y - 1))
+        
+            if y > 0 {
+                if image.getPixel(x: xLeft, y: y - 1) {
+                    enteringNewSectionSouth = true
+                } else {
+                    if enteringNewSectionSouth {
+                        if !isFilled(x: xLeft, y: y - 1, referringTo: filledRanges) {
+                            queue.insert(CGPoint(x: xLeft, y: y - 1))
+                        }
+                        enteringNewSectionSouth = false
                     }
-                    enteringNewSectionSouth = false
                 }
             }
         }
 
-//        enteringNewSectionNorth = false
-//        enteringNewSectionSouth = false
+        enteringNewSectionNorth = true
+        enteringNewSectionSouth = true
         var xRight = x
-        while xRight > 0 && !image.getPixel(x: xRight + 1, y: y) {
+        while xRight < image.width - 1 && !image.getPixel(x: xRight + 1, y: y) {
             xRight += 1
             
-            if image.getPixel(x: xRight, y: y + 1) {
-                enteringNewSectionNorth = true
-            } else {
-                if enteringNewSectionNorth {
-                    if !isFilled(x: xRight, y: y + 1, referringTo: filledRanges) {
-                        queue.insert(CGPoint(x: xRight, y: y + 1))
+            if y < image.height - 1 {
+                if image.getPixel(x: xRight, y: y + 1) {
+                    enteringNewSectionNorth = true
+                } else {
+                    if enteringNewSectionNorth {
+                        if !isFilled(x: xRight, y: y + 1, referringTo: filledRanges) {
+                            queue.insert(CGPoint(x: xRight, y: y + 1))
+                        }
+                        enteringNewSectionNorth = false
                     }
-                    enteringNewSectionNorth = false
                 }
             }
-            if image.getPixel(x: xRight, y: y - 1) {
-                enteringNewSectionSouth = true
-            } else {
-                if enteringNewSectionSouth {
-                    if !isFilled(x: xRight, y: y - 1, referringTo: filledRanges) {
-                        queue.insert(CGPoint(x: xRight, y: y - 1))
+            if y > 0 {
+                if image.getPixel(x: xRight, y: y - 1) {
+                    enteringNewSectionSouth = true
+                } else {
+                    if enteringNewSectionSouth {
+                        if !isFilled(x: xRight, y: y - 1, referringTo: filledRanges) {
+                            queue.insert(CGPoint(x: xRight, y: y - 1))
+                        }
+                        enteringNewSectionSouth = false
                     }
-                    enteringNewSectionSouth = false
                 }
             }
         }
