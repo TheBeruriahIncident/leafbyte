@@ -38,6 +38,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var leafHolesView: UIImageView!
     
     @IBOutlet weak var modeToggleButton: UIButton!
+    @IBOutlet weak var calculateButton: UIButton!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -47,7 +48,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func calculate(_ sender: Any) {
-        findSizes()
+        // Don't allow recalculation until there's a possibility of a different result.
+        calculateButton.isEnabled = false
+        
+        resultsText.text = "Loading"
+        // The label won't update until this action returns, so put this calculation on the queue, and it'll be executed right after this function ends.
+        DispatchQueue.main.async {
+            self.findSizes()
+        }
     }
     
     @IBAction func nextImage(_ sender: Any) {
@@ -147,6 +155,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         if (inScrollingMode) {
             return
         }
+        
+        // Allow recalculation now that there's a possibility of a different result.
+        calculateButton.isEnabled = true
         
         UIGraphicsBeginImageContext(userDrawingView.frame.size)
         let context = UIGraphicsGetCurrentContext()!
