@@ -31,6 +31,7 @@
 		46F1063D20007E8A000B4B83 /* DataStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063C20007E8A000B4B83 /* DataStructureTests.swift */; };
 		46F1063F2001250E000B4B83 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063E2001250E000B4B83 /* Projection.swift */; };
 		46F1064120012F06000B4B83 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064020012F06000B4B83 /* Extensions.swift */; };
+		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		46F1063C20007E8A000B4B83 /* DataStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructureTests.swift; sourceTree = "<group>"; };
 		46F1063E2001250E000B4B83 /* Projection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
 		46F1064020012F06000B4B83 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		46F10642200133CF000B4B83 /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,8 @@
 		46DB8A841FFE9A8A00EF59BE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				46F10642200133CF000B4B83 /* DrawingManager.swift */,
+				46F1064020012F06000B4B83 /* Extensions.swift */,
 				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
 				46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */,
 				46DB8A8B1FFEF88200EF59BE /* ImageProcessing.swift */,
@@ -219,7 +223,6 @@
 				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
 				46F1063E2001250E000B4B83 /* Projection.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
-				46F1064020012F06000B4B83 /* Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				46F1063F2001250E000B4B83 /* Projection.swift in Sources */,
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
+				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
 				468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */,
 				46DB8A861FFE9AA900EF59BE /* ImageConversions.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,

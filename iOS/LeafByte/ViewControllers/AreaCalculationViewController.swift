@@ -216,7 +216,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     func findSizes() {
         let cgImage = uiToCgImage(image!)
         let baseImage = IndexableImage(uiToCgImage(image!))
-        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        let projection = Projection(fromImageInView: baseImageView.image!, toView: baseImageView)
+        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: projection)
         
         
         let width = cgImage.width
@@ -331,19 +332,19 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let leafArea = getArea(pixels: leafSize!)
         var eatenArea: Float = 0.0
         
-        UIGraphicsBeginImageContext(leafHolesView.frame.size)
+        let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: projection)
+        drawingManager.setColorToRed()
+        
         for groupAndSize in groupsAndSizes {
             if (groupAndSize.key < 0) {
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = groupToPoint[groupAndSize.key]!
-                    floodFill(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing)
+                    floodFill(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing, drawingManager: drawingManager)
                 }
             }
         }
-        leafHolesView.image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
+        drawingManager.finish(imageView: leafHolesView)
 
         if scaleMarkPixelLength != nil {
             resultsText.text = "leaf is \(String(format: "%.3f", leafArea)) cm2 with \(String(format: "%.3f", eatenArea)) cm2 or \(String(format: "%.3f", eatenArea / leafArea * 100))% eaten"
@@ -360,25 +361,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage) {
-        
-        let context = UIGraphicsGetCurrentContext()
-        
-        leafHolesView.image?.draw(in: CGRect(x: 0, y: 0, width: leafHolesView.frame.size.width, height: leafHolesView.frame.size.height))
-        
-        
-        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
-        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
-        let aspect = fmin(scaleW, scaleH)
-        
-        
-        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
-        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
-        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
-        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
-        
-        context!.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        
+    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage, drawingManager: DrawingManager) {
         var explored = [Int: [(Int, Int)]]() // y to a list of range
         // TODO: should be a set??
         // TODO: actually, why am I getting repeated values at all
@@ -445,15 +428,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 }
             }
             
-            let xLeftToUse = CGFloat(Float(xLeft) * xFactor + xOffset)
-            let xRightToUse = CGFloat(Float(xRight) * xFactor + xOffset)
-            let yToUse = CGFloat(Float(y) * yFactor + yOffset)
-            
-            // TODO: can I do in bulk, or draw single point??
-            context!.move(to: CGPoint(x: xLeftToUse + 0.5, y: yToUse + 0.5))
-            context!.addLine(to: CGPoint(x: xRightToUse + 0.5, y: yToUse + 0.5))
-            context!.strokePath()
-            
+            drawingManager.drawLine(from: CGPoint(x: xLeft, y: y), to: CGPoint(x: xRight, y: y))
+                        
             if explored[y] != nil {
                 explored[y]!.append((xLeft, xRight))
             } else {
