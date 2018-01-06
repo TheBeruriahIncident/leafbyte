@@ -376,10 +376,11 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         leafHolesView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
+
         if scaleMarkPixelLength != nil {
-            resultsText.text = "leaf is \(leafArea) cm2 with \(eatenArea) cm2 or \(eatenArea / leafArea * 100 )% eaten"
+            resultsText.text = "leaf is \(String(format: "%.3f", leafArea)) cm2 with \(String(format: "%.3f", eatenArea)) cm2 or \(String(format: "%.3f", eatenArea / leafArea * 100))% eaten"
         } else {
-            resultsText.text = "leaf is \(eatenArea / leafArea * 100 )% eaten"
+            resultsText.text = "leaf is \(String(format: "%.3f", eatenArea / leafArea * 100))% eaten"
         }
     }
     
