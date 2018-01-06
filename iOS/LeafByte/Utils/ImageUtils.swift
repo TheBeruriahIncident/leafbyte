@@ -38,6 +38,11 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     return cgToUiImage(context.makeImage()!)
 }
 
+
+
+
+
+// TODO: clean this up
 // Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
 // Assumes that the starting point is "empty" (false) in the boolean image, and draws to the drawing manager.
 func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
