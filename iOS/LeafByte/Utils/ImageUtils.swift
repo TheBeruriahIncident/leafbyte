@@ -38,19 +38,32 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     return cgToUiImage(context.makeImage()!)
 }
 
-// Fills empty (false) in image, drawing to drawing manager.
+// Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
+// Assumes that the starting point is "empty" (false) in the boolean image, and draws to the drawing manager.
 func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
-    var explored = [Int: [(Int, Int)]]() // y to a list of range
+    var filledRanges = [Int: [(Int, Int)]]() // y to a list of range
     // TODO: should be a set??
     // TODO: actually, why am I getting repeated values at all
     var queue: Set<CGPoint> = [startingPoint]
     
     while !queue.isEmpty {
         let point = queue.popFirst()!
+        
+        // TODO: return early
         let x = Int(point.x)
         let y = Int(point.y)
+//        if isFilled(x: x, y: y, referringTo: filledRanges) {
+//            continue
+//        }
         
         // TODO handle starting top bottom once
+        
+//        if !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
+//            queue.insert(CGPoint(x: x, y: y + 1))
+//        }
+//        if !isFilled(x: x, y: y - 1, referringTo: filledRanges) {
+//            queue.insert(CGPoint(x: x, y: y - 1))
+//        }
         
         var xLeft = x
         var enteringNewSectionNorth = true
@@ -62,7 +75,7 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
                 enteringNewSectionNorth = true
             } else {
                 if enteringNewSectionNorth {
-                    if !isExplored(explored, x: xLeft, y: y + 1) {
+                    if !isFilled(x: xLeft, y: y + 1, referringTo: filledRanges) {
                         queue.insert(CGPoint(x: xLeft, y: y + 1))
                     }
                     enteringNewSectionNorth = false
@@ -72,14 +85,16 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
                 enteringNewSectionSouth = true
             } else {
                 if enteringNewSectionSouth {
-                    if !isExplored(explored, x: xLeft, y: y - 1) {
+                    if !isFilled(x: xLeft, y: y - 1, referringTo: filledRanges) {
                         queue.insert(CGPoint(x: xLeft, y: y - 1))
                     }
                     enteringNewSectionSouth = false
                 }
             }
         }
-        
+
+//        enteringNewSectionNorth = false
+//        enteringNewSectionSouth = false
         var xRight = x
         while xRight > 0 && !image.getPixel(x: xRight + 1, y: y) {
             xRight += 1
@@ -88,7 +103,7 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
                 enteringNewSectionNorth = true
             } else {
                 if enteringNewSectionNorth {
-                    if !isExplored(explored, x: xRight, y: y + 1) {
+                    if !isFilled(x: xRight, y: y + 1, referringTo: filledRanges) {
                         queue.insert(CGPoint(x: xRight, y: y + 1))
                     }
                     enteringNewSectionNorth = false
@@ -98,7 +113,7 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
                 enteringNewSectionSouth = true
             } else {
                 if enteringNewSectionSouth {
-                    if !isExplored(explored, x: xRight, y: y - 1) {
+                    if !isFilled(x: xRight, y: y - 1, referringTo: filledRanges) {
                         queue.insert(CGPoint(x: xRight, y: y - 1))
                     }
                     enteringNewSectionSouth = false
@@ -108,25 +123,21 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
         
         drawingManager.drawLine(from: CGPoint(x: xLeft, y: y), to: CGPoint(x: xRight, y: y))
         
-        if explored[y] != nil {
-            explored[y]!.append((xLeft, xRight))
+        if filledRanges[y] != nil {
+            filledRanges[y]!.append((xLeft, xRight))
         } else {
-            explored[y] = [(xLeft, xRight)]
+            filledRanges[y] = [(xLeft, xRight)]
         }
         
     }
 }
 
-private func isExplored(_ explored: [Int: [(Int, Int)]], x: Int, y: Int) -> Bool {
-    if let exploredY = explored[y] {
-        for range in exploredY {
-            if x >= range.0 && x <= range.1 {
-                return true
-            }
-        }
-        
-        return false
-    } else {
+private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int)]]) -> Bool {
+    let filledXRanges = filledRanges[y]
+    if filledXRanges == nil {
         return false
     }
+    
+    return filledXRanges!.contains(where: { filledXRange in
+        x >= filledXRange.0 && x <= filledXRange.1 })
 }
