@@ -338,7 +338,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = groupToPoint[groupAndSize.key]!
-                    floodFill(CGPoint(x: startX, y: startY), width, height, image: combinedImage, drawingManager: drawingManager)
+                    floodFill(image: combinedImage, fromPoint: CGPoint(x: startX, y: startY), drawingTo: drawingManager)
                 }
             }
         }
@@ -358,97 +358,4 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             return Float(pixels)
         }
     }
-    
-    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, image: BooleanIndexableImage, drawingManager: DrawingManager) {
-        var explored = [Int: [(Int, Int)]]() // y to a list of range
-        // TODO: should be a set??
-        // TODO: actually, why am I getting repeated values at all
-        var queue: Set<CGPoint> = [start]
-        
-        while !queue.isEmpty {
-            let point = queue.popFirst()!
-            let x = Int(point.x)
-            let y = Int(point.y)
-            
-            // TODO handle starting top bottom once
-            
-            var xLeft = x
-            var enteringNewSectionNorth = true
-            var enteringNewSectionSouth = true
-            while xLeft > 0 && !image.getPixel(x: xLeft - 1, y: y) {
-                xLeft -= 1
-                
-                if image.getPixel(x: xLeft, y: y + 1) {
-                    enteringNewSectionNorth = true
-                } else {
-                    if enteringNewSectionNorth {
-                        if !isExplored(explored, x: xLeft, y: y + 1) {
-                            queue.insert(CGPoint(x: xLeft, y: y + 1))
-                        }
-                        enteringNewSectionNorth = false
-                    }
-                }
-                if image.getPixel(x: xLeft, y: y - 1) {
-                    enteringNewSectionSouth = true
-                } else {
-                    if enteringNewSectionSouth {
-                        if !isExplored(explored, x: xLeft, y: y - 1) {
-                            queue.insert(CGPoint(x: xLeft, y: y - 1))
-                        }
-                        enteringNewSectionSouth = false
-                    }
-                }
-            }
-            
-            var xRight = x
-            while xRight > 0 && !image.getPixel(x: xRight + 1, y: y) {
-                xRight += 1
-                
-                if image.getPixel(x: xRight, y: y + 1) {
-                    enteringNewSectionNorth = true
-                } else {
-                    if enteringNewSectionNorth {
-                        if !isExplored(explored, x: xRight, y: y + 1) {
-                            queue.insert(CGPoint(x: xRight, y: y + 1))
-                        }
-                        enteringNewSectionNorth = false
-                    }
-                }
-                if image.getPixel(x: xRight, y: y - 1) {
-                    enteringNewSectionSouth = true
-                } else {
-                    if enteringNewSectionSouth {
-                        if !isExplored(explored, x: xRight, y: y - 1) {
-                            queue.insert(CGPoint(x: xRight, y: y - 1))
-                        }
-                        enteringNewSectionSouth = false
-                    }
-                }
-            }
-            
-            drawingManager.drawLine(from: CGPoint(x: xLeft, y: y), to: CGPoint(x: xRight, y: y))
-            
-            if explored[y] != nil {
-                explored[y]!.append((xLeft, xRight))
-            } else {
-                explored[y] = [(xLeft, xRight)]
-            }
-            
-        }
-    }
-    
-    private func isExplored(_ explored: [Int: [(Int, Int)]], x: Int, y: Int) -> Bool {
-        if let exploredY = explored[y] {
-            for range in exploredY {
-                if x >= range.0 && x <= range.1 {
-                    return true
-                }
-            }
-            
-            return false
-        } else {
-            return false
-        }
-    }
-
 }
