@@ -340,7 +340,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyGroupToNeighboringOccupiedGroup[groupAndSize.key]!) {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = groupToPoint[groupAndSize.key]!
-                    colorIn(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing)
+                    floodFill(CGPoint(x: startX, y: startY), width, height, baseImage: baseImage, userDrawing: userDrawing)
                 }
             }
         }
@@ -363,7 +363,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func colorIn(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage) {
+    func floodFill(_ start: CGPoint, _ width: Int, _ height: Int, baseImage: IndexableImage, userDrawing: IndexableImage) {
         
         let context = UIGraphicsGetCurrentContext()
         
@@ -380,41 +380,115 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
         let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
         
-        context!.setFillColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        context!.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
-        
-        var explored = [CGPoint]()
-        var queue = [start]
+        var explored = [Int: [(Int, Int)]]() // y to a list of range
+        // TODO: should be a set??
+        // TODO: actually, why am I getting repeated values at all
+        var queue: Set<CGPoint> = [start]
         
         while !queue.isEmpty {
-            let point = queue.remove(at: 0)
+            let point = queue.popFirst()!
             let x = Int(point.x)
             let y = Int(point.y)
             
-            if (x > 0 && !isOccupied(x - 1, y, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
-                queue.append(CGPoint(x: x - 1, y: y))
-            }
-            if (x < width - 1 && !isOccupied(x + 1, y, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
-                queue.append(CGPoint(x: x + 1, y: y))
+            // TODO handle starting top bottom once
+            
+            var xLeft = x
+            var enteringNewSectionNorth = true
+            var enteringNewSectionSouth = true
+            while xLeft > 0 && !isOccupied(xLeft - 1, y, baseImage: baseImage, userDrawing: userDrawing) {
+                xLeft -= 1
+                
+                if isOccupied(xLeft, y + 1, baseImage: baseImage, userDrawing: userDrawing) {
+                    enteringNewSectionNorth = true
+                } else {
+                    if enteringNewSectionNorth {
+                        if !isExplored(explored, x: xLeft, y: y + 1) {
+                            queue.insert(CGPoint(x: xLeft, y: y + 1))
+                        }
+                        enteringNewSectionNorth = false
+                    }
+                }
+                if isOccupied(xLeft, y - 1, baseImage: baseImage, userDrawing: userDrawing) {
+                    enteringNewSectionSouth = true
+                } else {
+                    if enteringNewSectionSouth {
+                        if !isExplored(explored, x: xLeft, y: y - 1) {
+                            queue.insert(CGPoint(x: xLeft, y: y - 1))
+                        }
+                        enteringNewSectionSouth = false
+                    }
+                }
             }
             
-            if (y > 0 && !isOccupied(x, y - 1, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
-                queue.append(CGPoint(x: x, y: y - 1))
-            }
-            if (y < height - 1 && !isOccupied(x, y + 1, baseImage: baseImage, userDrawing: userDrawing) && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
-                queue.append(CGPoint(x: x, y: y + 1))
+            var xRight = x
+            while xRight > 0 && !isOccupied(xRight + 1, y, baseImage: baseImage, userDrawing: userDrawing) {
+                xRight += 1
+                
+                if isOccupied(xRight, y + 1, baseImage: baseImage, userDrawing: userDrawing) {
+                    enteringNewSectionNorth = true
+                } else {
+                    if enteringNewSectionNorth {
+                        if !isExplored(explored, x: xRight, y: y + 1) {
+                            queue.insert(CGPoint(x: xRight, y: y + 1))
+                        }
+                        enteringNewSectionNorth = false
+                    }
+                }
+                if isOccupied(xRight, y - 1, baseImage: baseImage, userDrawing: userDrawing) {
+                    enteringNewSectionSouth = true
+                } else {
+                    if enteringNewSectionSouth {
+                        if !isExplored(explored, x: xRight, y: y - 1) {
+                            queue.insert(CGPoint(x: xRight, y: y - 1))
+                        }
+                        enteringNewSectionSouth = false
+                    }
+                }
             }
             
-            let xToUse = Int(Float(point.x) * xFactor + xOffset)
-            let yToUse = Int(Float(point.y) * yFactor + yOffset)
+            let xLeftToUse = CGFloat(Float(xLeft) * xFactor + xOffset)
+            let xRightToUse = CGFloat(Float(xRight) * xFactor + xOffset)
+            let yToUse = CGFloat(Float(y) * yFactor + yOffset)
             
             // TODO: can I do in bulk, or draw single point??
-            context!.fill(CGRect(x: xToUse, y: yToUse, width: 1, height: 1))
+            context!.move(to: CGPoint(x: xLeftToUse + 0.5, y: yToUse + 0.5))
+            context!.addLine(to: CGPoint(x: xRightToUse + 0.5, y: yToUse + 0.5))
+            context!.strokePath()
             
+            if explored[y] != nil {
+                explored[y]!.append((xLeft, xRight))
+            } else {
+                explored[y] = [(xLeft, xRight)]
+            }
             
-            explored.append(point)
         }
     }
     
+    private func isExplored(_ explored: [Int: [(Int, Int)]], x: Int, y: Int) -> Bool {
+        if let exploredY = explored[y] {
+            for range in exploredY {
+                if x >= range.0 && x <= range.1 {
+                    return true
+                }
+            }
+            
+            return false
+        } else {
+            return false
+        }
+    }
 
+}
+
+extension CGPoint: Hashable {
+    public var hashValue: Int {
+        return self.x.hashValue &* 7 &+ self.y.hashValue
+    }
+}
+
+// Hashable requires Equatable, so define the equality function for CGPoints.
+public func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
+    return lhs.equalTo(rhs)
 }
