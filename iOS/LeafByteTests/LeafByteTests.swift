@@ -23,7 +23,7 @@ class LeafByteTests: XCTestCase {
         let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
         
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
-        XCTAssert(!indexableImage.getPixel(x: 1400, y: 1400).isWhite())
+        XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isNonWhite())
     }
     
     func testSuggestedThreshold() {

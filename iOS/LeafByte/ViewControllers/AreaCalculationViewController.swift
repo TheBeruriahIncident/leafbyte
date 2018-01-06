@@ -233,15 +233,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         var groupSizes = [Int: Int]()
         
-        // TODO: how to best represent this??
-        var equivalentGroups = [Set<Int>]()
+        let equivalentGroups = UnionFind()
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
                 let occupied = isOccupied(x, y, baseImage: baseImage, userDrawing: userDrawing)
                 
-                // TODO: consider 8 connectivity instead of 4
-                // using 4-connectvity
+                // using 4-connectvity for speed
                 let westGroup = x > 0 && occupied == isOccupied(x - 1, y, baseImage: baseImage, userDrawing: userDrawing)
                     ? groupIds[y][x - 1]
                     : nil
@@ -255,35 +253,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                         if westGroup != northGroup {
                             //merge groups
                             
-                            var westGroupEquivalence: Set<Int>?
-                            var westGroupEquivalenceIndex: Int?
-                            var northGroupEquivalence: Set<Int>?
-                            var northGroupEquivalenceIndex: Int?
-                            for (index, equivalentGroup) in equivalentGroups.enumerated() {
-                                if equivalentGroup.contains(westGroup!) {
-                                    westGroupEquivalence = equivalentGroup
-                                    westGroupEquivalenceIndex = index
-                                }
-                                if equivalentGroup.contains(northGroup!) {
-                                    northGroupEquivalence = equivalentGroup
-                                    northGroupEquivalenceIndex = index
-                                }
-                            }
-                            
-                            if (westGroupEquivalence == nil && northGroupEquivalence == nil) {
-                                equivalentGroups.append([westGroup!, northGroup!])
-                            } else if (westGroupEquivalence != nil && northGroupEquivalence != nil) {
-                                if (westGroupEquivalence != northGroupEquivalence) {
-                                    equivalentGroups[westGroupEquivalenceIndex!].formUnion(northGroupEquivalence!)
-                                    equivalentGroups.remove(at: northGroupEquivalenceIndex!)
-                                }
-                            } else if (westGroupEquivalence != nil) {
-                                equivalentGroups[westGroupEquivalenceIndex!].insert(northGroup!)
-                            } else if (northGroupEquivalence != nil) {
-                                equivalentGroups[northGroupEquivalenceIndex!].insert(westGroup!)
-                            } else {
-                                assert(false) // shouldn't get here
-                            }
+                            equivalentGroups.combineSubsetsContaining(westGroup!, and: northGroup!)
                         }
                         groupSizes[northGroup!]! += 1
                         groupIds[y][x] = northGroup!
@@ -310,6 +280,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                             emptyGroupToNeighboringOccupiedGroup[newGroup] = groupIds[y - 1][x]
                         }
                     }
+                    equivalentGroups.createSubsetWith(newGroup)
                     groupIds[y][x] = newGroup
                     groupSizes[newGroup] = 1
                     groupToPoint[newGroup] = (x, y)
@@ -317,7 +288,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
         }
         
-        for equivalentGroup in equivalentGroups {
+        for equivalentGroup in equivalentGroups.subsetIndexToPartitionedElements.values {
             let first = equivalentGroup.first
             for group in equivalentGroup {
                 if group != first! {
@@ -347,7 +318,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         var leafGroups: Set<Int>?
         var backgroundGroups: Set<Int>?
-        for equivalentGroup in equivalentGroups {
+        for equivalentGroup in equivalentGroups.subsetIndexToPartitionedElements.values {
             if equivalentGroup.contains(leafGroup!) {
                 leafGroups = equivalentGroup
             }

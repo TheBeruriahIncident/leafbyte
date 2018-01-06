@@ -6,55 +6,69 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
-// Taken from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift
-class UnionFind <T: Hashable> {
-    private var index = [T: Int]()
-    private var parent = [Int]()
-    private var size = [Int]()
+// A union-find allows us to keep track of a partition of a set of elements and combine partitions ( https://en.wikipedia.org/wiki/Disjoint-set_data_structure ).
+// This implementation is adapted from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift .
+// This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .
+class UnionFind {
+    var subsetIndexToPartitionedElements = [Int: Set<Int>]()
     
-    public init() {}
+    private var elementToMinimalSubsetIndex = [Int: Int]()
+    private var subsetIndexToParentSubsetIndex = [Int]()
+    // This is only accurate for the top parent in a tree. It's used to help keep the trees balanced.
+    private var subsetIndexToSize = [Int]()
     
-    public func addSetWith(_ element: T) {
-        index[element] = parent.count
-        parent.append(parent.count)
-        size.append(1)
+    func createSubsetWith(_ element: Int) {
+        let subsetIndex = subsetIndexToParentSubsetIndex.count
+        elementToMinimalSubsetIndex[element] = subsetIndex
+        subsetIndexToParentSubsetIndex.append(subsetIndex)
+        subsetIndexToSize.append(1)
+        subsetIndexToPartitionedElements[subsetIndex] = [element]
     }
     
-    /// Path Compression.
-    private func setByIndex(_ index: Int) -> Int {
-        if index != parent[index] {
-            parent[index] = setByIndex(parent[index])
-        }
-        return parent[index]
-    }
-    
-    public func setOf(_ element: T) -> Int? {
-        if let indexOfElement = index[element] {
-            return setByIndex(indexOfElement)
+    func getSubsetIndexOf(_ element: Int) -> Int? {
+        if let indexOfElement = elementToMinimalSubsetIndex[element] {
+            return getMaximalParentSubsetIndexBySubsetIndex(indexOfElement)
         } else {
             return nil
         }
     }
     
-    public func unionSetsContaining(_ firstElement: T, and secondElement: T) {
-        if let firstSet = setOf(firstElement), let secondSet = setOf(secondElement) {
+    // Note that the smaller set becomes a parent of the larger set to help keep balance.
+    func combineSubsetsContaining(_ firstElement: Int, and secondElement: Int) {
+        if let firstSet = getSubsetIndexOf(firstElement), let secondSet = getSubsetIndexOf(secondElement) {
             if firstSet != secondSet {
-                if size[firstSet] < size[secondSet] {
-                    parent[firstSet] = secondSet
-                    size[secondSet] += size[firstSet]
+                var smallerSet: Int!
+                var largerSet: Int!
+                if subsetIndexToSize[firstSet] < subsetIndexToSize[secondSet] {
+                    smallerSet = firstSet
+                    largerSet = secondSet
                 } else {
-                    parent[secondSet] = firstSet
-                    size[firstSet] += size[secondSet]
+                    smallerSet = secondSet
+                    largerSet = firstSet
                 }
+                
+                subsetIndexToParentSubsetIndex[smallerSet] = largerSet
+                subsetIndexToSize[largerSet] += subsetIndexToSize[smallerSet]
+                subsetIndexToPartitionedElements[largerSet]!.formUnion(subsetIndexToPartitionedElements[smallerSet]!)
+                subsetIndexToPartitionedElements[smallerSet] = nil
             }
         }
     }
     
-    public func inSameSet(_ firstElement: T, and secondElement: T) -> Bool {
-        if let firstSet = setOf(firstElement), let secondSet = setOf(secondElement) {
+    func checkIfSameSubset(_ firstElement: Int, and secondElement: Int) -> Bool {
+        if let firstSet = getSubsetIndexOf(firstElement), let secondSet = getSubsetIndexOf(secondElement) {
             return firstSet == secondSet
         } else {
             return false
         }
+    }
+    
+    // This helper incidentally compresses the path from subset to maximal parent subset.
+    private func getMaximalParentSubsetIndexBySubsetIndex(_ index: Int) -> Int {
+        if index != subsetIndexToParentSubsetIndex[index] {
+            let parentSubsetIndex = subsetIndexToParentSubsetIndex[index]
+            subsetIndexToParentSubsetIndex[index] = getMaximalParentSubsetIndexBySubsetIndex(parentSubsetIndex)
+        }
+        return subsetIndexToParentSubsetIndex[index]
     }
 }

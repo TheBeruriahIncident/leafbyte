@@ -11,8 +11,35 @@ import XCTest
 
 class DataStructureTests: XCTestCase {
     func testUnionFind() {
-        let unionFind = UnionFind<Int>()
-        unionFind.addSetWith(0)
+        let unionFind = UnionFind()
+        unionFind.createSubsetWith(1)
+        unionFind.createSubsetWith(-1)
+        unionFind.createSubsetWith(2)
+        unionFind.createSubsetWith(3)
         
+        XCTAssertFalse(unionFind.checkIfSameSubset(3, and: 1))
+        unionFind.combineSubsetsContaining(3, and: 1)
+        XCTAssert(unionFind.checkIfSameSubset(3, and: 1))
+        
+        XCTAssertFalse(unionFind.checkIfSameSubset(1, and: 2))
+        XCTAssertFalse(unionFind.checkIfSameSubset(3, and: 2))
+        unionFind.combineSubsetsContaining(1, and: 2)
+        XCTAssert(unionFind.checkIfSameSubset(1, and: 2))
+        XCTAssert(unionFind.checkIfSameSubset(3, and: 2))
+        
+        unionFind.createSubsetWith(4)
+        unionFind.createSubsetWith(5)
+        unionFind.combineSubsetsContaining(4, and: 5)
+        
+        assertIsAPartition(unionFind: unionFind, partition: [1, 2, 3])
+        assertIsAPartition(unionFind: unionFind, partition: [-1])
+        assertIsAPartition(unionFind: unionFind, partition: [4, 5])
+    }
+    
+    private func assertIsAPartition(unionFind: UnionFind, partition: Set<Int>) {
+        for element in partition {
+            let subsetIndex = unionFind.getSubsetIndexOf(element)!
+            XCTAssertEqual(partition, unionFind.subsetIndexToPartitionedElements[subsetIndex])
+        }
     }
 }
