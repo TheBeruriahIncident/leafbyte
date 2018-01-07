@@ -54,14 +54,12 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
     while !queue.isEmpty {
         let point = queue.popFirst()!
         
-        // TODO: return early
         let x = Int(point.x)
         let y = Int(point.y)
         if isFilled(x: x, y: y, referringTo: filledRanges) {
             continue
         }
         
-        // TODO: be safer about these y values
         // TODO handle starting top bottom once
         
         if y < image.height - 1 && !isFilled(x: x, y: y + 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y + 1) {
@@ -70,10 +68,12 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
         if y > 0 && !isFilled(x: x, y: y - 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y - 1) {
             queue.insert(CGPoint(x: x, y: y - 1))
         }
+        let initialEnteringNewSectionNorth = y < image.height - 1 && image.getPixel(x: x, y: y + 1)
+        let initialEnteringNewSectionSouth = y > 0 && image.getPixel(x: x, y: y - 1)
         
         var xLeft = x
-        var enteringNewSectionNorth = true
-        var enteringNewSectionSouth = true
+        var enteringNewSectionNorth = initialEnteringNewSectionNorth
+        var enteringNewSectionSouth = initialEnteringNewSectionSouth
         while xLeft > 0 && !image.getPixel(x: xLeft - 1, y: y) {
             xLeft -= 1
             
@@ -104,8 +104,8 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
             }
         }
 
-        enteringNewSectionNorth = true
-        enteringNewSectionSouth = true
+        enteringNewSectionNorth = initialEnteringNewSectionNorth
+        enteringNewSectionSouth = initialEnteringNewSectionSouth
         var xRight = x
         while xRight < image.width - 1 && !image.getPixel(x: xRight + 1, y: y) {
             xRight += 1
@@ -143,7 +143,6 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
         } else {
             filledRanges[y] = [(xLeft, xRight)]
         }
-        
     }
 }
 
