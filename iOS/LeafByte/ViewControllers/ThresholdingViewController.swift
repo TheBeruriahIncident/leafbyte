@@ -93,7 +93,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         thresholdSlider.value = 1 - threshold
         
         baseImageView.image = ciToUiImage(filter.outputImage)
-        //findScale()
+        findScale()
     }
     
     func findScale() {
@@ -241,8 +241,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             }
             let (xStart, yStart) = groupToPoint[scaleGroup!]!
             
-            let a = getFarthestPoint(CGPoint(x: xStart, y: yStart), image: image, width, height)
-            let b = getFarthestPoint(a, image: image, width, height)
+            let a = getFarthestPointInComponent(inImage: image, fromPoint: CGPoint(x: xStart, y: yStart))
+            let b = getFarthestPointInComponent(inImage: image, fromPoint: a)
             
             scaleMarkPixelLength = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
             
@@ -269,34 +269,48 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         UIGraphicsEndImageContext()
     }
     
-    
-    func getFarthestPoint(_ start: CGPoint, image: IndexableImage, _ width: Int, _ height: Int) -> CGPoint {
-        var explored = [CGPoint]()
-        var queue = [start]
+    // Find the point farthest away from a point within a connected component.
+    // In other words, find the farthest away point reachable along non-white points.
+    // Note that farthest away refers to the number of non-white points traversed rather than traditional distance.
+    func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint {
+        let width = image.width
+        let height = image.height
         
-        // make this faster, maybe with a distance heuristic
+        var explored = Set<CGPoint>()
+        var queue = [startingPoint]
+        
+        var farthestPointSoFar: CGPoint!
+        
         while !queue.isEmpty {
-            let point = queue.remove(at: 0)
+            let point = queue.removeFirst()
+            if explored.contains(point) {
+                continue
+            }
+            
             let x = Int(point.x)
             let y = Int(point.y)
             
-            if (x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(CGPoint(x: x - 1, y: y)) && !queue.contains(CGPoint(x: x - 1, y: y))) {
-                queue.append(CGPoint(x: x - 1, y: y))
+            let westPoint = CGPoint(x: x - 1, y: y)
+            if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
+                queue.append(westPoint)
             }
-            if (x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(CGPoint(x: x + 1, y: y)) && !queue.contains(CGPoint(x: x + 1, y: y))) {
-                queue.append(CGPoint(x: x + 1, y: y))
+            let eastPoint = CGPoint(x: x + 1, y: y)
+            if x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(eastPoint) {
+                queue.append(eastPoint)
+            }
+            let southPoint = CGPoint(x: x, y: y - 1)
+            if y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(southPoint) {
+                queue.append(southPoint)
+            }
+            let northPoint = CGPoint(x: x, y: y + 1)
+            if y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(northPoint) {
+                queue.append(northPoint)
             }
             
-            if (y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(CGPoint(x: x, y: y - 1)) && !queue.contains(CGPoint(x: x, y: y - 1))) {
-                queue.append(CGPoint(x: x, y: y - 1))
-            }
-            if (y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(CGPoint(x: x, y: y + 1)) && !queue.contains(CGPoint(x: x, y: y + 1))) {
-                queue.append(CGPoint(x: x, y: y + 1))
-            }
-            
-            explored.append(point)
+            explored.insert(point)
+            farthestPointSoFar = point
         }
         
-        return explored.popLast()!
+        return farthestPointSoFar
     }    
 }
