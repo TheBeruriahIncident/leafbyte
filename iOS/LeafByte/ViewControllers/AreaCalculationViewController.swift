@@ -249,7 +249,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                         if westGroup != northGroup {
                             //merge groups
                             
-                            equivalentGroups.combineSubsetsContaining(westGroup!, and: northGroup!)
+                            equivalentGroups.combineClassesContaining(westGroup!, and: northGroup!)
                         }
                         groupSizes[northGroup!]! += 1
                         groupIds[y][x] = northGroup!
@@ -284,7 +284,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
         }
         
-        for equivalentGroup in equivalentGroups.subsetIndexToPartitionedElements.values {
+        for equivalentGroup in equivalentGroups.classToElements.values {
             let first = equivalentGroup.first
             for group in equivalentGroup {
                 if group != first! {
@@ -314,7 +314,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         var leafGroups: Set<Int>?
         var backgroundGroups: Set<Int>?
-        for equivalentGroup in equivalentGroups.subsetIndexToPartitionedElements.values {
+        for equivalentGroup in equivalentGroups.classToElements.values {
             if equivalentGroup.contains(leafGroup!) {
                 leafGroups = equivalentGroup
             }
