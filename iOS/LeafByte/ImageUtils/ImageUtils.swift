@@ -38,110 +38,109 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     return cgToUiImage(context.makeImage()!)
 }
 
-
-
-
-
-// TODO: clean this up
 // Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
 // Assumes that the starting point is "empty" (false) in the boolean image, and draws to the drawing manager.
 func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
-    var filledRanges = [Int: [(Int, Int)]]() // y to a list of range
-    // TODO: should be a set??
-    // TODO: actually, why am I getting repeated values at all
+    // This tracks what ranges are already filled in, mapping a y coordinate to a list of x ranges.
+    var filledRanges = [Int: [(Int, Int)]]()
+    // This is a list of points to fill from.
     var queue: Set<CGPoint> = [startingPoint]
     
     while !queue.isEmpty {
+        // We're going to find the largest horizontal line containing this point that stays in the empty area.
         let point = queue.popFirst()!
-        
-        let x = Int(point.x)
-        let y = Int(point.y)
+        let x = Int(round(point.x))
+        let y = Int(round(point.y))
+        // If this point is already filled, we can truncate here.
         if isFilled(x: x, y: y, referringTo: filledRanges) {
             continue
         }
         
-        // TODO handle starting top bottom once
-        
-        if y < image.height - 1 && !isFilled(x: x, y: y + 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y + 1) {
+        // Check if the points above or below the point should be added to the queue.
+        if y < image.height - 1 && !image.getPixel(x: x, y: y + 1) && !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
             queue.insert(CGPoint(x: x, y: y + 1))
         }
-        if y > 0 && !isFilled(x: x, y: y - 1, referringTo: filledRanges) && !image.getPixel(x: x, y: y - 1) {
+        if y > 0 && !image.getPixel(x: x, y: y - 1) && !isFilled(x: x, y: y - 1, referringTo: filledRanges) {
             queue.insert(CGPoint(x: x, y: y - 1))
         }
-        let initialEnteringNewSectionNorth = y < image.height - 1 && image.getPixel(x: x, y: y + 1)
-        let initialEnteringNewSectionSouth = y > 0 && image.getPixel(x: x, y: y - 1)
+        // As an optimization, as we move left and right, we only need to consider the above or below points for adding to the queue if we've passed a filled point.
+        // This is because otherwise those points would be in the same line that has already been added to the queue above.
+        // As such, we need to track eligibility for adding to the queue on both the north and south side.
+        let initialEligibleForQueueNorth = y < image.height - 1 && image.getPixel(x: x, y: y + 1)
+        let initialEligibleForQueueSouth = y > 0 && image.getPixel(x: x, y: y - 1)
         
-        var xLeft = x
-        var enteringNewSectionNorth = initialEnteringNewSectionNorth
-        var enteringNewSectionSouth = initialEnteringNewSectionSouth
-        while xLeft > 0 && !image.getPixel(x: xLeft - 1, y: y) {
-            xLeft -= 1
+        var leftmostX = x
+        var eligibleForQueueNorth = initialEligibleForQueueNorth
+        var eligibleForQueueSouth = initialEligibleForQueueSouth
+        // Move left as far as possible.
+        while leftmostX > 0 && !image.getPixel(x: leftmostX - 1, y: y) {
+            leftmostX -= 1
             
+            // Check if the northern pixel should be added to the queue, and update eligibility.
             if y < image.height - 1 {
-                if image.getPixel(x: xLeft, y: y + 1) {
-                    enteringNewSectionNorth = true
-                } else {
-                    if enteringNewSectionNorth {
-                        if !isFilled(x: xLeft, y: y + 1, referringTo: filledRanges) {
-                            queue.insert(CGPoint(x: xLeft, y: y + 1))
-                        }
-                        enteringNewSectionNorth = false
+                if image.getPixel(x: leftmostX, y: y + 1) {
+                    eligibleForQueueNorth = true
+                } else if eligibleForQueueNorth {
+                    if !isFilled(x: leftmostX, y: y + 1, referringTo: filledRanges) {
+                        queue.insert(CGPoint(x: leftmostX, y: y + 1))
                     }
+                    eligibleForQueueNorth = false
                 }
             }
-        
+            
+            // Check if the southern pixel should be added to the queue, and update eligibility.
             if y > 0 {
-                if image.getPixel(x: xLeft, y: y - 1) {
-                    enteringNewSectionSouth = true
-                } else {
-                    if enteringNewSectionSouth {
-                        if !isFilled(x: xLeft, y: y - 1, referringTo: filledRanges) {
-                            queue.insert(CGPoint(x: xLeft, y: y - 1))
-                        }
-                        enteringNewSectionSouth = false
+                if image.getPixel(x: leftmostX, y: y - 1) {
+                    eligibleForQueueSouth = true
+                } else if eligibleForQueueSouth {
+                    if !isFilled(x: leftmostX, y: y - 1, referringTo: filledRanges) {
+                        queue.insert(CGPoint(x: leftmostX, y: y - 1))
                     }
+                    eligibleForQueueSouth = false
                 }
             }
         }
 
-        enteringNewSectionNorth = initialEnteringNewSectionNorth
-        enteringNewSectionSouth = initialEnteringNewSectionSouth
-        var xRight = x
-        while xRight < image.width - 1 && !image.getPixel(x: xRight + 1, y: y) {
-            xRight += 1
+        var rightmostX = x
+        eligibleForQueueNorth = initialEligibleForQueueNorth
+        eligibleForQueueSouth = initialEligibleForQueueSouth
+        // Move right as far as possible.
+        while rightmostX < image.width - 1 && !image.getPixel(x: rightmostX + 1, y: y) {
+            rightmostX += 1
             
+            // Check if the northern pixel should be added to the queue, and update eligibility.
             if y < image.height - 1 {
-                if image.getPixel(x: xRight, y: y + 1) {
-                    enteringNewSectionNorth = true
-                } else {
-                    if enteringNewSectionNorth {
-                        if !isFilled(x: xRight, y: y + 1, referringTo: filledRanges) {
-                            queue.insert(CGPoint(x: xRight, y: y + 1))
-                        }
-                        enteringNewSectionNorth = false
+                if image.getPixel(x: rightmostX, y: y + 1) {
+                    eligibleForQueueNorth = true
+                } else if eligibleForQueueNorth {
+                    if !isFilled(x: rightmostX, y: y + 1, referringTo: filledRanges) {
+                        queue.insert(CGPoint(x: rightmostX, y: y + 1))
                     }
+                    eligibleForQueueNorth = false
                 }
             }
+            
+            // Check if the southern pixel should be added to the queue, and update eligibility.
             if y > 0 {
-                if image.getPixel(x: xRight, y: y - 1) {
-                    enteringNewSectionSouth = true
-                } else {
-                    if enteringNewSectionSouth {
-                        if !isFilled(x: xRight, y: y - 1, referringTo: filledRanges) {
-                            queue.insert(CGPoint(x: xRight, y: y - 1))
-                        }
-                        enteringNewSectionSouth = false
+                if image.getPixel(x: rightmostX, y: y - 1) {
+                    eligibleForQueueSouth = true
+                } else if eligibleForQueueSouth {
+                    if !isFilled(x: rightmostX, y: y - 1, referringTo: filledRanges) {
+                        queue.insert(CGPoint(x: rightmostX, y: y - 1))
                     }
+                    eligibleForQueueSouth = false
                 }
             }
         }
         
-        drawingManager.drawLine(from: CGPoint(x: xLeft, y: y), to: CGPoint(x: xRight, y: y))
+        // Draw the horizontal line from the leftmost clear point to the rightmost clear point.
+        drawingManager.drawLine(from: CGPoint(x: leftmostX, y: y), to: CGPoint(x: rightmostX, y: y))
         
+        // Mark the range as filled in so we don't come back to it.
         if filledRanges[y] != nil {
-            filledRanges[y]!.append((xLeft, xRight))
+            filledRanges[y]!.append((leftmostX, rightmostX))
         } else {
-            filledRanges[y] = [(xLeft, xRight)]
+            filledRanges[y] = [(leftmostX, rightmostX)]
         }
     }
 }
