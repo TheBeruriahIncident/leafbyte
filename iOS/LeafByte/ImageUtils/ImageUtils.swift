@@ -38,6 +38,51 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     return cgToUiImage(context.makeImage()!)
 }
 
+// Find the point farthest away from a point within a connected component.
+// In other words, find the farthest away point reachable along non-white points.
+// Note that farthest away refers to the number of non-white points traversed rather than traditional distance.
+func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint {
+    let width = image.width
+    let height = image.height
+    
+    var explored = Set<CGPoint>()
+    var queue = [startingPoint]
+    
+    var farthestPointSoFar: CGPoint!
+    
+    while !queue.isEmpty {
+        let point = queue.removeFirst()
+        if explored.contains(point) {
+            continue
+        }
+        
+        let x = Int(point.x)
+        let y = Int(point.y)
+        
+        let westPoint = CGPoint(x: x - 1, y: y)
+        if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
+            queue.append(westPoint)
+        }
+        let eastPoint = CGPoint(x: x + 1, y: y)
+        if x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(eastPoint) {
+            queue.append(eastPoint)
+        }
+        let southPoint = CGPoint(x: x, y: y - 1)
+        if y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(southPoint) {
+            queue.append(southPoint)
+        }
+        let northPoint = CGPoint(x: x, y: y + 1)
+        if y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(northPoint) {
+            queue.append(northPoint)
+        }
+        
+        explored.insert(point)
+        farthestPointSoFar = point
+    }
+    
+    return farthestPointSoFar
+}
+
 // Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
 // Assumes that the starting point is "empty" (false) in the boolean image, and draws to the drawing manager.
 func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
