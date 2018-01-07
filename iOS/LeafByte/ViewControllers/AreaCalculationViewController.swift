@@ -225,11 +225,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         var emptyLabelToNeighboringOccupiedLabel = [Int: Int]()
         var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
         var nextOccupiedLabel = 1
-        var nextEmptyLabel = -1
+        var nextEmptyLabel = -2
         
         var labelToSize = [Int: Int]()
         
         let equivalenceClasses = UnionFind()
+        equivalenceClasses.createSubsetWith(-1) //outside of leaf
+        labelToSize[-1] = 0
         
         for y in 0...height - 1 {
             for x in 0...width - 1 {
@@ -279,6 +281,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                     labelledImage[y][x] = newGroup
                     labelToSize[newGroup] = 1
                     labelToStartingPoint[newGroup] = (x, y)
+                }
+                
+                if !occupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
+                    equivalenceClasses.combineClassesContaining(labelledImage[y][x], and: -1)
                 }
             }
         }
