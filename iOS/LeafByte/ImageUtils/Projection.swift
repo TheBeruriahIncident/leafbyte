@@ -6,6 +6,7 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
+import CoreGraphics
 import UIKit
 
 // Represents a projection from one space to another ( https://en.wikipedia.org/wiki/Projection_(mathematics) ).
@@ -34,6 +35,13 @@ class Projection {
         yOffset = Float(viewSize.height - imageSize.height * scalingRatio) / 2
     }
     
+    init(invertProjection baseProjection: Projection) {
+        xScale = 1 / baseProjection.xScale
+        yScale = 1 / baseProjection.yScale
+        xOffset = -baseProjection.xOffset / baseProjection.xScale
+        yOffset = -baseProjection.yOffset / baseProjection.yScale
+    }
+    
     init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Float = 0, withExtraYOffset extraYOffset: Float = 0) {
         xScale = baseProjection.xScale
         yScale = baseProjection.yScale
@@ -51,6 +59,11 @@ class Projection {
     func project(x: Int, y: Int) -> (Int, Int) {
         let (projectedX, projectedY) = project(x: Float(x), y: Float(y))
         return (Int(round(projectedX)), Int(round(projectedY)))
+    }
+    
+    func project(point: CGPoint) -> CGPoint {
+        let (projectedX, projectedY) = project(x: Float(point.x), y: Float(point.y))
+        return CGPoint(x: CGFloat(projectedX), y: CGFloat(projectedY))
     }
     
     func project(x: Float, y: Float) -> (Float, Float) {

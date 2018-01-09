@@ -21,6 +21,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     var swiped = false
     // The last touched point, to enable drawing lines while swiping.
     var lastTouchedPoint = CGPoint.zero
+    // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
+    var userDrawingToBaseImage: Projection!
+    var baseImageRect: CGRect
     
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
@@ -78,6 +81,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         baseImageView.contentMode = .scaleAspectFit
         baseImageView.image = image
+        
+        userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         setScrollingMode(true)
         
@@ -165,7 +171,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         // Drawing with width two means that the line will always be connected by 4 connectivity, simplifying the connected components code.
         drawingManager.getContext().setLineWidth(2)
         
-        drawingManager.drawLine(from: fromPoint, to: toPoint)
+        
+        // Only draw if the points are within the base image.
+        // Otherwise, since connected components and flood filling are calculated within the base image, other operations will seem broken.
+        let fromPointInBaseImage = userDrawingToBaseImage.project(point: fromPoint)
+        let toPointInBaseImage = userDrawingToBaseImage.project(point: toPoint)
+        if baseImageRect.contains(fromPointInBaseImage) && baseImageRect.contains(toPointInBaseImage) {
+            drawingManager.drawLine(from: fromPoint, to: toPoint)
+        }
+        
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
