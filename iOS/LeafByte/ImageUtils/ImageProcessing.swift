@@ -80,7 +80,7 @@ private func otsusMethod(histogram: [Int]) -> Float {
     for index in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
         omega0 = omega0 + histogram[index]
         let omega1 = sumOfOmegas - omega0
-        if (omega0 == 0 || omega1 == 0) {
+        if omega0 == 0 || omega1 == 0 {
             continue
         }
         
@@ -90,7 +90,7 @@ private func otsusMethod(histogram: [Int]) -> Float {
         let mu1 = Double(mu1Numerator) / Double(omega1)
         let interClassVariance = Double(omega0 * omega1) * pow(mu0 - mu1, 2)
         
-        if ( interClassVariance >= maximumInterClassVariance ) {
+        if interClassVariance >= maximumInterClassVariance {
             maximumInterClassVariance = interClassVariance
             bestCut = index
         }

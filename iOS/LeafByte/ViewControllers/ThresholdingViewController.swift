@@ -145,16 +145,16 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                             
-                            if (westGroupEquivalence == nil && northGroupEquivalence == nil) {
+                            if westGroupEquivalence == nil && northGroupEquivalence == nil {
                                 equivalentGroups.append([westGroup!, northGroup!])
-                            } else if (westGroupEquivalence != nil && northGroupEquivalence != nil) {
-                                if (westGroupEquivalence != northGroupEquivalence) {
+                            } else if westGroupEquivalence != nil && northGroupEquivalence != nil {
+                                if westGroupEquivalence != northGroupEquivalence {
                                     equivalentGroups[westGroupEquivalenceIndex!].formUnion(northGroupEquivalence!)
                                     equivalentGroups.remove(at: northGroupEquivalenceIndex!)
                                 }
-                            } else if (westGroupEquivalence != nil) {
+                            } else if westGroupEquivalence != nil {
                                 equivalentGroups[westGroupEquivalenceIndex!].insert(northGroup!)
-                            } else if (northGroupEquivalence != nil) {
+                            } else if northGroupEquivalence != nil {
                                 equivalentGroups[northGroupEquivalenceIndex!].insert(westGroup!)
                             } else {
                                 assert(false) // shouldn't get here
@@ -172,7 +172,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
                 } else {
                     //NEW GROUP
                     var newGroup: Int
-                    if (occupied) {
+                    if occupied {
                         newGroup = occupiedGroup
                         occupiedGroup += 1
                     } else {
@@ -200,7 +200,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         var leafFound = false; // assume the biggest blob is leaf, second is the scale
         var scaleGroup: Int?
         for groupAndSize in groupsAndSizes {
-            if (groupAndSize.key > 0) {
+            if groupAndSize.key > 0 {
                 if !leafFound {
                     leafFound = true
                 } else {
@@ -231,11 +231,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
-        if (scaleGroup != nil) {
+        if scaleGroup != nil {
             // TODO: we should be using scale class not group
             //var scaleClass: Set<Int>
             for equivalentGroup in equivalentGroups {
-                if (equivalentGroup.contains(scaleGroup!)) {
+                if equivalentGroup.contains(scaleGroup!) {
                     //scaleClass = equivalentGroup
                 }
             }

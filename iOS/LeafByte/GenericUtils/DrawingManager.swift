@@ -37,7 +37,7 @@ class DrawingManager {
         let projectedFromPoint = projection.project(x: Float(fromPoint.x), y: Float(fromPoint.y))
         
         // A line from a point to itself doesn't show up, so draw a 1 pixel rectangle.
-        if (fromPoint == toPoint) {
+        if fromPoint == toPoint {
             context.addRect(CGRect(x: CGFloat(projectedFromPoint.0), y: CGFloat(projectedFromPoint.1), width: CGFloat(1.0), height: CGFloat(1.0)))
         }
         

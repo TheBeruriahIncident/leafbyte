@@ -158,7 +158,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
         // Do not draw in scrolling mode.
-        if (inScrollingMode) {
+        if inScrollingMode {
             return
         }
         
@@ -188,7 +188,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
         
-        if (inScrollingMode) {
+        if inScrollingMode {
             modeToggleButton.setTitle("Switch to drawing", for: .normal)
         } else {
             modeToggleButton.setTitle("Switch to scrolling", for: .normal)
@@ -266,7 +266,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 } else {
                     //NEW GROUP
                     var newGroup: Int
-                    if (occupied) {
+                    if occupied {
                         newGroup = nextOccupiedLabel
                         nextOccupiedLabel += 1
                     } else {
@@ -310,15 +310,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         var leafGroup: Int?
         var leafSize: Int?; // assume the biggest blob is leaf, second is the scale
         for groupAndSize in labelsAndSizes {
-            if (groupAndSize.key > 0 && leafGroup == nil) {
+            if groupAndSize.key > 0 && leafGroup == nil {
                 leafGroup = groupAndSize.key
                 leafSize = groupAndSize.value
             }
-            if (groupAndSize.key < 0 && backgroundLabel == nil) {
+            if groupAndSize.key < 0 && backgroundLabel == nil {
                 backgroundLabel = groupAndSize.key
             }
             
-            if (leafGroup != nil && backgroundLabel != nil) {
+            if leafGroup != nil && backgroundLabel != nil {
                 break
             }
         }
@@ -333,7 +333,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 backgroundGroups = equivalenceClass
             }
             
-            if (leafGroups != nil && backgroundGroups != nil) {
+            if leafGroups != nil && backgroundGroups != nil {
                 break
             }
         }
@@ -345,7 +345,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
         for groupAndSize in labelsAndSizes {
-            if (groupAndSize.key < 0) {
+            if groupAndSize.key < 0 {
                 if  !(backgroundGroups?.contains(groupAndSize.key))! && !emptyLabelToNeighboringOccupiedLabels[groupAndSize.key]!.intersection(leafGroups!).isEmpty {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = labelToStartingPoint[groupAndSize.key]!
@@ -363,7 +363,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     func getArea(pixels: Int) -> Float {
-        if (scaleMarkPixelLength != nil) {
+        if scaleMarkPixelLength != nil {
             return pow(2.0 / Float(scaleMarkPixelLength!), 2) * Float(pixels)
         } else {
             return Float(pixels)
