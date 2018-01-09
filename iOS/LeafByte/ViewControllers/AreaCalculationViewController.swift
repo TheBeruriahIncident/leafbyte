@@ -224,7 +224,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let height = combinedImage.height
         
         var labelToStartingPoint = [Int: (Int, Int)]()
-        var emptyLabelToNeighboringOccupiedLabel = [Int: Int]()
+        var emptyLabelToNeighboringOccupiedLabels = [Int: Set<Int>]()
         var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
         var nextOccupiedLabel = 1
         var nextEmptyLabel = -2
@@ -273,17 +273,21 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                         newGroup = nextEmptyLabel
                         nextEmptyLabel -= 1
                         
+                        var neighbors = Set<Int>()
                         if x > 0 {
-                            emptyLabelToNeighboringOccupiedLabel[newGroup] = labelledImage[y][x  - 1]
-                        } else if y > 0 {
-                            emptyLabelToNeighboringOccupiedLabel[newGroup] = labelledImage[y - 1][x]
+                            neighbors.insert(labelledImage[y][x  - 1])
                         }
+                        if y > 0 {
+                            neighbors.insert(labelledImage[y - 1][x])
+                        }
+                        emptyLabelToNeighboringOccupiedLabels[newGroup] = neighbors
                     }
                     equivalenceClasses.createSubsetWith(newGroup)
                     labelledImage[y][x] = newGroup
                     labelToSize[newGroup] = 1
                     labelToStartingPoint[newGroup] = (x, y)
                 }
+                // TODO: save into emptyLabelToNeighboringOccupiedLabels[newGroup] for all occupied neighbors of empty
                 
                 if !occupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
                     equivalenceClasses.combineClassesContaining(labelledImage[y][x], and: -1)
@@ -342,7 +346,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         for groupAndSize in labelsAndSizes {
             if (groupAndSize.key < 0) {
-                if  !(backgroundGroups?.contains(groupAndSize.key))! && leafGroups!.contains(emptyLabelToNeighboringOccupiedLabel[groupAndSize.key]!) {
+                if  !(backgroundGroups?.contains(groupAndSize.key))! && !emptyLabelToNeighboringOccupiedLabels[groupAndSize.key]!.intersection(leafGroups!).isEmpty {
                     eatenArea += getArea(pixels: groupAndSize.value)
                     let (startX, startY) = labelToStartingPoint[groupAndSize.key]!
                     floodFill(image: combinedImage, fromPoint: CGPoint(x: startX, y: startY), drawingTo: drawingManager)
