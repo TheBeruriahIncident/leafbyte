@@ -23,7 +23,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     var lastTouchedPoint = CGPoint.zero
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
-    var baseImageRect: CGRect
+    var baseImageRect: CGRect!
     
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
