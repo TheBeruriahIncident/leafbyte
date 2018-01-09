@@ -125,7 +125,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = true
         let currentPoint = (touches.first?.location(in: userDrawingView))!
-        drawLineFrom(fromPoint: lastTouchedPoint, toPoint: currentPoint)
+        drawLine(fromPoint: lastTouchedPoint, toPoint: currentPoint)
         
         lastTouchedPoint = currentPoint
     }
@@ -133,7 +133,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
             // If it's not a swipe, no line has been drawn.
-            drawLineFrom(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
+            drawLine(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
         }
     }
     
@@ -150,7 +150,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     // MARK: - Helpers
     
-    func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+    func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
         // Do not draw in scrolling mode.
         if (inScrollingMode) {
             return
@@ -159,26 +159,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         // Allow recalculation now that there's a possibility of a different result.
         calculateButton.isEnabled = true
         
-        UIGraphicsBeginImageContext(userDrawingView.frame.size)
-        let context = UIGraphicsGetCurrentContext()!
+        let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
         
         // TODO: make sure this makes sense later
         // Drawing with width two means that the line will always be connected by 4 connectivity, simplifying the connected components code.
-        context.setLineWidth(2)
-        context.interpolationQuality = CGInterpolationQuality.none
-        context.setAllowsAntialiasing(false)
-        context.setShouldAntialias(false)
+        drawingManager.getContext().setLineWidth(2)
         
-        // TODO: does this need to happen every time? clean up context graphics in general
-        userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
-        
-        context.move(to: CGPoint(x: fromPoint.x + 0.5, y: fromPoint.y + 0.5))
-        context.addLine(to: CGPoint(x: toPoint.x + 0.5, y: toPoint.y + 0.5))
-        context.strokePath()
-        
-        userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
+        drawingManager.drawLine(from: fromPoint, to: toPoint)
+        drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
     func setScrollingMode(_ inScrollingMode: Bool) {
@@ -336,7 +324,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         var eatenArea: Float = 0.0
         
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
-        drawingManager.setColorToRed()
+        drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
         for groupAndSize in labelsAndSizes {
             if (groupAndSize.key < 0) {

@@ -19,12 +19,18 @@ class DrawingManager {
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection = Projection.identity) {
         UIGraphicsBeginImageContext(canvasSize)
         context = UIGraphicsGetCurrentContext()!
+        // Make all the drawing precise.
+        // This avoids our drawn lines looking blurry (since you can zoom in).
+        // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
+        context.interpolationQuality = CGInterpolationQuality.none
+        context.setAllowsAntialiasing(false)
+        context.setShouldAntialias(false)
         
         self.projection = Projection(fromProjection: baseProjection, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
     }
     
-    func setColorToRed() {
-        context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    func getContext() -> CGContext {
+        return context
     }
     
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
@@ -42,7 +48,11 @@ class DrawingManager {
         context.strokePath()
     }
     
-    func finish(imageView: UIImageView) {
+    func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
+        if addToPreviousImage {
+            imageView.image?.draw(in: CGRect(x: 0, y: 0, width: imageView.frame.size.width, height: imageView.frame.size.height))
+        }
+        
         imageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
     }
