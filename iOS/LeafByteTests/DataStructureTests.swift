@@ -38,8 +38,8 @@ class DataStructureTests: XCTestCase {
     
     private func assertIsAPartition(unionFind: UnionFind, partition: Set<Int>) {
         for element in partition {
-            let subsetIndex = unionFind.getSubsetIndexOf(element)!
-            XCTAssertEqual(partition, unionFind.classToElements[subsetIndex])
+            let elementClass = unionFind.getClassOf(element)!
+            XCTAssertEqual(partition, unionFind.classToElements[elementClass])
         }
     }
 }

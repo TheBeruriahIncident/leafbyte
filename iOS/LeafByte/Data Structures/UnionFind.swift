@@ -25,7 +25,7 @@ class UnionFind {
         classToElements[subsetIndex] = [element]
     }
     
-    func getSubsetIndexOf(_ element: Int) -> Int? {
+    func getClassOf(_ element: Int) -> Int? {
         if let indexOfElement = elementToSubset[element] {
             return getClassBySubset(indexOfElement)
         } else {
@@ -35,7 +35,7 @@ class UnionFind {
     
     // Note that the smaller set becomes a parent of the larger set to help keep balance.
     func combineClassesContaining(_ firstElement: Int, and secondElement: Int) {
-        if let firstSet = getSubsetIndexOf(firstElement), let secondSet = getSubsetIndexOf(secondElement) {
+        if let firstSet = getClassOf(firstElement), let secondSet = getClassOf(secondElement) {
             if firstSet != secondSet {
                 var smallerSet: Int!
                 var largerSet: Int!
@@ -56,7 +56,7 @@ class UnionFind {
     }
     
     func checkIfSameClass(_ firstElement: Int, and secondElement: Int) -> Bool {
-        if let firstSet = getSubsetIndexOf(firstElement), let secondSet = getSubsetIndexOf(secondElement) {
+        if let firstSet = getClassOf(firstElement), let secondSet = getClassOf(secondElement) {
             return firstSet == secondSet
         } else {
             return false
