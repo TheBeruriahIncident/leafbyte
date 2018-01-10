@@ -118,25 +118,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        scaleMarkingView.image = nil
-        UIGraphicsBeginImageContext(scaleMarkingView.frame.size)
-        let context = UIGraphicsGetCurrentContext()
-        
-        scaleMarkingView.image?.draw(in: CGRect(x: 0, y: 0, width: scaleMarkingView.frame.size.width, height: scaleMarkingView.frame.size.height))
-        
-        
-        let scaleW = baseImageView.frame.size.width / (baseImageView.image?.size.width)!
-        let scaleH = baseImageView.frame.size.height / (baseImageView.image?.size.height)!
-        let aspect = fmin(scaleW, scaleH)
-        
-        
-        let xFactor = Float((baseImageView.image?.size.width)!) / Float((baseImageView.image?.size.width)! / aspect)
-        let yFactor = Float((baseImageView.image?.size.height)!) / Float((baseImageView.image?.size.height)! / aspect)
-        let xOffset = Float((baseImageView.frame.size.width - (baseImageView.image?.size.width)! * aspect) / 2)
-        let yOffset = Float((baseImageView.frame.size.height - (baseImageView.image?.size.height)! * aspect) / 2)
-        //print("\(xFactor)  \(yFactor) \(xOffset) \(yOffset)")
-        
-        context?.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
         if scaleGroup != nil {
             // TODO: we should be using scale class not group
@@ -148,26 +131,10 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             scaleMarkPixelLength = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
             
-            let xAToUse = Int(Float(a.x) * xFactor + xOffset)
-            let yAToUse = Int(Float(a.y) * yFactor + yOffset)
             
-            let xBToUse = Int(Float(b.x) * xFactor + xOffset)
-            let yBToUse = Int(Float(b.y) * yFactor + yOffset)
-            
-            // TODO: factor this out
-            context?.interpolationQuality = CGInterpolationQuality.none
-            context?.setAllowsAntialiasing(false)
-            context?.setShouldAntialias(false)
-            
-            // TODO: factor these out to isolate 0.5??
-            context!.move(to: CGPoint(x: Double(xAToUse) + 0.5, y: Double(yAToUse) + 0.5))
-            context!.addLine(to: CGPoint(x: Double(xBToUse) + 0.5, y: Double(yBToUse) + 0.5))
-            context!.strokePath()
+            drawingManager.drawLine(from: a, to: b)
         }
         
-        
-        scaleMarkingView.image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
+        drawingManager.finish(imageView: scaleMarkingView)
     }
 }
