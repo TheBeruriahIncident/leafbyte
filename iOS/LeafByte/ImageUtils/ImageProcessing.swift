@@ -139,9 +139,9 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     var nextEmptyLabel = -2
     
     // Use -1 as a special label for the area outside the image.
-    // TODO: use this is as few data structures as possible and make sure there's no change of using later and getting weird results
     let outsideOfImageLabel = -1
     equivalenceClasses.createSubsetWith(outsideOfImageLabel)
+    emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = []
     labelToSize[outsideOfImageLabel] = 0
     
     for y in 0...height - 1 {

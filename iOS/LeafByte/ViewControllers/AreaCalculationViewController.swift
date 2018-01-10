@@ -220,92 +220,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: userDrawingProjection)
         combinedImage.addImage(userDrawing, withPixelToBoolConversion: { $0.isVisible() })
         
-        let width = combinedImage.width
-        let height = combinedImage.height
+        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         
-        var labelToStartingPoint = [Int: (Int, Int)]()
-        var emptyLabelToNeighboringOccupiedLabels = [Int: Set<Int>]()
-        var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
-        var nextOccupiedLabel = 1
-        var nextEmptyLabel = -2
-        
-        var labelToSize = [Int: Int]()
-        
-        let equivalenceClasses = UnionFind()
-        equivalenceClasses.createSubsetWith(-1) //outside of leaf
-        labelToSize[-1] = 0
-        
-        for y in 0...height - 1 {
-            for x in 0...width - 1 {
-                let occupied = combinedImage.getPixel(x: x, y: y)
-                
-                // using 4-connectvity for speed
-                let westGroup = x > 0 && occupied == combinedImage.getPixel(x: x - 1, y: y)
-                    ? labelledImage[y][x - 1]
-                    : nil
-                let northGroup = y > 0 && occupied == combinedImage.getPixel(x: x, y: y - 1)
-                    ? labelledImage[y - 1][x]
-                    : nil
-                
-                if westGroup != nil {
-                    if northGroup != nil {
-                        if westGroup != northGroup {
-                            //merge groups
-                            
-                            equivalenceClasses.combineClassesContaining(westGroup!, and: northGroup!)
-                        }
-                        labelToSize[northGroup!]! += 1
-                        labelledImage[y][x] = northGroup!
-                    } else {
-                        labelToSize[westGroup!]! += 1
-                        labelledImage[y][x] = westGroup!
-                    }
-                } else if northGroup != nil {
-                    labelToSize[northGroup!]! += 1
-                    labelledImage[y][x] = northGroup!
-                } else {
-                    //NEW GROUP
-                    var newGroup: Int
-                    if occupied {
-                        newGroup = nextOccupiedLabel
-                        nextOccupiedLabel += 1
-                    } else {
-                        newGroup = nextEmptyLabel
-                        nextEmptyLabel -= 1
-                        
-                        var neighbors = Set<Int>()
-                        if x > 0 {
-                            neighbors.insert(labelledImage[y][x  - 1])
-                        }
-                        if y > 0 {
-                            neighbors.insert(labelledImage[y - 1][x])
-                        }
-                        emptyLabelToNeighboringOccupiedLabels[newGroup] = neighbors
-                    }
-                    equivalenceClasses.createSubsetWith(newGroup)
-                    labelledImage[y][x] = newGroup
-                    labelToSize[newGroup] = 1
-                    labelToStartingPoint[newGroup] = (x, y)
-                }
-                // TODO: save into emptyLabelToNeighboringOccupiedLabels[newGroup] for all occupied neighbors of empty
-                
-                if !occupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
-                    equivalenceClasses.combineClassesContaining(labelledImage[y][x], and: -1)
-                }
-            }
-        }
-        
-        for equivalenceClass in equivalenceClasses.classToElements.values {
-            let first = equivalenceClass.first
-            for label in equivalenceClass {
-                if label != first! {
-                    labelToSize[first!]! += labelToSize[label]!
-                    labelToSize[label] = nil
-                }
-            }
-        }
-        
-        let labelsAndSizes = labelToSize.sorted { $0.1 > $1.1 }
+        let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1 > $1.1 }
         var backgroundLabel: Int?
         var leafGroup: Int?
         var leafSize: Int?; // assume the biggest blob is leaf, second is the scale
@@ -325,7 +242,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         var leafGroups: Set<Int>?
         var backgroundGroups: Set<Int>?
-        for equivalenceClass in equivalenceClasses.classToElements.values {
+        for equivalenceClass in connectedComponentsInfo.equivalenceClasses.classToElements.values {
             if equivalenceClass.contains(leafGroup!) {
                 leafGroups = equivalenceClass
             }
@@ -346,9 +263,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         for groupAndSize in labelsAndSizes {
             if groupAndSize.key < 0 {
-                if  !(backgroundGroups?.contains(groupAndSize.key))! && !emptyLabelToNeighboringOccupiedLabels[groupAndSize.key]!.intersection(leafGroups!).isEmpty {
+                if  !(backgroundGroups?.contains(groupAndSize.key))! && !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[groupAndSize.key]!.intersection(leafGroups!).isEmpty {
                     eatenArea += getArea(pixels: groupAndSize.value)
-                    let (startX, startY) = labelToStartingPoint[groupAndSize.key]!
+                    let (startX, startY) = connectedComponentsInfo.labelToMemberPoint[groupAndSize.key]!
                     floodFill(image: combinedImage, fromPoint: CGPoint(x: startX, y: startY), drawingTo: drawingManager)
                 }
             }
