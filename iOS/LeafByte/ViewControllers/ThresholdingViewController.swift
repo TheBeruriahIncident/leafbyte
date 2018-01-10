@@ -118,7 +118,15 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         let farthestPoint1 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY))
         let farthestPoint2 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: farthestPoint1)
         
-        scaleMarkPixelLength = Int(round(farthestPoint1.distance(to: farthestPoint2)))
+        let candidateScaleMarkPixelLength = Int(round(farthestPoint1.distance(to: farthestPoint2)))
+        // If the scale mark is less than 5 pixels long, it's probably just noise in the image.
+        if candidateScaleMarkPixelLength < 5 {
+            // Remove any previously drawn mark before returning.
+            scaleMarkingView.image = nil
+            return
+        }
+        
+        scaleMarkPixelLength = candidateScaleMarkPixelLength
         
         // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
