@@ -167,11 +167,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
         
-        // TODO: make sure this makes sense later
-        // Drawing with width two means that the line will always be connected by 4 connectivity, simplifying the connected components code.
-        drawingManager.getContext().setLineWidth(2)
-        
-        
         // Only draw if the points are within the base image.
         // Otherwise, since connected components and flood filling are calculated within the base image, other operations will seem broken.
         let fromPointInBaseImage = userDrawingToBaseImage.project(point: fromPoint)
