@@ -15,4 +15,8 @@ extension CGPoint: Hashable {
         // Note the &s to get wraparound behavior ( https://en.wikipedia.org/wiki/Integer_overflow ).
         return self.x.hashValue &* 31 &+ self.y.hashValue
     }
+    
+    public func distance(to other: CGPoint) -> CGFloat {
+        return pow(pow(self.x - other.x, 2) + pow(self.y - other.y, 2), 0.5)
+    }
 }

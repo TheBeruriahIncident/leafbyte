@@ -53,9 +53,9 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
         
-        // TODO: these should not be here and should probably be async
         // Guess a good threshold to start at; the user can adjust with the slider later.
         let suggestedThreshold = getSuggestedThreshold(image: uiToCgImage(image!))
+        thresholdSlider.value = 1 - suggestedThreshold
         setThreshold(suggestedThreshold)
     }
 
@@ -80,61 +80,48 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         return scrollableView
     }
     
-    
-    
-    
-    
-    
-    
-    
+    // MARK: - Helpers
     
     func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
-        thresholdSlider.value = 1 - threshold
-        
         baseImageView.image = ciToUiImage(filter.outputImage)
-        findScale()
+        findScaleMark()
     }
     
-    func findScale() {
-        let image = IndexableImage(uiToCgImage(baseImageView.image!))
-        let booleanImage = BooleanIndexableImage(width: image.width, height: image.height)
-        booleanImage.addImage(image, withPixelToBoolConversion: { $0.isNonWhite() })
+    func findScaleMark() {
+        let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
+        let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
+        image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
         
-        let connectedComponentsInfo = labelConnectedComponents(image: booleanImage)
+        let connectedComponentsInfo = labelConnectedComponents(image: image)
         
-        let groupsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1 > $1.1 }
-        var leafFound = false; // assume the biggest blob is leaf, second is the scale
-        var scaleGroup: Int?
-        for groupAndSize in groupsAndSizes {
-            if groupAndSize.key > 0 {
-                if !leafFound {
-                    leafFound = true
-                } else {
-                    //print("size \(groupAndSize.value)")
-                    scaleGroup = groupAndSize.key
-                    break
-                }
-            }
+        // We're going to find the second biggest occupied component; we assume the biggest is the leaf and the second biggest is the scale mark.
+        // As such, filter down to just occupied components.
+        let occupiedLabelsAndSizes: [Int: Int] = connectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
+        
+        // If we have less than two, we don't have a scale mark.
+        if occupiedLabelsAndSizes.count < 2 {
+            return
         }
         
+        // The scale mark is the second biggest label.
+        let scaleMarkLabel = occupiedLabelsAndSizes.sorted { $0.1 > $1.1 }[1].key
+        
+        // Get a point in the scale mark.
+        let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
+        
+        // Find the farthest point in the scale mark away, then the farthest away from that.
+        // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
+        // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
+        let farthestPoint1 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY))
+        let farthestPoint2 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: farthestPoint1)
+        
+        scaleMarkPixelLength = Int(round(farthestPoint1.distance(to: farthestPoint2)))
+        
+        // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        
-        if scaleGroup != nil {
-            // TODO: we should be using scale class not group
-            
-            let (xStart, yStart) = connectedComponentsInfo.labelToMemberPoint[scaleGroup!]!
-            
-            let a = getFarthestPointInComponent(inImage: image, fromPoint: CGPoint(x: xStart, y: yStart))
-            let b = getFarthestPointInComponent(inImage: image, fromPoint: a)
-            
-            scaleMarkPixelLength = Int(pow(pow(a.x - b.x, 2) + pow(a.y - b.y, 2), 0.5))
-            
-            
-            drawingManager.drawLine(from: a, to: b)
-        }
-        
+        drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
         drawingManager.finish(imageView: scaleMarkingView)
     }
 }
