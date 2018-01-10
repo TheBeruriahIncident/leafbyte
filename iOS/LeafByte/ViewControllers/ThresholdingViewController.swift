@@ -101,6 +101,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         // If we have less than two, we don't have a scale mark.
         if occupiedLabelsAndSizes.count < 2 {
+            // Remove any previously drawn mark before returning.
+            scaleMarkingView.image = nil
             return
         }
         
