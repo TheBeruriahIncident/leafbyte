@@ -226,9 +226,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // Assume the biggest is the background, and everything else is potentially a hole.
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
-        
-        // TODO: pull out an info. using a bunch
-        
+                
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
