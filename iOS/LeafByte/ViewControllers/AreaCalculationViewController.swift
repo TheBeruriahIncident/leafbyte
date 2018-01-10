@@ -57,7 +57,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         resultsText.text = "Loading"
         // The label won't update until this action returns, so put this calculation on the queue, and it'll be executed right after this function ends.
         DispatchQueue.main.async {
-            self.findSizes()
+            self.calculateArea()
         }
     }
     
@@ -195,27 +195,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func findSizes() {
+    func calculateArea() {
+        // The BooleanIndexableImage will be a view across both sources of pixels.
+        // First we add the base iamge of the leaf.
         let baseImage = IndexableImage(uiToCgImage(image!))
         let combinedImage = BooleanIndexableImage(width: baseImage.width, height: baseImage.height)
         combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
         
+        // Then we include any user drawings.
         let userDrawingProjection = Projection(fromImageInView: baseImageView.image!, toView: baseImageView)
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: userDrawingProjection)
         combinedImage.addImage(userDrawing, withPixelToBoolConversion: { $0.isVisible() })
@@ -223,67 +210,71 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1 > $1.1 }
-        var backgroundLabel: Int?
-        var leafGroup: Int?
-        var leafSize: Int?; // assume the biggest blob is leaf, second is the scale
-        for groupAndSize in labelsAndSizes {
-            if groupAndSize.key > 0 && leafGroup == nil {
-                leafGroup = groupAndSize.key
-                leafSize = groupAndSize.value
-            }
-            if groupAndSize.key < 0 && backgroundLabel == nil {
-                backgroundLabel = groupAndSize.key
-            }
-            
-            if leafGroup != nil && backgroundLabel != nil {
-                break
-            }
+        
+        // Assume the largest occupied component is the leaf.
+        let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
+        if leafLabelAndSize == nil {
+            // This is a blank image, and trying to calculate area will crash.
+            resultsText.text = "No leaf found"
+            return
+        }
+        let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
+        let leafAreaInPixels = leafLabelAndSize!.value
+        
+        let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
+        
+        if emptyLabelsAndSizes.count == 0 {
+            // This is a solid image, so calculating area is pointless.
+            resultsText.text = "No leaf found"
+            return
         }
         
-        var leafGroups: Set<Int>?
-        var backgroundGroups: Set<Int>?
-        for equivalenceClass in connectedComponentsInfo.equivalenceClasses.classToElements.values {
-            if equivalenceClass.contains(leafGroup!) {
-                leafGroups = equivalenceClass
-            }
-            if equivalenceClass.contains(backgroundLabel!) {
-                backgroundGroups = equivalenceClass
-            }
-            
-            if leafGroups != nil && backgroundGroups != nil {
-                break
-            }
-        }
+        // Assume the biggest is the background, and everything else is potentially a hole.
+        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
         
-        let leafArea = getArea(pixels: leafSize!)
-        var eatenArea: Float = 0.0
+        // TODO: pull out an info. using a bunch
         
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         
-        for groupAndSize in labelsAndSizes {
-            if groupAndSize.key < 0 {
-                if  !(backgroundGroups?.contains(groupAndSize.key))! && !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[groupAndSize.key]!.intersection(leafGroups!).isEmpty {
-                    eatenArea += getArea(pixels: groupAndSize.value)
-                    let (startX, startY) = connectedComponentsInfo.labelToMemberPoint[groupAndSize.key]!
-                    floodFill(image: combinedImage, fromPoint: CGPoint(x: startX, y: startY), drawingTo: drawingManager)
-                }
+        var eatenAreaInPixels = 0
+        for emptyLabelAndSize in emptyLabelsWithoutBackground {
+            // This component is a hole if it neighbors the leaf (since we already filtered out the background).
+            if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.intersection(leafLabels).isEmpty {
+                // Add to the eaten size.
+                eatenAreaInPixels += emptyLabelAndSize.value
+                
+                // And fill in the eaten area.
+                let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
+                floodFill(image: combinedImage, fromPoint: CGPoint(x: floodStartX, y: floodStartY), drawingTo: drawingManager)
             }
         }
+        
         drawingManager.finish(imageView: leafHolesView)
-
+        
+        // Set the result of the calculation, giving absolute area if the scale is set.
+        let percentEaten = Float(eatenAreaInPixels) / Float(leafAreaInPixels) * 100
         if scaleMarkPixelLength != nil {
-            resultsText.text = "leaf is \(String(format: "%.3f", leafArea)) cm2 with \(String(format: "%.3f", eatenArea)) cm2 or \(String(format: "%.3f", eatenArea / leafArea * 100))% eaten"
+            let leafAreaInCm2 = convertPixelsToCm2(leafAreaInPixels)
+            let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
+            
+            resultsText.text = "Leaf is \(formatFloat(withThreeDecimalPoints: leafAreaInCm2)) cm2 with \(formatFloat(withThreeDecimalPoints: eatenAreaInCm2)) cm2 or \(formatFloat(withThreeDecimalPoints: percentEaten))% eaten."
         } else {
-            resultsText.text = "leaf is \(String(format: "%.3f", eatenArea / leafArea * 100))% eaten"
+            resultsText.text = "Leaf is \(formatFloat(withThreeDecimalPoints: percentEaten))% eaten."
         }
     }
     
-    func getArea(pixels: Int) -> Float {
-        if scaleMarkPixelLength != nil {
-            return pow(2.0 / Float(scaleMarkPixelLength!), 2) * Float(pixels)
-        } else {
-            return Float(pixels)
+    // The scale is assumed to be 2 cm long.
+    func convertPixelsToCm2(_ pixels: Int) -> Float {
+        if scaleMarkPixelLength == nil {
+            fatalError("Attempting to calculate absolute area without scale set.")
         }
+        
+        let cmPerPixel = 2.0 / Float(scaleMarkPixelLength!)
+        return pow(cmPerPixel, 2) * Float(pixels)
+    }
+    
+    func formatFloat(withThreeDecimalPoints float: Float) -> String {
+        return String(format: "%.3f", float)
     }
 }

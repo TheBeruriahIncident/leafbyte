@@ -25,6 +25,14 @@ class UnionFind {
         classToElements[subsetIndex] = [element]
     }
     
+    func getElementsInClassWith(_ element: Int) -> Set<Int>? {
+        if let elementClass = getClassOf(element) {
+            return classToElements[elementClass]
+        } else {
+            return nil
+        }
+    }
+    
     func getClassOf(_ element: Int) -> Int? {
         if let indexOfElement = elementToSubset[element] {
             return getClassBySubset(indexOfElement)
