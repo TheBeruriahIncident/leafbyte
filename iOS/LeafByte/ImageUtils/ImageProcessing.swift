@@ -229,7 +229,10 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
         labelToMemberPoint[outsideOfImageLabel] = labelToMemberPoint[outsideOfImageClassElement!]
     } else {
         // -1 is in a class of it's own.
-        // This means it's useless, so let's just remove its class from the map.
+        // This means it's useless, so remove it.
+        labelToMemberPoint[outsideOfImageLabel] = nil
+        emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = nil
+        labelToSize[outsideOfImageLabel] = nil
         equivalenceClasses.classToElements[outsideOfImageClass] = nil
     }
     
