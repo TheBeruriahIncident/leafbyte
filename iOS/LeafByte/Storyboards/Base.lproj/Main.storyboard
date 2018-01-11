@@ -186,7 +186,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
-                                <rect key="frame" x="7" y="580" width="352" height="50"/>
+                                <rect key="frame" x="7" y="580" width="330" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="textColor"/>
@@ -209,6 +209,22 @@
                                     <action selector="calculate:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="pjR-Mb-HWu"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
+                                <rect key="frame" x="345" y="590" width="23" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&lt;"/>
+                                <connections>
+                                    <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
+                                <rect key="frame" x="345" y="629" width="23" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&gt;"/>
+                                <connections>
+                                    <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
@@ -220,8 +236,10 @@
                         <outlet property="gestureRecognizingView" destination="XUO-j6-TH2" id="qHj-7I-taA"/>
                         <outlet property="leafHolesView" destination="EYm-Xs-kTB" id="BDb-eN-feS"/>
                         <outlet property="modeToggleButton" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
+                        <outlet property="redoButton" destination="Xwt-8a-K9l" id="OE7-0c-0FF"/>
                         <outlet property="resultsText" destination="JMU-FQ-tF0" id="glq-CW-sZ8"/>
                         <outlet property="scrollableView" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
+                        <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
                         <outlet property="userDrawingView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
                         <segue destination="bUK-Ir-gu8" kind="show" identifier="imageChosen" id="gAP-T7-MBM"/>
                     </connections>

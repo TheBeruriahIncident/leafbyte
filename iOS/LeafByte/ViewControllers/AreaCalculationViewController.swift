@@ -12,18 +12,20 @@ import UIKit
 class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
-    // These are passed from the thresholding view.
+    // These are passed from the previous view.
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     var scaleMarkPixelLength: Int?
     
-    // Tracks whether the last gesture (including any ongoing one) was a swipe.
-    var swiped = false
-    // The last touched point, to enable drawing lines while swiping.
-    var lastTouchedPoint = CGPoint.zero
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
     var baseImageRect: CGRect!
+    
+    // Track the previous, current, and "future" drawings to enable undoing and redoing.
+    // Each drawing is a list of points to be connected by lines.
+    var undoBuffer = [[CGPoint]]()
+    var currentDrawing = [CGPoint]()
+    var redoBuffer = [[CGPoint]]()
     
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
@@ -41,13 +43,44 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var leafHolesView: UIImageView!
     
     @IBOutlet weak var modeToggleButton: UIButton!
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var calculateButton: UIButton!
+    
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
     
     @IBAction func toggleScrollingMode(_ sender: Any) {
         setScrollingMode(!inScrollingMode)
+    }
+    
+    @IBAction func undo(_ sender: Any) {
+        // Move the drawing from the undo buffer to the redo buffer.
+        redoBuffer.append(undoBuffer.popLast()!)
+        
+        // Wipe the screen and redraw all drawings except the one we just "undid".
+        userDrawingView.image = nil
+        undoBuffer.forEach({ drawing in drawCompleteDrawing(drawing) })
+        
+        // Update the buttons.
+        calculateButton.isEnabled = true
+        undoButton.isEnabled = !undoBuffer.isEmpty
+        redoButton.isEnabled = true
+    }
+    
+    @IBAction func redo(_ sender: Any) {
+        // Move the drawing from the redo buffer to the undo buffer.
+        let drawingToRedo = redoBuffer.popLast()!
+        undoBuffer.append(drawingToRedo)
+        
+        // Simpler than undo, we can simply draw this one drawing.
+        drawCompleteDrawing(drawingToRedo)
+        
+        // Update the buttons.
+        calculateButton.isEnabled = true
+        undoButton.isEnabled = true
+        redoButton.isEnabled = !redoBuffer.isEmpty
     }
     
     @IBAction func calculate(_ sender: Any) {
@@ -124,23 +157,61 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - UIResponder overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        swiped = false
-        lastTouchedPoint = (touches.first?.location(in: userDrawingView))!
+        // No drawing in scrolling mode.
+        if inScrollingMode {
+            return
+        }
+        
+        let candidatePoint = (touches.first?.location(in: userDrawingView))!
+        // "Drawing" outside the image doesn't count.
+        if !isDrawingPointInBaseImage(candidatePoint) {
+            return
+        }
+        
+        currentDrawing.append(candidatePoint)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        swiped = true
-        let currentPoint = (touches.first?.location(in: userDrawingView))!
-        drawLine(fromPoint: lastTouchedPoint, toPoint: currentPoint)
+        // No drawing in scrolling mode.
+        if inScrollingMode {
+            return
+        }
         
-        lastTouchedPoint = currentPoint
+        let candidatePoint = (touches.first?.location(in: userDrawingView))!
+        // "Drawing" outside the image doesn't count.
+        if !isDrawingPointInBaseImage(candidatePoint) {
+            return
+        }
+        
+        // If there was a previous point, connect the dots.
+        if !currentDrawing.isEmpty {
+            drawLine(fromPoint: currentDrawing.last!, toPoint: candidatePoint)
+        }
+        
+        currentDrawing.append(candidatePoint)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !swiped {
-            // If it's not a swipe, no line has been drawn.
-            drawLine(fromPoint: lastTouchedPoint, toPoint: lastTouchedPoint)
+        // No drawing in scrolling mode or outside the image.
+        if inScrollingMode || currentDrawing.isEmpty {
+            return
         }
+        
+        // If only one point, nothing has been drawn yet.
+        if currentDrawing.count == 1 {
+            drawLine(fromPoint: currentDrawing.last!, toPoint: currentDrawing.last!)
+        }
+        
+        // Move the current drawing to the undo buffer.
+        undoBuffer.append(currentDrawing)
+        currentDrawing = []
+        // Clear the redo buffer.
+        redoBuffer = []
+        
+        // Update the buttons, allow recalculation now that there's a possibility of a different result.
+        calculateButton.isEnabled = true
+        undoButton.isEnabled = true
+        redoButton.isEnabled = false
     }
     
     // MARK: - UIImagePickerControllerDelegate overrides
@@ -156,25 +227,29 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     // MARK: - Helpers
     
-    func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
-        // Do not draw in scrolling mode.
-        if inScrollingMode {
-            return
+    // We want to limit drawing interactions to points that match up to the base image.
+    // Otherwise, since connected components and flood filling are calculated within the base image, those operations will seem broken.
+    func isDrawingPointInBaseImage(_ point: CGPoint) -> Bool {
+        let projectedPoint = userDrawingToBaseImage.project(point: point)
+        return baseImageRect.contains(projectedPoint)
+    }
+    
+    // Draw a complete drawing, made up of a sequence of points.
+    private func drawCompleteDrawing(_ drawing: [CGPoint]) {
+        if drawing.count == 1 {
+            drawLine(fromPoint: drawing.first!, toPoint: drawing.first!)
+        } else {
+            for index in 0...drawing.count - 2 {
+                drawLine(fromPoint: drawing[index], toPoint: drawing[index + 1])
+            }
         }
-        
-        // Allow recalculation now that there's a possibility of a different result.
-        calculateButton.isEnabled = true
+    }
+    
+    func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
+        redoButton.isEnabled = false
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
-        
-        // Only draw if the points are within the base image.
-        // Otherwise, since connected components and flood filling are calculated within the base image, other operations will seem broken.
-        let fromPointInBaseImage = userDrawingToBaseImage.project(point: fromPoint)
-        let toPointInBaseImage = userDrawingToBaseImage.project(point: toPoint)
-        if baseImageRect.contains(fromPointInBaseImage) && baseImageRect.contains(toPointInBaseImage) {
-            drawingManager.drawLine(from: fromPoint, to: toPoint)
-        }
-        
+        drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
