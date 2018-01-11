@@ -22,7 +22,7 @@ class DrawingManager {
         // Make all the drawing precise.
         // This avoids our drawn lines looking blurry (since you can zoom in).
         // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
-        context.interpolationQuality = CGInterpolationQuality.none
+        context.interpolationQuality = CGInterpolationQuality.high
         context.setAllowsAntialiasing(false)
         context.setShouldAntialias(false)
         
