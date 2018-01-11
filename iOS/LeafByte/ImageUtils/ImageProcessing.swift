@@ -239,7 +239,7 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     // "Normalize" by combining equivalent labels.
     for equivalenceClassElements in equivalenceClasses.classToElements.values {
         let first = equivalenceClassElements.first
-        equivalenceClassElements.filter({ $0 != first! }).forEach { label in
+        equivalenceClassElements.filter { $0 != first! }.forEach { label in
             // Normalize labelToSize.
             labelToSize[first!]! += labelToSize[label]!
             labelToSize[label] = nil

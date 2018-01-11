@@ -61,7 +61,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // Wipe the screen and redraw all drawings except the one we just "undid".
         userDrawingView.image = nil
-        undoBuffer.forEach({ drawing in drawCompleteDrawing(drawing) })
+        undoBuffer.forEach { drawing in drawCompleteDrawing(drawing) }
         
         // Update the buttons.
         calculateButton.isEnabled = true
