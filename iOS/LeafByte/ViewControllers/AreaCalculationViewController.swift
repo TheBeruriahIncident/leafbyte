@@ -229,7 +229,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     // We want to limit drawing interactions to points that match up to the base image.
     // Otherwise, since connected components and flood filling are calculated within the base image, those operations will seem broken.
-    func isDrawingPointInBaseImage(_ point: CGPoint) -> Bool {
+    private func isDrawingPointInBaseImage(_ point: CGPoint) -> Bool {
         let projectedPoint = userDrawingToBaseImage.project(point: point)
         return baseImageRect.contains(projectedPoint)
     }
@@ -245,7 +245,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
+    private func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
         redoButton.isEnabled = false
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
@@ -253,7 +253,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
-    func setScrollingMode(_ inScrollingMode: Bool) {
+    private func setScrollingMode(_ inScrollingMode: Bool) {
         self.inScrollingMode = inScrollingMode
         
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
@@ -265,7 +265,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    func calculateArea() {
+    private func calculateArea() {
         // The BooleanIndexableImage will be a view across both sources of pixels.
         // First we add the base iamge of the leaf.
         let baseImage = IndexableImage(uiToCgImage(image!))
@@ -333,7 +333,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     // The scale is assumed to be 2 cm long.
-    func convertPixelsToCm2(_ pixels: Int) -> Float {
+    private func convertPixelsToCm2(_ pixels: Int) -> Float {
         if scaleMarkPixelLength == nil {
             fatalError("Attempting to calculate absolute area without scale set.")
         }
@@ -342,7 +342,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         return pow(cmPerPixel, 2) * Float(pixels)
     }
     
-    func formatFloat(withThreeDecimalPoints float: Float) -> String {
+    private func formatFloat(withThreeDecimalPoints float: Float) -> String {
         return String(format: "%.3f", float)
     }
 }

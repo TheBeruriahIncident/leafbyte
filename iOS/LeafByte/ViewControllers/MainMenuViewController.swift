@@ -81,7 +81,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Helpers
     
-    func presentImagePicker(sourceType: UIImagePickerControllerSourceType) {
+    private func presentImagePicker(sourceType: UIImagePickerControllerSourceType) {
         self.sourceType = sourceType
         imagePicker.sourceType = sourceType
         present(imagePicker, animated: true, completion: nil)

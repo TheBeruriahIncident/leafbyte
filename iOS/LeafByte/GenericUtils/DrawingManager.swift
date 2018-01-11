@@ -29,6 +29,7 @@ class DrawingManager {
         self.projection = Projection(fromProjection: baseProjection, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
     }
     
+    // TODO: don't expose this?
     func getContext() -> CGContext {
         return context
     }

@@ -115,7 +115,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     // MARK: - Helpers
     
-    func setScrollingMode(_ inScrollingMode: Bool) {
+    private func setScrollingMode(_ inScrollingMode: Bool) {
         self.inScrollingMode = inScrollingMode
 
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
@@ -127,7 +127,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         }
     }
     
-    func findScaleMark() {
+    private func findScaleMark() {
         let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
         let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
         image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
@@ -153,7 +153,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5)
     }
     
-    func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int) {
+    private func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int) {
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.

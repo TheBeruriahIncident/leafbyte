@@ -77,7 +77,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Helpers
     
-    func setThreshold(_ threshold: Float) {
+    private func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
         baseImageView.image = ciToUiImage(filter.outputImage)
     }
