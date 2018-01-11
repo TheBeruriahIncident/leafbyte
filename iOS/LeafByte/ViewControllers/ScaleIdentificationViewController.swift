@@ -23,6 +23,10 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // It's calculated in this view (if possible) and passed forward.
     var scaleMarkPixelLength: Int?
     
+    // Projection from the full base image view to the actual image, so we can check if the touch is within the image.
+    var baseImageViewToImage: Projection!
+    var baseImageRect: CGRect!
+    
     // MARK: - Outlets
     
     @IBOutlet weak var gestureRecognizingView: UIScrollView!
@@ -37,7 +41,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     // MARK: - Actions
     
-    @IBAction func toggleScrollingMode(crolling: Any) {
+    @IBAction func toggleScrollingMode(_ sender: Any) {
         setScrollingMode(!inScrollingMode)
     }
     @IBAction func clearScale(_ sender: Any) {
@@ -55,7 +59,10 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
 
         baseImageView.contentMode = .scaleAspectFit
         baseImageView.image = image
-
+        
+        baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
+        
         setScrollingMode(true)
         findScaleMark()
     }
@@ -90,8 +97,20 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         }
 
         let candidatePoint = (touches.first?.location(in: baseImageView))!
-        print(candidatePoint)
-        print(baseImageView.image?.size)
+        let projectedPoint = baseImageViewToImage.project(point: candidatePoint)
+        // Touches outside the image don't matter.
+        if !baseImageRect.contains(projectedPoint) {
+            return
+        }
+        
+        let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
+        // Touches in white don't matter.
+        if indexableImage.getPixel(x: Int(round(projectedPoint.x)), y: Int(round(projectedPoint.y))).isWhite() {
+            return
+        }
+        
+        // Since a non-white section in the image was touched, it may be a scale mark.
+        measureScaleMark(fromPointInMark: projectedPoint, inImage: indexableImage, withMinimumLength: 1)
     }
     
     // MARK: - Helpers
@@ -131,21 +150,25 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         // Get a point in the scale mark.
         let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
         
+        measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5)
+    }
+    
+    func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int) {
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        let farthestPoint1 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY))
-        let farthestPoint2 = getFarthestPointInComponent(inImage: indexableImage, fromPoint: farthestPoint1)
+        let farthestPoint1 = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
+        let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
         
         let candidateScaleMarkPixelLength = Int(round(farthestPoint1.distance(to: farthestPoint2)))
-        // If the scale mark is less than 5 pixels long, it's probably just noise in the image.
-        if candidateScaleMarkPixelLength < 5 {
+        // If the scale mark is too short, it's probably just noise in the image.
+        if candidateScaleMarkPixelLength < minimumLength {
             resultsText.text = "Scale not found"
             return
         }
         
         scaleMarkPixelLength = candidateScaleMarkPixelLength
-        resultsText.text = "Scale found"
+        resultsText.text = "Scale found: \(candidateScaleMarkPixelLength) pixels long"
         
         // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
