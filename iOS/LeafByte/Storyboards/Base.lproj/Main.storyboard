@@ -180,7 +180,7 @@
                                 <rect key="frame" x="16" y="637" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
                                     <action selector="toggleScrollingMode:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="VBr-Fj-GyK"/>
                                 </connections>
@@ -351,7 +351,7 @@
                                 <rect key="frame" x="16" y="637" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
-                                <state key="normal" title="Touch Scale Mark"/>
+                                <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
                                     <action selector="toggleScrollingMode:" destination="e5s-F7-9rn" eventType="touchUpInside" id="FiE-DD-M5g"/>
                                 </connections>
@@ -401,7 +401,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Iaq-x1-uxo"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
