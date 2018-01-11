@@ -64,13 +64,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "thresholdingComplete"
         {
-            guard let destination = segue.destination as? AreaCalculationViewController else {
-                fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
+            guard let destination = segue.destination as? ScaleIdentificationViewController else {
+                fatalError("Expected the next view to be the scale identification view but is \(segue.destination)")
             }
             
             destination.sourceType = sourceType
             destination.image = baseImageView.image
-            destination.scaleMarkPixelLength = scaleMarkPixelLength
         }
     }
     

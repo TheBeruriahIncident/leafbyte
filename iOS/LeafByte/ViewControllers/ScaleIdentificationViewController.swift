@@ -53,6 +53,21 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         setScrollingMode(true)
     }
     
+    // This is called before transitioning from this view to another view.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If the segue is scaleIdentificationComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
+        if segue.identifier == "scaleIdentificationComplete"
+        {
+            guard let destination = segue.destination as? AreaCalculationViewController else {
+                fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
+            }
+            
+            destination.sourceType = sourceType
+            destination.image = image
+            //destination.scaleMarkPixelLength = scaleMarkPixelLength
+        }
+    }
+    
     // MARK: - UIScrollViewDelegate overrides
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

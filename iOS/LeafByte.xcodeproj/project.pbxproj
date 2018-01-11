@@ -207,8 +207,8 @@
 			children = (
 				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
-				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
 				464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */,
+				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
 				46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */,
 			);
 			path = ViewControllers;
