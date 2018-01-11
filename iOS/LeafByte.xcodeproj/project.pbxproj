@@ -15,6 +15,7 @@
 		4621EE501FEB70AD004C3011 /* LeafByteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE4F1FEB70AD004C3011 /* LeafByteTests.swift */; };
 		4621EE5B1FEB70AD004C3011 /* LeafByteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */; };
 		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
+		464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */; };
 		468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C075A1FFDD9840015B815 /* SettingsViewController.swift */; };
 		46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */; };
@@ -67,6 +68,7 @@
 		4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafByteUITests.swift; sourceTree = "<group>"; };
 		4621EE5C1FEB70AD004C3011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
+		464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleIdentificationViewController.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingFilter.swift; sourceTree = "<group>"; };
 		468C075A1FFDD9840015B815 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
 				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
+				464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */,
 				46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */,
 			);
 			path = ViewControllers;
@@ -388,6 +391,7 @@
 				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
 				468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */,
 				46DB8A861FFE9AA900EF59BE /* ImageConversions.swift in Sources */,
+				464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
 				46F1063B20007D1A000B4B83 /* UnionFind.swift in Sources */,
