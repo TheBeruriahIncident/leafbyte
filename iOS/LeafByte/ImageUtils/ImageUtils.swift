@@ -45,31 +45,31 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     return cgToUiImage(context.makeImage()!)
 }
 
-// Combine a list of images with equivalent frames, cropping to the first!!?!???
-// Optional??
+// Combine a list of images with equivalent frames, cropping to the first image.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
+    // Size the canvas to the frame (which is assumed to be the same for all).
     UIGraphicsBeginImageContext(imageViews[0].frame.size)
     
+    // Draw each image into the canvas at the same place they appear in their image view.
     for imageView in imageViews {
-        let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: imageView.image!, toView: imageView)))
-        imageView.image!.draw(in: CGRect(
-            x: CGFloat(projection.xOffset),
-            y: CGFloat(projection.yOffset),
-            width: imageView.image!.size.width * CGFloat(projection.xScale),
-            height: imageView.image!.size.height * CGFloat(projection.yScale)))
+        imageView.image!.draw(in: getRectForImage(inView: imageView))
     }
     
-    let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: imageViews[0].image!, toView: imageViews[0])))
-    let rect = CGRect(
-        x: CGFloat(projection.xOffset),
-        y: CGFloat(projection.yOffset),
-        width: imageViews[0].image!.size.width * CGFloat(projection.xScale),
-        height: imageViews[0].image!.size.height * CGFloat(projection.yScale))
-    UIGraphicsGetCurrentContext()?.clip(to: rect)
+    // Clip to the area covered by the first image.
+    UIGraphicsGetCurrentContext()?.clip(to: getRectForImage(inView: imageViews[0]))
     
     let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return combinedImage
+}
+
+private func getRectForImage(inView view: UIImageView) -> CGRect {
+    let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: view.image!, toView: view)))
+    return CGRect(
+        x: CGFloat(projection.xOffset),
+        y: CGFloat(projection.yOffset),
+        width: view.image!.size.width * CGFloat(projection.xScale),
+        height: view.image!.size.height * CGFloat(projection.yScale))
 }
 
 // Find the point farthest away from a point within a connected component.
