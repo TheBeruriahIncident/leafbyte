@@ -96,7 +96,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     @IBAction func share(_ sender: Any) {
         let imageToShare = combineImages([ baseImageView, leafHolesView, userDrawingView ])
-        let dataToShare = [ imageToShare, "From LeafByte" ] as [Any]
+        let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
         // Exclude activity types that don't make sense here.
