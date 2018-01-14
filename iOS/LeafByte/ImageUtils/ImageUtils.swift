@@ -8,6 +8,13 @@
 
 import UIKit
 
+// Fills an image view with a blank image.
+func initializeImage(view: UIImageView) {
+    UIGraphicsBeginImageContext(view.frame.size)
+    view.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+}
+
 func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     // Check if resizing is necessary.
     if image.size.width <= newBounds.width && image.size.height <= newBounds.height {
@@ -36,6 +43,29 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     
     // TODO: I bet I can get away without this conversion
     return cgToUiImage(context.makeImage()!)
+}
+
+// Combine a list of images with equivalent frames, cropping to the first!!?!???
+// Optional??
+func combineImages(_ imageViews: [UIImageView]) -> UIImage {
+    UIGraphicsBeginImageContext(imageViews[0].frame.size)
+    
+    for imageView in imageViews {
+        let resizingRatioForWidth = imageView.frame.width / (imageView.image?.size.width)!
+        let resizingRatioForHeight = imageView.frame.height / (imageView.image?.size.height)!
+        let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
+        
+        let offsetX = (imageView.frame.width - (imageView.image?.size.width)! * resizingRatio) / 2
+        let offsetY = (imageView.frame.height - (imageView.image?.size.height)! * resizingRatio) / 2
+        
+        let projection = Projection(invertProjection: Projection(fromImageInView: imageView.image!, toView: imageView))
+        imageView.image!.draw(in: CGRect(x: CGFloat(offsetX), y: CGFloat(offsetY), width: imageView.image!.size.width * resizingRatio, height: imageView.image!.size.height * resizingRatio))
+    }
+    
+    let returnImage = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+    return returnImage
+    
 }
 
 // Find the point farthest away from a point within a connected component.

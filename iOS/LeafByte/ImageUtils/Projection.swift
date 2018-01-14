@@ -14,10 +14,10 @@ import UIKit
 class Projection {
     static let identity = Projection(xScale: 1, yScale: 1, xOffset: 0, yOffset: 0)
     
-    private let xScale: Float
-    private let yScale: Float
-    private let xOffset: Float
-    private let yOffset: Float
+    let xScale: Float
+    let yScale: Float
+    let xOffset: Float
+    let yOffset: Float
     
     init(fromImageInView image: UIImage, toView view: UIView ) {
         let viewSize = view.frame.size

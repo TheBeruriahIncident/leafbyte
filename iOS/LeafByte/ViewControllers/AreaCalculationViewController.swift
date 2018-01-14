@@ -95,7 +95,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func share(_ sender: Any) {
-        let dataToShare = [ baseImageView.image!, "From LeafByte" ] as [Any]
+        let imageToShare = combineImages([ baseImageView, leafHolesView, userDrawingView ])
+        baseImageView.image = imageToShare
+        
+        let dataToShare = [ imageToShare, "From LeafByte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
         // Exclude activity types that don't make sense here.
@@ -139,11 +142,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         setScrollingMode(true)
         
-        // TODO: is there a less stupid way to initialize the image?? maybe won't need
-        UIGraphicsBeginImageContext(userDrawingView.frame.size)
-        userDrawingView.image?.draw(in: CGRect(x: 0, y: 0, width: userDrawingView.frame.size.width, height: userDrawingView.frame.size.height))
-        userDrawingView.image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        initializeImage(view: leafHolesView)
+        initializeImage(view: userDrawingView)
     }
     
     // This is called before transitioning from this view to another view.
