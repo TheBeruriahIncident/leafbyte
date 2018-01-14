@@ -79,6 +79,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             destination.sourceType = sourceType
             destination.image = image
             destination.scaleMarkPixelLength = scaleMarkPixelLength
+            
+            setBackButton(self: self)
         }
     }
     

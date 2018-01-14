@@ -66,6 +66,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             destination.sourceType = sourceType
             destination.image = baseImageView.image
+            
+            setBackButton(self: self)
         }
     }
     
