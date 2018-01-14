@@ -94,6 +94,25 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
+    @IBAction func share(_ sender: Any) {
+        let dataToShare = [ baseImageView.image!, "From LeafByte" ] as [Any]
+        let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
+        
+        // Exclude activity types that don't make sense here.
+        activityViewController.excludedActivityTypes = [
+            UIActivityType.addToReadingList,
+            UIActivityType.assignToContact,
+            UIActivityType.openInIBooks,
+            UIActivityType.postToVimeo,
+            UIActivityType.print,
+        ]
+        
+        // Make this work on iPads ( https://stackoverflow.com/questions/25644054/uiactivityviewcontroller-crashing-on-ios8-ipads ).
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
     @IBAction func nextImage(_ sender: Any) {
         imagePicker.sourceType = sourceType
         
