@@ -51,21 +51,25 @@ func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     UIGraphicsBeginImageContext(imageViews[0].frame.size)
     
     for imageView in imageViews {
-        let resizingRatioForWidth = imageView.frame.width / (imageView.image?.size.width)!
-        let resizingRatioForHeight = imageView.frame.height / (imageView.image?.size.height)!
-        let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
-        
-        let offsetX = (imageView.frame.width - (imageView.image?.size.width)! * resizingRatio) / 2
-        let offsetY = (imageView.frame.height - (imageView.image?.size.height)! * resizingRatio) / 2
-        
-        let projection = Projection(invertProjection: Projection(fromImageInView: imageView.image!, toView: imageView))
-        imageView.image!.draw(in: CGRect(x: CGFloat(offsetX), y: CGFloat(offsetY), width: imageView.image!.size.width * resizingRatio, height: imageView.image!.size.height * resizingRatio))
+        let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: imageView.image!, toView: imageView)))
+        imageView.image!.draw(in: CGRect(
+            x: CGFloat(projection.xOffset),
+            y: CGFloat(projection.yOffset),
+            width: imageView.image!.size.width * CGFloat(projection.xScale),
+            height: imageView.image!.size.height * CGFloat(projection.yScale)))
     }
     
-    let returnImage = UIGraphicsGetImageFromCurrentImageContext()!
-    UIGraphicsEndImageContext()
-    return returnImage
+    let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: imageViews[0].image!, toView: imageViews[0])))
+    let rect = CGRect(
+        x: CGFloat(projection.xOffset),
+        y: CGFloat(projection.yOffset),
+        width: imageViews[0].image!.size.width * CGFloat(projection.xScale),
+        height: imageViews[0].image!.size.height * CGFloat(projection.yScale))
+    UIGraphicsGetCurrentContext()?.clip(to: rect)
     
+    let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+    return combinedImage
 }
 
 // Find the point farthest away from a point within a connected component.
