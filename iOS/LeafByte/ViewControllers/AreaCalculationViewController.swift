@@ -7,9 +7,10 @@
 //
 
 import CoreGraphics
+import GoogleSignIn
 import UIKit
 
-class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GIDSignInUIDelegate, GIDSignInDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.
@@ -114,7 +115,80 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         self.present(activityViewController, animated: true, completion: nil)
     }
     
+    func google() {
+        
+        
+        GIDSignIn.sharedInstance().clientID = "82243022118-vmepc1s96dt76ss9pc46l2kvlo5mom1r.apps.googleusercontent.com"
+        
+        //adding the delegates
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/spreadsheets" ]
+
+        GIDSignIn.sharedInstance().signIn()
+        
+    }
+    
+    //when the signin complets
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        
+        //if any error stop and print the error
+        if error != nil{
+            print(error ?? "google error")
+            return
+        }
+        
+        //if success display the email on label
+        print(user)
+        print(user.authentication.accessToken)
+        print(user.profile.email)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let token = user.authentication.accessToken!
+        print ("token \(token)")
+        
+        let url = URL(string: "https://sheets.googleapis.com/v4/spreadsheets/1Kiw83_ED0nFtDq5TnOCY3IJunocWrsOP9REAHSJ37B8/values/Sheet1!A:A:append?valueInputOption=RAW")
+        var request = URLRequest(url: url!)
+        request.httpMethod = "POST"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        request.httpBody = "{values: [[\"\(resultsText.text!)\"]]}"
+        .data(using: .utf8)
+        //let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
+
+        
+        let config = URLSessionConfiguration.default
+        config.httpAdditionalHeaders = ["Authorization" : "Bearer \(token)"]
+        let session = URLSession(configuration: config)
+
+        let task = session.dataTask(with: request as URLRequest) {
+            (
+            data, response, error) in
+            
+            print(error)
+            
+            let dataString =  String(data: data!, encoding: String.Encoding.utf8)
+            print(dataString)
+            
+        }
+        
+        task.resume()
+        
+    }
+    
     @IBAction func nextImage(_ sender: Any) {
+        google()
+        
         imagePicker.sourceType = sourceType
         
         if sourceType == .camera {
