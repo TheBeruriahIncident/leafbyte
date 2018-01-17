@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46130551200EEFDC00141B68 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 46130550200EEFDC00141B68 /* Podfile */; };
 		4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */; };
 		4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */; };
 		4621EE401FEB70AD004C3011 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4621EE3E1FEB70AD004C3011 /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		46130550200EEFDC00141B68 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		4621EE371FEB70AD004C3011 /* LeafByte.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafByte.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				4621EE391FEB70AD004C3011 /* LeafByte */,
 				4621EE4E1FEB70AD004C3011 /* LeafByteTests */,
 				4621EE591FEB70AD004C3011 /* LeafByteUITests */,
+				46130550200EEFDC00141B68 /* Podfile */,
 				4621EE381FEB70AD004C3011 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4621EE451FEB70AD004C3011 /* LaunchScreen.storyboard in Resources */,
+				46130551200EEFDC00141B68 /* Podfile in Resources */,
 				4621EE421FEB70AD004C3011 /* Assets.xcassets in Resources */,
 				4621EE401FEB70AD004C3011 /* Main.storyboard in Resources */,
 			);
