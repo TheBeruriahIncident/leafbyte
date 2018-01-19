@@ -16,6 +16,7 @@
 		4621EE5B1FEB70AD004C3011 /* LeafByteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */; };
 		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
 		464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */; };
+		4651F0262011896800365F93 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651F0252011896800365F93 /* Settings.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */; };
 		468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C075A1FFDD9840015B815 /* SettingsViewController.swift */; };
 		46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */; };
@@ -69,6 +70,7 @@
 		4621EE5C1FEB70AD004C3011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
 		464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleIdentificationViewController.swift; sourceTree = "<group>"; };
+		4651F0252011896800365F93 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingFilter.swift; sourceTree = "<group>"; };
 		468C075A1FFDD9840015B815 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				4623585E20016AF9005EA36E /* ImageUtils */,
 				4621EE461FEB70AD004C3011 /* Info.plist */,
 				4656C6CF1FF869E900AC6821 /* Segues */,
+				4651F0252011896800365F93 /* Settings.swift */,
 				4656C6D11FF87EAC00AC6821 /* Storyboards */,
 				4656C6D01FF869F600AC6821 /* ViewControllers */,
 			);
@@ -402,6 +405,7 @@
 				46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */,
 				46F1064120012F06000B4B83 /* Extensions.swift in Sources */,
 				46F1064520013D6E000B4B83 /* BooleanIndexableImage.swift in Sources */,
+				4651F0262011896800365F93 /* Settings.swift in Sources */,
 				46DB8A8E1FFF332C00EF59BE /* UIUtils.swift in Sources */,
 				46DB8A901FFFD74900EF59BE /* ImageUtils.swift in Sources */,
 			);
