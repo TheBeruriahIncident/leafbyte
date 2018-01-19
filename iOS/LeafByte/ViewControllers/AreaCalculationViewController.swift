@@ -138,22 +138,11 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             return
         }
         
-        //if success display the email on label
-        print(user)
-        print(user.authentication.accessToken)
-        print(user.profile.email)
-        
-        
-        
-        
-        
-        
         
         
         
         
         let token = user.authentication.accessToken!
-        print ("token \(token)")
         
         let url = URL(string: "https://sheets.googleapis.com/v4/spreadsheets/1Kiw83_ED0nFtDq5TnOCY3IJunocWrsOP9REAHSJ37B8/values/Sheet1!A:A:append?valueInputOption=RAW")
         var request = URLRequest(url: url!)
@@ -162,18 +151,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        request.httpBody = "{values: [[\"\(resultsText.text!)\"]]}"
-        .data(using: .utf8)
-        //let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-
+        request.httpBody = "{values: [[\"\(resultsText.text!)\"]]}".data(using: .utf8)
         
         let config = URLSessionConfiguration.default
         config.httpAdditionalHeaders = ["Authorization" : "Bearer \(token)"]
         let session = URLSession(configuration: config)
 
         let task = session.dataTask(with: request as URLRequest) {
-            (
-            data, response, error) in
+            (data, response, error) in
             
             print(error)
             
