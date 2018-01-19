@@ -13,6 +13,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // MARK: - Fields
     
     // These are passed from the previous view.
+    var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     
@@ -76,6 +77,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
                 fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = image
             destination.scaleMarkPixelLength = scaleMarkPixelLength

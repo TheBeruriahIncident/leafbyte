@@ -9,5 +9,6 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+    var settings: Settings!
 
 }

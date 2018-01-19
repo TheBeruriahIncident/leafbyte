@@ -13,6 +13,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // MARK: - Fields
     
     // These are passed from the previous view.
+    var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     var scaleMarkPixelLength: Int?
@@ -153,6 +154,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
                 fatalError("Expected the next view to be the thresholding view but is \(segue.destination)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage
         }

@@ -13,6 +13,8 @@ import UIKit
 class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
+    var settings: Settings!
+    
     let imagePicker = UIImagePickerController()
     
     // Both of these are set while picking an image and are passed forward to the next view.
@@ -42,6 +44,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        settings = Settings.deserialize()
+        
         setupImagePicker(imagePicker: imagePicker, self: self)
     }
     
@@ -56,6 +60,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(navigationController.topViewController!)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage
         }
