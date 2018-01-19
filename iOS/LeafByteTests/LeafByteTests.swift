@@ -40,7 +40,10 @@ class LeafByteTests: XCTestCase {
     
     func testSettingsSerialization() {
         let settings = Settings()
+        settings.measurementSaveLocation = .googleDrive
         settings.imageSaveLocation = .googleDrive
+        settings.seriesName = "The Tale of Genji"
+        settings.saveGpsData = true
         
         let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("settings")
         settings.serialize(at: path)
