@@ -23,7 +23,7 @@ class Settings: NSObject, NSCoding {
         static let saveGpsData = "saveGpsData"
     }
     
-    static let defaultSerializedLocation = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("meals").absoluteString
+    static let defaultSerializedLocation = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("settings").absoluteString
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
