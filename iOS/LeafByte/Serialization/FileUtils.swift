@@ -15,3 +15,19 @@ func getUrlForVisibleFiles() -> URL {
 func getUrlForInvisibleFiles() -> URL {
     return FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 }
+
+func initializeFileIfNonexistant(_ url: URL, withData data: Data) {
+    if !FileManager().fileExists(atPath: url.path) {
+        try! data.write(to: url)
+    }
+}
+
+func appendToFile(_ url: URL, data: Data) {
+    let fileHandle = FileHandle(forWritingAtPath: url.path)!
+    defer {
+        fileHandle.closeFile()
+    }
+    
+    fileHandle.seekToEndOfFile()
+    fileHandle.write(data)
+}
