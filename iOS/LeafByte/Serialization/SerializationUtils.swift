@@ -30,13 +30,16 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
     formatter.dateFormat = "HH:mm:ss"
     let formattedTime = formatter.string(from: date)
     
+    // Form a row useful for any spreadsheet-like format.
     let row = [ formattedDate, formattedTime, leafAreaInCm2 ?? "", eatenAreaInCm2 ?? "", percentEaten ]
     
     switch settings.measurementSaveLocation {
     case .local:
         let url = getUrlForVisibleFiles().appendingPathComponent("\(settings.seriesName).csv")
+        // If the file doesn't exist, create with the header.
         initializeFileIfNonexistant(url, withData: csvHeader)
         
+        // Add the data to the file.
         let csvRow = stringRowToCsvRow(row)
         appendToFile(url, data: csvRow)
         
