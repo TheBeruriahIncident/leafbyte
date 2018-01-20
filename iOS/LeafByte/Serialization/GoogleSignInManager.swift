@@ -8,24 +8,34 @@
 
 import GoogleSignIn
 
-class GoogleSignInManager: NSObject, GIDSignInUIDelegate, GIDSignInDelegate {
-    func google() {
-        
-        
-        GIDSignIn.sharedInstance().clientID = "82243022118-vmepc1s96dt76ss9pc46l2kvlo5mom1r.apps.googleusercontent.com"
-        
-        //adding the delegates
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/spreadsheets" ]
-        
-        GIDSignIn.sharedInstance().signIn()
-        
+class GoogleSignInManager: NSObject, GIDSignInDelegate, GIDSignInUIDelegate {
+    
+    let actionWithAccessToken: (_ accessToken: String) -> Void
+    
+    init(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
+        self.actionWithAccessToken = actionWithAccessToken
     }
     
-    //when the signin complets
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+    func initiateSignIn() {
+        // This is LeafByte's Google Drive API key.
+        GIDSignIn.sharedInstance().clientID = "82243022118-vmepc1s96dt76ss9pc46l2kvlo5mom1r.apps.googleusercontent.com"
         
+        // Only request access to files created by LeafByte.
+        GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive.file" ]
+        
+        // Enable callback once the sign-in completes.
+        // TODO: are both needed? same for protocols
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        
+        // Actually do the sign-in.
+        GIDSignIn.sharedInstance().signIn()
+    }
+    
+    // Called automatically when sign-in is complete.
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+
+        // TODO: how to get errors out!??
         //if any error stop and print the error
         if error != nil{
             print(error ?? "google error")
@@ -35,9 +45,10 @@ class GoogleSignInManager: NSObject, GIDSignInUIDelegate, GIDSignInDelegate {
         
         
         
+        actionWithAccessToken(user.authentication.accessToken!)
+        return
         
         let token = user.authentication.accessToken!
-        
         let url = URL(string: "https://sheets.googleapis.com/v4/spreadsheets/1Kiw83_ED0nFtDq5TnOCY3IJunocWrsOP9REAHSJ37B8/values/Sheet1!A:A:append?valueInputOption=RAW")
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
