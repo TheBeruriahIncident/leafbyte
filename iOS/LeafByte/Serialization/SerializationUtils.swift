@@ -15,7 +15,7 @@ func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAre
         ()
     case .local:
         let data = "1,4,2\n".data(using: String.Encoding.utf8)!
-        let url = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data.csv")
+        let url = getUrlForVisibleFiles().appendingPathComponent("data.csv")
         if let fileHandle = FileHandle(forWritingAtPath: url.path) {
             defer {
                 fileHandle.closeFile()
@@ -37,7 +37,7 @@ func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAre
     case .local:
         let png = UIImagePNGRepresentation(image)!
         
-        let url = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image.png")
+        let url = getUrlForVisibleFiles().appendingPathComponent("image.png")
         try! png.write(to: url, options: .atomic)
         
         

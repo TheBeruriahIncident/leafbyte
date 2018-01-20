@@ -23,8 +23,6 @@ class Settings: NSObject, NSCoding {
         static let saveGpsData = "saveGpsData"
     }
     
-    static let defaultSerializedLocation = FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-    
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
     var seriesName = "Leaf measurements"
@@ -73,12 +71,12 @@ class Settings: NSObject, NSCoding {
     
     // MARK: - Helpers
     
-    func serialize(at serializedLocation: URL = Settings.defaultSerializedLocation) {
+    func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
         try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
         NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
     }
     
-    static func deserialize(from serializedLocation: URL = Settings.defaultSerializedLocation) -> Settings {
+    static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
         let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
         if deserializedData == nil {
             return Settings()
