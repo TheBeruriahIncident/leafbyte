@@ -19,6 +19,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
     
+    @IBOutlet weak var datasetNameLabel: UILabel!
+    @IBOutlet weak var nextSampleNumberLabel: UILabel!
+    @IBOutlet weak var saveGpsLabel: UILabel!
+    
     // MARK: - Actions
     
     @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
@@ -147,9 +151,14 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // Disable controls that would have no effect.
     private func updateEnabledness() {
-        saveGps.isEnabled = settings.measurementSaveLocation != .none
-        let anySavingIsEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
-        datasetName.isEnabled = anySavingIsEnabled
-        nextSampleNumber.isEnabled = anySavingIsEnabled
+        let measurementSavingEnabled = settings.measurementSaveLocation != .none
+        saveGps.isEnabled = measurementSavingEnabled
+        saveGpsLabel.isEnabled = measurementSavingEnabled
+        
+        let anySavingEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
+        datasetName.isEnabled = anySavingEnabled
+        datasetNameLabel.isEnabled = anySavingEnabled
+        nextSampleNumber.isEnabled = anySavingEnabled
+        nextSampleNumberLabel.isEnabled = anySavingEnabled
     }
 }
