@@ -10,6 +10,9 @@ import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
 class Settings: NSObject, NSCoding {
+    static let defaultDatasetName = "Herbivory Measurement"
+    static let defaultNextSampleNumber = 1
+    
     enum SaveLocation: String {
         case none = "none"
         case local = "local"
@@ -26,8 +29,8 @@ class Settings: NSObject, NSCoding {
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
-    var datasetName = "Herbivory Measurement"
-    var nextSampleNumber = 1
+    var datasetName = Settings.defaultDatasetName
+    var nextSampleNumber = defaultNextSampleNumber
     var saveGpsData = false
     
     required override init() {}

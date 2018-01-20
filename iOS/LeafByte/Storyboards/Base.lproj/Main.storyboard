@@ -269,11 +269,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </navigationBar>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
-                                <rect key="frame" x="89" y="177" width="197" height="30"/>
+                                <rect key="frame" x="89" y="175" width="197" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
                                     <action selector="datasetNameChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="wHR-ur-o4O"/>
                                 </connections>
@@ -283,9 +283,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
-                                    <action selector="datasetNameChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="Tju-5J-RmJ"/>
                                     <action selector="nextSampleNumberChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="veq-fM-XQ7"/>
                                 </connections>
                             </textField>
