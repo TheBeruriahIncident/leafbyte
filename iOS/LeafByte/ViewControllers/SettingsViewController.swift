@@ -25,6 +25,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         settings.measurementSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         settings.serialize()
         
+        updateEnabledness()
+        
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
     }
@@ -32,6 +34,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
         settings.imageSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         settings.serialize()
+        
+        updateEnabledness()
         
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
@@ -100,6 +104,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
         datasetName.delegate = self
         nextSampleNumber.delegate = self
+        
+        updateEnabledness()
     }
     
     // If a user taps outside of the keyboard, close the keyboard.
@@ -137,5 +143,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         case .googleDrive:
             return 2
         }
+    }
+    
+    // Disable controls that would have no effect.
+    private func updateEnabledness() {
+        saveGps.isEnabled = settings.measurementSaveLocation != .none
+        let anySavingIsEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
+        datasetName.isEnabled = anySavingIsEnabled
+        nextSampleNumber.isEnabled = anySavingIsEnabled
     }
 }
