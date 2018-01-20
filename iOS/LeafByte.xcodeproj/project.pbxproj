@@ -246,9 +246,9 @@
 			isa = PBXGroup;
 			children = (
 				469E3B022013DB4E009C7337 /* FileUtils.swift */,
+				460F687020140A31002C8BA7 /* GoogleSignInManager.swift */,
 				469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */,
 				4651F0252011896800365F93 /* Settings.swift */,
-				460F687020140A31002C8BA7 /* GoogleSignInManager.swift */,
 			);
 			path = Serialization;
 			sourceTree = "<group>";
