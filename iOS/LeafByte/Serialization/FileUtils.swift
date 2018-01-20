@@ -12,6 +12,13 @@ func getUrlForVisibleFiles() -> URL {
     return FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
 }
 
+func getUrlForVisibleFolder(named folderName: String) -> URL {
+    let url = getUrlForVisibleFiles().appendingPathComponent(folderName)
+    try! FileManager().createDirectory(at: url, withIntermediateDirectories: false)
+    
+    return url
+}
+
 func getUrlForInvisibleFiles() -> URL {
     return FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 }

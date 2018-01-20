@@ -35,7 +35,7 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
     
     switch settings.measurementSaveLocation {
     case .local:
-        let url = getUrlForVisibleFiles().appendingPathComponent("\(settings.seriesName).csv")
+        let url = getUrlForVisibleFolder(named: settings.seriesName).appendingPathComponent("\(settings.seriesName).csv")
         // If the file doesn't exist, create with the header.
         initializeFileIfNonexistant(url, withData: csvHeader)
         
@@ -56,7 +56,7 @@ private func serializeImage(settings: Settings, image: UIImage) {
     case .none:
         ()
     case .local:
-        let url = getUrlForVisibleFiles().appendingPathComponent("\(settings.seriesName).png")
+        let url = getUrlForVisibleFolder(named: settings.seriesName).appendingPathComponent("\(settings.seriesName).png")
         
         let pngImage = UIImagePNGRepresentation(image)!
         try! pngImage.write(to: url)
