@@ -13,6 +13,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Fields
     
     // Both of these are passed from the main menu view.
+    var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     
@@ -64,6 +65,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
                 fatalError("Expected the next view to be the scale identification view but is \(segue.destination)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = baseImageView.image
             

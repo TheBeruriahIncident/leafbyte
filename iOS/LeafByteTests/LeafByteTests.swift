@@ -38,6 +38,28 @@ class LeafByteTests: XCTestCase {
         XCTAssertEqual(139, Int(round(suggestedThreshold * 255)))
     }
     
+    func testSettingsSerialization() {
+        let settings = Settings()
+        settings.measurementSaveLocation = .googleDrive
+        settings.imageSaveLocation = .googleDrive
+        settings.datasetName = "The Tale of Genji"
+        settings.nextSampleNumber = 4
+        settings.saveGpsData = true
+        
+        let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
+        settings.serialize(at: url)
+        let deserializedSettings = Settings.deserialize(from: url)
+        
+        XCTAssertEqual(settings, deserializedSettings)
+    }
+    
+    func testDeserializeMissingSettings() {
+        let url = NSURL.fileURL(withPath: (NSTemporaryDirectory() as NSString).appendingPathComponent("no-settings-here"), isDirectory: true)
+        let deserializedSettings = Settings.deserialize(from: url)
+        
+        XCTAssertEqual(Settings(), deserializedSettings)
+    }
+    
     private func loadImage(named name: String) -> UIImage {
         let bundle = Bundle(for: type(of: self))
         guard let path = bundle.path(forResource: name, ofType: "jpg") else {

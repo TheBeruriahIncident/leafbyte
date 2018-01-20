@@ -13,6 +13,8 @@ import UIKit
 class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
+    var settings: Settings!
+    
     let imagePicker = UIImagePickerController()
     
     // Both of these are set while picking an image and are passed forward to the next view.
@@ -42,6 +44,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        settings = Settings.deserialize()
+        
         setupImagePicker(imagePicker: imagePicker, self: self)
     }
     
@@ -56,9 +60,22 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(navigationController.topViewController!)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage
         }
+        // If the segue is toSettings, we're transitioning to the settings, and we need to pass the settings forward.
+        else if segue.identifier == "toSettings" {
+            guard let navigationController = segue.destination as? UINavigationController else {
+                fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
+            }
+            guard let destination = navigationController.topViewController as? SettingsViewController else {
+                fatalError("Expected the view inside the navigation controller to be the settings view but is  \(navigationController.topViewController!)")
+            }
+            
+            destination.settings = settings
+        }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {

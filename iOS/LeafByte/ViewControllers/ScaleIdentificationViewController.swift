@@ -13,6 +13,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // MARK: - Fields
     
     // These are passed from the previous view.
+    var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: UIImage!
     
@@ -76,6 +77,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
                 fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
             }
             
+            destination.settings = settings
             destination.sourceType = sourceType
             destination.image = image
             destination.scaleMarkPixelLength = scaleMarkPixelLength
@@ -113,6 +115,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // Since a non-white section in the image was touched, it may be a scale mark.
         measureScaleMark(fromPointInMark: projectedPoint, inImage: indexableImage, withMinimumLength: 1)
+        
+        // Switch back to scrolling after each scale mark identified.
+        setScrollingMode(true)
     }
     
     // MARK: - Helpers
@@ -125,7 +130,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         if inScrollingMode {
             modeToggleButton.setTitle("Touch the scale", for: .normal)
         } else {
-            modeToggleButton.setTitle("Back to scrolling", for: .normal)
+            modeToggleButton.setTitle("Cancel", for: .normal)
         }
     }
     
