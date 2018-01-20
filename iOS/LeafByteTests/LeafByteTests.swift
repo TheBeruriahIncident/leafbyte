@@ -45,16 +45,16 @@ class LeafByteTests: XCTestCase {
         settings.seriesName = "The Tale of Genji"
         settings.saveGpsData = true
         
-        let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("settings")
-        settings.serialize(at: path)
-        let deserializedSettings = Settings.deserialize(from: path)
+        let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
+        settings.serialize(at: url)
+        let deserializedSettings = Settings.deserialize(from: url)
         
         XCTAssertEqual(settings, deserializedSettings)
     }
     
     func testDeserializeMissingSettings() {
-        let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("no-settings-here")
-        let deserializedSettings = Settings.deserialize(from: path)
+        let url = NSURL.fileURL(withPath: (NSTemporaryDirectory() as NSString).appendingPathComponent("no-settings-here"), isDirectory: true)
+        let deserializedSettings = Settings.deserialize(from: url)
         
         XCTAssertEqual(Settings(), deserializedSettings)
     }

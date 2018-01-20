@@ -311,7 +311,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="None"/>
-                                    <segment title="Local"/>
+                                    <segment title="Files App"/>
                                     <segment title="Google Drive"/>
                                 </segments>
                                 <connections>
@@ -323,7 +323,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="None"/>
-                                    <segment title="Local"/>
+                                    <segment title="Files App"/>
                                     <segment title="Google Drive"/>
                                 </segments>
                                 <connections>

@@ -23,7 +23,7 @@ class Settings: NSObject, NSCoding {
         static let saveGpsData = "saveGpsData"
     }
     
-    static let defaultSerializedLocation = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("settings").path
+    static let defaultSerializedLocation = FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
@@ -73,16 +73,21 @@ class Settings: NSObject, NSCoding {
     
     // MARK: - Helpers
     
-    func serialize(at serializedLocation: String = Settings.defaultSerializedLocation) {
-        NSKeyedArchiver.archiveRootObject(self, toFile: serializedLocation)
+    func serialize(at serializedLocation: URL = Settings.defaultSerializedLocation) {
+        try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
+        NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
     }
     
-    static func deserialize(from serializedLocation: String = Settings.defaultSerializedLocation) -> Settings {
-        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: serializedLocation) as? Settings
+    static func deserialize(from serializedLocation: URL = Settings.defaultSerializedLocation) -> Settings {
+        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
         if deserializedData == nil {
             return Settings()
         }
         
         return deserializedData!
+    }
+    
+    private static func getSettingsFile(fromContainingFolder folder: URL) -> String {
+        return folder.appendingPathComponent("settings").path
     }
 }
