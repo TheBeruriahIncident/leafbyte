@@ -19,14 +19,14 @@ class Settings: NSObject, NSCoding {
     struct PropertyKey {
         static let measurementSaveLocation = "measurementSaveLocation"
         static let imageSaveLocation = "imageSaveLocation"
-        static let seriesName = "seriesName"
+        static let datasetName = "datasetName"
         static let nextSampleNumber = "nextSampleNumber"
         static let saveGpsData = "saveGpsData"
     }
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
-    var seriesName = "Leaf measurements"
+    var datasetName = "Herbivory Measurement"
     var nextSampleNumber = 1
     var saveGpsData = false
     
@@ -42,8 +42,8 @@ class Settings: NSObject, NSCoding {
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
         }
-        if let seriesName = decoder.decodeObject(forKey: PropertyKey.seriesName) as? String {
-            self.seriesName = seriesName
+        if let datasetName = decoder.decodeObject(forKey: PropertyKey.datasetName) as? String {
+            self.datasetName = datasetName
         }
         if decoder.containsValue(forKey: PropertyKey.nextSampleNumber) {
             self.nextSampleNumber = decoder.decodeInteger(forKey: PropertyKey.nextSampleNumber)
@@ -57,7 +57,7 @@ class Settings: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
-        coder.encode(seriesName, forKey: PropertyKey.seriesName)
+        coder.encode(datasetName, forKey: PropertyKey.datasetName)
         coder.encode(nextSampleNumber, forKey: PropertyKey.nextSampleNumber)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
     }
@@ -71,7 +71,7 @@ class Settings: NSObject, NSCoding {
         
         return measurementSaveLocation == other.measurementSaveLocation
             && imageSaveLocation == other.imageSaveLocation
-            && seriesName == other.seriesName
+            && datasetName == other.datasetName
             && saveGpsData == other.saveGpsData
     }
     

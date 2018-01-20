@@ -42,7 +42,7 @@ class LeafByteTests: XCTestCase {
         let settings = Settings()
         settings.measurementSaveLocation = .googleDrive
         settings.imageSaveLocation = .googleDrive
-        settings.seriesName = "The Tale of Genji"
+        settings.datasetName = "The Tale of Genji"
         settings.nextSampleNumber = 4
         settings.saveGpsData = true
         

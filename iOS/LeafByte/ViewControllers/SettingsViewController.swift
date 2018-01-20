@@ -15,7 +15,7 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
     @IBOutlet weak var imageSaveLocation: UISegmentedControl!
-    @IBOutlet weak var seriesName: UITextField!
+    @IBOutlet weak var datasetName: UITextField!
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
     
@@ -31,12 +31,12 @@ class SettingsViewController: UIViewController {
         settings.serialize()
     }
     
-    @IBAction func seriesNameChanged(_ sender: UITextField) {
-        if settings.seriesName == sender.text! {
+    @IBAction func datasetNameChanged(_ sender: UITextField) {
+        if settings.datasetName == sender.text! {
                 return
         }
         
-        settings.seriesName = sender.text!
+        settings.datasetName = sender.text!
         settings.nextSampleNumber = 1
         settings.serialize()
         
@@ -60,7 +60,7 @@ class SettingsViewController: UIViewController {
         
         measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
-        seriesName.text = settings.seriesName
+        datasetName.text = settings.datasetName
         nextSampleNumber.text = String(settings.nextSampleNumber)
         saveGps.setOn(settings.saveGpsData, animated: false)
     }
