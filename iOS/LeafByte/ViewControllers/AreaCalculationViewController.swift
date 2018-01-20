@@ -245,6 +245,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         calculateButton.isEnabled = true
         undoButton.isEnabled = true
         redoButton.isEnabled = false
+        
+        // Switch back to scrolling after each line drawn.
+        setScrollingMode(true)
     }
     
     // MARK: - UIImagePickerControllerDelegate overrides
@@ -292,9 +295,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
         
         if inScrollingMode {
-            modeToggleButton.setTitle("Switch to drawing", for: .normal)
+            modeToggleButton.setTitle("Draw", for: .normal)
         } else {
-            modeToggleButton.setTitle("Switch to scrolling", for: .normal)
+            modeToggleButton.setTitle("Cancel", for: .normal)
         }
     }
     
