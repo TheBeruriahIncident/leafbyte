@@ -22,6 +22,7 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
         return
     }
     
+    // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy.MM.dd"
