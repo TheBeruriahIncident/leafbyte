@@ -14,7 +14,9 @@ func getUrlForVisibleFiles() -> URL {
 
 func getUrlForVisibleFolder(named folderName: String) -> URL {
     let url = getUrlForVisibleFiles().appendingPathComponent(folderName)
-    try! FileManager().createDirectory(at: url, withIntermediateDirectories: false)
+    if !FileManager().fileExists(atPath: url.path) {
+        try! FileManager().createDirectory(at: url, withIntermediateDirectories: false)
+    }
     
     return url
 }

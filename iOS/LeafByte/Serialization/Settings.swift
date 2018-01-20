@@ -20,12 +20,14 @@ class Settings: NSObject, NSCoding {
         static let measurementSaveLocation = "measurementSaveLocation"
         static let imageSaveLocation = "imageSaveLocation"
         static let seriesName = "seriesName"
+        static let nextSampleNumber = "nextSampleNumber"
         static let saveGpsData = "saveGpsData"
     }
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
     var seriesName = "Leaf measurements"
+    var nextSampleNumber = 1
     var saveGpsData = false
     
     required override init() {}
@@ -43,6 +45,9 @@ class Settings: NSObject, NSCoding {
         if let seriesName = decoder.decodeObject(forKey: PropertyKey.seriesName) as? String {
             self.seriesName = seriesName
         }
+        if decoder.containsValue(forKey: PropertyKey.nextSampleNumber) {
+            self.nextSampleNumber = decoder.decodeInteger(forKey: PropertyKey.nextSampleNumber)
+        }
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
         }
@@ -53,6 +58,7 @@ class Settings: NSObject, NSCoding {
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
         coder.encode(seriesName, forKey: PropertyKey.seriesName)
+        coder.encode(nextSampleNumber, forKey: PropertyKey.nextSampleNumber)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
     }
     
