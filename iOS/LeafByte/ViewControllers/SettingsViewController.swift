@@ -66,12 +66,12 @@ class SettingsViewController: UIViewController {
     
     private func saveLocationToIndex(_ saveLocation: Settings.SaveLocation) -> Int {
         switch saveLocation {
+        case .none:
+            return 0
         case .local:
             return 1
         case .googleDrive:
             return 2
-        default:
-            return 0
         }
     }
 }

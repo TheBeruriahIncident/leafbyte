@@ -31,6 +31,11 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
     
+    // Results.
+    var formattedPercentEaten: String!
+    var formattedLeafAreaInCm2: String?
+    var formattedEatenAreaInCm2: String?
+    
     let imagePicker = UIImagePickerController()
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: UIImage?
@@ -96,7 +101,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func share(_ sender: Any) {
-        let imageToShare = combineImages([ baseImageView, leafHolesView, userDrawingView ])
+        let imageToShare = getCombinedImage()
         let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
@@ -116,6 +121,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func nextImage(_ sender: Any) {
+        // If anything has changed, recalculate to prevent accidentally recording bad data.
+        if calculateButton.isEnabled {
+            calculateArea()
+        }
+        
+        // Record everything before moving on.
+        serialize(settings: settings, image: getCombinedImage(), percentEaten: formattedPercentEaten, leafAreaInCm2: formattedLeafAreaInCm2,
+                  eatenAreaInCm2: formattedEatenAreaInCm2)
+        
         imagePicker.sourceType = sourceType
         
         if sourceType == .camera {
@@ -341,13 +355,18 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // Set the result of the calculation, giving absolute area if the scale is set.
         let percentEaten = Float(eatenAreaInPixels) / Float(leafAreaInPixels) * 100
+        formattedPercentEaten = formatFloat(withThreeDecimalPoints: percentEaten)
         if scaleMarkPixelLength != nil {
             let leafAreaInCm2 = convertPixelsToCm2(leafAreaInPixels)
+            formattedLeafAreaInCm2 = formatFloat(withThreeDecimalPoints: leafAreaInCm2)
             let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
+            formattedEatenAreaInCm2 = formatFloat(withThreeDecimalPoints: eatenAreaInCm2)
             
-            resultsText.text = "Leaf is \(formatFloat(withThreeDecimalPoints: leafAreaInCm2)) cm2 with \(formatFloat(withThreeDecimalPoints: eatenAreaInCm2)) cm2 or \(formatFloat(withThreeDecimalPoints: percentEaten))% eaten."
+            resultsText.text = "Leaf is \(formattedLeafAreaInCm2!) cm2 with \(formattedEatenAreaInCm2!) cm2 or \(formattedPercentEaten)% eaten."
         } else {
-            resultsText.text = "Leaf is \(formatFloat(withThreeDecimalPoints: percentEaten))% eaten."
+            formattedLeafAreaInCm2 = nil
+            formattedEatenAreaInCm2 = nil
+            resultsText.text = "Leaf is \(formattedPercentEaten)% eaten."
         }
     }
     
@@ -363,5 +382,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     private func formatFloat(withThreeDecimalPoints float: Float) -> String {
         return String(format: "%.3f", float)
+    }
+    
+    private func getCombinedImage() -> UIImage {
+        return combineImages([ baseImageView, leafHolesView, userDrawingView ])
     }
 }
