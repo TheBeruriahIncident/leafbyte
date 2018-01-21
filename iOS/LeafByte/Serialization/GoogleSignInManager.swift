@@ -39,10 +39,8 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     // Called automatically when sign-in is complete.
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         // TODO: how to get errors out!??
-        //if any error stop and print the error
-        if error != nil{
-            print(error ?? "google error")
-            return
+        if error != nil {
+            fatalError(String(describing: error!))
         }
         
         

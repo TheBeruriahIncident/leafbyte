@@ -8,7 +8,7 @@
 
 import Foundation
 
-func post(url: String, accessToken: String, jsonBody: String) {
+func post(url: String, accessToken: String, jsonBody: String, andThen actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
     let url = URL(string: url)
     
     var request = URLRequest(url: url!)
@@ -21,11 +21,22 @@ func post(url: String, accessToken: String, jsonBody: String) {
     
     let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
         if error != nil {
-            print(error!)
+            fatalError(String(describing: error!))
         }
+        
+        var dataString: String?
+        var dataJson: [String: Any]?
         if data != nil {
-            let dataString = String(data: data!, encoding: String.Encoding.utf8)!
-            print(dataString)
+            dataString = String(data: data!, encoding: String.Encoding.utf8)!
+            dataJson = try! JSONSerialization.jsonObject(with: data!) as! [String: Any]
+        }
+        
+        if response != nil && (response! as! HTTPURLResponse).statusCode != 200 {
+            fatalError("\((response! as! HTTPURLResponse).statusCode): \(dataString ?? "no payload")")
+        }
+        
+        if dataJson != nil {
+            actionWithResponse(dataJson!)
         }
     }
     task.resume()
