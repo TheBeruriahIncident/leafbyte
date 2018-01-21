@@ -117,6 +117,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         GIDSignIn.sharedInstance().signOut()
     }
     
+    @IBAction func resetDriveHistory(_ sender: Any) {
+        settings.topLevelGoogleFolderId = nil
+        settings.datasetNameToGoogleFolderId = [:]
+        settings.datasetNameToGoogleSpreadsheetId = [:]
+        settings.serialize()
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
