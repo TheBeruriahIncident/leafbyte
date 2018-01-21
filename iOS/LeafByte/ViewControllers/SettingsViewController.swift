@@ -27,12 +27,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        maybeDoSignIn(newSaveLocation: newSaveLocation)
         
         settings.measurementSaveLocation = newSaveLocation
         settings.serialize()
         
         updateEnabledness()
-        maybeDoSignIn(newSaveLocationValue: newSaveLocation)
         
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
@@ -40,12 +40,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        maybeDoSignIn(newSaveLocation: newSaveLocation)
         
         settings.imageSaveLocation = newSaveLocation
         settings.serialize()
         
         updateEnabledness()
-        maybeDoSignIn(newSaveLocationValue: newSaveLocation)
         
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
@@ -169,8 +169,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     // Sign in to Google if necessary.
-    private func maybeDoSignIn(newSaveLocationValue: Settings.SaveLocation) {
-        if newSaveLocationValue != .googleDrive {
+    private func maybeDoSignIn(newSaveLocation: Settings.SaveLocation) {
+        if newSaveLocation != .googleDrive {
             return
         }
         
