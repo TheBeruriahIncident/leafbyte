@@ -25,8 +25,7 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         GIDSignIn.sharedInstance().clientID = "82243022118-vmepc1s96dt76ss9pc46l2kvlo5mom1r.apps.googleusercontent.com"
         
         // Only request access to files created by LeafByte.
-        // TODO: drive.file once creating file self
-        GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive" ]
+        GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive.file" ]
         
         // Enable callback once the sign-in completes.
         GIDSignIn.sharedInstance().delegate = self
