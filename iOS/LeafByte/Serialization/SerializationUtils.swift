@@ -47,7 +47,13 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
         appendToFile(url, data: csvRow)
         
     case .googleDrive:
-        ()
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {token in
+            createFolder(name: settings.datasetName, accessToken: token, actionWithFolderId: { folderId in
+                createSheet(name: settings.datasetName, folderId: folderId, accessToken: token, actionWithSpreadsheetId: { spreadsheetId in
+                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: token)
+                })
+            })
+        })
 
     default:
         break
