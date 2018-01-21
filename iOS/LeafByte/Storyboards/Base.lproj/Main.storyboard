@@ -310,7 +310,11 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" id="iBa-sP-sQi" userLabel="Home"/>
+                            <barButtonItem title="Item" id="iBa-sP-sQi" userLabel="Home">
+                                <connections>
+                                    <action selector="goHome:" destination="ueh-Tb-xxm" id="MhS-T7-pnK"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Item" image="Share" id="ylR-HA-GE6" userLabel="Share2">
                                 <connections>
                                     <action selector="share2:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
@@ -622,7 +626,6 @@
         <image name="leaf" width="256" height="279"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

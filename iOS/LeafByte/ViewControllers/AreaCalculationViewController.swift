@@ -101,6 +101,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
+    @IBAction func goHome(_ sender: Any) {
+        self.navigationController!.dismiss(animated: true)
+    }
+    
     @IBAction func share2(_ sender: Any) {
         let imageToShare = getCombinedImage()
         let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
