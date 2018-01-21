@@ -14,6 +14,8 @@ let csvHeader = stringRowToCsvRow(header)
 
 func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAreaInCm2: String?, eatenAreaInCm2: String?) {
     serializeMeasurement(settings: settings, percentEaten: percentEaten, leafAreaInCm2: leafAreaInCm2, eatenAreaInCm2: eatenAreaInCm2)
+    // TODO: this is a truly awful hack around the race condition of these different promises resolving. once done prototyping, FIX
+    sleep(2)
     serializeImage(settings: settings, image: image)
     
     settings.nextSampleNumber += 1
