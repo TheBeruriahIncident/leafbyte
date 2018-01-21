@@ -100,7 +100,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    @IBAction func share(_ sender: Any) {
+    @IBAction func share2(_ sender: Any) {
         let imageToShare = getCombinedImage()
         let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
@@ -336,7 +336,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
                 
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
-        drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        drawingManager.getContext().setStrokeColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
         
         var eatenAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {
@@ -362,11 +362,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
             formattedEatenAreaInCm2 = formatFloat(withThreeDecimalPoints: eatenAreaInCm2)
             
-            resultsText.text = "Leaf is \(formattedLeafAreaInCm2!) cm2 with \(formattedEatenAreaInCm2!) cm2 or \(formattedPercentEaten)% eaten."
+            resultsText.numberOfLines=0
+            resultsText.text = "Total Leaf Area= \(formattedLeafAreaInCm2!) cm2 \nLeaf Area Consumed= \(formattedEatenAreaInCm2!) cm2 \nPercent Consumed=\(formattedPercentEaten!)% "
         } else {
             formattedLeafAreaInCm2 = nil
             formattedEatenAreaInCm2 = nil
-            resultsText.text = "Leaf is \(formattedPercentEaten)% eaten."
+            resultsText.text = "Leaf is \(formattedPercentEaten!)% eaten."
         }
     }
     

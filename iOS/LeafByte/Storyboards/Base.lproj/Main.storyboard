@@ -6,9 +6,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="GurmukhiMN.ttc">
+            <string>GurmukhiMN</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Main Menu View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -18,42 +24,95 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-sd-kIs" userLabel="Camera Button">
-                                <rect key="frame" x="51" y="535" width="113" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-sd-kIs" userLabel="Camera Button">
+                                <rect key="frame" x="50" y="423" width="94" height="94"/>
                                 <accessibility key="accessibilityConfiguration" label="Camera"/>
-                                <state key="normal" title="Take a picture"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="Bq9-aE-623"/>
+                                    <constraint firstAttribute="height" constant="94" id="lTc-tS-2ar"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="Camera"/>
                                 <connections>
                                     <action selector="pickImageFromCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8iX-hV-eBB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
-                                <rect key="frame" x="207" y="534" width="138" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
+                                <rect key="frame" x="231" y="423" width="94" height="94"/>
                                 <accessibility key="accessibilityConfiguration" label="Photo Library"/>
-                                <state key="normal" title="Choose a picture"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="Bfz-Jk-5Wg"/>
+                                    <constraint firstAttribute="height" constant="94" id="ly1-oe-79P"/>
+                                </constraints>
+                                <state key="normal" image="Gallery"/>
                                 <connections>
                                     <action selector="pickImageFromPhotoLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vpd-GI-yRy"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7J-0u-w5M" userLabel="Settings Button">
-                                <rect key="frame" x="275" y="71" width="70" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7J-0u-w5M" userLabel="Settings Button">
+                                <rect key="frame" x="288" y="40" width="57" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Settings"/>
                                 <state key="normal" title="Settings"/>
                                 <connections>
                                     <segue destination="87W-xz-Klv" kind="show" identifier="toSettings" customClass="SegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LeafByte" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="Title">
-                                <rect key="frame" x="146" y="130" width="68" height="20.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="Title">
+                                <rect key="frame" x="0.0" y="249" width="375" height="75"/>
+                                <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gE2-ly-MV0">
+                                <rect key="frame" x="0.0" y="338.5" width="375" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uh0-1K-0gr">
+                                <rect key="frame" x="0.0" y="317.5" width="375" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-gX-Mwe">
+                                <rect key="frame" x="58" y="517" width="78" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe">
+                                <rect key="frame" x="216" y="517" width="124" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="leaf" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP">
+                                <rect key="frame" x="148" y="121" width="124" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Fv-Ge-wCb" secondAttribute="trailing" constant="50" id="1d6-C9-5jG"/>
+                            <constraint firstItem="uh0-1K-0gr" firstAttribute="top" secondItem="tMm-Do-q8c" secondAttribute="bottom" constant="10" id="2dy-mH-lcg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="neI-sd-kIs" secondAttribute="bottom" constant="150" id="46H-Yi-B68"/>
+                            <constraint firstItem="neI-sd-kIs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="HmP-rc-dKJ"/>
+                            <constraint firstItem="cPB-VP-BSe" firstAttribute="top" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="Hse-gc-Q8w"/>
+                            <constraint firstItem="tMm-Do-q8c" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="T0J-az-vgd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" constant="150" id="TN4-d9-gPU"/>
+                            <constraint firstItem="uh0-1K-0gr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Y0w-7g-jUV"/>
+                            <constraint firstItem="gE2-ly-MV0" firstAttribute="top" secondItem="uh0-1K-0gr" secondAttribute="bottom" constant="5" id="Y2n-D4-pzk"/>
+                            <constraint firstItem="tMm-Do-q8c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="a1q-0n-xNS"/>
+                            <constraint firstItem="gE2-ly-MV0" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="bnu-bN-Ang"/>
+                            <constraint firstItem="hMs-gX-Mwe" firstAttribute="top" secondItem="neI-sd-kIs" secondAttribute="bottom" id="dC8-6p-udq"/>
+                            <constraint firstItem="uh0-1K-0gr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="eeJ-9J-s3E"/>
+                            <constraint firstItem="hMs-gX-Mwe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="58" id="ioS-Jb-p5M"/>
+                            <constraint firstItem="y7J-0u-w5M" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="kq0-Dh-MYv"/>
+                            <constraint firstItem="tMm-Do-q8c" firstAttribute="top" secondItem="y7J-0u-w5M" secondAttribute="bottom" constant="180" id="mqt-pE-8vJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="y7J-0u-w5M" secondAttribute="trailing" constant="30" id="nf2-yl-Vrk"/>
+                            <constraint firstItem="gE2-ly-MV0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xmM-4c-7Wp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cPB-VP-BSe" secondAttribute="trailing" constant="35" id="y2R-Z4-aBi"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
@@ -186,7 +245,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
-                                <rect key="frame" x="7" y="580" width="330" height="50"/>
+                                <rect key="frame" x="7" y="553" width="330" height="77"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="textColor"/>
@@ -209,35 +268,38 @@
                                     <action selector="calculate:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="pjR-Mb-HWu"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
-                                <rect key="frame" x="345" y="590" width="23" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
+                                <rect key="frame" x="338" y="584" width="30" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&lt;"/>
+                                <state key="normal" title="&lt;" image="Undo"/>
                                 <connections>
                                     <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
-                                <rect key="frame" x="345" y="629" width="23" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
+                                <rect key="frame" x="339" y="633" width="30" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&gt;"/>
+                                <state key="normal" title="&gt;" image="Redo"/>
                                 <connections>
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SaF-UW-MCN" userLabel="Share Button">
-                                <rect key="frame" x="164" y="551" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Share"/>
-                                <connections>
-                                    <action selector="share:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Xmz-mC-iuc"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" id="iBa-sP-sQi" userLabel="Home"/>
+                            <barButtonItem title="Item" image="Share" id="ylR-HA-GE6" userLabel="Share2">
+                                <connections>
+                                    <action selector="share2:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
                         <outlet property="calculateButton" destination="M4l-IF-yMI" id="zVT-d5-vro"/>
@@ -254,7 +316,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2529" y="949"/>
+            <point key="canvasLocation" x="2528.8000000000002" y="948.57571214392806"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Nbb-yx-jpU">
@@ -483,7 +545,15 @@
             <point key="canvasLocation" x="1721" y="949"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Camera" width="98" height="94"/>
+        <image name="Gallery" width="98" height="98"/>
+        <image name="Redo" width="50" height="44"/>
+        <image name="Share" width="32" height="29"/>
+        <image name="Undo" width="50" height="44"/>
+        <image name="leaf" width="256" height="279"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="03T-NI-k5w"/>
+        <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
