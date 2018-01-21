@@ -354,6 +354,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
+                                <rect key="frame" x="125" y="617" width="128" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign out of Google"/>
+                                <connections>
+                                    <action selector="signOutOfGoogle:" destination="ayx-Do-FJf" eventType="touchUpInside" id="xXM-kR-foo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="bzd-wJ-GYf"/>
@@ -375,6 +383,7 @@
                         <outlet property="nextSampleNumberLabel" destination="zyF-9a-8bS" id="iMe-Kn-CTA"/>
                         <outlet property="saveGps" destination="6Nr-u4-Yuh" id="Jy1-3a-JvC"/>
                         <outlet property="saveGpsLabel" destination="ID5-9Q-Zb9" id="4S2-NR-eXM"/>
+                        <outlet property="signOutOfGoogleButton" destination="KqO-AI-fbL" id="RDV-X8-wwc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KC5-I7-Tcv" userLabel="First Responder" sceneMemberID="firstResponder"/>

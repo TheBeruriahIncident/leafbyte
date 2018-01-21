@@ -6,6 +6,7 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
+import GoogleSignIn
 import UIKit
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
@@ -22,6 +23,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var datasetNameLabel: UILabel!
     @IBOutlet weak var nextSampleNumberLabel: UILabel!
     @IBOutlet weak var saveGpsLabel: UILabel!
+    
+    @IBOutlet weak var signOutOfGoogleButton: UIButton!
     
     // MARK: - Actions
     
@@ -99,6 +102,21 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
+    
+    @IBAction func signOutOfGoogle(_ sender: Any) {
+        if settings.measurementSaveLocation == .googleDrive {
+            settings.measurementSaveLocation = .none
+            measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
+        }
+        if settings.imageSaveLocation == .googleDrive {
+            settings.imageSaveLocation = .none
+            imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
+        }
+        settings.serialize()
+        
+        GIDSignIn.sharedInstance().signOut()
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
@@ -166,6 +184,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         datasetNameLabel.isEnabled = anySavingEnabled
         nextSampleNumber.isEnabled = anySavingEnabled
         nextSampleNumberLabel.isEnabled = anySavingEnabled
+        
+        let anyGoogleDriveSavingEnabled = settings.measurementSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
+        signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
     }
     
     // Sign in to Google if necessary.
