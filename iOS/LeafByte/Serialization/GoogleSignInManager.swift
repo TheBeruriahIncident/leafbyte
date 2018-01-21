@@ -51,8 +51,8 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         actionWithAccessToken(user.authentication.accessToken!)
         //return
         
-        post(url: "https://sheets.googleapis.com/v4/spreadsheets/1Q2zq547BPvw2b5BeLQiIaG21CZOUXGhUM4tO-lhFNfs/values/Sheet1!A:A:append?valueInputOption=RAW",
-             accessToken: user.authentication.accessToken!,
-             jsonBody: "{values: [[\"foo2\"]]}")
+        
+        let spreadsheetId = "1Q2zq547BPvw2b5BeLQiIaG21CZOUXGhUM4tO-lhFNfs"
+        appendToSheet(spreadsheetId: spreadsheetId, row: ["a", "b"], accessToken: user.authentication.accessToken!)
     }
 }
