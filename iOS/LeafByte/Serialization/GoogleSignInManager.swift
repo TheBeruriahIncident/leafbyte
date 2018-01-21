@@ -8,12 +8,16 @@
 
 import GoogleSignIn
 
-class GoogleSignInManager: NSObject, GIDSignInDelegate, GIDSignInUIDelegate {
+// This pretends to be a view controller, because the delegate has a runtime requirement of being a view controller.
+class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     
-    let actionWithAccessToken: (_ accessToken: String) -> Void
+    var actionWithAccessToken: ((_ accessToken: String) -> Void)!
     
-    init(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
-        self.actionWithAccessToken = actionWithAccessToken
+    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
+        let googleSignInManager = GoogleSignInManager()
+        googleSignInManager.actionWithAccessToken = actionWithAccessToken
+        
+        googleSignInManager.initiateSignIn()
     }
     
     func initiateSignIn() {
@@ -24,7 +28,6 @@ class GoogleSignInManager: NSObject, GIDSignInDelegate, GIDSignInUIDelegate {
         GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive.file" ]
         
         // Enable callback once the sign-in completes.
-        // TODO: are both needed? same for protocols
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         

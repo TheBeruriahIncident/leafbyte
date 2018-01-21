@@ -26,20 +26,26 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
-        settings.measurementSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        
+        settings.measurementSaveLocation = newSaveLocation
         settings.serialize()
         
         updateEnabledness()
+        maybeDoSignIn(newSaveLocationValue: newSaveLocation)
         
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
     }
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
-        settings.imageSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        
+        settings.imageSaveLocation = newSaveLocation
         settings.serialize()
         
         updateEnabledness()
+        maybeDoSignIn(newSaveLocationValue: newSaveLocation)
         
         // Dismiss the keyboard if it's open.
         self.view.endEditing(true)
@@ -160,5 +166,14 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         datasetNameLabel.isEnabled = anySavingEnabled
         nextSampleNumber.isEnabled = anySavingEnabled
         nextSampleNumberLabel.isEnabled = anySavingEnabled
+    }
+    
+    // Sign in to Google if necessary.
+    private func maybeDoSignIn(newSaveLocationValue: Settings.SaveLocation) {
+        if newSaveLocationValue != .googleDrive {
+            return
+        }
+        
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
     }
 }
