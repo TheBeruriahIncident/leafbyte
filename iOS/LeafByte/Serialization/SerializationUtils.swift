@@ -84,18 +84,27 @@ private func getGoogleFolderId(settings: Settings, accessToken: String, actionWi
     if existingFolderId != nil {
         actionWithFolderId(existingFolderId!)
     } else {
-        createFolder(name: settings.datasetName, accessToken: accessToken, actionWithFolderId: actionWithFolderId)
+        createFolder(name: settings.datasetName, accessToken: accessToken, actionWithFolderId: { folderId in
+            settings.datasetNameToGoogleFolderId[settings.datasetName] = folderId
+            settings.serialize()
+            
+            actionWithFolderId(folderId)
+        })
     }
 }
 
-// TODO: save these for next time
 private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
     let existingSpreadsheetId = settings.datasetNameToGoogleSpreadsheetId[settings.datasetName]
     if existingSpreadsheetId != nil {
         actionWithSpreadsheetId(existingSpreadsheetId!)
     } else {
         createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
-            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, andThen: { actionWithSpreadsheetId(spreadsheetId) })
+            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, andThen: {
+                settings.datasetNameToGoogleSpreadsheetId[settings.datasetName] = spreadsheetId
+                settings.serialize()
+                
+                actionWithSpreadsheetId(spreadsheetId)
+            })
         })
     }
 }
