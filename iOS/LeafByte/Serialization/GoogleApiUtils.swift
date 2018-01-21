@@ -20,10 +20,10 @@ func moveToFolder(folderId: String, childId: String, accessToken: String) {
 }
 
 func createSheet(name: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
-    post(url: "https://sheets.googleapis.com/v4/spreadsheets",
+    post(url: "https://www.googleapis.com/drive/v2/files",
          accessToken: accessToken,
-         jsonBody: "{}",
-         actionWithResponse: { response in actionWithSpreadsheetId(response["spreadsheetId"] as! String) })
+         jsonBody: "{title: \"\(name)\", mimeType: \"application/vnd.google-apps.spreadsheet\"}",
+         actionWithResponse: { response in actionWithSpreadsheetId(response["id"] as! String) })
 }
 
 func appendToSheet(spreadsheetId: String, row: [String], accessToken: String) {
