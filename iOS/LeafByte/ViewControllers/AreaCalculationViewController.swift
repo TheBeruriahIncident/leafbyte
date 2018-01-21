@@ -53,6 +53,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var calculateButton: UIButton!
     
+    @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -152,6 +153,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
+        
+        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         setScrollingMode(true)
         

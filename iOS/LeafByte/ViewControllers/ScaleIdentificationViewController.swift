@@ -38,6 +38,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var clearScaleButton: UIButton!
     
+    @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -63,6 +64,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
+        
+        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         setScrollingMode(true)
         findScaleMark()
