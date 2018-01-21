@@ -8,7 +8,7 @@
 
 import Foundation
 
-func post(url: String, accessToken: String, jsonBody: String, andThen actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
+func post(url: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
     let url = URL(string: url)
     
     var request = URLRequest(url: url!)

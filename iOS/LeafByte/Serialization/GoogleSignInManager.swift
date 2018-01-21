@@ -48,9 +48,17 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         
         actionWithAccessToken(user.authentication.accessToken!)
         //return
+        let token = user.authentication.accessToken!
+        
+        createFolder(name: "Noodle folder", accessToken: token, actionWithFolderId: { folderId in
+            createSheet(name: "Noodle", accessToken: token, actionWithSpreadsheetId: { spreadsheetId in
+                appendToSheet(spreadsheetId: spreadsheetId, row: ["a", "b", "Noodle"], accessToken: token)
+                moveToFolder(folderId: folderId, childId: spreadsheetId, accessToken: token)
+            })
+        })
         
         
-        let spreadsheetId = "1Q2zq547BPvw2b5BeLQiIaG21CZOUXGhUM4tO-lhFNfs"
-        appendToSheet(spreadsheetId: spreadsheetId, row: ["a", "b"], accessToken: user.authentication.accessToken!)
+        //let spreadsheetId = "1Q2zq547BPvw2b5BeLQiIaG21CZOUXGhUM4tO-lhFNfs"
+        
     }
 }
