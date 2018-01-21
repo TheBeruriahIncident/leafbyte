@@ -22,7 +22,7 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     
     func initiateSignIn() {
         // This is LeafByte's Google Drive API key.
-        GIDSignIn.sharedInstance().clientID = "82243022118-vmepc1s96dt76ss9pc46l2kvlo5mom1r.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance().clientID = "618315353176-fmg861cbe90sjm4gmsc7cq28c8t9v5ka.apps.googleusercontent.com"
         
         // Only request access to files created by LeafByte.
         GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive.file" ]
