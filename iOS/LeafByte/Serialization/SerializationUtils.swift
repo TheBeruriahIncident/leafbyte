@@ -61,17 +61,27 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
 }
 
 private func serializeImage(settings: Settings, image: UIImage) {
+    if settings.imageSaveLocation == .none {
+        return
+    }
+    
+    let filename = "\(settings.datasetName)-\(settings.nextSampleNumber).png"
+    let pngImage = UIImagePNGRepresentation(image)!
+    
     switch settings.imageSaveLocation {
-    case .none:
-        ()
     case .local:
-        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(settings.datasetName)-\(settings.nextSampleNumber).png")
-        
-        let pngImage = UIImagePNGRepresentation(image)!
+        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
         try! pngImage.write(to: url)
         
     case .googleDrive:
-        ()
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+            getGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
+                uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
+            })
+        })
+    
+    default:
+        break
     }
 }
 

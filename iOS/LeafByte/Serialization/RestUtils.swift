@@ -8,14 +8,18 @@
 
 import Foundation
 
-func post(url urlString: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
+func post(url: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
+    post(url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, contentType: "application/json", actionWithResponse: actionWithResponse)
+}
+
+func post(url urlString: String, accessToken: String, body: Data, contentType: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
     let url = URL(string: urlString)
     
     var request = URLRequest(url: url!)
     request.httpMethod = "POST"
     request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = jsonBody.data(using: .utf8)
+    request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+    request.httpBody = body
     
     let session = URLSession(configuration: URLSessionConfiguration.default)
     
@@ -32,7 +36,7 @@ func post(url urlString: String, accessToken: String, jsonBody: String, actionWi
         }
         
         if response != nil && (response! as! HTTPURLResponse).statusCode != 200 {
-            fatalError("\((response! as! HTTPURLResponse).statusCode) on request to \(urlString) with body \(jsonBody): \(dataString ?? "no payload")")
+            fatalError("\((response! as! HTTPURLResponse).statusCode) on request to \(urlString): \(dataString ?? "no payload")")
         }
         
         if dataJson != nil {

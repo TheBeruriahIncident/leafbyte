@@ -6,6 +6,8 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
+import Foundation
+
 func createFolder(name: String, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
     createFile(name: name, folderId: nil, type: "folder", accessToken: accessToken, actionWithId: actionWithFolderId)
 }
@@ -20,6 +22,14 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, an
         accessToken: accessToken,
         jsonBody: "{values: [[\(formattedRow)]]}",
         actionWithResponse: { response in andThen() })
+}
+
+// TODO: simplify this with multipart upload
+func uploadData(name: String, data: Data, folderId: String, accessToken: String) {
+    post(url: "https://www.googleapis.com/upload/drive/v2/files",
+         accessToken: accessToken,
+         body: data,
+         contentType: "image/png")
 }
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, actionWithId: @escaping (String) -> Void) {
