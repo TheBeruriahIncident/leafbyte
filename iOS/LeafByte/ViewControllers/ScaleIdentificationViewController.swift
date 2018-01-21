@@ -38,6 +38,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var clearScaleButton: UIButton!
     
+    @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -63,6 +64,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
+        
+        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         setScrollingMode(true)
         findScaleMark()
@@ -115,6 +118,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // Since a non-white section in the image was touched, it may be a scale mark.
         measureScaleMark(fromPointInMark: projectedPoint, inImage: indexableImage, withMinimumLength: 1)
+        
+        // Switch back to scrolling after each scale mark identified.
+        setScrollingMode(true)
     }
     
     // MARK: - Helpers
@@ -127,7 +133,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         if inScrollingMode {
             modeToggleButton.setTitle("Touch the scale", for: .normal)
         } else {
-            modeToggleButton.setTitle("Back to scrolling", for: .normal)
+            modeToggleButton.setTitle("Cancel", for: .normal)
         }
     }
     

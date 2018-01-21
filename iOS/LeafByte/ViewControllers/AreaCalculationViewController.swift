@@ -53,6 +53,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var calculateButton: UIButton!
     
+    @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -153,6 +154,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
+        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        
         setScrollingMode(true)
         
         initializeImage(view: leafHolesView)
@@ -245,6 +248,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         calculateButton.isEnabled = true
         undoButton.isEnabled = true
         redoButton.isEnabled = false
+        
+        // Switch back to scrolling after each line drawn.
+        setScrollingMode(true)
     }
     
     // MARK: - UIImagePickerControllerDelegate overrides
@@ -292,9 +298,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
         
         if inScrollingMode {
-            modeToggleButton.setTitle("Switch to drawing", for: .normal)
+            modeToggleButton.setTitle("Draw", for: .normal)
         } else {
-            modeToggleButton.setTitle("Switch to scrolling", for: .normal)
+            modeToggleButton.setTitle("Cancel", for: .normal)
         }
     }
     

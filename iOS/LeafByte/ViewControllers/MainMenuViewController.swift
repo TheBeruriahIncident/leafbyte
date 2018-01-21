@@ -47,6 +47,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         settings = Settings.deserialize()
         
         setupImagePicker(imagePicker: imagePicker, self: self)
+        
+        maybeDoSignIn()
     }
     
     // This is called before transitioning from this view to another view.
@@ -102,5 +104,14 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         self.sourceType = sourceType
         imagePicker.sourceType = sourceType
         present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // Sign in to Google if necessary.
+    private func maybeDoSignIn() {
+        if settings.measurementSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
+            return
+        }
+        
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
     }
 }

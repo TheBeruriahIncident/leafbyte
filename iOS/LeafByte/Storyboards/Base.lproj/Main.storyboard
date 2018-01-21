@@ -169,6 +169,15 @@
                                     </view>
                                 </subviews>
                             </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kcc-Px-YPY" userLabel="Sample Number Label">
+                                <rect key="frame" x="15" y="80" width="83" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -187,6 +196,7 @@
                     <connections>
                         <outlet property="baseImageView" destination="Sfh-f1-P2L" id="yHG-Pn-Hn5"/>
                         <outlet property="gestureRecognizingView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
+                        <outlet property="sampleNumberLabel" destination="Kcc-Px-YPY" id="HcB-8C-mBQ"/>
                         <outlet property="scaleMarkingView" destination="qTT-Z1-hQg" id="XsN-8p-QnS"/>
                         <outlet property="scrollableView" destination="W7I-Wp-QLc" id="Mft-Ax-Z21"/>
                         <outlet property="thresholdSlider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
@@ -196,7 +206,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZL4-RO-deo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="0Yy-Wp-gv7" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="927" y="949"/>
+            <point key="canvasLocation" x="925.60000000000002" y="948.57571214392806"/>
         </scene>
         <!--Area Calculation View Controller-->
         <scene sceneID="RBc-bI-pyN">
@@ -235,6 +245,15 @@
                                     </view>
                                 </subviews>
                             </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aD4-fI-h2J" userLabel="Sample Number Label">
+                                <rect key="frame" x="19" y="70" width="83" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
                                 <rect key="frame" x="16" y="637" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -308,6 +327,7 @@
                         <outlet property="modeToggleButton" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
                         <outlet property="redoButton" destination="Xwt-8a-K9l" id="OE7-0c-0FF"/>
                         <outlet property="resultsText" destination="JMU-FQ-tF0" id="glq-CW-sZ8"/>
+                        <outlet property="sampleNumberLabel" destination="aD4-fI-h2J" id="bhb-76-Inu"/>
                         <outlet property="scrollableView" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
                         <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
                         <outlet property="userDrawingView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
@@ -330,46 +350,29 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </navigationBar>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Series Name Text Box">
-                                <rect key="frame" x="89" y="365" width="197" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="seriesNameChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="wHR-ur-o4O"/>
-                                </connections>
-                            </textField>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Nr-u4-Yuh" userLabel="Save GPS Toggle">
-                                <rect key="frame" x="164" y="477" width="49" height="31"/>
+                                <rect key="frame" x="163" y="553" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Measurement Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
-                                <rect key="frame" x="79" y="125" width="217" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Data Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
+                                <rect key="frame" x="115" y="85" width="147" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Image Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
-                                <rect key="frame" x="104" y="225" width="167" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Series Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Series Name Label">
-                                <rect key="frame" x="136" y="336" width="102" height="21"/>
+                                <rect key="frame" x="103" y="185" width="167" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
-                                <rect key="frame" x="36" y="154" width="302" height="29"/>
+                                <rect key="frame" x="36" y="114" width="302" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="None"/>
@@ -381,7 +384,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
-                                <rect key="frame" x="36" y="254" width="302" height="29"/>
+                                <rect key="frame" x="36" y="214" width="302" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="None"/>
@@ -392,13 +395,63 @@
                                     <action selector="imageSaveLocationChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="2Gn-uf-Y5M"/>
                                 </connections>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Save GPS location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Save GPS Label">
-                                <rect key="frame" x="114" y="448" width="146" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Save GPS Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Save GPS Label">
+                                <rect key="frame" x="113" y="524" width="146" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
+                                <rect key="frame" x="88" y="327" width="197" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="datasetNameChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="wHR-ur-o4O"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="adf-uG-4TS" userLabel="Next Sample Number Text Box">
+                                <rect key="frame" x="146" y="422" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="nextSampleNumberChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="veq-fM-XQ7"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dataset Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
+                                <rect key="frame" x="131" y="293" width="109" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Next Sample Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyF-9a-8bS" userLabel="Next Sample Number Label">
+                                <rect key="frame" x="105" y="384" width="164" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
+                                <rect key="frame" x="42" y="617" width="128" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign out of Google"/>
+                                <connections>
+                                    <action selector="signOutOfGoogle:" destination="ayx-Do-FJf" eventType="touchUpInside" id="xXM-kR-foo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q8u-7H-GE0" userLabel="Reset Drive History Button">
+                                <rect key="frame" x="225" y="617" width="132" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Reset Drive History"/>
+                                <connections>
+                                    <action selector="resetDriveHistory:" destination="ayx-Do-FJf" eventType="touchUpInside" id="2fS-fg-Ygg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="bzd-wJ-GYf"/>
@@ -412,10 +465,15 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="datasetName" destination="JrM-pU-kJA" id="7QJ-VS-jjA"/>
+                        <outlet property="datasetNameLabel" destination="4hE-lk-Cd3" id="YUe-Rh-x5h"/>
                         <outlet property="imageSaveLocation" destination="A8e-Un-uuG" id="EUs-fQ-d9G"/>
                         <outlet property="measurementSaveLocation" destination="8gj-2h-2Ic" id="4DQ-kM-4Zr"/>
+                        <outlet property="nextSampleNumber" destination="adf-uG-4TS" id="tm2-ct-esg"/>
+                        <outlet property="nextSampleNumberLabel" destination="zyF-9a-8bS" id="iMe-Kn-CTA"/>
                         <outlet property="saveGps" destination="6Nr-u4-Yuh" id="Jy1-3a-JvC"/>
-                        <outlet property="seriesName" destination="JrM-pU-kJA" id="7QJ-VS-jjA"/>
+                        <outlet property="saveGpsLabel" destination="ID5-9Q-Zb9" id="4S2-NR-eXM"/>
+                        <outlet property="signOutOfGoogleButton" destination="KqO-AI-fbL" id="RDV-X8-wwc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KC5-I7-Tcv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -492,6 +550,15 @@
                                     </view>
                                 </subviews>
                             </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cf-iP-jgz" userLabel="Sample Number Label">
+                                <rect key="frame" x="15" y="70" width="83" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Mode Toggle Button">
                                 <rect key="frame" x="16" y="637" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -536,6 +603,7 @@
                         <outlet property="gestureRecognizingView" destination="aFd-8f-9XM" id="ZNy-2l-H1H"/>
                         <outlet property="modeToggleButton" destination="0YM-1m-Hod" id="c08-PW-eiI"/>
                         <outlet property="resultsText" destination="6Mb-ZC-YBF" id="0hX-54-0BK"/>
+                        <outlet property="sampleNumberLabel" destination="5cf-iP-jgz" id="bEh-Bd-WfX"/>
                         <outlet property="scaleMarkingView" destination="Xu9-FW-Xu6" id="95g-1v-i7M"/>
                         <outlet property="scrollableView" destination="ZFn-5a-U1t" id="cbx-Ct-Mx1"/>
                     </connections>
@@ -554,6 +622,7 @@
         <image name="leaf" width="256" height="279"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

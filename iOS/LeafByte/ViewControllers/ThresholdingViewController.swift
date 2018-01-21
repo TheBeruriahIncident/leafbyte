@@ -27,6 +27,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
     
+    @IBOutlet weak var sampleNumberLabel: UILabel!
+    
     // MARK: - Actions
     
     // This is called from the back button in the navigation bar.
@@ -49,6 +51,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
+        
+        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         // Guess a good threshold to start at; the user can adjust with the slider later.
         let suggestedThreshold = getSuggestedThreshold(image: uiToCgImage(image!))

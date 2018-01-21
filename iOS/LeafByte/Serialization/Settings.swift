@@ -10,6 +10,9 @@ import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
 class Settings: NSObject, NSCoding {
+    static let defaultDatasetName = "Herbivory Measurement"
+    static let defaultNextSampleNumber = 1
+    
     enum SaveLocation: String {
         case none = "none"
         case local = "local"
@@ -19,16 +22,23 @@ class Settings: NSObject, NSCoding {
     struct PropertyKey {
         static let measurementSaveLocation = "measurementSaveLocation"
         static let imageSaveLocation = "imageSaveLocation"
-        static let seriesName = "seriesName"
+        static let datasetName = "datasetName"
+        static let nextSampleNumber = "nextSampleNumber"
         static let saveGpsData = "saveGpsData"
+        static let datasetNameToGoogleFolderId = "datasetNameToGoogleFolderId"
+        static let datasetNameToGoogleSheetId = "datasetNameToGoogleSheetId"
+        static let topLevelGoogleFolderId = "topLevelGoogleFolderId"
     }
-    
-    static let defaultSerializedLocation = FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
     
     var measurementSaveLocation = SaveLocation.none
     var imageSaveLocation = SaveLocation.none
-    var seriesName = "Leaf measurements"
+    var datasetName = Settings.defaultDatasetName
+    var nextSampleNumber = defaultNextSampleNumber
     var saveGpsData = false
+    // TODO: handle these getting too large
+    var datasetNameToGoogleFolderId = [String: String]()
+    var datasetNameToGoogleSpreadsheetId = [String: String]()
+    var topLevelGoogleFolderId: String?
     
     required override init() {}
     
@@ -42,11 +52,23 @@ class Settings: NSObject, NSCoding {
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
         }
-        if let seriesName = decoder.decodeObject(forKey: PropertyKey.seriesName) as? String {
-            self.seriesName = seriesName
+        if let datasetName = decoder.decodeObject(forKey: PropertyKey.datasetName) as? String {
+            self.datasetName = datasetName
+        }
+        if decoder.containsValue(forKey: PropertyKey.nextSampleNumber) {
+            self.nextSampleNumber = decoder.decodeInteger(forKey: PropertyKey.nextSampleNumber)
         }
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
+        }
+        if let datasetNameToGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleFolderId) as? [String: String] {
+            self.datasetNameToGoogleFolderId = datasetNameToGoogleFolderId
+        }
+        if let datasetNameToGoogleSheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleSheetId) as? [String: String] {
+            self.datasetNameToGoogleSpreadsheetId = datasetNameToGoogleSheetId
+        }
+        if let topLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.topLevelGoogleFolderId) as? String {
+            self.topLevelGoogleFolderId = topLevelGoogleFolderId
         }
     }
     
@@ -54,8 +76,12 @@ class Settings: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
-        coder.encode(seriesName, forKey: PropertyKey.seriesName)
+        coder.encode(datasetName, forKey: PropertyKey.datasetName)
+        coder.encode(nextSampleNumber, forKey: PropertyKey.nextSampleNumber)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
+        coder.encode(datasetNameToGoogleFolderId, forKey: PropertyKey.datasetNameToGoogleFolderId)
+        coder.encode(datasetNameToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToGoogleSheetId)
+        coder.encode(topLevelGoogleFolderId, forKey: PropertyKey.topLevelGoogleFolderId)
     }
     
     // MARK: - NSObject
@@ -67,18 +93,21 @@ class Settings: NSObject, NSCoding {
         
         return measurementSaveLocation == other.measurementSaveLocation
             && imageSaveLocation == other.imageSaveLocation
-            && seriesName == other.seriesName
+            && datasetName == other.datasetName
             && saveGpsData == other.saveGpsData
+            && datasetNameToGoogleFolderId == other.datasetNameToGoogleFolderId
+            && datasetNameToGoogleSpreadsheetId == other.datasetNameToGoogleSpreadsheetId
+            && topLevelGoogleFolderId == other.topLevelGoogleFolderId
     }
     
     // MARK: - Helpers
     
-    func serialize(at serializedLocation: URL = Settings.defaultSerializedLocation) {
+    func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
         try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
         NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
     }
     
-    static func deserialize(from serializedLocation: URL = Settings.defaultSerializedLocation) -> Settings {
+    static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
         let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
         if deserializedData == nil {
             return Settings()
