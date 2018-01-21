@@ -25,6 +25,8 @@ class Settings: NSObject, NSCoding {
         static let datasetName = "datasetName"
         static let nextSampleNumber = "nextSampleNumber"
         static let saveGpsData = "saveGpsData"
+        static let datasetNameToGoogleFolderId = "datasetNameToGoogleFolderId"
+        static let datasetNameToGoogleSheetId = "datasetNameToGoogleSheetId"
     }
     
     var measurementSaveLocation = SaveLocation.none
@@ -32,6 +34,9 @@ class Settings: NSObject, NSCoding {
     var datasetName = Settings.defaultDatasetName
     var nextSampleNumber = defaultNextSampleNumber
     var saveGpsData = false
+    // TODO: handle these getting too large
+    var datasetNameToGoogleFolderId = [String: String]()
+    var datasetNameToGoogleSpreadsheetId = [String: String]()
     
     required override init() {}
     
@@ -54,6 +59,12 @@ class Settings: NSObject, NSCoding {
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
         }
+        if let datasetNameToGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleFolderId) as? [String: String] {
+            self.datasetNameToGoogleFolderId = datasetNameToGoogleFolderId
+        }
+        if let datasetNameToGoogleSheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleSheetId) as? [String: String] {
+            self.datasetNameToGoogleSpreadsheetId = datasetNameToGoogleSheetId
+        }
     }
     
     // This defines how to serialize (how to save a Settings to disk).
@@ -63,6 +74,8 @@ class Settings: NSObject, NSCoding {
         coder.encode(datasetName, forKey: PropertyKey.datasetName)
         coder.encode(nextSampleNumber, forKey: PropertyKey.nextSampleNumber)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
+        coder.encode(datasetNameToGoogleFolderId, forKey: PropertyKey.datasetNameToGoogleFolderId)
+        coder.encode(datasetNameToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToGoogleSheetId)
     }
     
     // MARK: - NSObject
@@ -76,6 +89,8 @@ class Settings: NSObject, NSCoding {
             && imageSaveLocation == other.imageSaveLocation
             && datasetName == other.datasetName
             && saveGpsData == other.saveGpsData
+            && datasetNameToGoogleFolderId == other.datasetNameToGoogleFolderId
+            && datasetNameToGoogleSpreadsheetId == other.datasetNameToGoogleSpreadsheetId
     }
     
     // MARK: - Helpers

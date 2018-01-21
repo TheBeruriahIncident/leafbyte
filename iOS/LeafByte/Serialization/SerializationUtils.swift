@@ -47,10 +47,10 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
         appendToFile(url, data: csvRow)
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {token in
-            createFolder(name: settings.datasetName, accessToken: token, actionWithFolderId: { folderId in
-                createSheet(name: settings.datasetName, folderId: folderId, accessToken: token, actionWithSpreadsheetId: { spreadsheetId in
-                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: token)
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+            getGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
+                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
+                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
                 })
             })
         })
@@ -77,4 +77,25 @@ private func serializeImage(settings: Settings, image: UIImage) {
 
 private func stringRowToCsvRow(_ row: [String]) -> Data {
     return (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
+}
+
+private func getGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+    let existingFolderId = settings.datasetNameToGoogleFolderId[settings.datasetName]
+    if existingFolderId != nil {
+        actionWithFolderId(existingFolderId!)
+    } else {
+        createFolder(name: settings.datasetName, accessToken: accessToken, actionWithFolderId: actionWithFolderId)
+    }
+}
+
+// TODO: save these for next time
+private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
+    let existingSpreadsheetId = settings.datasetNameToGoogleSpreadsheetId[settings.datasetName]
+    if existingSpreadsheetId != nil {
+        actionWithSpreadsheetId(existingSpreadsheetId!)
+    } else {
+        createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
+            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, andThen: { actionWithSpreadsheetId(spreadsheetId) })
+        })
+    }
 }
