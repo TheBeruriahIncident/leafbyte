@@ -8,8 +8,8 @@
 
 import Foundation
 
-func createFolder(name: String, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
-    createFile(name: name, folderId: nil, type: "folder", accessToken: accessToken, actionWithId: actionWithFolderId)
+func createFolder(name: String, folderId: String? = nil, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+    createFile(name: name, folderId: folderId, type: "folder", accessToken: accessToken, actionWithId: actionWithFolderId)
 }
 
 func createSheet(name: String, folderId: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {

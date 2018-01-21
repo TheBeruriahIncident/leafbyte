@@ -48,7 +48,7 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
-            getGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
                     appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
                 })
@@ -75,7 +75,7 @@ private func serializeImage(settings: Settings, image: UIImage) {
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
-            getGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
             })
         })
@@ -89,16 +89,31 @@ private func stringRowToCsvRow(_ row: [String]) -> Data {
     return (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
 }
 
-private func getGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+    if settings.topLevelGoogleFolderId != nil {
+        actionWithFolderId(settings.topLevelGoogleFolderId!)
+    } else {
+        createFolder(name: "LeafByte", accessToken: accessToken, actionWithFolderId: { folderId in
+            settings.topLevelGoogleFolderId = folderId
+            settings.serialize()
+            
+            actionWithFolderId(folderId)
+        })
+    }
+}
+
+private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
     let existingFolderId = settings.datasetNameToGoogleFolderId[settings.datasetName]
     if existingFolderId != nil {
         actionWithFolderId(existingFolderId!)
     } else {
-        createFolder(name: settings.datasetName, accessToken: accessToken, actionWithFolderId: { folderId in
-            settings.datasetNameToGoogleFolderId[settings.datasetName] = folderId
-            settings.serialize()
-            
-            actionWithFolderId(folderId)
+        getTopLevelGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { topLevelFolderId in
+            createFolder(name: settings.datasetName, folderId: topLevelFolderId, accessToken: accessToken, actionWithFolderId: { datasetFolderId in
+                settings.datasetNameToGoogleFolderId[settings.datasetName] = datasetFolderId
+                settings.serialize()
+                
+                actionWithFolderId(datasetFolderId)
+            })
         })
     }
 }

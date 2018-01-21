@@ -27,6 +27,7 @@ class Settings: NSObject, NSCoding {
         static let saveGpsData = "saveGpsData"
         static let datasetNameToGoogleFolderId = "datasetNameToGoogleFolderId"
         static let datasetNameToGoogleSheetId = "datasetNameToGoogleSheetId"
+        static let topLevelGoogleFolderId = "topLevelGoogleFolderId"
     }
     
     var measurementSaveLocation = SaveLocation.none
@@ -37,6 +38,7 @@ class Settings: NSObject, NSCoding {
     // TODO: handle these getting too large
     var datasetNameToGoogleFolderId = [String: String]()
     var datasetNameToGoogleSpreadsheetId = [String: String]()
+    var topLevelGoogleFolderId: String?
     
     required override init() {}
     
@@ -65,6 +67,9 @@ class Settings: NSObject, NSCoding {
         if let datasetNameToGoogleSheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleSheetId) as? [String: String] {
             self.datasetNameToGoogleSpreadsheetId = datasetNameToGoogleSheetId
         }
+        if let topLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.topLevelGoogleFolderId) as? String {
+            self.topLevelGoogleFolderId = topLevelGoogleFolderId
+        }
     }
     
     // This defines how to serialize (how to save a Settings to disk).
@@ -76,6 +81,7 @@ class Settings: NSObject, NSCoding {
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(datasetNameToGoogleFolderId, forKey: PropertyKey.datasetNameToGoogleFolderId)
         coder.encode(datasetNameToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToGoogleSheetId)
+        coder.encode(topLevelGoogleFolderId, forKey: PropertyKey.topLevelGoogleFolderId)
     }
     
     // MARK: - NSObject
@@ -91,6 +97,7 @@ class Settings: NSObject, NSCoding {
             && saveGpsData == other.saveGpsData
             && datasetNameToGoogleFolderId == other.datasetNameToGoogleFolderId
             && datasetNameToGoogleSpreadsheetId == other.datasetNameToGoogleSpreadsheetId
+            && topLevelGoogleFolderId == other.topLevelGoogleFolderId
     }
     
     // MARK: - Helpers
