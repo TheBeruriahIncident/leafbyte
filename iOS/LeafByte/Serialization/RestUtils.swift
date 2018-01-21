@@ -9,14 +9,14 @@
 import Foundation
 
 func post(url: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
-    post(url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, contentType: "application/json", actionWithResponse: actionWithResponse)
+    makeRestCall(method: "POST", url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, contentType: "application/json", actionWithResponse: actionWithResponse)
 }
 
-func post(url urlString: String, accessToken: String, body: Data, contentType: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
+func makeRestCall(method: String, url urlString: String, accessToken: String, body: Data, contentType: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
     let url = URL(string: urlString)
     
     var request = URLRequest(url: url!)
-    request.httpMethod = "POST"
+    request.httpMethod = method
     request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
     request.addValue(contentType, forHTTPHeaderField: "Content-Type")
     request.httpBody = body

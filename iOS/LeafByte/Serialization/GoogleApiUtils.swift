@@ -26,17 +26,18 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, an
 
 // TODO: simplify this with multipart upload
 func uploadData(name: String, data: Data, folderId: String, accessToken: String) {
-    let parentsParam = " parents: [{id: \"\(folderId)\"}],"
+    let parentsParam = " parents: [{id: \"\(folderId)\"}]"
     
-    post(url: "https://www.googleapis.com/upload/drive/v2/files",
-         accessToken: accessToken,
-         body: data,
-         contentType: "image/png",
-         actionWithResponse: { response in
+    post(url: "https://www.googleapis.com/drive/v2/files",
+        accessToken: accessToken,
+        jsonBody: "{title: \"\(name)\",\(parentsParam)}",
+        actionWithResponse: { response in
             let fileId = response["id"] as! String
-            post(url: "https://www.googleapis.com/upload/drive/v2/files",
+            makeRestCall(method: "PUT",
+                 url: "https://www.googleapis.com/upload/drive/v2/files/\(fileId)?uploadType=media",
                  accessToken: accessToken,
-                 jsonBody: "{title: \"\(name)\",\(parentsParam) id: \"\(fileId)\"}")
+                 body: data,
+                 contentType: "image/png")
     })
 }
 
