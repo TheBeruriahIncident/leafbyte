@@ -13,16 +13,10 @@ func createFolder(name: String, accessToken: String, actionWithFolderId: @escapi
         actionWithResponse: { response in actionWithFolderId(response["id"] as! String) })
 }
 
-func moveToFolder(folderId: String, childId: String, accessToken: String) {
-    post(url: "https://www.googleapis.com/drive/v2/files/\(folderId)/children",
-         accessToken: accessToken,
-         jsonBody: "{id: \"\(childId)\"}")
-}
-
-func createSheet(name: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
+func createSheet(name: String, folderId: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
     post(url: "https://www.googleapis.com/drive/v2/files",
          accessToken: accessToken,
-         jsonBody: "{title: \"\(name)\", mimeType: \"application/vnd.google-apps.spreadsheet\"}",
+         jsonBody: "{title: \"\(name)\", parents: [{id: \"\(folderId)\"}], mimeType: \"application/vnd.google-apps.spreadsheet\"}",
          actionWithResponse: { response in actionWithSpreadsheetId(response["id"] as! String) })
 }
 

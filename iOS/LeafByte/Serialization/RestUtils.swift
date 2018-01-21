@@ -8,8 +8,8 @@
 
 import Foundation
 
-func post(url: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
-    let url = URL(string: url)
+func post(url urlString: String, accessToken: String, jsonBody: String, actionWithResponse: @escaping ([String: Any]) -> Void = {response in ()}) {
+    let url = URL(string: urlString)
     
     var request = URLRequest(url: url!)
     request.httpMethod = "POST"
@@ -32,7 +32,7 @@ func post(url: String, accessToken: String, jsonBody: String, actionWithResponse
         }
         
         if response != nil && (response! as! HTTPURLResponse).statusCode != 200 {
-            fatalError("\((response! as! HTTPURLResponse).statusCode): \(dataString ?? "no payload")")
+            fatalError("\((response! as! HTTPURLResponse).statusCode) on request to \(urlString) with body \(jsonBody): \(dataString ?? "no payload")")
         }
         
         if dataJson != nil {

@@ -51,9 +51,8 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         let token = user.authentication.accessToken!
         
         createFolder(name: "Noodle folder", accessToken: token, actionWithFolderId: { folderId in
-            createSheet(name: "Noodle", accessToken: token, actionWithSpreadsheetId: { spreadsheetId in
+            createSheet(name: "Noodle", folderId: folderId, accessToken: token, actionWithSpreadsheetId: { spreadsheetId in
                 appendToSheet(spreadsheetId: spreadsheetId, row: ["a", "b", "Noodle"], accessToken: token)
-                moveToFolder(folderId: folderId, childId: spreadsheetId, accessToken: token)
             })
         })
         
