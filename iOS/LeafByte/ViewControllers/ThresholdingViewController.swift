@@ -15,9 +15,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // Both of these are passed from the main menu view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
-    var image: UIImage!
+    var image: CGImage!
     
     let filter = ThresholdingFilter()
+    
+    var ciImageThresholded: CIImage?
     
     // MARK: - Outlets
     
@@ -47,7 +49,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         
-        filter.setInputImage(image!)
+        filter.setInputImage(image)
         
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
@@ -55,7 +57,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         // Guess a good threshold to start at; the user can adjust with the slider later.
-        let suggestedThreshold = getSuggestedThreshold(image: uiToCgImage(image!))
+        let suggestedThreshold = getSuggestedThreshold(image: image)
         thresholdSlider.value = 1 - suggestedThreshold
         setThreshold(suggestedThreshold)
     }
@@ -71,7 +73,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.image = baseImageView.image
+            if ciImageThresholded != nil {
+                destination.cgImage = ciToCgImage(ciImageThresholded!)
+            } else {
+                destination.cgImage = uiToCgImage(baseImageView.image!)
+            }
+            destination.uiImage = baseImageView.image
             
             setBackButton(self: self)
         }
@@ -87,6 +94,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     private func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
-        baseImageView.image = ciToUiImage(filter.outputImage)
+        ciImageThresholded = filter.outputImage
+        baseImageView.image = ciToUiImage(ciImageThresholded!)
     }
 }

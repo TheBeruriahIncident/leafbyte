@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-let header = [ "Date", "Time", "Sample Number", "Leaf Area (cm2)", "Eaten Area (cm2)", "Percent Eaten" ]
+let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Eaten Leaf Area (cm2)", "Percent Eaten" ]
 let csvHeader = stringRowToCsvRow(header)
 
 func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAreaInCm2: String?, eatenAreaInCm2: String?) {

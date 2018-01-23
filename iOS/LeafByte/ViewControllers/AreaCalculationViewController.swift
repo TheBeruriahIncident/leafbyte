@@ -15,7 +15,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // These are passed from the previous view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
-    var image: UIImage!
+    var cgImage: CGImage!
+    var uiImage: UIImage!
     var scaleMarkPixelLength: Int?
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
@@ -38,7 +39,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     let imagePicker = UIImagePickerController()
     // This is set while choosing the next image and is passed to the next thresholding view.
-    var selectedImage: UIImage?
+    var selectedImage: CGImage?
     
     // MARK: - Outlets
     
@@ -153,7 +154,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.contentMode = .scaleAspectFit
-        baseImageView.image = image
+        baseImageView.image = uiImage
         
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -177,7 +178,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.image = selectedImage
+            destination.image = selectedImage!
         }
     }
     
@@ -311,7 +312,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     private func calculateArea() {
         // The BooleanIndexableImage will be a view across both sources of pixels.
         // First we add the base iamge of the leaf.
-        let baseImage = IndexableImage(uiToCgImage(image!))
+        let baseImage = IndexableImage(cgImage)
         let combinedImage = BooleanIndexableImage(width: baseImage.width, height: baseImage.height)
         combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
         
@@ -344,7 +345,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // Assume the biggest is the background, and everything else is potentially a hole.
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
-                
+        
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         drawingManager.getContext().setStrokeColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
         
@@ -372,8 +373,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
             formattedEatenAreaInCm2 = formatFloat(withThreeDecimalPoints: eatenAreaInCm2)
             
-            resultsText.numberOfLines=0
-            resultsText.text = "Total Leaf Area= \(formattedLeafAreaInCm2!) cm2 \nLeaf Area Consumed= \(formattedEatenAreaInCm2!) cm2 \nPercent Consumed=\(formattedPercentEaten!)% "
+            // Set the number of lines or else lines past the first are dropped.
+            resultsText.numberOfLines = 2
+            resultsText.text = "Total Leaf Area= \(formattedLeafAreaInCm2!) cm2\nLeaf Area Consumed= \(formattedEatenAreaInCm2!) cm2 \nPercent Consumed=\(formattedPercentEaten!)% "
         } else {
             formattedLeafAreaInCm2 = nil
             formattedEatenAreaInCm2 = nil

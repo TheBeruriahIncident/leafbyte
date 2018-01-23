@@ -15,10 +15,11 @@ func initializeImage(view: UIImageView) {
     UIGraphicsEndImageContext()
 }
 
-func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
+func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
+    let cgImage = uiToCgImage(image)
     // Check if resizing is necessary.
     if image.size.width <= newBounds.width && image.size.height <= newBounds.height {
-        return image
+        return cgImage
     }
     
     // Find the resizing ratio that maintains the aspect ratio.
@@ -27,8 +28,6 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
     
     let newSize = CGSize(width: image.size.width * resizingRatio, height: image.size.height * resizingRatio)
-    
-    let cgImage = uiToCgImage(image)
     
     let context = CGContext(
         data: nil,
@@ -41,8 +40,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> UIImage {
     context.interpolationQuality = .high
     context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
     
-    // TODO: I bet I can get away without this conversion
-    return cgToUiImage(context.makeImage()!)
+    return context.makeImage()!
 }
 
 // Combine a list of images with equivalent frames, cropping to the first image.

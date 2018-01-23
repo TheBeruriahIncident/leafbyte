@@ -19,7 +19,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     
     // Both of these are set while picking an image and are passed forward to the next view.
     var sourceType: UIImagePickerControllerSourceType?
-    var selectedImage: UIImage?
+    var selectedImage: CGImage?
     
     // MARK: - Actions
     

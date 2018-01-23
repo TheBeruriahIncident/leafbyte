@@ -33,10 +33,10 @@ class ThresholdingFilter: CIFilter {
         "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : whitePixel;" +
         "}")!
     
-    func setInputImage(_ inputImage: UIImage) {
+    func setInputImage(_ inputImage: CGImage) {
         // Explicitly prevent Core Image from changing the color space, in order to get predictable thresholding. https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
-        inputImageOriginalColorSpace = CIImage(image: inputImage, options: [kCIImageColorSpace: NSNull()])
-        inputImageSaturated = CIImage(image: inputImage)
+        inputImageOriginalColorSpace = CIImage(cgImage: inputImage, options: [kCIImageColorSpace: NSNull()])
+        inputImageSaturated = CIImage(cgImage: inputImage)
     }
     
     // MARK: CIFilter overrides
