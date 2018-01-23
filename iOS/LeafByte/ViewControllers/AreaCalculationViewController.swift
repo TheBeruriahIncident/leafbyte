@@ -368,11 +368,11 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
             formattedEatenAreaInCm2 = formatFloat(withThreeDecimalPoints: eatenAreaInCm2)
             
-            resultsText.text = "Leaf is \(formattedLeafAreaInCm2!) cm2 with \(formattedEatenAreaInCm2!) cm2 or \(formattedPercentEaten)% eaten."
+            resultsText.text = "Leaf is \(formattedLeafAreaInCm2!) cm2 with \(formattedEatenAreaInCm2!) cm2 or \(formattedPercentEaten!)% eaten."
         } else {
             formattedLeafAreaInCm2 = nil
             formattedEatenAreaInCm2 = nil
-            resultsText.text = "Leaf is \(formattedPercentEaten)% eaten."
+            resultsText.text = "Leaf is \(formattedPercentEaten!)% eaten."
         }
     }
     
