@@ -9,8 +9,7 @@
 import CoreImage
 import UIKit
 
-// Caution: These may be slow.
-// TODO: benchmark and probably avoid these where possible https://stackoverflow.com/questions/37450696/drawing-a-ciimage-is-too-slow
+// Caution: Conversions may be slow, avoid where possible.
 
 // Convert a Core Graphics image to a Core Image image.
 func cgToCIImage(_ cgImage: CGImage) -> CIImage {
@@ -23,13 +22,12 @@ func cgToUiImage(_ cgImage: CGImage) -> UIImage {
 }
 
 // Convert a Core Image image to a Core Graphics image.
+let context: CIContext = CIContext(options: nil)
 func ciToCgImage(_ ciImage: CIImage) -> CGImage {
     if ciImage.cgImage != nil {
         return ciImage.cgImage!
     }
     
-    // TODO: make this a static const?
-    let context: CIContext = CIContext(options: nil)
     return context.createCGImage(ciImage, from: ciImage.extent)!
 }
 
