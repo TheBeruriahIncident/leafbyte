@@ -15,7 +15,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // These are passed from the previous view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
-    var image: UIImage!
+    var cgImage: CGImage!
+    var uiImage: UIImage!
     
     // The current mode can be scrolling or identifying.
     var inScrollingMode = true
@@ -60,7 +61,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
 
         baseImageView.contentMode = .scaleAspectFit
-        baseImageView.image = image
+        baseImageView.image = uiImage
         
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -82,7 +83,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.image = image
+            destination.cgImage = cgImage
+            destination.uiImage = uiImage
             destination.scaleMarkPixelLength = scaleMarkPixelLength
             
             setBackButton(self: self)
@@ -138,7 +140,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     }
     
     private func findScaleMark() {
-        let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
+        let indexableImage = IndexableImage(cgImage)
         let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
         image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
         

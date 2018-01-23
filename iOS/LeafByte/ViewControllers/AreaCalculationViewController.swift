@@ -15,7 +15,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // These are passed from the previous view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
-    var image: UIImage!
+    var cgImage: CGImage!
+    var uiImage: UIImage!
     var scaleMarkPixelLength: Int?
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
@@ -149,7 +150,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.contentMode = .scaleAspectFit
-        baseImageView.image = image
+        baseImageView.image = uiImage
         
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -307,7 +308,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     private func calculateArea() {
         // The BooleanIndexableImage will be a view across both sources of pixels.
         // First we add the base iamge of the leaf.
-        let baseImage = IndexableImage(uiToCgImage(image!))
+        let baseImage = IndexableImage(cgImage)
         let combinedImage = BooleanIndexableImage(width: baseImage.width, height: baseImage.height)
         combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
         

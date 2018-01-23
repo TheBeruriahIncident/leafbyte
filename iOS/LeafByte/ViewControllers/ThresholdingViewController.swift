@@ -19,6 +19,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     let filter = ThresholdingFilter()
     
+    var ciImageThresholded: CIImage?
+    
     // MARK: - Outlets
     
     @IBOutlet weak var gestureRecognizingView: UIScrollView!
@@ -71,7 +73,12 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.image = baseImageView.image
+            if ciImageThresholded != nil {
+                destination.cgImage = ciToCgImage(ciImageThresholded!)
+            } else {
+                destination.cgImage = uiToCgImage(baseImageView.image!)
+            }
+            destination.uiImage = baseImageView.image
             
             setBackButton(self: self)
         }
@@ -87,6 +94,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     private func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
-        baseImageView.image = ciToUiImage(filter.outputImage)
+        ciImageThresholded = filter.outputImage
+        baseImageView.image = ciToUiImage(ciImageThresholded!)
     }
 }
