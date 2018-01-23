@@ -16,9 +16,10 @@ func initializeImage(view: UIImageView) {
 }
 
 func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
+    let cgImage = uiToCgImage(image)
     // Check if resizing is necessary.
     if image.size.width <= newBounds.width && image.size.height <= newBounds.height {
-        return uiToCgImage(image)
+        return cgImage
     }
     
     // Find the resizing ratio that maintains the aspect ratio.
@@ -27,8 +28,6 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
     
     let newSize = CGSize(width: image.size.width * resizingRatio, height: image.size.height * resizingRatio)
-    
-    let cgImage = uiToCgImage(image)
     
     let context = CGContext(
         data: nil,
