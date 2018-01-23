@@ -38,7 +38,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     let imagePicker = UIImagePickerController()
     // This is set while choosing the next image and is passed to the next thresholding view.
-    var selectedImage: UIImage?
+    var selectedImage: CGImage?
     
     // MARK: - Outlets
     
@@ -173,7 +173,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.image = selectedImage
+            destination.image = selectedImage!
         }
     }
     
@@ -340,7 +340,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // Assume the biggest is the background, and everything else is potentially a hole.
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
-                
+        
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         

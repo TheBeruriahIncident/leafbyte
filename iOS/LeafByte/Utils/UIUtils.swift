@@ -9,7 +9,7 @@
 import AVFoundation
 import UIKit
 
-func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (UIImage) -> Void) {
+func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (CGImage) -> Void) {
     // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
     guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
         fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")

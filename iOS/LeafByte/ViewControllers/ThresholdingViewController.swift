@@ -15,7 +15,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // Both of these are passed from the main menu view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
-    var image: UIImage!
+    var image: CGImage!
     
     let filter = ThresholdingFilter()
     
@@ -47,7 +47,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         
-        filter.setInputImage(image!)
+        filter.setInputImage(image)
         
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
@@ -55,7 +55,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         // Guess a good threshold to start at; the user can adjust with the slider later.
-        let suggestedThreshold = getSuggestedThreshold(image: uiToCgImage(image!))
+        let suggestedThreshold = getSuggestedThreshold(image: image)
         thresholdSlider.value = 1 - suggestedThreshold
         setThreshold(suggestedThreshold)
     }
