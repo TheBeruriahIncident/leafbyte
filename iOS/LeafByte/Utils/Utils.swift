@@ -9,14 +9,14 @@
 import CoreGraphics
 import Foundation
 
-func roundToInt(_ number: Double) -> Int {
-    return Int(round(number))
+func roundToInt(_ number: Double, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
+    return Int(number.rounded(rule))
 }
 
-func roundToInt(_ number: Float) -> Int {
-    return roundToInt(Double(number))
+func roundToInt(_ number: Float, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
+    return roundToInt(Double(number), rule: rule)
 }
 
-func roundToInt(_ number: CGFloat) -> Int {
-    return roundToInt(Float(number))
+func roundToInt(_ number: CGFloat, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
+    return roundToInt(Float(number), rule: rule)
 }

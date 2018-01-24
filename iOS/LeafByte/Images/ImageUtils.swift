@@ -31,8 +31,8 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     
     let context = CGContext(
         data: nil,
-        width: roundToInt(newSize.width),
-        height: roundToInt(newSize.height),
+        width: roundToInt(newSize.width, rule: .down),
+        height: roundToInt(newSize.height, rule: .down),
         bitsPerComponent: cgImage.bitsPerComponent,
         bytesPerRow: 0,
         space: cgImage.colorSpace!,
