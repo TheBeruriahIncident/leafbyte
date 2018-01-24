@@ -38,6 +38,10 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         self.performSegue(withIdentifier: "backToMainMenu", sender: self)
     }
     
+    @IBAction func goHome(_ sender: Any) {
+        self.navigationController!.dismiss(animated: true)
+    }
+    
     @IBAction func sliderMoved(_ sender: UISlider) {
         setThreshold(1 - sender.value)
     }

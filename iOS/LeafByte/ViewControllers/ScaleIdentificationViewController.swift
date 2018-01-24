@@ -44,6 +44,10 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     // MARK: - Actions
     
+    @IBAction func goHome(_ sender: Any) {
+        self.navigationController!.dismiss(animated: true)
+    }
+    
     @IBAction func toggleScrollingMode(_ sender: Any) {
         setScrollingMode(!inScrollingMode)
     }

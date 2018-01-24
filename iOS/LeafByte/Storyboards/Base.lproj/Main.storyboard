@@ -192,6 +192,11 @@
                                 <action selector="backFromThreshold:" destination="bUK-Ir-gu8" id="bfW-eO-osm"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Home" id="wfm-w1-2Rl" userLabel="Home Button">
+                            <connections>
+                                <action selector="goHome:" destination="bUK-Ir-gu8" id="bbq-L8-ZJ3"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="baseImageView" destination="Sfh-f1-P2L" id="yHG-Pn-Hn5"/>
@@ -310,14 +315,14 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <rightBarButtonItems>
-                            <barButtonItem image="Share" id="ylR-HA-GE6" userLabel="Share Button">
-                                <connections>
-                                    <action selector="share:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem image="Home" id="iBa-sP-sQi" userLabel="Home Button">
                                 <connections>
                                     <action selector="goHome:" destination="ueh-Tb-xxm" id="MhS-T7-pnK"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="Share" id="ylR-HA-GE6" userLabel="Share Button">
+                                <connections>
+                                    <action selector="share:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -600,7 +605,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Scale Identification" id="Jcu-pl-bsR" userLabel="Navigation Content"/>
+                    <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
+                        <barButtonItem key="rightBarButtonItem" image="Home" id="U5O-AA-j7F" userLabel="Home Button">
+                            <connections>
+                                <action selector="goHome:" destination="e5s-F7-9rn" id="iSZ-6d-s7C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="baseImageView" destination="wST-nu-Esm" id="Qkj-Vv-wNu"/>
                         <outlet property="clearScaleButton" destination="7fQ-lo-BNS" id="2xG-kJ-wet"/>
