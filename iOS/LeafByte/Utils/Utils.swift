@@ -9,8 +9,12 @@
 import CoreGraphics
 import Foundation
 
-func roundToInt(_ number: Float) -> Int {
+func roundToInt(_ number: Double) -> Int {
     return Int(round(number))
+}
+
+func roundToInt(_ number: Float) -> Int {
+    return roundToInt(Double(number))
 }
 
 func roundToInt(_ number: CGFloat) -> Int {

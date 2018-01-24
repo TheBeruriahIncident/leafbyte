@@ -361,13 +361,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         drawingManager.finish(imageView: leafHolesView)
         
         // Set the result of the calculation, giving absolute area if the scale is set.
-        let percentEaten = Float(eatenAreaInPixels) / Float(leafAreaInPixels) * 100
-        formattedPercentEaten = formatFloat(withThreeDecimalPoints: percentEaten)
+        let percentEaten = Double(eatenAreaInPixels) / Double(leafAreaInPixels) * 100
+        formattedPercentEaten = formatDouble(withThreeDecimalPoints: percentEaten)
         if scaleMarkPixelLength != nil {
             let leafAreaInCm2 = convertPixelsToCm2(leafAreaInPixels)
-            formattedLeafAreaInCm2 = formatFloat(withThreeDecimalPoints: leafAreaInCm2)
+            formattedLeafAreaInCm2 = formatDouble(withThreeDecimalPoints: leafAreaInCm2)
             let eatenAreaInCm2 = convertPixelsToCm2(eatenAreaInPixels)
-            formattedEatenAreaInCm2 = formatFloat(withThreeDecimalPoints: eatenAreaInCm2)
+            formattedEatenAreaInCm2 = formatDouble(withThreeDecimalPoints: eatenAreaInCm2)
             
             resultsText.text = "Leaf is \(formattedLeafAreaInCm2!) cm2 with \(formattedEatenAreaInCm2!) cm2 or \(formattedPercentEaten!)% eaten."
         } else {
@@ -378,17 +378,17 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     // The scale is assumed to be 2 cm long.
-    private func convertPixelsToCm2(_ pixels: Int) -> Float {
+    private func convertPixelsToCm2(_ pixels: Int) -> Double {
         if scaleMarkPixelLength == nil {
             fatalError("Attempting to calculate absolute area without scale set.")
         }
         
-        let cmPerPixel = 2.0 / Float(scaleMarkPixelLength!)
-        return pow(cmPerPixel, 2) * Float(pixels)
+        let cmPerPixel = 2.0 / Double(scaleMarkPixelLength!)
+        return pow(cmPerPixel, 2) * Double(pixels)
     }
     
-    private func formatFloat(withThreeDecimalPoints float: Float) -> String {
-        return String(format: "%.3f", float)
+    private func formatDouble(withThreeDecimalPoints double: Double) -> String {
+        return String(format: "%.3f", double)
     }
     
     private func getCombinedImage() -> UIImage {
