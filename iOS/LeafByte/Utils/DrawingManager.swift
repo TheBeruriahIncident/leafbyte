@@ -11,7 +11,7 @@ import UIKit
 
 class DrawingManager {
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
-    private static let pixelOffset = Float(0.5)
+    private static let pixelOffset = 0.5
     
     private let context: CGContext
     private let projection: Projection
@@ -35,17 +35,17 @@ class DrawingManager {
     }
     
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-        let projectedFromPoint = projection.project(x: Float(fromPoint.x), y: Float(fromPoint.y))
+        let projectedFromPoint = projection.project(point: fromPoint)
         
         // A line from a point to itself doesn't show up, so draw a 1 pixel rectangle.
         if fromPoint == toPoint {
-            context.addRect(CGRect(x: CGFloat(projectedFromPoint.0), y: CGFloat(projectedFromPoint.1), width: CGFloat(1.0), height: CGFloat(1.0)))
+            context.addRect(CGRect(origin: projectedFromPoint, size: CGSize(width: 1.0, height: 1.0)))
         }
         
-        let projectedToPoint = projection.project(x: Float(toPoint.x), y: Float(toPoint.y))
+        let projectedToPoint = projection.project(point: toPoint)
         
-        context.move(to: CGPoint(x: CGFloat(projectedFromPoint.0), y: CGFloat(projectedFromPoint.1)))
-        context.addLine(to: CGPoint(x: CGFloat(projectedToPoint.0), y: CGFloat(projectedToPoint.1)))
+        context.move(to: projectedFromPoint)
+        context.addLine(to: projectedToPoint)
         context.strokePath()
     }
     

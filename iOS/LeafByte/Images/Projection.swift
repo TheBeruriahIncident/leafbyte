@@ -14,10 +14,10 @@ import UIKit
 class Projection {
     static let identity = Projection(xScale: 1, yScale: 1, xOffset: 0, yOffset: 0)
     
-    let xScale: Float
-    let yScale: Float
-    let xOffset: Float
-    let yOffset: Float
+    let xScale: Double
+    let yScale: Double
+    let xOffset: Double
+    let yOffset: Double
     
     init(fromImageInView image: UIImage, toView view: UIView ) {
         let viewSize = view.frame.size
@@ -28,11 +28,11 @@ class Projection {
         let scalingRatioForHeight = viewSize.height / imageSize.height
         let scalingRatio = min(scalingRatioForWidth, scalingRatioForHeight)
         
-        xScale = Float(scalingRatio)
-        yScale = Float(scalingRatio)
+        xScale = Double(scalingRatio)
+        yScale = Double(scalingRatio)
         
-        xOffset = Float(viewSize.width - imageSize.width * scalingRatio) / 2
-        yOffset = Float(viewSize.height - imageSize.height * scalingRatio) / 2
+        xOffset = Double(viewSize.width - imageSize.width * scalingRatio) / 2
+        yOffset = Double(viewSize.height - imageSize.height * scalingRatio) / 2
     }
     
     init(invertProjection baseProjection: Projection) {
@@ -42,14 +42,14 @@ class Projection {
         yOffset = -baseProjection.yOffset / baseProjection.yScale
     }
     
-    init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Float = 0, withExtraYOffset extraYOffset: Float = 0) {
+    init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Double = 0, withExtraYOffset extraYOffset: Double = 0) {
         xScale = baseProjection.xScale
         yScale = baseProjection.yScale
         xOffset = baseProjection.xOffset + extraXOffset
         yOffset = baseProjection.yOffset + extraYOffset
     }
     
-    init(xScale: Float, yScale: Float, xOffset: Float, yOffset: Float) {
+    init(xScale: Double, yScale: Double, xOffset: Double, yOffset: Double) {
         self.xScale = xScale
         self.yScale = yScale
         self.xOffset = xOffset
@@ -57,16 +57,21 @@ class Projection {
     }
     
     func project(x: Int, y: Int) -> (Int, Int) {
-        let (projectedX, projectedY) = project(x: Float(x), y: Float(y))
-        return (Int(round(projectedX)), Int(round(projectedY)))
+        let (projectedX, projectedY) = project(x: Double(x), y: Double(y))
+        return (roundToInt(projectedX), roundToInt(projectedY))
     }
     
     func project(point: CGPoint) -> CGPoint {
-        let (projectedX, projectedY) = project(x: Float(point.x), y: Float(point.y))
-        return CGPoint(x: CGFloat(projectedX), y: CGFloat(projectedY))
+        let (projectedX, projectedY) = project(x: point.x, y: point.y)
+        return CGPoint(x: projectedX, y: projectedY)
     }
     
-    func project(x: Float, y: Float) -> (Float, Float) {
+    func project(x: CGFloat, y: CGFloat) -> (CGFloat, CGFloat) {
+        let (projectedX, projectedY) = project(x: Double(x), y: Double(y))
+        return (CGFloat(projectedX), CGFloat(projectedY))
+    }
+    
+    func project(x: Double, y: Double) -> (Double, Double) {
         let projectedX = x * xScale + xOffset
         let projectedY = y * yScale + yOffset
         return (projectedX, projectedY)
