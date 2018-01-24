@@ -9,6 +9,10 @@
 import AVFoundation
 import UIKit
 
+func dismissNavigationController(self viewController: UIViewController) {
+    viewController.navigationController!.dismiss(animated: true)
+}
+
 func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (CGImage) -> Void) {
     // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
     // TODO: switch back to original

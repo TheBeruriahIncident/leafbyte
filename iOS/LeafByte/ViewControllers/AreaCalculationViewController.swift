@@ -103,7 +103,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func goHome(_ sender: Any) {
-        self.navigationController!.dismiss(animated: true)
+        dismissNavigationController(self: self)
     }
     
     @IBAction func share(_ sender: Any) {

@@ -39,7 +39,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func goHome(_ sender: Any) {
-        self.navigationController!.dismiss(animated: true)
+        dismissNavigationController(self: self)
     }
     
     @IBAction func sliderMoved(_ sender: UISlider) {
