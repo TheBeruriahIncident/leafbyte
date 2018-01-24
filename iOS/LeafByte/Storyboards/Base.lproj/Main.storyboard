@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-sd-kIs" userLabel="Camera Button">
-                                <rect key="frame" x="50" y="423" width="94" height="94"/>
+                                <rect key="frame" x="50" y="453" width="94" height="94"/>
                                 <accessibility key="accessibilityConfiguration" label="Camera"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="94" id="Bq9-aE-623"/>
@@ -37,7 +37,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
-                                <rect key="frame" x="231" y="423" width="94" height="94"/>
+                                <rect key="frame" x="231" y="453" width="94" height="94"/>
                                 <accessibility key="accessibilityConfiguration" label="Photo Library"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="94" id="Bfz-Jk-5Wg"/>
@@ -75,13 +75,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-gX-Mwe">
-                                <rect key="frame" x="58" y="517" width="78" height="16"/>
+                                <rect key="frame" x="58" y="547" width="78" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe">
-                                <rect key="frame" x="216" y="517" width="124" height="16"/>
+                                <rect key="frame" x="216" y="547" width="124" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -95,11 +95,11 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Fv-Ge-wCb" secondAttribute="trailing" constant="50" id="1d6-C9-5jG"/>
                             <constraint firstItem="uh0-1K-0gr" firstAttribute="top" secondItem="tMm-Do-q8c" secondAttribute="bottom" constant="10" id="2dy-mH-lcg"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="neI-sd-kIs" secondAttribute="bottom" constant="150" id="46H-Yi-B68"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="neI-sd-kIs" secondAttribute="bottom" constant="120" id="46H-Yi-B68"/>
                             <constraint firstItem="neI-sd-kIs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="HmP-rc-dKJ"/>
                             <constraint firstItem="cPB-VP-BSe" firstAttribute="top" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="Hse-gc-Q8w"/>
                             <constraint firstItem="tMm-Do-q8c" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="T0J-az-vgd"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" constant="150" id="TN4-d9-gPU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" constant="120" id="TN4-d9-gPU"/>
                             <constraint firstItem="uh0-1K-0gr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Y0w-7g-jUV"/>
                             <constraint firstItem="gE2-ly-MV0" firstAttribute="top" secondItem="uh0-1K-0gr" secondAttribute="bottom" constant="5" id="Y2n-D4-pzk"/>
                             <constraint firstItem="tMm-Do-q8c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="a1q-0n-xNS"/>
@@ -310,14 +310,14 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" id="iBa-sP-sQi" userLabel="Home">
-                                <connections>
-                                    <action selector="goHome:" destination="ueh-Tb-xxm" id="MhS-T7-pnK"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem title="Item" image="Share" id="ylR-HA-GE6" userLabel="Share2">
                                 <connections>
                                     <action selector="share2:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="Home" id="iBa-sP-sQi" userLabel="Home">
+                                <connections>
+                                    <action selector="goHome:" destination="ueh-Tb-xxm" id="MhS-T7-pnK"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -620,6 +620,7 @@
     <resources>
         <image name="Camera" width="98" height="94"/>
         <image name="Gallery" width="98" height="98"/>
+        <image name="Home" width="40" height="35"/>
         <image name="Redo" width="50" height="44"/>
         <image name="Share" width="32" height="29"/>
         <image name="Undo" width="50" height="44"/>
