@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Eaten Leaf Area (cm2)", "Percent Eaten" ]
+let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed" ]
 let csvHeader = stringRowToCsvRow(header)
 
-func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAreaInCm2: String?, eatenAreaInCm2: String?) {
-    serializeMeasurement(settings: settings, percentEaten: percentEaten, leafAreaInCm2: leafAreaInCm2, eatenAreaInCm2: eatenAreaInCm2)
+func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?) {
+    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2)
     // TODO: this is a truly awful hack around the race condition of these different promises resolving. once done prototyping, FIX
     sleep(2)
     serializeImage(settings: settings, image: image)
@@ -22,7 +22,7 @@ func serialize(settings: Settings, image: UIImage, percentEaten: String, leafAre
     settings.serialize()
 }
 
-private func serializeMeasurement(settings: Settings, percentEaten: String, leafAreaInCm2: String?, eatenAreaInCm2: String?) {
+private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?) {
     if settings.measurementSaveLocation == .none {
         return
     }
@@ -36,7 +36,7 @@ private func serializeMeasurement(settings: Settings, percentEaten: String, leaf
     let formattedTime = formatter.string(from: date)
     
     // Form a row useful for any spreadsheet-like format.
-    let row = [ formattedDate, formattedTime, String(settings.nextSampleNumber), leafAreaInCm2 ?? "", eatenAreaInCm2 ?? "", percentEaten ]
+    let row = [ formattedDate, formattedTime, String(settings.nextSampleNumber), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
     
     switch settings.measurementSaveLocation {
     case .local:

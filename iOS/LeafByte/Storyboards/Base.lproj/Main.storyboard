@@ -86,7 +86,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="leaf" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP">
                                 <rect key="frame" x="148" y="121" width="124" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -290,7 +290,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
                                 <rect key="frame" x="338" y="584" width="30" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&lt;" image="Undo"/>
+                                <state key="normal" image="Undo"/>
                                 <connections>
                                     <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                 </connections>
@@ -298,7 +298,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
                                 <rect key="frame" x="339" y="633" width="30" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&gt;" image="Redo"/>
+                                <state key="normal" image="Redo"/>
                                 <connections>
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
                                 </connections>
@@ -310,9 +310,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="Share" id="ylR-HA-GE6" userLabel="Share2">
+                            <barButtonItem title="Item" image="Share" id="ylR-HA-GE6" userLabel="Share">
                                 <connections>
-                                    <action selector="share2:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
+                                    <action selector="share:" destination="ueh-Tb-xxm" id="zbb-zJ-rho"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Item" image="Home" id="iBa-sP-sQi" userLabel="Home">
@@ -621,10 +621,10 @@
         <image name="Camera" width="98" height="94"/>
         <image name="Gallery" width="98" height="98"/>
         <image name="Home" width="40" height="35"/>
+        <image name="Leaf" width="256" height="279"/>
         <image name="Redo" width="50" height="44"/>
         <image name="Share" width="32" height="29"/>
         <image name="Undo" width="50" height="44"/>
-        <image name="leaf" width="256" height="279"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gAP-T7-MBM"/>
