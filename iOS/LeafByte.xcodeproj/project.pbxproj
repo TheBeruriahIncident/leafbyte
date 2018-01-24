@@ -19,6 +19,7 @@
 		4621EE451FEB70AD004C3011 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4621EE431FEB70AD004C3011 /* LaunchScreen.storyboard */; };
 		4621EE501FEB70AD004C3011 /* LeafByteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE4F1FEB70AD004C3011 /* LeafByteTests.swift */; };
 		4621EE5B1FEB70AD004C3011 /* LeafByteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */; };
+		4630795420181A95005C548F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4630795320181A95005C548F /* Utils.swift */; };
 		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
 		464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */; };
 		4651F0262011896800365F93 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651F0252011896800365F93 /* Settings.swift */; };
@@ -79,6 +80,7 @@
 		4621EE561FEB70AD004C3011 /* LeafByteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafByteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafByteUITests.swift; sourceTree = "<group>"; };
 		4621EE5C1FEB70AD004C3011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4630795320181A95005C548F /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
 		464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleIdentificationViewController.swift; sourceTree = "<group>"; };
 		4651F0252011896800365F93 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				46F10642200133CF000B4B83 /* DrawingManager.swift */,
 				46F1064020012F06000B4B83 /* Extensions.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
+				4630795320181A95005C548F /* Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 			files = (
 				46DB8A881FFE9C0C00EF59BE /* IndexableImage.swift in Sources */,
 				46F1063F2001250E000B4B83 /* Projection.swift in Sources */,
+				4630795420181A95005C548F /* Utils.swift in Sources */,
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,

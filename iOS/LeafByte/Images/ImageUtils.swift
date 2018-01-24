@@ -31,8 +31,8 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     
     let context = CGContext(
         data: nil,
-        width: Int(newSize.width),
-        height: Int(newSize.height),
+        width: roundToInt(newSize.width),
+        height: roundToInt(newSize.height),
         bitsPerComponent: cgImage.bitsPerComponent,
         bytesPerRow: 0,
         space: cgImage.colorSpace!,
@@ -88,8 +88,8 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
             continue
         }
         
-        let x = Int(point.x)
-        let y = Int(point.y)
+        let x = roundToInt(point.x)
+        let y = roundToInt(point.y)
         
         let westPoint = CGPoint(x: x - 1, y: y)
         if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
@@ -126,8 +126,8 @@ func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, d
     while !queue.isEmpty {
         // We're going to find the largest horizontal line containing this point that stays in the empty area.
         let point = queue.popFirst()!
-        let x = Int(round(point.x))
-        let y = Int(round(point.y))
+        let x = roundToInt(point.x)
+        let y = roundToInt(point.y)
         // If this point is already filled, we can truncate here.
         if isFilled(x: x, y: y, referringTo: filledRanges) {
             continue

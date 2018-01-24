@@ -58,7 +58,7 @@ class Projection {
     
     func project(x: Int, y: Int) -> (Int, Int) {
         let (projectedX, projectedY) = project(x: Float(x), y: Float(y))
-        return (Int(round(projectedX)), Int(round(projectedY)))
+        return (roundToInt(projectedX), roundToInt(projectedY))
     }
     
     func project(point: CGPoint) -> CGPoint {

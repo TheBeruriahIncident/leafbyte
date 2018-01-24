@@ -114,7 +114,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
         // Touches in white don't matter.
-        if indexableImage.getPixel(x: Int(round(projectedPoint.x)), y: Int(round(projectedPoint.y))).isWhite() {
+        if indexableImage.getPixel(x: roundToInt(projectedPoint.x), y: roundToInt(projectedPoint.y)).isWhite() {
             return
         }
         
@@ -172,7 +172,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         let farthestPoint1 = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
         let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
         
-        let candidateScaleMarkPixelLength = Int(round(farthestPoint1.distance(to: farthestPoint2)))
+        let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
         // If the scale mark is too short, it's probably just noise in the image.
         if candidateScaleMarkPixelLength < minimumLength {
             resultsText.text = "Scale not found"
