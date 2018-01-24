@@ -375,7 +375,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             formattedConsumedAreaInCm2 = formatDouble(withThreeDecimalPoints: consumedAreaInCm2)
             
             // Set the number of lines or else lines past the first are dropped.
-            resultsText.numberOfLines = 2
+            resultsText.numberOfLines = 3
             resultsText.text = "Total Leaf Area= \(formattedLeafAreaInCm2!) cm2\nConsumed Leaf Area= \(formattedConsumedAreaInCm2!) cm2 \nPercent Consumed= \(formattedPercentConsumed!)%"
         } else {
             formattedLeafAreaInCm2 = nil
