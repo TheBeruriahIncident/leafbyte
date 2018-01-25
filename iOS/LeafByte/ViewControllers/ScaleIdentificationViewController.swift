@@ -55,6 +55,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         scaleMarkPixelLength = nil
         scaleMarkingView.image = nil
         resultsText.text = "No scale"
+        
+        setScrollingMode(true)
     }
     
     // MARK: - UIViewController overrides
@@ -118,12 +120,16 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
         // Touches in white don't matter.
-        if indexableImage.getPixel(x: roundToInt(projectedPoint.x), y: roundToInt(projectedPoint.y)).isWhite() {
+        let nonWhitePixel = searchForNonWhite(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
+        if nonWhitePixel == nil {
+            scaleMarkPixelLength = nil
+            resultsText.text = "Scale not found"
+            setScrollingMode(true)
             return
         }
         
         // Since a non-white section in the image was touched, it may be a scale mark.
-        measureScaleMark(fromPointInMark: projectedPoint, inImage: indexableImage, withMinimumLength: 1)
+        measureScaleMark(fromPointInMark: nonWhitePixel!, inImage: indexableImage, withMinimumLength: 1)
         
         // Switch back to scrolling after each scale mark identified.
         setScrollingMode(true)

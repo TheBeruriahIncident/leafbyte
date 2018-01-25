@@ -135,6 +135,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     var farthestPointSoFar: CGPoint!
     
     while !queue.isEmpty {
+        // TODO: use a queue where this isn't O(n)
         let point = queue.removeFirst()
         if explored.contains(point) {
             continue
@@ -165,6 +166,51 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     }
     
     return farthestPointSoFar
+}
+
+func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
+    let width = image.width
+    let height = image.height
+    
+    var explored = Set<CGPoint>()
+    var queue = [startingPoint]
+
+    // TODO: can these common searches be pulled out?
+    while !queue.isEmpty && explored.count <= maxPixelsToCheck {
+        let point = queue.removeFirst()
+        if explored.contains(point) {
+            continue
+        }
+        
+        // Stop if we've found non-white.
+        if image.getPixel(x: roundToInt(point.x), y: roundToInt(point.y)).isNonWhite() {
+            return point
+        }
+        
+        let x = roundToInt(point.x)
+        let y = roundToInt(point.y)
+        
+        let westPoint = CGPoint(x: x - 1, y: y)
+        if x > 0 && !explored.contains(westPoint) {
+            queue.append(westPoint)
+        }
+        let eastPoint = CGPoint(x: x + 1, y: y)
+        if x < width - 1 && !explored.contains(eastPoint) {
+            queue.append(eastPoint)
+        }
+        let southPoint = CGPoint(x: x, y: y - 1)
+        if y > 0 && !explored.contains(southPoint) {
+            queue.append(southPoint)
+        }
+        let northPoint = CGPoint(x: x, y: y + 1)
+        if y < height - 1 && !explored.contains(northPoint) {
+            queue.append(northPoint)
+        }
+        
+        explored.insert(point)
+    }
+    
+    return nil
 }
 
 // Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
