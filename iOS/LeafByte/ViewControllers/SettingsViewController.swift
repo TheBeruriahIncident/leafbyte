@@ -19,6 +19,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var datasetName: UITextField!
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
+    @IBOutlet weak var scaleMarkLength: UITextField!
     
     @IBOutlet weak var datasetNameLabel: UILabel!
     @IBOutlet weak var nextSampleNumberLabel: UILabel!
@@ -102,6 +103,21 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
+    @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
+        // Fall back to the default if the box is empty.
+        var newScaleMarkLength: Double!
+        if sender.text!.isEmpty {
+            newScaleMarkLength = Settings.defaultScaleMarkLength
+            
+            // If we fallback, update the box too.
+            scaleMarkLength.text = String(newScaleMarkLength)
+        } else {
+            newScaleMarkLength = Double(sender.text!)
+        }
+        
+        settings.scaleMarkLength = newScaleMarkLength
+        settings.serialize()
+    }
     
     @IBAction func signOutOfGoogle(_ sender: Any) {
         if settings.measurementSaveLocation == .googleDrive {
@@ -134,6 +150,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         datasetName.text = settings.datasetName
         nextSampleNumber.text = String(settings.nextSampleNumber)
         saveGps.setOn(settings.saveGpsData, animated: false)
+        scaleMarkLength.text = String(settings.scaleMarkLength)
         
         // Setup to get a callback when return is pressed on a keyboard.
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.

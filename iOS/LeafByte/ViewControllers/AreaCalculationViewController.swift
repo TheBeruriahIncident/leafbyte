@@ -386,13 +386,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
     }
     
-    // The scale is assumed to be 2 cm long.
     private func convertPixelsToCm2(_ pixels: Int) -> Double {
         if scaleMarkPixelLength == nil {
             fatalError("Attempting to calculate absolute area without scale set.")
         }
         
-        let cmPerPixel = 2.0 / Double(scaleMarkPixelLength!)
+        let cmPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength!)
         return pow(cmPerPixel, 2) * Double(pixels)
     }
     

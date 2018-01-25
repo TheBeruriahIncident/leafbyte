@@ -12,6 +12,7 @@ import Foundation
 class Settings: NSObject, NSCoding {
     static let defaultDatasetName = "Herbivory Measurement"
     static let defaultNextSampleNumber = 1
+    static let defaultScaleMarkLength = 10.0
     
     enum SaveLocation: String {
         case none = "none"
@@ -28,6 +29,7 @@ class Settings: NSObject, NSCoding {
         static let datasetNameToGoogleFolderId = "datasetNameToGoogleFolderId"
         static let datasetNameToGoogleSheetId = "datasetNameToGoogleSheetId"
         static let topLevelGoogleFolderId = "topLevelGoogleFolderId"
+        static let scaleMarkLength = "scaleMarkLength"
     }
     
     var measurementSaveLocation = SaveLocation.none
@@ -39,6 +41,7 @@ class Settings: NSObject, NSCoding {
     var datasetNameToGoogleFolderId = [String: String]()
     var datasetNameToGoogleSpreadsheetId = [String: String]()
     var topLevelGoogleFolderId: String?
+    var scaleMarkLength = defaultScaleMarkLength
     
     required override init() {}
     
@@ -46,6 +49,7 @@ class Settings: NSObject, NSCoding {
     
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
+        // TODO: is this reasonable logic for missing strings?
         if let measurementSaveLocation = decoder.decodeObject(forKey: PropertyKey.measurementSaveLocation) as? String {
             self.measurementSaveLocation = SaveLocation(rawValue: measurementSaveLocation)!
         }
@@ -70,6 +74,9 @@ class Settings: NSObject, NSCoding {
         if let topLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.topLevelGoogleFolderId) as? String {
             self.topLevelGoogleFolderId = topLevelGoogleFolderId
         }
+        if decoder.containsValue(forKey: PropertyKey.scaleMarkLength) {
+            self.scaleMarkLength = decoder.decodeDouble(forKey: PropertyKey.scaleMarkLength)
+        }
     }
     
     // This defines how to serialize (how to save a Settings to disk).
@@ -82,6 +89,7 @@ class Settings: NSObject, NSCoding {
         coder.encode(datasetNameToGoogleFolderId, forKey: PropertyKey.datasetNameToGoogleFolderId)
         coder.encode(datasetNameToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToGoogleSheetId)
         coder.encode(topLevelGoogleFolderId, forKey: PropertyKey.topLevelGoogleFolderId)
+        coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
     }
     
     // MARK: - NSObject
@@ -98,6 +106,7 @@ class Settings: NSObject, NSCoding {
             && datasetNameToGoogleFolderId == other.datasetNameToGoogleFolderId
             && datasetNameToGoogleSpreadsheetId == other.datasetNameToGoogleSpreadsheetId
             && topLevelGoogleFolderId == other.topLevelGoogleFolderId
+            && scaleMarkLength == other.scaleMarkLength
     }
     
     // MARK: - Helpers
