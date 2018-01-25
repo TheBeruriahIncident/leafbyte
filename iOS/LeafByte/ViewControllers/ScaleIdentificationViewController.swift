@@ -118,7 +118,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             return
         }
         
-        let indexableImage = IndexableImage(uiToCgImage(baseImageView.image!))
+        let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
         let nonWhitePixel = searchForNonWhite(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
         if nonWhitePixel == nil {
