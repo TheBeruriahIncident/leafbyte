@@ -15,8 +15,7 @@ func dismissNavigationController(self viewController: UIViewController) {
 
 func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (CGImage) -> Void) {
     // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
-    // TODO: switch back to original
-    guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage else {
+    guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
         fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
     }
     
@@ -70,6 +69,5 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
     imagePicker.delegate = viewController
     // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
     // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
-    // TODO: stuff is breaking when I switch back to false, figure
-    imagePicker.allowsEditing = true
+    imagePicker.allowsEditing = false
 }

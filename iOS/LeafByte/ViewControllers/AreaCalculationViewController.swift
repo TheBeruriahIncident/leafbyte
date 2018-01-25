@@ -349,6 +349,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
         drawingManager.getContext().setStrokeColor(lightGreen.cgColor)
+        // Prevents space between lines when rounding skew causes a line to be skipped.
+        drawingManager.getContext().setLineWidth(1.5)
         
         var consumedAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {

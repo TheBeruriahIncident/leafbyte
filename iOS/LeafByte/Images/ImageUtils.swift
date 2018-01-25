@@ -15,10 +15,13 @@ func initializeImage(view: UIImageView) {
     UIGraphicsEndImageContext()
 }
 
+// See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
+// Code to account for orientation was adapted from there.
 func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     let cgImage = uiToCgImage(image)
-    // Check if resizing is necessary.
-    if image.size.width <= newBounds.width && image.size.height <= newBounds.height {
+    
+    // Check if transformation is necessary.
+    if image.imageOrientation == .up && image.size.width <= newBounds.width && image.size.height <= newBounds.height {
         return cgImage
     }
     
@@ -27,20 +30,69 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     let resizingRatioForHeight = newBounds.height / image.size.height
     let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
     
-    let newSize = CGSize(width: image.size.width * resizingRatio, height: image.size.height * resizingRatio)
+    // Calculate the new image size.
+    let newWidth = image.size.width * resizingRatio
+    let newHeight = image.size.height * resizingRatio
+    let newWidthRoundedDown = roundToInt(newWidth, rule: .down)
+    let newHeightRoundedDown = roundToInt(newHeight, rule: .down)
     
+    // Create the context to draw into.
     let context = CGContext(
         data: nil,
-        width: roundToInt(newSize.width, rule: .down),
-        height: roundToInt(newSize.height, rule: .down),
+        width: newWidthRoundedDown,
+        height: newHeightRoundedDown,
         bitsPerComponent: cgImage.bitsPerComponent,
         bytesPerRow: 0,
         space: cgImage.colorSpace!,
         bitmapInfo: cgImage.bitmapInfo.rawValue)!
     context.interpolationQuality = .high
-    context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
+    
+    // Consider the orientation of the original image, and rotate/flip as appropriate for the result to be right-side up.
+    let transform = getTransformToCorrectUIImage(withOrientation: image.imageOrientation, intoWidth: newWidth, andHeight: newHeight)
+    context.concatenate(transform)
+    
+    // Actually draw into the context, transposing if need be.
+    var drawTransposed: Bool!
+    switch (image.imageOrientation) {
+    case .left, .leftMirrored, .right, .rightMirrored:
+        drawTransposed = true
+    default:
+        drawTransposed = false
+    }
+    context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size:
+        CGSize(width: drawTransposed ? newHeight : newWidth,
+               height: drawTransposed ? newWidth : newHeight)))
     
     return context.makeImage()!
+}
+
+// A UIImage can have various orientations that must be corrected for. This was adapted from http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ .
+private func getTransformToCorrectUIImage(withOrientation orientation: UIImageOrientation, intoWidth width: CGFloat, andHeight height: CGFloat) -> CGAffineTransform {
+    var transform = CGAffineTransform.identity
+    
+    // Account for direction by rotating (the translations move the rotated image back "into frame").
+    switch (orientation) {
+    case .down, .downMirrored:
+        transform = transform.translatedBy(x: width, y: height).rotated(by: CGFloat.pi)
+    case .left, .leftMirrored:
+        transform = transform.translatedBy(x: width, y: 0).rotated(by: CGFloat.pi / 2)
+    case .right, .rightMirrored:
+        transform = transform.translatedBy(x: 0, y: height).rotated(by: -CGFloat.pi / 2)
+    default:
+        ()
+    }
+    
+    // Account for mirroring by flipping (the translations again move the flipped image back "into frame").
+    switch (orientation) {
+    case .upMirrored, .downMirrored:
+        transform = transform.translatedBy(x: width, y: 0).scaledBy(x: -1, y: 1)
+    case .leftMirrored, .rightMirrored:
+        transform = transform.translatedBy(x: height, y: 0).scaledBy(x: -1, y: 1)
+    default:
+        ()
+    }
+    
+    return transform
 }
 
 // Combine a list of images with equivalent frames, cropping to the first image.
