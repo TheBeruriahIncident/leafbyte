@@ -200,7 +200,6 @@ func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: C
     var explored = Set<CGPoint>()
     var queue = [startingPoint]
 
-    // TODO: can these common searches be pulled out?
     while !queue.isEmpty && explored.count <= maxPixelsToCheck {
         let point = queue.removeFirst()
         if explored.contains(point) {
