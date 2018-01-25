@@ -37,14 +37,39 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     let newHeightRoundedDown = roundToInt(newHeight, rule: .down)
     
     // Create the context to draw into.
-    let context = CGContext(
+    var maybeContext = CGContext(
         data: nil,
         width: newWidthRoundedDown,
         height: newHeightRoundedDown,
         bitsPerComponent: cgImage.bitsPerComponent,
         bytesPerRow: 0,
         space: cgImage.colorSpace!,
-        bitmapInfo: cgImage.bitmapInfo.rawValue)!
+        bitmapInfo: cgImage.bitmapInfo.rawValue)
+    
+    // This is an awful hack that I'd love to improve. Sometimes the context isn't created (the initializer returns nil).
+    // I can't figure why, but it seems to be that the initializer succceeds when the bitmap info is 1, 2, 5, or 6.
+    // I can't find documentation for the bitmap info or why the initializer would fail.
+    // My best lead is that those numbers are all within the first 5 bits, which seem to be the alpha info mask.
+    // Also, I'm only seeing bits within that mask be set on any bitmap info.
+    // So, I try all the different values in that mask in the hopes that one of them will result in a non-nil context.
+    var i: UInt32 = 0
+    while maybeContext == nil {
+        if i == 32 {
+            fatalError("Context could not be created")
+        }
+        
+        maybeContext = CGContext(
+            data: nil,
+            width: newWidthRoundedDown,
+            height: newHeightRoundedDown,
+            bitsPerComponent: cgImage.bitsPerComponent,
+            bytesPerRow: 0,
+            space: cgImage.colorSpace!,
+            bitmapInfo: i)
+        i += 1
+    }
+    
+    let context = maybeContext!
     context.interpolationQuality = .high
     
     // Consider the orientation of the original image, and rotate/flip as appropriate for the result to be right-side up.
