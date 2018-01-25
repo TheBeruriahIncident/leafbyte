@@ -33,8 +33,7 @@ func ciToCgImage(_ ciImage: CIImage) -> CGImage {
 
 // Convert a Core Image image to a UI image.
 func ciToUiImage(_ ciImage: CIImage) -> UIImage {
-    // UIImage(ciImage: ciImage) seems obvious, but it distorts the image
-    // TODO: figure why, unsure if this other approach is slower
+    // UIImage(ciImage: ciImage) seems obvious, but it stretches the image.
     
     let cgImage = ciToCgImage(ciImage)
     return UIImage(cgImage: cgImage)
