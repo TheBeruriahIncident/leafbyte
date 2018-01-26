@@ -62,7 +62,9 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         scaleMarkingView.contentMode = .scaleAspectFit
         
         sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         // Guess a good threshold to start at; the user can adjust with the slider later.
         let suggestedThreshold = getSuggestedThreshold(image: image)
         thresholdSlider.value = 1 - suggestedThreshold

@@ -75,6 +75,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
         
         setScrollingMode(true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         findScaleMark()
     }
     
