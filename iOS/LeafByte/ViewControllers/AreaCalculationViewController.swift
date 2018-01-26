@@ -293,6 +293,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         redoButton.isEnabled = false
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
+        // TODO: this is hacking around the gaps due to rounding. remove
+        drawingManager.getContext().setLineWidth(2)
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
