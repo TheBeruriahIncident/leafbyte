@@ -49,7 +49,6 @@ class Settings: NSObject, NSCoding {
     
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
-        // TODO: is this reasonable logic for missing strings?
         if let measurementSaveLocation = decoder.decodeObject(forKey: PropertyKey.measurementSaveLocation) as? String {
             self.measurementSaveLocation = SaveLocation(rawValue: measurementSaveLocation)!
         }
