@@ -37,7 +37,7 @@ class Settings: NSObject, NSCoding {
     var datasetName = Settings.defaultDatasetName
     var nextSampleNumber = defaultNextSampleNumber
     var saveGpsData = false
-    // TODO: handle these getting too large
+    // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
     var datasetNameToGoogleFolderId = [String: String]()
     var datasetNameToGoogleSpreadsheetId = [String: String]()
     var topLevelGoogleFolderId: String?
