@@ -294,7 +294,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
         // TODO: this is hacking around the gaps due to rounding. remove
-        drawingManager.getContext().setLineWidth(2)
+        drawingManager.getContext().setLineWidth(CGFloat(1 / userDrawingToBaseImage.scale))
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
@@ -352,7 +352,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
         drawingManager.getContext().setStrokeColor(lightGreen.cgColor)
         // Prevents space between lines when rounding skew causes a line to be skipped.
-        drawingManager.getContext().setLineWidth(CGFloat(userDrawingProjection.yScale))
+        drawingManager.getContext().setLineWidth(CGFloat(userDrawingProjection.scale))
         
         var consumedAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {
