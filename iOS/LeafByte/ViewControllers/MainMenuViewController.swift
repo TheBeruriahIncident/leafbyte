@@ -45,10 +45,11 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         settings = Settings.deserialize()
-        
         setupImagePicker(imagePicker: imagePicker, self: self)
-        
-        maybeDoSignIn()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        maybeDoGoogleSignIn()
     }
     
     // This is called before transitioning from this view to another view.
@@ -59,7 +60,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
             guard let destination = navigationController.topViewController as? ThresholdingViewController else {
-                fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(navigationController.topViewController!)")
+                fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: navigationController.topViewController))")
             }
             
             destination.settings = settings
@@ -72,7 +73,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
             guard let destination = navigationController.topViewController as? SettingsViewController else {
-                fatalError("Expected the view inside the navigation controller to be the settings view but is  \(navigationController.topViewController!)")
+                fatalError("Expected the view inside the navigation controller to be the settings view but is  \(String(describing: navigationController.topViewController))")
             }
             
             destination.settings = settings
@@ -107,7 +108,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     // Sign in to Google if necessary.
-    private func maybeDoSignIn() {
+    private func maybeDoGoogleSignIn() {
         if settings.measurementSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
             return
         }
