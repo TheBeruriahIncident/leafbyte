@@ -113,6 +113,18 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             return
         }
         
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
+        GoogleSignInManager.initiateSignIn(
+            actionWithAccessToken: { _ in () },
+            actionWithError: { _ in
+                if self.settings.measurementSaveLocation == .googleDrive {
+                    self.settings.measurementSaveLocation = .local
+                }
+                if self.settings.imageSaveLocation == .googleDrive {
+                    self.settings.imageSaveLocation = .local
+                }
+                self.settings.serialize()
+                
+                presentAlert(self: self, title: nil, message: "Cannot save to Google Drive without Google sign-in")
+            })
     }
 }

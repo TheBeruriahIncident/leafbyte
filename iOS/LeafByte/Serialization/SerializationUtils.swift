@@ -55,7 +55,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
                     appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
                 })
             })
-        })
+        }, actionWithError: { _ in () })
 
     default:
         break
@@ -89,7 +89,7 @@ private func serializeImage(settings: Settings, image: UIImage) {
             getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
             })
-        })
+        }, actionWithError: { _ in () })
     
     default:
         break

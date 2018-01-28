@@ -59,16 +59,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
         
         if newSaveLocation == .googleDrive {
-            // Set the selected index back to the previous selected index.
-            // We don't want to show the change yet in case the Google sign-in fails.
-            imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
-            
-            GoogleSignInManager.initiateSignIn(actionWithAccessToken: { _ in
-                // Now we can show the change.
-                self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(newSaveLocation)
-                
-                persistChange()
-            })
+            GoogleSignInManager.initiateSignIn(
+                actionWithAccessToken: { _ in
+                    persistChange()
+                },
+                actionWithError: { _ in
+                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                    self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.imageSaveLocation)
+                    self.presentFailedGoogleSignInAlert()
+                })
         } else {
             persistChange()
         }
@@ -86,15 +85,14 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
         
         if newSaveLocation == .googleDrive {
-            // Set the selected index back to the previous selected index.
-            // We don't want to show the change yet in case the Google sign-in fails.
-            measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
-            
-            GoogleSignInManager.initiateSignIn(actionWithAccessToken: { _ in
-                // Now we can show the change.
-                self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(newSaveLocation)
-                
-                persistChange()
+            GoogleSignInManager.initiateSignIn(
+                actionWithAccessToken: { _ in
+                    persistChange()
+            },
+                actionWithError: { _ in
+                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                    self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
+                    self.presentFailedGoogleSignInAlert()
             })
         } else {
             persistChange()
@@ -142,11 +140,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func signOutOfGoogle(_ sender: Any) {
         if settings.measurementSaveLocation == .googleDrive {
-            settings.measurementSaveLocation = .none
+            settings.measurementSaveLocation = .local
             measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
         }
         if settings.imageSaveLocation == .googleDrive {
-            settings.imageSaveLocation = .none
+            settings.imageSaveLocation = .local
             imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
         }
         settings.serialize()
@@ -236,5 +234,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         let anyGoogleDriveSavingEnabled = settings.measurementSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
         signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
-    }    
+    }
+    
+    private func presentFailedGoogleSignInAlert() {
+        presentAlert(self: self, title: nil, message: "Google sign-in is required for saving to Google Drive")
+    }
 }

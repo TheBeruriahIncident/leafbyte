@@ -14,9 +14,11 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     static let googleSignInManager = GoogleSignInManager()
     
     var actionWithAccessToken: ((_ accessToken: String) -> Void)!
+    var actionWithError: ((_ error: Error) -> Void)!
     
-    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
+    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String) -> Void, actionWithError: @escaping (_ error: Error) -> Void) {
         googleSignInManager.actionWithAccessToken = actionWithAccessToken
+        googleSignInManager.actionWithError = actionWithError
         googleSignInManager.initiateSignIn()
     }
     
@@ -37,12 +39,11 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     
     // Called automatically when sign-in is complete.
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        // TODO: how to get errors out!??
-        if error != nil {
-            fatalError(String(describing: error!))
+        if error == nil {
+            actionWithAccessToken(user.authentication.accessToken!)
+        } else {
+            actionWithError(error)
         }
-        
-        actionWithAccessToken(user.authentication.accessToken!)
         return
     }
 }
