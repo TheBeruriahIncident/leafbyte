@@ -175,7 +175,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 notSavedMessageElements = "Images"
             }
             
-            notSavedMessage = "\(notSavedMessageElements!) are not being saved."
+            notSavedMessage = "\(notSavedMessageElements!) are not being saved. Go to Settings to change."
         } else {
             notSavedMessage = ""
         }
