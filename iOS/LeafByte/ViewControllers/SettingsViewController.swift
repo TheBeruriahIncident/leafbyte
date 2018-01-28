@@ -48,29 +48,57 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
+        dismissKeyboard()
+        
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
+        let persistChange = {
+            self.settings.imageSaveLocation = newSaveLocation
+            self.settings.serialize()
+            
+            self.updateEnabledness()
+        }
         
-        settings.imageSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
+        if newSaveLocation == .googleDrive {
+            // Set the selected index back to the previous selected index.
+            // We don't want to show the change yet in case the Google sign-in fails.
+            imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
+            
+            GoogleSignInManager.initiateSignIn(actionWithAccessToken: { _ in
+                // Now we can show the change.
+                self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(newSaveLocation)
+                
+                persistChange()
+            })
+        } else {
+            persistChange()
+        }
     }
     
     @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
+        dismissKeyboard()
+        
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
+        let persistChange = {
+            self.settings.measurementSaveLocation = newSaveLocation
+            self.settings.serialize()
+            
+            self.updateEnabledness()
+        }
         
-        settings.measurementSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
+        if newSaveLocation == .googleDrive {
+            // Set the selected index back to the previous selected index.
+            // We don't want to show the change yet in case the Google sign-in fails.
+            measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
+            
+            GoogleSignInManager.initiateSignIn(actionWithAccessToken: { _ in
+                // Now we can show the change.
+                self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(newSaveLocation)
+                
+                persistChange()
+            })
+        } else {
+            persistChange()
+        }
     }
     
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
@@ -90,11 +118,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveGpsChanged(_ sender: UISwitch) {
+        dismissKeyboard()
+        
         settings.saveGpsData = sender.isOn
         settings.serialize()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
     }
     
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
@@ -156,18 +183,22 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // If a user taps outside of the keyboard, close the keyboard.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        dismissKeyboard()
     }
     
     // MARK: - UITextFieldDelegate overrides
     
     // Called when return is pressed on the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        dismissKeyboard()
         return true
     }
     
     // MARK: - Helpers
+    
+    private func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
     
     private func indexToSaveLocation(_ index: Int) -> Settings.SaveLocation {
         switch index {
@@ -205,14 +236,5 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         let anyGoogleDriveSavingEnabled = settings.measurementSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
         signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
-    }
-    
-    // Sign in to Google if necessary.
-    private func maybeDoSignIn(newSaveLocation: Settings.SaveLocation) {
-        if newSaveLocation != .googleDrive {
-            return
-        }
-        
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
-    }
+    }    
 }
