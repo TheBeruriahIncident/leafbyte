@@ -110,6 +110,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBAction func share(_ sender: Any) {
         // If anything has changed, recalculate to prevent accidentally sharing bad data.
         if calculateButton.isEnabled {
+            calculateButton.isEnabled = false
             calculateArea()
         }
         
@@ -135,19 +136,21 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBAction func nextImage(_ sender: Any) {
         // If anything has changed, recalculate to prevent accidentally recording bad data.
         if calculateButton.isEnabled {
+            calculateButton.isEnabled = false
             calculateArea()
         }
         
-        // Record everything before moving on.
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2)
-        
-        imagePicker.sourceType = sourceType
-        
-        if sourceType == .camera {
-            requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
-        } else {
-            present(imagePicker, animated: true, completion: nil)
+        let afterSerialization = {
+            self.imagePicker.sourceType = self.sourceType
+            
+            if self.sourceType == .camera {
+                requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+            } else {
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }
         }
+        
+        handleSerialization(onSuccess: afterSerialization)
     }
     
     // MARK: - UIViewController overrides
@@ -408,5 +411,37 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     private func getCombinedImage() -> UIImage {
         return combineImages([ baseImageView, leafHolesView, userDrawingView ])
+    }
+    
+    private func handleSerialization(onSuccess: @escaping () -> Void) {
+        let onFailure = {
+            // TODO: give helpful message
+            
+            let alertController = UIAlertController(title: nil, message: "Could not save to Google Drive.", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+            let switchToLocalAction = UIAlertAction(title: "Switch to Files App", style: .default, handler: { _ in
+                if self.settings.measurementSaveLocation == .googleDrive {
+                    self.settings.measurementSaveLocation = .local
+                }
+                if self.settings.imageSaveLocation == .googleDrive {
+                    self.settings.imageSaveLocation = .local
+                }
+                self.settings.serialize()
+                
+                self.handleSerialization(onSuccess: onSuccess)
+            })
+            let retryAction = UIAlertAction(title: "Retry", style: .default, handler: { _ in
+                self.handleSerialization(onSuccess: onSuccess)
+            })
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(switchToLocalAction)
+            alertController.addAction(retryAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        // Record everything before moving on.
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, onSuccess: onSuccess, onFailure: onFailure)
     }
 }
