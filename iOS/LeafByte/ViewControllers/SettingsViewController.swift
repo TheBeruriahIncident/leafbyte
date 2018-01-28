@@ -14,9 +14,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
-    @IBOutlet weak var imageSaveLocation: UISegmentedControl!
     @IBOutlet weak var datasetName: UITextField!
+    @IBOutlet weak var imageSaveLocation: UISegmentedControl!
+    @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
@@ -29,36 +29,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Actions
     
-    @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
-        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
-        
-        settings.measurementSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
-    }
-    
-    @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
-        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
-        
-        settings.imageSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
-    }
-    
     @IBAction func datasetNameChanged(_ sender: UITextField) {
         // If the value hasn't changed, return early to avoid unnecessarily resetting the sample number.
         if settings.datasetName == sender.text! {
-                return
+            return
         }
         
         // Fall back to the default if the box is empty.
@@ -77,6 +51,32 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         settings.serialize()
         
         nextSampleNumber.text = String(Settings.defaultNextSampleNumber)
+    }
+    
+    @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        maybeDoSignIn(newSaveLocation: newSaveLocation)
+        
+        settings.imageSaveLocation = newSaveLocation
+        settings.serialize()
+        
+        updateEnabledness()
+        
+        // Dismiss the keyboard if it's open.
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        maybeDoSignIn(newSaveLocation: newSaveLocation)
+        
+        settings.measurementSaveLocation = newSaveLocation
+        settings.serialize()
+        
+        updateEnabledness()
+        
+        // Dismiss the keyboard if it's open.
+        self.view.endEditing(true)
     }
     
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
@@ -145,9 +145,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
-        imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
         datasetName.text = settings.datasetName
+        imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
+        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
         nextSampleNumber.text = String(settings.nextSampleNumber)
         saveGps.setOn(settings.saveGpsData, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
