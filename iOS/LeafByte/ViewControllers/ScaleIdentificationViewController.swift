@@ -41,6 +41,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var clearScaleButton: UIButton!
+    @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
@@ -85,6 +86,10 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         if !viewDidAppearHasRun {
             findScaleMark()
+            
+            modeToggleButton.isEnabled = true
+            clearScaleButton.isEnabled = true
+            completeButton.isEnabled = true
         }
     }
     
