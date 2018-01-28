@@ -49,7 +49,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         appendToFile(url, data: csvRow)
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
             getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
                     appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
@@ -85,7 +85,7 @@ private func serializeImage(settings: Settings, image: UIImage) {
         try! pngImage.write(to: url)
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
             getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
             })

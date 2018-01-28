@@ -60,7 +60,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         if newSaveLocation == .googleDrive {
             GoogleSignInManager.initiateSignIn(
-                actionWithAccessToken: { _ in
+                actionWithAccessToken: { (_, _) in
                     persistChange()
                 },
                 actionWithError: { _ in
@@ -86,7 +86,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         if newSaveLocation == .googleDrive {
             GoogleSignInManager.initiateSignIn(
-                actionWithAccessToken: { _ in
+                actionWithAccessToken: { _, _ in 
                     persistChange()
             },
                 actionWithError: { _ in
