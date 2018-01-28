@@ -67,7 +67,16 @@ private func serializeImage(settings: Settings, image: UIImage) {
         return
     }
     
-    let filename = "\(settings.datasetName)-\(settings.nextSampleNumber).png"
+    // Get date and time in a way amenable to sorting.
+    // TODO: don't dupe this
+    let date = Date()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy.MM.dd"
+    let formattedDate = formatter.string(from: date)
+    formatter.dateFormat = "HH:mm:ss"
+    let formattedTime = formatter.string(from: date)
+    
+    let filename = "\(settings.datasetName)-\(settings.nextSampleNumber) (\(formattedDate) \(formattedTime).png"
     let pngImage = UIImagePNGRepresentation(image)!
     
     switch settings.imageSaveLocation {
