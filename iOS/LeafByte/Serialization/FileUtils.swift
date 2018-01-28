@@ -8,6 +8,9 @@
 
 import Foundation
 
+// These functions refer to visible and invisible files: this refers to visibility to the end user.
+// E.g. the end user should see saved data, but not the settings file.
+
 func getUrlForVisibleFiles() -> URL {
     return FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
 }
