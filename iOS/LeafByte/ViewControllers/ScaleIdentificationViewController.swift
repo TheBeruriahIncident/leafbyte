@@ -18,6 +18,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     var cgImage: CGImage!
     var uiImage: UIImage!
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
+    
     // The current mode can be scrolling or identifying.
     var inScrollingMode = true
     
@@ -80,7 +83,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        findScaleMark()
+        if !viewDidAppearHasRun {
+            findScaleMark()
+        }
     }
     
     // This is called before transitioning from this view to another view.

@@ -17,6 +17,9 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let imagePicker = UIImagePickerController()
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
+    
     // Both of these are set while picking an image and are passed forward to the next view.
     var sourceType: UIImagePickerControllerSourceType?
     var selectedImage: CGImage?
@@ -51,7 +54,10 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        maybeDoGoogleSignIn()
+        if !viewDidAppearHasRun {
+            maybeDoGoogleSignIn()
+            viewDidAppearHasRun = true
+        }
     }
     
     // This is called before transitioning from this view to another view.

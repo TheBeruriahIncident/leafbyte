@@ -19,6 +19,9 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     
     let filter = ThresholdingFilter()
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
+    
     var ciImageThresholded: CIImage?
     
     // MARK: - Outlets
@@ -67,13 +70,17 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Guess a good threshold to start at; the user can adjust with the slider later.
-        let suggestedThreshold = getSuggestedThreshold(image: image)
-        thresholdSlider.value = 1 - suggestedThreshold
-        setThreshold(suggestedThreshold)
-        
-        thresholdSlider.isEnabled = true
-        completeButton.isEnabled = true
+        if !viewDidAppearHasRun {
+            // Guess a good threshold to start at; the user can adjust with the slider later.
+            let suggestedThreshold = getSuggestedThreshold(image: image)
+            thresholdSlider.value = 1 - suggestedThreshold
+            setThreshold(suggestedThreshold)
+            
+            thresholdSlider.isEnabled = true
+            completeButton.isEnabled = true
+            
+            viewDidAppearHasRun = true
+        }
     }
     
     // This is called before transitioning from this view to another view.
