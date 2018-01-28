@@ -418,8 +418,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = {
-            // TODO: give helpful message
-            
             let alertController = UIAlertController(title: nil, message: "Could not save to Google Drive.", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Cancel", style: .default)
             let switchToLocalAction = UIAlertAction(title: "Switch to Files App", style: .default, handler: { _ in
