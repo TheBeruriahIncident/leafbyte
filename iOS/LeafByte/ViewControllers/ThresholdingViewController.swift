@@ -65,6 +65,8 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         // Guess a good threshold to start at; the user can adjust with the slider later.
         let suggestedThreshold = getSuggestedThreshold(image: image)
         thresholdSlider.value = 1 - suggestedThreshold

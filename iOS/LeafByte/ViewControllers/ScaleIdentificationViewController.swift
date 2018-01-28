@@ -78,6 +78,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         findScaleMark()
     }
     
