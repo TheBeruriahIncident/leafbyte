@@ -24,9 +24,9 @@ class Settings: NSObject, NSCoding {
         static let datasetName = "datasetName"
         static let datasetNameToGoogleFolderId = "datasetNameToGoogleFolderId"
         static let datasetNameToGoogleSheetId = "datasetNameToGoogleSheetId"
+        static let datasetNameToNextSampleNumber = "datasetNameToNextSampleNumber"
         static let imageSaveLocation = "imageSaveLocation"
         static let measurementSaveLocation = "measurementSaveLocation"
-        static let nextSampleNumber = "nextSampleNumber"
         static let saveGpsData = "saveGpsData"
         static let scaleMarkLength = "scaleMarkLength"
         static let topLevelGoogleFolderId = "topLevelGoogleFolderId"
@@ -36,9 +36,9 @@ class Settings: NSObject, NSCoding {
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
     var datasetNameToGoogleFolderId = [String: String]()
     var datasetNameToGoogleSpreadsheetId = [String: String]()
+    var datasetNameToNextSampleNumber = [defaultDatasetName: defaultNextSampleNumber]
     var imageSaveLocation = SaveLocation.none
     var measurementSaveLocation = SaveLocation.none
-    var nextSampleNumber = defaultNextSampleNumber
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var topLevelGoogleFolderId: String?
@@ -58,14 +58,14 @@ class Settings: NSObject, NSCoding {
         if let datasetNameToGoogleSheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToGoogleSheetId) as? [String: String] {
             self.datasetNameToGoogleSpreadsheetId = datasetNameToGoogleSheetId
         }
+        if let datasetNameToNextSampleNumber = decoder.decodeObject(forKey: PropertyKey.datasetNameToNextSampleNumber) as? [String: Int] {
+            self.datasetNameToNextSampleNumber = datasetNameToNextSampleNumber
+        }
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
         }
         if let measurementSaveLocation = decoder.decodeObject(forKey: PropertyKey.measurementSaveLocation) as? String {
             self.measurementSaveLocation = SaveLocation(rawValue: measurementSaveLocation)!
-        }
-        if decoder.containsValue(forKey: PropertyKey.nextSampleNumber) {
-            self.nextSampleNumber = decoder.decodeInteger(forKey: PropertyKey.nextSampleNumber)
         }
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
@@ -83,9 +83,9 @@ class Settings: NSObject, NSCoding {
         coder.encode(datasetName, forKey: PropertyKey.datasetName)
         coder.encode(datasetNameToGoogleFolderId, forKey: PropertyKey.datasetNameToGoogleFolderId)
         coder.encode(datasetNameToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToGoogleSheetId)
+        coder.encode(datasetNameToNextSampleNumber, forKey: PropertyKey.datasetNameToNextSampleNumber)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
-        coder.encode(nextSampleNumber, forKey: PropertyKey.nextSampleNumber)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
         coder.encode(topLevelGoogleFolderId, forKey: PropertyKey.topLevelGoogleFolderId)
@@ -101,6 +101,7 @@ class Settings: NSObject, NSCoding {
         return datasetName == other.datasetName
             && datasetNameToGoogleFolderId == other.datasetNameToGoogleFolderId
             && datasetNameToGoogleSpreadsheetId == other.datasetNameToGoogleSpreadsheetId
+            && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
             && imageSaveLocation == other.imageSaveLocation
             && measurementSaveLocation == other.measurementSaveLocation
             && saveGpsData == other.saveGpsData
@@ -113,6 +114,39 @@ class Settings: NSObject, NSCoding {
     func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
         try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
         NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
+    }
+    
+    func getGoogleFolderId() -> String {
+        return datasetNameToGoogleFolderId[datasetName]!
+    }
+    
+    func getGoogleSpreadsheetId() -> String {
+        return datasetNameToGoogleSpreadsheetId[datasetName]!
+    }
+    
+    func getNextSampleNumber() -> Int {
+        return datasetNameToNextSampleNumber[datasetName]!
+    }
+    
+    func incrementNextSampleNumber() {
+        return datasetNameToNextSampleNumber[datasetName]! += 1
+    }
+    
+    func initializeNextSampleNumberIfNeeded() -> Int {
+        let nextSampleNumber = datasetNameToNextSampleNumber[datasetName]
+        if nextSampleNumber == nil {
+            datasetNameToNextSampleNumber[datasetName] = Settings.defaultNextSampleNumber
+        }
+        
+        return datasetNameToNextSampleNumber[datasetName]!
+    }
+    
+    func setGoogleFolderId(_ googleFolderId: String) {
+        return datasetNameToGoogleFolderId[datasetName] = googleFolderId
+    }
+    
+    func setGoogleSpreadsheetId(_ googleSpreadsheetId: String) {
+        return datasetNameToGoogleSpreadsheetId[datasetName] = googleSpreadsheetId
     }
     
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {

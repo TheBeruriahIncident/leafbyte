@@ -18,7 +18,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     sleep(2)
     serializeImage(settings: settings, image: image)
     
-    settings.nextSampleNumber += 1
+    settings.incrementNextSampleNumber()
     settings.serialize()
 }
 
@@ -36,7 +36,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     let formattedTime = formatter.string(from: date)
     
     // Form a row useful for any spreadsheet-like format.
-    let row = [ formattedDate, formattedTime, String(settings.nextSampleNumber), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
+    let row = [ formattedDate, formattedTime, String(settings.getNextSampleNumber()), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
     
     switch settings.measurementSaveLocation {
     case .local:
@@ -76,7 +76,7 @@ private func serializeImage(settings: Settings, image: UIImage) {
     formatter.dateFormat = "HH:mm:ss"
     let formattedTime = formatter.string(from: date)
     
-    let filename = "\(settings.datasetName)-\(settings.nextSampleNumber) (\(formattedDate) \(formattedTime).png"
+    let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(formattedDate) \(formattedTime).png"
     let pngImage = UIImagePNGRepresentation(image)!
     
     switch settings.imageSaveLocation {

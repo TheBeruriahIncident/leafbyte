@@ -72,7 +72,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
-        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
     }

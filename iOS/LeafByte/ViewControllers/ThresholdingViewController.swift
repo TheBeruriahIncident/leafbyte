@@ -61,7 +61,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
         
-        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
     }
     
     override func viewDidAppear(_ animated: Bool) {

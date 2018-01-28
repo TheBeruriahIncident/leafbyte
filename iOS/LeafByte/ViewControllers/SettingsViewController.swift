@@ -47,10 +47,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
         
         settings.datasetName = newDatasetName
-        settings.nextSampleNumber = 1
+        nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
         settings.serialize()
-        
-        nextSampleNumber.text = String(Settings.defaultNextSampleNumber)
     }
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
@@ -91,7 +89,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             newNextSampleNumber = Int(sender.text!)
         }
         
-        settings.nextSampleNumber = newNextSampleNumber
+        settings.datasetNameToNextSampleNumber[settings.datasetName] = newNextSampleNumber
         settings.serialize()
     }
     
@@ -148,7 +146,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         datasetName.text = settings.datasetName
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
         measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
-        nextSampleNumber.text = String(settings.nextSampleNumber)
+        nextSampleNumber.text = String(settings.getNextSampleNumber())
         saveGps.setOn(settings.saveGpsData, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
         
