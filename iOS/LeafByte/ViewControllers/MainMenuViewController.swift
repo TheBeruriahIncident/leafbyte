@@ -24,6 +24,10 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     var sourceType: UIImagePickerControllerSourceType?
     var selectedImage: CGImage?
     
+    // MARK: - Outlets
+    
+    @IBOutlet weak var savingSummary: UILabel!
+    
     // MARK: - Actions
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
@@ -58,6 +62,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             maybeDoGoogleSignIn()
             viewDidAppearHasRun = true
         }
+        
+        setSavingSummary()
     }
     
     // This is called before transitioning from this view to another view.
@@ -134,5 +140,58 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 
                 presentAlert(self: self, title: nil, message: "Cannot save to Google Drive without Google sign-in")
             })
+    }
+    
+    private func setSavingSummary() {
+        let measurementSaveLocation = settings.measurementSaveLocation
+        let imageSaveLocation = settings.imageSaveLocation
+        
+        var savedMessage: String!
+        if measurementSaveLocation != .none || imageSaveLocation != .none {
+            var savedMessageStart: String!
+            if measurementSaveLocation == imageSaveLocation {
+                savedMessageStart = "Saving data and images to \(saveLocationToName(measurementSaveLocation))"
+            } else {
+                let dataSavedMessage = measurementSaveLocation != .none ? "data to \(saveLocationToName(measurementSaveLocation))" : ""
+                let imageSavedMessage = imageSaveLocation != .none ? "images to \(saveLocationToName(imageSaveLocation))" : ""
+                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? " and " : ""
+                
+                savedMessageStart = "Saving \(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
+            }
+            
+            savedMessage = "\(savedMessageStart!) under the name \(settings.datasetName)."
+        } else {
+            savedMessage = ""
+        }
+        
+        var notSavedMessage: String!
+        if measurementSaveLocation == .none || imageSaveLocation == .none {
+            var notSavedMessageElements: String!
+            if measurementSaveLocation == .none && imageSaveLocation == .none {
+                notSavedMessageElements = "Data and images"
+            } else if measurementSaveLocation == .none {
+                notSavedMessageElements = "Data"
+            } else {
+                notSavedMessageElements = "Images"
+            }
+            
+            notSavedMessage = "\(notSavedMessageElements!) are not being saved."
+        } else {
+            notSavedMessage = ""
+        }
+        
+        savingSummary.numberOfLines = 0
+        savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
+    }
+    
+    private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
+        switch saveLocation {
+        case .none:
+            return "none"
+        case .local:
+            return "the Files App"
+        case .googleDrive:
+            return "Google Drive"
+        }
     }
 }
