@@ -126,7 +126,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             return
         }
 
-        let candidatePoint = (touches.first?.location(in: baseImageView))!
+        let candidatePoint = touches.first!.location(in: baseImageView)
         let projectedPoint = baseImageViewToImage.project(point: candidatePoint)
         // Touches outside the image don't matter.
         if !baseImageRect.contains(projectedPoint) {
