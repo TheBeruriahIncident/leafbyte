@@ -56,8 +56,8 @@
                                     <segue destination="87W-xz-Klv" kind="show" identifier="toSettings" customClass="SegueFromRight" customModule="LeafByte" customModuleProvider="target" id="cpy-vO-pvs"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="LeafByte Title">
-                                <rect key="frame" x="0.0" y="249" width="375" height="75"/>
+                            <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="LeafByte Title">
+                                <rect key="frame" x="0.0" y="250" width="375" height="57.5"/>
                                 <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -86,10 +86,28 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="Leaf Image">
-                                <rect key="frame" x="148" y="121" width="124" height="129"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <stackView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Nda-Q8-yk5">
+                                <rect key="frame" x="125" y="116" width="124" height="129"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ueo-mm-OcV">
+                                        <rect key="frame" x="0.0" y="0.0" width="124" height="129"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gR4-op-PcX">
+                                                <rect key="frame" x="0.0" y="0.0" width="124" height="129"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="Leaf Image">
+                                                        <rect key="frame" x="0.0" y="0.0" width="124" height="129"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="124" id="5RV-v5-rDe"/>
+                                                            <constraint firstAttribute="height" constant="129" id="a7f-iy-06p"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -98,6 +116,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="neI-sd-kIs" secondAttribute="bottom" constant="120" id="46H-Yi-B68"/>
                             <constraint firstItem="neI-sd-kIs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="HmP-rc-dKJ"/>
                             <constraint firstItem="cPB-VP-BSe" firstAttribute="top" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="Hse-gc-Q8w"/>
+                            <constraint firstItem="tMm-Do-q8c" firstAttribute="centerX" secondItem="Nda-Q8-yk5" secondAttribute="centerX" id="RpH-kG-2Ad"/>
                             <constraint firstItem="tMm-Do-q8c" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="T0J-az-vgd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" constant="120" id="TN4-d9-gPU"/>
                             <constraint firstItem="uh0-1K-0gr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Y0w-7g-jUV"/>
@@ -108,6 +127,7 @@
                             <constraint firstItem="uh0-1K-0gr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="eeJ-9J-s3E"/>
                             <constraint firstItem="hMs-gX-Mwe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="58" id="ioS-Jb-p5M"/>
                             <constraint firstItem="y7J-0u-w5M" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="kq0-Dh-MYv"/>
+                            <constraint firstItem="tMm-Do-q8c" firstAttribute="top" secondItem="Nda-Q8-yk5" secondAttribute="bottom" constant="5" id="mjF-JG-G2K"/>
                             <constraint firstItem="tMm-Do-q8c" firstAttribute="top" secondItem="y7J-0u-w5M" secondAttribute="bottom" constant="180" id="mqt-pE-8vJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="y7J-0u-w5M" secondAttribute="trailing" constant="30" id="nf2-yl-Vrk"/>
                             <constraint firstItem="gE2-ly-MV0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xmM-4c-7Wp"/>
@@ -260,7 +280,7 @@
                                 <size key="shadowOffset" width="1" height="-1"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
-                                <rect key="frame" x="16" y="637" width="143" height="30"/>
+                                <rect key="frame" x="45" y="638" width="64" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <state key="normal" title="&lt;autofilled&gt;"/>
@@ -276,36 +296,36 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-ad-Z94" userLabel="Complete Button">
-                                <rect key="frame" x="247" y="637" width="86" height="30"/>
+                                <rect key="frame" x="282" y="637" width="86" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
-                                <state key="normal" title="Next image"/>
+                                <state key="normal" title="Save &amp; Next"/>
                                 <connections>
                                     <action selector="nextImage:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="rdX-D3-N69"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4l-IF-yMI" userLabel="Calculate Button">
-                                <rect key="frame" x="166" y="637" width="64" height="30"/>
+                                <rect key="frame" x="155" y="641" width="64" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Calculate"/>
                                 <connections>
                                     <action selector="calculate:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="pjR-Mb-HWu"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
-                                <rect key="frame" x="338" y="584" width="30" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Undo"/>
-                                <connections>
-                                    <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
-                                <rect key="frame" x="339" y="633" width="30" height="26"/>
+                                <rect key="frame" x="111" y="640" width="30" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Redo"/>
+                                <state key="normal" image="blue redo"/>
                                 <connections>
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
+                                <rect key="frame" x="16" y="641" width="30" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Blue Undo"/>
+                                <connections>
+                                    <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -647,13 +667,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Blue Undo" width="40" height="35"/>
         <image name="Camera" width="98" height="94"/>
         <image name="Gallery" width="98" height="98"/>
         <image name="Home" width="40" height="35"/>
         <image name="Leaf" width="256" height="279"/>
-        <image name="Redo" width="50" height="44"/>
         <image name="Share" width="32" height="29"/>
-        <image name="Undo" width="50" height="44"/>
+        <image name="blue redo" width="40" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gAP-T7-MBM"/>
