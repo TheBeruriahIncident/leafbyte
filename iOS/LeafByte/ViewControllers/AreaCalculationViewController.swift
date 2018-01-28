@@ -273,8 +273,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     // If the image picker is canceled, dismiss it.
+    // Also go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+        dismissNavigationController(self: self)
     }
     
     // MARK: - Helpers
