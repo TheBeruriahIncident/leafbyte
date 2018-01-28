@@ -150,6 +150,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             }
         }
         
+        // Record everything before moving on.
         handleSerialization(onSuccess: afterSerialization)
     }
     
@@ -443,7 +444,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             self.present(alertController, animated: true, completion: nil)
         }
         
-        // Record everything before moving on.
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, onSuccess: onSuccess, onFailure: onFailure)
     }
 }
