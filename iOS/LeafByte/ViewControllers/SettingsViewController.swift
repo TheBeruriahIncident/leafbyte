@@ -30,11 +30,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func datasetNameChanged(_ sender: UITextField) {
-        // If the value hasn't changed, return early to avoid unnecessarily resetting the sample number.
-        if settings.datasetName == sender.text! {
-            return
-        }
-        
         // Fall back to the default if the box is empty.
         var newDatasetName: String!
         if sender.text!.isEmpty {
@@ -47,6 +42,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
         
         settings.datasetName = newDatasetName
+        // Switch to the next sample number associated with this dataset.
         nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
         settings.serialize()
     }
