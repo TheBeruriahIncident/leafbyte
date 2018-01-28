@@ -12,7 +12,7 @@ import UIKit
 class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Fields
     
-    // Both of these are passed from the main menu view.
+    // These are passed from the main menu view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: CGImage!
@@ -28,7 +28,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
-    
+    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var sampleNumberLabel: UILabel!
     
     // MARK: - Actions
@@ -69,8 +69,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         let suggestedThreshold = getSuggestedThreshold(image: image)
         thresholdSlider.value = 1 - suggestedThreshold
         setThreshold(suggestedThreshold)
+        
+        thresholdSlider.isEnabled = true
+        completeButton.isEnabled = true
     }
-
+    
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
@@ -82,11 +85,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             destination.settings = settings
             destination.sourceType = sourceType
-            if ciImageThresholded != nil {
-                destination.cgImage = ciToCgImage(ciImageThresholded!)
-            } else {
-                destination.cgImage = uiToCgImage(baseImageView.image!)
-            }
+            destination.cgImage = ciToCgImage(ciImageThresholded!)
             destination.uiImage = baseImageView.image
             
             setBackButton(self: self)
