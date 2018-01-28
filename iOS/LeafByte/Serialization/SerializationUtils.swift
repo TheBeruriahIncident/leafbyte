@@ -12,6 +12,7 @@ import UIKit
 let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed" ]
 let csvHeader = stringRowToCsvRow(header)
 
+// This is the top-level serialize function.
 func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     // Get date and time in a way amenable to sorting.
     let date = Date()
@@ -31,6 +32,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     }, onFailure: onFailure)
 }
 
+// This serializes just the measurement.
 private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.measurementSaveLocation == .none {
         onSuccess()
@@ -49,6 +51,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         // Add the data to the file.
         let csvRow = stringRowToCsvRow(row)
         appendToFile(url, data: csvRow)
+        
         onSuccess()
         
     case .googleDrive:
@@ -61,10 +64,11 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         }, onError: { _ in () })
 
     default:
-        break
+        fatalError("\(settings.measurementSaveLocation) not handled in switch")
     }
 }
 
+// This serializes just the image.
 private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.imageSaveLocation == .none {
         onSuccess()
@@ -78,6 +82,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
     case .local:
         let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
         try! pngImage.write(to: url)
+        
         onSuccess()
         
     case .googleDrive:
@@ -88,7 +93,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         }, onError: { _ in onFailure() })
     
     default:
-        break
+        fatalError("\(settings.imageSaveLocation) not handled in switch")
     }
 }
 
@@ -96,6 +101,7 @@ private func stringRowToCsvRow(_ row: [String]) -> Data {
     return (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
 }
 
+// Get the folder id for the top-level LeafByte folder containing all datasets.
 private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     if settings.topLevelGoogleFolderId != nil {
         onFolderId(settings.topLevelGoogleFolderId!)
@@ -109,6 +115,7 @@ private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, 
     }
 }
 
+// Get the folder id for the current dataset. It'll hold both the sheet and the images.
 private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     let existingFolderId = settings.datasetNameToGoogleFolderId[settings.datasetName]
     if existingFolderId != nil {
@@ -125,6 +132,7 @@ private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, o
     }
 }
 
+// Get the spreadsheet id for sheet for the the current dataset.
 private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     let existingSpreadsheetId = settings.datasetNameToGoogleSpreadsheetId[settings.datasetName]
     if existingSpreadsheetId != nil {
