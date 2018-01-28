@@ -128,8 +128,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         GoogleSignInManager.initiateSignIn(
-            actionWithAccessToken: { _, _ in () },
-            actionWithError: { _ in
+            onAccessTokenAndUserId: { _, _ in () },
+            onError: { _ in
                 if self.settings.measurementSaveLocation == .googleDrive {
                     self.settings.measurementSaveLocation = .local
                 }
