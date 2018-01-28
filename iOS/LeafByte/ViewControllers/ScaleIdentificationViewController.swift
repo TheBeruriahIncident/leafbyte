@@ -208,8 +208,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
-        drawingManager.getContext().setLineWidth(2)
-        drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
         drawingManager.finish(imageView: scaleMarkingView)
     }
