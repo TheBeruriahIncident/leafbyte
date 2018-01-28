@@ -6,7 +6,7 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
-// This image combines multiple indexable images along with functions that effectively make those images boolean.
+// This image combines multiple indexable images along with functions that make those images boolean.
 // The final image is effectively the sum of those other boolean images.
 class BooleanIndexableImage {
     let width: Int

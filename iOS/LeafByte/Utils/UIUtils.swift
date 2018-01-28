@@ -9,7 +9,7 @@
 import AVFoundation
 import UIKit
 
-func dismissNavigationController(self viewController: UIViewController) {
+func goHome(self viewController: UIViewController) {
     viewController.navigationController!.dismiss(animated: true)
 }
 

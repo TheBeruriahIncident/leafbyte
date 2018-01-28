@@ -193,6 +193,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     return farthestPointSoFar
 }
 
+// Starting at a point, breadth-first searches around to find a non-white point, bounded in search size by maxPixelsToCheck.
 func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
     let width = image.width
     let height = image.height
