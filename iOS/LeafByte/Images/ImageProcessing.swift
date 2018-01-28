@@ -16,7 +16,7 @@ func getSuggestedThreshold(image: CGImage) -> Float {
 private let NUMBER_OF_HISTOGRAM_BUCKETS = 256
 
 // Turns an image into a histogram of luma, or intensity.
-// The histogram is represented an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
+// The histogram is represented as an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 private func getLumaHistogram(image: CGImage) -> [Int] {
     let pixelData = image.dataProvider!.data!
     var initialVImage = vImage_Buffer(

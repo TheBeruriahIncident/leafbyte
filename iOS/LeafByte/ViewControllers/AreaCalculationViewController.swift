@@ -32,12 +32,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
     
-    // Results.
+    // Track the actual results.
     var formattedPercentConsumed: String!
     var formattedLeafAreaInCm2: String?
     var formattedConsumedAreaInCm2: String?
     
     let imagePicker = UIImagePickerController()
+    
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
     
@@ -107,8 +108,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func share(_ sender: Any) {
+        // If anything has changed, recalculate to prevent accidentally sharing bad data.
+        if calculateButton.isEnabled {
+            calculateArea()
+        }
+        
         let imageToShare = getCombinedImage()
-        let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
+        let dataToShare = [ imageToShare, resultsText.text! + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
         // Exclude activity types that don't make sense here.
@@ -133,8 +139,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
         
         // Record everything before moving on.
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2,
-                  consumedAreaInCm2: formattedConsumedAreaInCm2)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2)
         
         imagePicker.sourceType = sourceType
         
@@ -159,7 +164,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
-        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
         
@@ -183,7 +188,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
         
         // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
@@ -218,7 +223,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             return
         }
         
-        let candidatePoint = (touches.first?.location(in: userDrawingView))!
+        let candidatePoint = touches.first!.location(in: userDrawingView)
         // "Drawing" outside the image doesn't count.
         if !isDrawingPointInBaseImage(candidatePoint) {
             return
@@ -294,7 +299,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
         // TODO: this is hacking around the gaps due to rounding. remove
-        drawingManager.getContext().setLineWidth(2)
+        drawingManager.context.setLineWidth(CGFloat(1 / userDrawingToBaseImage.scale))
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
@@ -350,9 +355,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
         let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
-        drawingManager.getContext().setStrokeColor(lightGreen.cgColor)
+        drawingManager.context.setStrokeColor(lightGreen.cgColor)
         // Prevents space between lines when rounding skew causes a line to be skipped.
-        drawingManager.getContext().setLineWidth(CGFloat(userDrawingProjection.yScale))
+        drawingManager.context.setLineWidth(CGFloat(userDrawingProjection.scale))
         
         var consumedAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {

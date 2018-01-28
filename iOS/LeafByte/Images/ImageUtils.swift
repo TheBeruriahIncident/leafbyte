@@ -143,8 +143,8 @@ private func getRectForImage(inView view: UIImageView) -> CGRect {
     return CGRect(
         x: CGFloat(projection.xOffset),
         y: CGFloat(projection.yOffset),
-        width: view.image!.size.width * CGFloat(projection.xScale),
-        height: view.image!.size.height * CGFloat(projection.yScale))
+        width: view.image!.size.width * CGFloat(projection.scale),
+        height: view.image!.size.height * CGFloat(projection.scale))
 }
 
 // Find the point farthest away from a point within a connected component.
@@ -193,6 +193,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     return farthestPointSoFar
 }
 
+// Starting at a point, breadth-first searches around to find a non-white point, bounded in search size by maxPixelsToCheck.
 func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
     let width = image.width
     let height = image.height

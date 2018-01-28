@@ -10,13 +10,15 @@ import GoogleSignIn
 
 // This pretends to be a view controller, because the delegate has a runtime requirement of being a view controller.
 class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
+    // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
+    static let googleSignInManager = GoogleSignInManager()
     
-    var actionWithAccessToken: ((_ accessToken: String) -> Void)!
+    var actionWithAccessToken: ((_ accessToken: String, _ userId: String) -> Void)!
+    var actionWithError: ((_ error: Error) -> Void)!
     
-    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
-        let googleSignInManager = GoogleSignInManager()
+    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String, _ userId: String) -> Void, actionWithError: @escaping (_ error: Error) -> Void) {
         googleSignInManager.actionWithAccessToken = actionWithAccessToken
-        
+        googleSignInManager.actionWithError = actionWithError
         googleSignInManager.initiateSignIn()
     }
     
@@ -37,12 +39,11 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     
     // Called automatically when sign-in is complete.
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        // TODO: how to get errors out!??
-        if error != nil {
-            fatalError(String(describing: error!))
+        if error == nil {
+            actionWithAccessToken(user.authentication.accessToken!, user.userID)
+        } else {
+            actionWithError(error)
         }
-        
-        actionWithAccessToken(user.authentication.accessToken!)
         return
     }
 }

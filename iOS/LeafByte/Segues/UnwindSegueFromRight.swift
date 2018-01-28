@@ -8,6 +8,7 @@
 
 import UIKit
 
+// This allows views to transition by sliding the top view to the right off of the below view.
 class UnwindSegueFromRight: UIStoryboardSegue {
     // MARK: UIStoryboardSegue overrides
     

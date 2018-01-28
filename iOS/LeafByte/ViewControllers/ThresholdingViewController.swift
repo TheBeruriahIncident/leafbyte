@@ -12,12 +12,15 @@ import UIKit
 class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Fields
     
-    // Both of these are passed from the main menu view.
+    // These are passed from the main menu view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: CGImage!
     
     let filter = ThresholdingFilter()
+    
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
     
     var ciImageThresholded: CIImage?
     
@@ -28,7 +31,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
-    
+    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var sampleNumberLabel: UILabel!
     
     // MARK: - Actions
@@ -61,16 +64,25 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
         
-        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Guess a good threshold to start at; the user can adjust with the slider later.
-        let suggestedThreshold = getSuggestedThreshold(image: image)
-        thresholdSlider.value = 1 - suggestedThreshold
-        setThreshold(suggestedThreshold)
+        super.viewDidAppear(animated)
+        
+        if !viewDidAppearHasRun {
+            // Guess a good threshold to start at; the user can adjust with the slider later.
+            let suggestedThreshold = getSuggestedThreshold(image: image)
+            thresholdSlider.value = 1 - suggestedThreshold
+            setThreshold(suggestedThreshold)
+            
+            thresholdSlider.isEnabled = true
+            completeButton.isEnabled = true
+            
+            viewDidAppearHasRun = true
+        }
     }
-
+    
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
@@ -82,11 +94,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             
             destination.settings = settings
             destination.sourceType = sourceType
-            if ciImageThresholded != nil {
-                destination.cgImage = ciToCgImage(ciImageThresholded!)
-            } else {
-                destination.cgImage = uiToCgImage(baseImageView.image!)
-            }
+            destination.cgImage = ciToCgImage(ciImageThresholded!)
             destination.uiImage = baseImageView.image
             
             setBackButton(self: self)

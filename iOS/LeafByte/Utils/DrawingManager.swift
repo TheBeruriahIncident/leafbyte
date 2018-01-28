@@ -9,11 +9,13 @@
 import CoreGraphics
 import UIKit
 
+// This class manages drawing on a CGContext.
 class DrawingManager {
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
     
-    private let context: CGContext
+    let context: CGContext
+    
     private let projection: Projection
     
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection = Projection.identity) {
@@ -27,10 +29,6 @@ class DrawingManager {
         context.setShouldAntialias(false)
         
         self.projection = Projection(fromProjection: baseProjection, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
-    }
-    
-    func getContext() -> CGContext {
-        return context
     }
     
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {

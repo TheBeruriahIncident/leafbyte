@@ -14,9 +14,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
-    @IBOutlet weak var imageSaveLocation: UISegmentedControl!
     @IBOutlet weak var datasetName: UITextField!
+    @IBOutlet weak var imageSaveLocation: UISegmentedControl!
+    @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
@@ -29,38 +29,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Actions
     
-    @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
-        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
-        
-        settings.measurementSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
-    }
-    
-    @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
-        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
-        maybeDoSignIn(newSaveLocation: newSaveLocation)
-        
-        settings.imageSaveLocation = newSaveLocation
-        settings.serialize()
-        
-        updateEnabledness()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
-    }
-    
     @IBAction func datasetNameChanged(_ sender: UITextField) {
-        // If the value hasn't changed, return early to avoid unnecessarily resetting the sample number.
-        if settings.datasetName == sender.text! {
-                return
-        }
-        
         // Fall back to the default if the box is empty.
         var newDatasetName: String!
         if sender.text!.isEmpty {
@@ -73,10 +42,61 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
         
         settings.datasetName = newDatasetName
-        settings.nextSampleNumber = 1
+        // Switch to the next sample number associated with this dataset.
+        nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
         settings.serialize()
+    }
+    
+    @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
+        dismissKeyboard()
         
-        nextSampleNumber.text = String(Settings.defaultNextSampleNumber)
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        let persistChange = {
+            self.settings.imageSaveLocation = newSaveLocation
+            self.settings.serialize()
+            
+            self.updateEnabledness()
+        }
+        
+        if newSaveLocation == .googleDrive {
+            GoogleSignInManager.initiateSignIn(
+                actionWithAccessToken: { (_, _) in
+                    persistChange()
+                },
+                actionWithError: { _ in
+                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                    self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.imageSaveLocation)
+                    self.presentFailedGoogleSignInAlert()
+                })
+        } else {
+            persistChange()
+        }
+    }
+    
+    @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
+        dismissKeyboard()
+        
+        let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
+        let persistChange = {
+            self.settings.measurementSaveLocation = newSaveLocation
+            self.settings.serialize()
+            
+            self.updateEnabledness()
+        }
+        
+        if newSaveLocation == .googleDrive {
+            GoogleSignInManager.initiateSignIn(
+                actionWithAccessToken: { _, _ in 
+                    persistChange()
+            },
+                actionWithError: { _ in
+                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                    self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
+                    self.presentFailedGoogleSignInAlert()
+            })
+        } else {
+            persistChange()
+        }
     }
     
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
@@ -91,16 +111,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             newNextSampleNumber = Int(sender.text!)
         }
         
-        settings.nextSampleNumber = newNextSampleNumber
+        settings.datasetNameToNextSampleNumber[settings.datasetName] = newNextSampleNumber
         settings.serialize()
     }
     
     @IBAction func saveGpsChanged(_ sender: UISwitch) {
+        dismissKeyboard()
+        
         settings.saveGpsData = sender.isOn
         settings.serialize()
-        
-        // Dismiss the keyboard if it's open.
-        self.view.endEditing(true)
     }
     
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
@@ -121,11 +140,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func signOutOfGoogle(_ sender: Any) {
         if settings.measurementSaveLocation == .googleDrive {
-            settings.measurementSaveLocation = .none
+            settings.measurementSaveLocation = .local
             measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
         }
         if settings.imageSaveLocation == .googleDrive {
-            settings.imageSaveLocation = .none
+            settings.imageSaveLocation = .local
             imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
         }
         settings.serialize()
@@ -145,10 +164,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
-        imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
         datasetName.text = settings.datasetName
-        nextSampleNumber.text = String(settings.nextSampleNumber)
+        imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
+        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
+        nextSampleNumber.text = String(settings.getNextSampleNumber())
         saveGps.setOn(settings.saveGpsData, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
         
@@ -162,18 +181,22 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // If a user taps outside of the keyboard, close the keyboard.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        dismissKeyboard()
     }
     
     // MARK: - UITextFieldDelegate overrides
     
     // Called when return is pressed on the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        dismissKeyboard()
         return true
     }
     
     // MARK: - Helpers
+    
+    private func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
     
     private func indexToSaveLocation(_ index: Int) -> Settings.SaveLocation {
         switch index {
@@ -213,12 +236,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
     }
     
-    // Sign in to Google if necessary.
-    private func maybeDoSignIn(newSaveLocation: Settings.SaveLocation) {
-        if newSaveLocation != .googleDrive {
-            return
-        }
-        
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
+    private func presentFailedGoogleSignInAlert() {
+        presentAlert(self: self, title: nil, message: "Google sign-in is required for saving to Google Drive")
     }
 }

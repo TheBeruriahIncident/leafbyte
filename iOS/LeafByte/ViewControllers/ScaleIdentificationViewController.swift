@@ -18,6 +18,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     var cgImage: CGImage!
     var uiImage: UIImage!
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
+    
     // The current mode can be scrolling or identifying.
     var inScrollingMode = true
     
@@ -38,6 +41,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var clearScaleButton: UIButton!
+    @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
@@ -72,13 +76,21 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
-        sampleNumberLabel.text = "Sample \(settings.nextSampleNumber)"
+        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        findScaleMark()
+        super.viewDidAppear(animated)
+        
+        if !viewDidAppearHasRun {
+            findScaleMark()
+            
+            modeToggleButton.isEnabled = true
+            clearScaleButton.isEnabled = true
+            completeButton.isEnabled = true
+        }
     }
     
     // This is called before transitioning from this view to another view.
@@ -114,7 +126,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             return
         }
 
-        let candidatePoint = (touches.first?.location(in: baseImageView))!
+        let candidatePoint = touches.first!.location(in: baseImageView)
         let projectedPoint = baseImageViewToImage.project(point: candidatePoint)
         // Touches outside the image don't matter.
         if !baseImageRect.contains(projectedPoint) {
@@ -125,8 +137,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         // Touches in white don't matter.
         let nonWhitePixel = searchForNonWhite(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
         if nonWhitePixel == nil {
-            scaleMarkPixelLength = nil
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             setScrollingMode(true)
             return
         }
@@ -165,7 +176,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // If we have less than two, we don't have a scale mark.
         if occupiedLabelsAndSizes.count < 2 {
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             return
         }
         
@@ -188,7 +199,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
         // If the scale mark is too short, it's probably just noise in the image.
         if candidateScaleMarkPixelLength < minimumLength {
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             return
         }
         
@@ -197,8 +208,14 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
-        drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
         drawingManager.finish(imageView: scaleMarkingView)
+    }
+    
+    private func setScaleNotFound() {
+        resultsText.text = "Scale not found"
+        scaleMarkingView.image = nil
     }
 }

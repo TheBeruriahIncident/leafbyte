@@ -17,9 +17,16 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let imagePicker = UIImagePickerController()
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    var viewDidAppearHasRun = false
+    
     // Both of these are set while picking an image and are passed forward to the next view.
     var sourceType: UIImagePickerControllerSourceType?
     var selectedImage: CGImage?
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var savingSummary: UILabel!
     
     // MARK: - Actions
     
@@ -45,10 +52,18 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         settings = Settings.deserialize()
-        
         setupImagePicker(imagePicker: imagePicker, self: self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        maybeDoSignIn()
+        if !viewDidAppearHasRun {
+            maybeDoGoogleSignIn()
+            viewDidAppearHasRun = true
+        }
+        
+        setSavingSummary()
     }
     
     // This is called before transitioning from this view to another view.
@@ -59,7 +74,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
             guard let destination = navigationController.topViewController as? ThresholdingViewController else {
-                fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(navigationController.topViewController!)")
+                fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: navigationController.topViewController))")
             }
             
             destination.settings = settings
@@ -72,7 +87,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
             guard let destination = navigationController.topViewController as? SettingsViewController else {
-                fatalError("Expected the view inside the navigation controller to be the settings view but is  \(navigationController.topViewController!)")
+                fatalError("Expected the view inside the navigation controller to be the settings view but is  \(String(describing: navigationController.topViewController))")
             }
             
             destination.settings = settings
@@ -81,7 +96,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
         
         // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
@@ -107,11 +122,76 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     // Sign in to Google if necessary.
-    private func maybeDoSignIn() {
+    private func maybeDoGoogleSignIn() {
         if settings.measurementSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
             return
         }
         
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { print($0) })
+        GoogleSignInManager.initiateSignIn(
+            actionWithAccessToken: { _, _ in () },
+            actionWithError: { _ in
+                if self.settings.measurementSaveLocation == .googleDrive {
+                    self.settings.measurementSaveLocation = .local
+                }
+                if self.settings.imageSaveLocation == .googleDrive {
+                    self.settings.imageSaveLocation = .local
+                }
+                self.settings.serialize()
+                
+                presentAlert(self: self, title: nil, message: "Cannot save to Google Drive without Google sign-in")
+            })
+    }
+    
+    private func setSavingSummary() {
+        let measurementSaveLocation = settings.measurementSaveLocation
+        let imageSaveLocation = settings.imageSaveLocation
+        
+        var savedMessage: String!
+        if measurementSaveLocation != .none || imageSaveLocation != .none {
+            var savedMessageStart: String!
+            if measurementSaveLocation == imageSaveLocation {
+                savedMessageStart = "Saving data and images to \(saveLocationToName(measurementSaveLocation))"
+            } else {
+                let dataSavedMessage = measurementSaveLocation != .none ? "data to \(saveLocationToName(measurementSaveLocation))" : ""
+                let imageSavedMessage = imageSaveLocation != .none ? "images to \(saveLocationToName(imageSaveLocation))" : ""
+                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? " and " : ""
+                
+                savedMessageStart = "Saving \(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
+            }
+            
+            savedMessage = "\(savedMessageStart!) under the name \(settings.datasetName)."
+        } else {
+            savedMessage = ""
+        }
+        
+        var notSavedMessage: String!
+        if measurementSaveLocation == .none || imageSaveLocation == .none {
+            var notSavedMessageElements: String!
+            if measurementSaveLocation == .none && imageSaveLocation == .none {
+                notSavedMessageElements = "Data and images"
+            } else if measurementSaveLocation == .none {
+                notSavedMessageElements = "Data"
+            } else {
+                notSavedMessageElements = "Images"
+            }
+            
+            notSavedMessage = "\(notSavedMessageElements!) are not being saved."
+        } else {
+            notSavedMessage = ""
+        }
+        
+        savingSummary.numberOfLines = 0
+        savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
+    }
+    
+    private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
+        switch saveLocation {
+        case .none:
+            return "none"
+        case .local:
+            return "the Files App"
+        case .googleDrive:
+            return "Google Drive"
+        }
     }
 }

@@ -13,20 +13,6 @@ let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Consum
 let csvHeader = stringRowToCsvRow(header)
 
 func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?) {
-    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2)
-    // TODO: this is a truly awful hack around the race condition of these different promises resolving. once done prototyping, FIX
-    sleep(2)
-    serializeImage(settings: settings, image: image)
-    
-    settings.nextSampleNumber += 1
-    settings.serialize()
-}
-
-private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?) {
-    if settings.measurementSaveLocation == .none {
-        return
-    }
-    
     // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
@@ -35,8 +21,22 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     formatter.dateFormat = "HH:mm:ss"
     let formattedTime = formatter.string(from: date)
     
+    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime)
+    // TODO: this is a truly awful hack around the race condition of these different promises resolving. once done prototyping, FIX
+    sleep(2)
+    serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime)
+    
+    settings.incrementNextSampleNumber()
+    settings.serialize()
+}
+
+private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String) {
+    if settings.measurementSaveLocation == .none {
+        return
+    }
+    
     // Form a row useful for any spreadsheet-like format.
-    let row = [ formattedDate, formattedTime, String(settings.nextSampleNumber), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
+    let row = [ date, time, String(settings.getNextSampleNumber()), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
     
     switch settings.measurementSaveLocation {
     case .local:
@@ -49,25 +49,25 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         appendToFile(url, data: csvRow)
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
             getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
                     appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
                 })
             })
-        })
+        }, actionWithError: { _ in () })
 
     default:
         break
     }
 }
 
-private func serializeImage(settings: Settings, image: UIImage) {
+private func serializeImage(settings: Settings, image: UIImage, date: String, time: String) {
     if settings.imageSaveLocation == .none {
         return
     }
     
-    let filename = "\(settings.datasetName)-\(settings.nextSampleNumber).png"
+    let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(date) \(time).png"
     let pngImage = UIImagePNGRepresentation(image)!
     
     switch settings.imageSaveLocation {
@@ -76,11 +76,11 @@ private func serializeImage(settings: Settings, image: UIImage) {
         try! pngImage.write(to: url)
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: {accessToken in
+        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
             getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
                 uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
             })
-        })
+        }, actionWithError: { _ in () })
     
     default:
         break

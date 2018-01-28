@@ -12,10 +12,9 @@ import UIKit
 // Represents a projection from one space to another ( https://en.wikipedia.org/wiki/Projection_(mathematics) ).
 // For example, finding the matching pixel in two different spaces that have different dimensions.
 class Projection {
-    static let identity = Projection(xScale: 1, yScale: 1, xOffset: 0, yOffset: 0)
+    static let identity = Projection(scale: 1, xOffset: 0, yOffset: 0)
     
-    let xScale: Double
-    let yScale: Double
+    let scale: Double
     let xOffset: Double
     let yOffset: Double
     
@@ -28,30 +27,26 @@ class Projection {
         let scalingRatioForHeight = viewSize.height / imageSize.height
         let scalingRatio = min(scalingRatioForWidth, scalingRatioForHeight)
         
-        xScale = Double(scalingRatio)
-        yScale = Double(scalingRatio)
+        scale = Double(scalingRatio)
         
         xOffset = Double(viewSize.width - imageSize.width * scalingRatio) / 2
         yOffset = Double(viewSize.height - imageSize.height * scalingRatio) / 2
     }
     
     init(invertProjection baseProjection: Projection) {
-        xScale = 1 / baseProjection.xScale
-        yScale = 1 / baseProjection.yScale
-        xOffset = -baseProjection.xOffset / baseProjection.xScale
-        yOffset = -baseProjection.yOffset / baseProjection.yScale
+        scale = 1 / baseProjection.scale
+        xOffset = -baseProjection.xOffset / baseProjection.scale
+        yOffset = -baseProjection.yOffset / baseProjection.scale
     }
     
     init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Double = 0, withExtraYOffset extraYOffset: Double = 0) {
-        xScale = baseProjection.xScale
-        yScale = baseProjection.yScale
+        scale = baseProjection.scale
         xOffset = baseProjection.xOffset + extraXOffset
         yOffset = baseProjection.yOffset + extraYOffset
     }
     
-    init(xScale: Double, yScale: Double, xOffset: Double, yOffset: Double) {
-        self.xScale = xScale
-        self.yScale = yScale
+    init(scale: Double, xOffset: Double, yOffset: Double) {
+        self.scale = scale
         self.xOffset = xOffset
         self.yOffset = yOffset
     }
@@ -72,8 +67,8 @@ class Projection {
     }
     
     func project(x: Double, y: Double) -> (Double, Double) {
-        let projectedX = x * xScale + xOffset
-        let projectedY = y * yScale + yOffset
+        let projectedX = x * scale + xOffset
+        let projectedY = y * scale + yOffset
         return (projectedX, projectedY)
     }
 }
