@@ -32,12 +32,13 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
     
-    // Results.
+    // Track the actual results.
     var formattedPercentConsumed: String!
     var formattedLeafAreaInCm2: String?
     var formattedConsumedAreaInCm2: String?
     
     let imagePicker = UIImagePickerController()
+    
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
     
@@ -103,12 +104,17 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func goHome(_ sender: Any) {
-        goHome(self: self)
+        dismissNavigationController(self: self)
     }
     
     @IBAction func share(_ sender: Any) {
+        // If anything has changed, recalculate to prevent accidentally sharing bad data.
+        if calculateButton.isEnabled {
+            calculateArea()
+        }
+        
         let imageToShare = getCombinedImage()
-        let dataToShare = [ imageToShare, (resultsText.text ?? "") + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
+        let dataToShare = [ imageToShare, resultsText.text! + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
         // Exclude activity types that don't make sense here.
@@ -133,8 +139,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
         
         // Record everything before moving on.
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2,
-                  consumedAreaInCm2: formattedConsumedAreaInCm2)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2)
         
         imagePicker.sourceType = sourceType
         
@@ -218,7 +223,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             return
         }
         
-        let candidatePoint = (touches.first?.location(in: userDrawingView))!
+        let candidatePoint = touches.first!.location(in: userDrawingView)
         // "Drawing" outside the image doesn't count.
         if !isDrawingPointInBaseImage(candidatePoint) {
             return

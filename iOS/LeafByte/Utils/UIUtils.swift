@@ -9,7 +9,8 @@
 import AVFoundation
 import UIKit
 
-func goHome(self viewController: UIViewController) {
+// Dismisses the current navigation controller, showing what is beneath.
+func dismissNavigationController(self viewController: UIViewController) {
     viewController.navigationController!.dismiss(animated: true)
 }
 
