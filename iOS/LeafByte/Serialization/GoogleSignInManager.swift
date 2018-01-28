@@ -10,13 +10,13 @@ import GoogleSignIn
 
 // This pretends to be a view controller, because the delegate has a runtime requirement of being a view controller.
 class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
+    // This is a static variable so that it doesn't get garbage collected before the callback.
+    static let googleSignInManager = GoogleSignInManager()
     
     var actionWithAccessToken: ((_ accessToken: String) -> Void)!
     
     static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String) -> Void) {
-        let googleSignInManager = GoogleSignInManager()
         googleSignInManager.actionWithAccessToken = actionWithAccessToken
-        
         googleSignInManager.initiateSignIn()
     }
     
