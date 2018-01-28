@@ -137,8 +137,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         // Touches in white don't matter.
         let nonWhitePixel = searchForNonWhite(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
         if nonWhitePixel == nil {
-            scaleMarkPixelLength = nil
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             setScrollingMode(true)
             return
         }
@@ -177,7 +176,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // If we have less than two, we don't have a scale mark.
         if occupiedLabelsAndSizes.count < 2 {
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             return
         }
         
@@ -200,7 +199,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
         // If the scale mark is too short, it's probably just noise in the image.
         if candidateScaleMarkPixelLength < minimumLength {
-            resultsText.text = "Scale not found"
+            setScaleNotFound()
             return
         }
         
@@ -209,8 +208,14 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         
         // Draw a line where we think the scale mark is.
         let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        drawingManager.getContext().setLineWidth(2)
         drawingManager.getContext().setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
         drawingManager.finish(imageView: scaleMarkingView)
+    }
+    
+    private func setScaleNotFound() {
+        resultsText.text = "Scale not found"
+        scaleMarkingView.image = nil
     }
 }
