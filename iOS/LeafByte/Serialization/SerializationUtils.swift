@@ -12,7 +12,8 @@ import UIKit
 let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed" ]
 let csvHeader = stringRowToCsvRow(header)
 
-func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?) {
+// This is the top-level serialize function.
+func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
@@ -21,17 +22,20 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     formatter.dateFormat = "HH:mm:ss"
     let formattedTime = formatter.string(from: date)
     
-    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime)
-    // TODO: this is a truly awful hack around the race condition of these different promises resolving. once done prototyping, FIX
-    sleep(2)
-    serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime)
-    
-    settings.incrementNextSampleNumber()
-    settings.serialize()
+    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime, onSuccess: {
+        serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
+            settings.incrementNextSampleNumber()
+            settings.serialize()
+            
+            onSuccess()
+        }, onFailure: onFailure)
+    }, onFailure: onFailure)
 }
 
-private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String) {
+// This serializes just the measurement.
+private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.measurementSaveLocation == .none {
+        onSuccess()
         return
     }
     
@@ -48,26 +52,30 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         let csvRow = stringRowToCsvRow(row)
         appendToFile(url, data: csvRow)
         
+        onSuccess()
+        
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
-                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
-                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken)
-                })
-            })
-        }, actionWithError: { _ in () })
+        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, _ in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { folderId in
+                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
+                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
+                }, onFailure: onFailure)
+            }, onFailure: onFailure)
+        }, onError: { _ in () })
 
     default:
-        break
+        fatalError("\(settings.measurementSaveLocation) not handled in switch")
     }
 }
 
-private func serializeImage(settings: Settings, image: UIImage, date: String, time: String) {
+// This serializes just the image.
+private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.imageSaveLocation == .none {
+        onSuccess()
         return
     }
     
-    let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(date) \(time).png"
+    let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(date) \(time)).png"
     let pngImage = UIImagePNGRepresentation(image)!
     
     switch settings.imageSaveLocation {
@@ -75,15 +83,17 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
         try! pngImage.write(to: url)
         
+        onSuccess()
+        
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(actionWithAccessToken: { accessToken, _ in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { folderId in
-                uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken)
-            })
-        }, actionWithError: { _ in () })
+        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, _ in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { folderId in
+                uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
+            }, onFailure: onFailure)
+        }, onError: { _ in onFailure() })
     
     default:
-        break
+        fatalError("\(settings.imageSaveLocation) not handled in switch")
     }
 }
 
@@ -91,47 +101,50 @@ private func stringRowToCsvRow(_ row: [String]) -> Data {
     return (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
 }
 
-private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+// Get the folder id for the top-level LeafByte folder containing all datasets.
+private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     if settings.topLevelGoogleFolderId != nil {
-        actionWithFolderId(settings.topLevelGoogleFolderId!)
+        onFolderId(settings.topLevelGoogleFolderId!)
     } else {
-        createFolder(name: "LeafByte", accessToken: accessToken, actionWithFolderId: { folderId in
+        createFolder(name: "LeafByte", accessToken: accessToken, onFolderId: { folderId in
             settings.topLevelGoogleFolderId = folderId
             settings.serialize()
             
-            actionWithFolderId(folderId)
-        })
+            onFolderId(folderId)
+        }, onFailure: onFailure)
     }
 }
 
-private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, actionWithFolderId: @escaping (String) -> Void) {
+// Get the folder id for the current dataset. It'll hold both the sheet and the images.
+private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     let existingFolderId = settings.datasetNameToGoogleFolderId[settings.datasetName]
     if existingFolderId != nil {
-        actionWithFolderId(existingFolderId!)
+        onFolderId(existingFolderId!)
     } else {
-        getTopLevelGoogleFolderId(settings: settings, accessToken: accessToken, actionWithFolderId: { topLevelFolderId in
-            createFolder(name: settings.datasetName, folderId: topLevelFolderId, accessToken: accessToken, actionWithFolderId: { datasetFolderId in
+        getTopLevelGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { topLevelFolderId in
+            createFolder(name: settings.datasetName, folderId: topLevelFolderId, accessToken: accessToken, onFolderId: { datasetFolderId in
                 settings.datasetNameToGoogleFolderId[settings.datasetName] = datasetFolderId
                 settings.serialize()
                 
-                actionWithFolderId(datasetFolderId)
-            })
-        })
+                onFolderId(datasetFolderId)
+            }, onFailure: onFailure)
+        }, onFailure: onFailure)
     }
 }
 
-private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, actionWithSpreadsheetId: @escaping (String) -> Void) {
+// Get the spreadsheet id for sheet for the the current dataset.
+private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     let existingSpreadsheetId = settings.datasetNameToGoogleSpreadsheetId[settings.datasetName]
     if existingSpreadsheetId != nil {
-        actionWithSpreadsheetId(existingSpreadsheetId!)
+        onSpreadsheetId(existingSpreadsheetId!)
     } else {
-        createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, actionWithSpreadsheetId: { spreadsheetId in
-            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, andThen: {
+        createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
+            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, onSuccess: {
                 settings.datasetNameToGoogleSpreadsheetId[settings.datasetName] = spreadsheetId
                 settings.serialize()
                 
-                actionWithSpreadsheetId(spreadsheetId)
-            })
-        })
+                onSpreadsheetId(spreadsheetId)
+            }, onFailure: onFailure)
+        }, onFailure: onFailure)
     }
 }

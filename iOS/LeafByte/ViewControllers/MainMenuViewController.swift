@@ -128,8 +128,8 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         GoogleSignInManager.initiateSignIn(
-            actionWithAccessToken: { _, _ in () },
-            actionWithError: { _ in
+            onAccessTokenAndUserId: { _, _ in () },
+            onError: { _ in
                 if self.settings.measurementSaveLocation == .googleDrive {
                     self.settings.measurementSaveLocation = .local
                 }
@@ -175,7 +175,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 notSavedMessageElements = "Images"
             }
             
-            notSavedMessage = "\(notSavedMessageElements!) are not being saved."
+            notSavedMessage = "\(notSavedMessageElements!) are not being saved. Go to Settings to change."
         } else {
             notSavedMessage = ""
         }

@@ -13,12 +13,12 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
     static let googleSignInManager = GoogleSignInManager()
     
-    var actionWithAccessToken: ((_ accessToken: String, _ userId: String) -> Void)!
-    var actionWithError: ((_ error: Error) -> Void)!
+    var onAccessTokenAndUserId: ((_ accessToken: String, _ userId: String) -> Void)!
+    var onError: ((_ error: Error) -> Void)!
     
-    static func initiateSignIn(actionWithAccessToken: @escaping (_ accessToken: String, _ userId: String) -> Void, actionWithError: @escaping (_ error: Error) -> Void) {
-        googleSignInManager.actionWithAccessToken = actionWithAccessToken
-        googleSignInManager.actionWithError = actionWithError
+    static func initiateSignIn(onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void, onError: @escaping (_ error: Error) -> Void) {
+        googleSignInManager.onAccessTokenAndUserId = onAccessTokenAndUserId
+        googleSignInManager.onError = onError
         googleSignInManager.initiateSignIn()
     }
     
@@ -40,9 +40,9 @@ class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     // Called automatically when sign-in is complete.
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if error == nil {
-            actionWithAccessToken(user.authentication.accessToken!, user.userID)
+            onAccessTokenAndUserId(user.authentication.accessToken!, user.userID)
         } else {
-            actionWithError(error)
+            onError(error)
         }
         return
     }
