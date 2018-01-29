@@ -54,6 +54,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var calculateButton: UIButton!
+    @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
@@ -134,6 +135,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     @IBAction func nextImage(_ sender: Any) {
+        // Disable to prevent double serializing.
+        completeButton.isEnabled = false
+        
         // If anything has changed, recalculate to prevent accidentally recording bad data.
         if calculateButton.isEnabled {
             calculateButton.isEnabled = false
@@ -419,7 +423,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = {
             let alertController = UIAlertController(title: nil, message: "Could not save to Google Drive.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { _ in
+                self.completeButton.isEnabled = true
+            })
             let switchToLocalAction = UIAlertAction(title: "Switch to Files App", style: .default, handler: { _ in
                 if self.settings.measurementSaveLocation == .googleDrive {
                     self.settings.measurementSaveLocation = .local

@@ -340,6 +340,7 @@
                     <connections>
                         <outlet property="baseImageView" destination="Nfp-9O-9PC" id="Zag-II-zD0"/>
                         <outlet property="calculateButton" destination="M4l-IF-yMI" id="zVT-d5-vro"/>
+                        <outlet property="completeButton" destination="Id9-ad-Z94" id="DT3-vr-EXL"/>
                         <outlet property="gestureRecognizingView" destination="XUO-j6-TH2" id="qHj-7I-taA"/>
                         <outlet property="leafHolesView" destination="EYm-Xs-kTB" id="BDb-eN-feS"/>
                         <outlet property="modeToggleButton" destination="zKJ-Ch-T7e" id="lUu-UR-g3e"/>
@@ -666,7 +667,6 @@
         <image name="Undo" width="50" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

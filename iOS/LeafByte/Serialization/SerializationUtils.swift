@@ -55,9 +55,9 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         onSuccess()
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, _ in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { folderId in
-                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
+        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
+                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, userId: userId, onSpreadsheetId: { spreadsheetId in
                     appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
                 }, onFailure: onFailure)
             }, onFailure: onFailure)
@@ -86,8 +86,8 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         onSuccess()
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, _ in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { folderId in
+        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
+            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
                 uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
             }, onFailure: onFailure)
         }, onError: { _ in onFailure() })
@@ -102,12 +102,12 @@ private func stringRowToCsvRow(_ row: [String]) -> Data {
 }
 
 // Get the folder id for the top-level LeafByte folder containing all datasets.
-private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
-    if settings.topLevelGoogleFolderId != nil {
-        onFolderId(settings.topLevelGoogleFolderId!)
+private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, userId: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+    if let topLevelGoogleFolderId = settings.getTopLevelGoogleFolderId(userId: userId) {
+        onFolderId(topLevelGoogleFolderId)
     } else {
         createFolder(name: "LeafByte", accessToken: accessToken, onFolderId: { folderId in
-            settings.topLevelGoogleFolderId = folderId
+            settings.setTopLevelGoogleFolderId(userId: userId, topLevelGoogleFolderId: folderId)
             settings.serialize()
             
             onFolderId(folderId)
@@ -116,14 +116,13 @@ private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, 
 }
 
 // Get the folder id for the current dataset. It'll hold both the sheet and the images.
-private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
-    let existingFolderId = settings.datasetNameToGoogleFolderId[settings.datasetName]
-    if existingFolderId != nil {
-        onFolderId(existingFolderId!)
+private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, userId: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+    if let googleFolderId = settings.getGoogleFolderId(userId: userId) {
+        onFolderId(googleFolderId)
     } else {
-        getTopLevelGoogleFolderId(settings: settings, accessToken: accessToken, onFolderId: { topLevelFolderId in
+        getTopLevelGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { topLevelFolderId in
             createFolder(name: settings.datasetName, folderId: topLevelFolderId, accessToken: accessToken, onFolderId: { datasetFolderId in
-                settings.datasetNameToGoogleFolderId[settings.datasetName] = datasetFolderId
+                settings.setGoogleFolderId(userId: userId, googleFolderId: datasetFolderId)
                 settings.serialize()
                 
                 onFolderId(datasetFolderId)
@@ -133,14 +132,13 @@ private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, o
 }
 
 // Get the spreadsheet id for sheet for the the current dataset.
-private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
-    let existingSpreadsheetId = settings.datasetNameToGoogleSpreadsheetId[settings.datasetName]
-    if existingSpreadsheetId != nil {
-        onSpreadsheetId(existingSpreadsheetId!)
+private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, userId: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+    if let googleSpreadsheetId = settings.getGoogleSpreadsheetId(userId: userId) {
+        onSpreadsheetId(googleSpreadsheetId)
     } else {
         createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
             appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, onSuccess: {
-                settings.datasetNameToGoogleSpreadsheetId[settings.datasetName] = spreadsheetId
+                settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
                 settings.serialize()
                 
                 onSpreadsheetId(spreadsheetId)

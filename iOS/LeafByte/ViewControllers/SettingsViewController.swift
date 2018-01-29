@@ -153,9 +153,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func resetDriveHistory(_ sender: Any) {
-        settings.topLevelGoogleFolderId = nil
-        settings.datasetNameToGoogleFolderId = [:]
-        settings.datasetNameToGoogleSpreadsheetId = [:]
+        settings.datasetNameToUserIdToGoogleFolderId = [:]
+        settings.datasetNameToUserIdToGoogleSpreadsheetId = [:]
+        settings.userIdToTopLevelGoogleFolderId = [:]
         settings.serialize()
     }
     
