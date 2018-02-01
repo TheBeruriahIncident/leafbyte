@@ -23,6 +23,7 @@
 		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
 		464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */; };
 		4651F0262011896800365F93 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651F0252011896800365F93 /* Settings.swift */; };
+		4652850A201EE176004E8864 /* GpsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46528509201EE176004E8864 /* GpsManager.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */; };
 		468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C075A1FFDD9840015B815 /* SettingsViewController.swift */; };
 		469E3B002012EC8A009C7337 /* SerializationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */; };
@@ -84,6 +85,7 @@
 		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
 		464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleIdentificationViewController.swift; sourceTree = "<group>"; };
 		4651F0252011896800365F93 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		46528509201EE176004E8864 /* GpsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GpsManager.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingFilter.swift; sourceTree = "<group>"; };
 		468C075A1FFDD9840015B815 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationUtils.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				46F10642200133CF000B4B83 /* DrawingManager.swift */,
 				46F1064020012F06000B4B83 /* Extensions.swift */,
+				46528509201EE176004E8864 /* GpsManager.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
 				4630795320181A95005C548F /* Utils.swift */,
 			);
@@ -511,6 +514,7 @@
 				46DB8A861FFE9AA900EF59BE /* ImageConversions.swift in Sources */,
 				464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */,
 				469E3B002012EC8A009C7337 /* SerializationUtils.swift in Sources */,
+				4652850A201EE176004E8864 /* GpsManager.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
 				469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */,
