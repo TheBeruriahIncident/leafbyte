@@ -6,10 +6,11 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 import UIKit
 
-let header = [ "Date", "Time", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed" ]
+let header = [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed" ]
 let csvHeader = stringRowToCsvRow(header)
 
 // This is the top-level serialize function.
@@ -22,25 +23,36 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     formatter.dateFormat = "HH:mm:ss"
     let formattedTime = formatter.string(from: date)
     
-    serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime, onSuccess: {
-        serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
-            settings.incrementNextSampleNumber()
-            settings.serialize()
-            
-            onSuccess()
+    let onLocation = { (location: CLLocation?) in
+        serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime, location: location, onSuccess: {
+            serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
+                settings.incrementNextSampleNumber()
+                settings.serialize()
+                
+                onSuccess()
+            }, onFailure: onFailure)
         }, onFailure: onFailure)
-    }, onFailure: onFailure)
+    }
+    
+    if settings.saveGpsData {
+        GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
+    } else {
+        onLocation(nil)
+    }
 }
 
 // This serializes just the measurement.
-private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String, location: CLLocation?, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.measurementSaveLocation == .none {
         onSuccess()
         return
     }
     
+    let latitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.latitude) : ""
+    let longitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.longitude) : ""
+    
     // Form a row useful for any spreadsheet-like format.
-    let row = [ date, time, String(settings.getNextSampleNumber()), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
+    let row = [ date, time, latitude, longitude, String(settings.getNextSampleNumber()), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed ]
     
     switch settings.measurementSaveLocation {
     case .local:
@@ -145,4 +157,8 @@ private func getGoogleSpreadsheetId(settings: Settings, folderId: String, access
             }, onFailure: onFailure)
         }, onFailure: onFailure)
     }
+}
+
+private func formatDouble(withFiveDecimalPoints double: Double) -> String {
+    return String(format: "%.5f", double)
 }
