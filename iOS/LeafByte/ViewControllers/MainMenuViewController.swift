@@ -159,7 +159,16 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 savedMessageStart = "Saving \(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
             }
             
-            savedMessage = "\(savedMessageStart!) under the name \(settings.datasetName)."
+            // Cap the displayed length of the dataset name.
+            let maxDatasetNameLength = 33
+            var displayDatasetName: String!
+            if settings.datasetName.count > maxDatasetNameLength {
+                displayDatasetName = String(settings.datasetName.prefix(maxDatasetNameLength - 3)) + "..."
+            } else {
+                displayDatasetName = settings.datasetName
+            }
+            
+            savedMessage = "\(savedMessageStart!) under the name \(displayDatasetName!)."
         } else {
             savedMessage = ""
         }
