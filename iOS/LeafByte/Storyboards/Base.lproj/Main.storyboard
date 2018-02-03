@@ -325,7 +325,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
                                 <rect key="frame" x="105" y="613" width="40" height="35"/>
-                                <state key="normal" image="blue redo"/>
+                                <state key="normal" image="Redo"/>
                                 <connections>
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
                                 </connections>
@@ -371,7 +371,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
                                 <rect key="frame" x="16" y="613" width="40" height="35"/>
-                                <state key="normal" image="Blue Undo"/>
+                                <state key="normal" image="Undo"/>
                                 <connections>
                                     <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                 </connections>
@@ -771,13 +771,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Blue Undo" width="40" height="35"/>
         <image name="Camera" width="98" height="94"/>
         <image name="Gallery" width="98" height="98"/>
         <image name="Home" width="40" height="35"/>
         <image name="Leaf" width="256" height="279"/>
+        <image name="Redo" width="40" height="35"/>
         <image name="Share" width="32" height="29"/>
-        <image name="blue redo" width="40" height="35"/>
+        <image name="Undo" width="40" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gAP-T7-MBM"/>
