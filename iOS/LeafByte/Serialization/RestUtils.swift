@@ -18,14 +18,17 @@ func makeRestCall(method: String, url urlString: String, accessToken: String, bo
     
     var request = URLRequest(url: url!)
     request.httpMethod = method
+    request.addValue("application/json", forHTTPHeaderField: "Accept")
     request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
     request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+    request.addValue(String(body.count), forHTTPHeaderField: "Content-Length")
     request.httpBody = body
     
     let session = URLSession(configuration: URLSessionConfiguration.default)
     
     let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
         if error != nil {
+            print("REST error: \(error!)")
             onError(error!)
             return
         }
@@ -34,6 +37,7 @@ func makeRestCall(method: String, url urlString: String, accessToken: String, bo
         
         let statusCode = (response! as! HTTPURLResponse).statusCode
         if statusCode < 200 || statusCode >= 300 {
+            print("Unsuccessful REST response: \(dataJson)")
             onUnsuccessfulResponse(dataJson)
             return
         }

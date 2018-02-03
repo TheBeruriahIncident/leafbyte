@@ -26,22 +26,25 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
         onError: { _ in onFailure() })
 }
 
-// TODO: simplify this with multipart upload
 func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
-    post(url: "https://www.googleapis.com/drive/v2/files",
+    let boundary = "Boundary-\(UUID().uuidString)"
+
+    var body = Data()
+    body.append(Data("--\(boundary)\r\n".utf8))
+    body.append(Data("Content-Type: application/json; charset=UTF-8\r\n\r\n".utf8))
+    body.append(Data("{name: \"\(name)\", parents: [\"\(folderId)\"]}\r\n\r\n".utf8))
+    body.append(Data("--\(boundary)\r\n".utf8))
+    body.append(Data("Content-Type: image/png\r\n\r\n".utf8))
+    body.append(data)
+    body.append(Data("\r\n--\(boundary)--\r\n".utf8))
+    
+    makeRestCall(method: "POST",
+                 url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
         accessToken: accessToken,
-        jsonBody: "{title: \"\(name)\", parents: [{id: \"\(folderId)\"}]}",
-        onSuccessfulResponse: { response in
-            let fileId = response["id"] as! String
-            makeRestCall(method: "PUT",
-                 url: "https://www.googleapis.com/upload/drive/v2/files/\(fileId)?uploadType=media",
-                 accessToken: accessToken,
-                 body: data,
-                 contentType: "image/png",
-                 onSuccessfulResponse: { _ in onSuccess() },
-                 onUnsuccessfulResponse: { _ in onFailure() },
-                 onError: { _ in onFailure() })
-        }, onUnsuccessfulResponse: { _ in onFailure() },
+        body: body,
+        contentType: "multipart/related; boundary=\(boundary)",
+        onSuccessfulResponse: { _ in onSuccess() },
+        onUnsuccessfulResponse: { _ in onFailure() },
         onError: { _ in onFailure() })
 }
 
