@@ -155,13 +155,13 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     let height = image.height
     
     var explored = Set<CGPoint>()
-    var queue = [startingPoint]
+    var queue = Queue()
+    queue.enqueue(startingPoint)
     
     var farthestPointSoFar: CGPoint!
     
     while !queue.isEmpty {
-        // TODO: use a queue where this isn't O(n)
-        let point = queue.removeFirst()
+        let point = queue.dequeue()!
         if explored.contains(point) {
             continue
         }
@@ -171,19 +171,19 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         
         let westPoint = CGPoint(x: x - 1, y: y)
         if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
-            queue.append(westPoint)
+            queue.enqueue(westPoint)
         }
         let eastPoint = CGPoint(x: x + 1, y: y)
         if x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(eastPoint) {
-            queue.append(eastPoint)
+            queue.enqueue(eastPoint)
         }
         let southPoint = CGPoint(x: x, y: y - 1)
         if y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(southPoint) {
-            queue.append(southPoint)
+            queue.enqueue(southPoint)
         }
         let northPoint = CGPoint(x: x, y: y + 1)
         if y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(northPoint) {
-            queue.append(northPoint)
+            queue.enqueue(northPoint)
         }
         
         explored.insert(point)
