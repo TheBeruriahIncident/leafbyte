@@ -120,31 +120,19 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImageOr
     return transform
 }
 
-// Combine a list of images with equivalent frames, cropping to the first image.
+// Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
-    // Size the canvas to the frame (which is assumed to be the same for all).
-    UIGraphicsBeginImageContext(imageViews[0].frame.size)
+    // Size the canvas to the first image (which is assumed to be the same as the rest).
+    UIGraphicsBeginImageContext(imageViews[0].image!.size)
     
-    // Draw each image into the canvas at the same place they appear in their image view.
+    // Draw each image into the canvas.
     for imageView in imageViews {
-        imageView.image!.draw(in: getRectForImage(inView: imageView))
+        imageView.image!.draw(at: CGPoint.zero)
     }
-    
-    // Clip to the area covered by the first image.
-    UIGraphicsGetCurrentContext()?.clip(to: getRectForImage(inView: imageViews[0]))
     
     let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return combinedImage
-}
-
-private func getRectForImage(inView view: UIImageView) -> CGRect {
-    let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: view.image!, toView: view)))
-    return CGRect(
-        x: CGFloat(projection.xOffset),
-        y: CGFloat(projection.yOffset),
-        width: view.image!.size.width * CGFloat(projection.scale),
-        height: view.image!.size.height * CGFloat(projection.scale))
 }
 
 // Find the point farthest away from a point within a connected component.
