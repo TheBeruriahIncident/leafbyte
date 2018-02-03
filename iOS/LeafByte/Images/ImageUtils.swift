@@ -9,8 +9,8 @@
 import UIKit
 
 // Fills an image view with a blank image.
-func initializeImage(view: UIImageView) {
-    UIGraphicsBeginImageContext(view.frame.size)
+func initializeImage(view: UIImageView, size: CGSize) {
+    UIGraphicsBeginImageContext(size)
     view.image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 }
