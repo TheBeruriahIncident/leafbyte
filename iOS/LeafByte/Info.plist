@@ -35,6 +35,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>To take photos for analysis</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To record location</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

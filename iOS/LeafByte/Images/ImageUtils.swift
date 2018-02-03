@@ -9,8 +9,8 @@
 import UIKit
 
 // Fills an image view with a blank image.
-func initializeImage(view: UIImageView) {
-    UIGraphicsBeginImageContext(view.frame.size)
+func initializeImage(view: UIImageView, size: CGSize) {
+    UIGraphicsBeginImageContext(size)
     view.image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 }
@@ -120,31 +120,19 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImageOr
     return transform
 }
 
-// Combine a list of images with equivalent frames, cropping to the first image.
+// Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
-    // Size the canvas to the frame (which is assumed to be the same for all).
-    UIGraphicsBeginImageContext(imageViews[0].frame.size)
+    // Size the canvas to the first image (which is assumed to be the same as the rest).
+    UIGraphicsBeginImageContext(imageViews[0].image!.size)
     
-    // Draw each image into the canvas at the same place they appear in their image view.
+    // Draw each image into the canvas.
     for imageView in imageViews {
-        imageView.image!.draw(in: getRectForImage(inView: imageView))
+        imageView.image!.draw(at: CGPoint.zero)
     }
-    
-    // Clip to the area covered by the first image.
-    UIGraphicsGetCurrentContext()?.clip(to: getRectForImage(inView: imageViews[0]))
     
     let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return combinedImage
-}
-
-private func getRectForImage(inView view: UIImageView) -> CGRect {
-    let projection = Projection(invertProjection: Projection(invertProjection: Projection(fromImageInView: view.image!, toView: view)))
-    return CGRect(
-        x: CGFloat(projection.xOffset),
-        y: CGFloat(projection.yOffset),
-        width: view.image!.size.width * CGFloat(projection.scale),
-        height: view.image!.size.height * CGFloat(projection.scale))
 }
 
 // Find the point farthest away from a point within a connected component.
@@ -155,13 +143,13 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     let height = image.height
     
     var explored = Set<CGPoint>()
-    var queue = [startingPoint]
+    var queue = Queue()
+    queue.enqueue(startingPoint)
     
     var farthestPointSoFar: CGPoint!
     
     while !queue.isEmpty {
-        // TODO: use a queue where this isn't O(n)
-        let point = queue.removeFirst()
+        let point = queue.dequeue()!
         if explored.contains(point) {
             continue
         }
@@ -171,19 +159,19 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         
         let westPoint = CGPoint(x: x - 1, y: y)
         if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
-            queue.append(westPoint)
+            queue.enqueue(westPoint)
         }
         let eastPoint = CGPoint(x: x + 1, y: y)
         if x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(eastPoint) {
-            queue.append(eastPoint)
+            queue.enqueue(eastPoint)
         }
         let southPoint = CGPoint(x: x, y: y - 1)
         if y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(southPoint) {
-            queue.append(southPoint)
+            queue.enqueue(southPoint)
         }
         let northPoint = CGPoint(x: x, y: y + 1)
         if y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(northPoint) {
-            queue.append(northPoint)
+            queue.enqueue(northPoint)
         }
         
         explored.insert(point)

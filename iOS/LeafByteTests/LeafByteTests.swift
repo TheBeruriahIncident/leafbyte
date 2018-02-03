@@ -11,7 +11,7 @@ import XCTest
 
 class LeafByteTests: XCTestCase {
     func testThresholdingFilter() {
-        let image = loadImage(named: "leafWithScale")
+        let image = uiToCgImage(loadImage(named: "leafWithScale"))
         
         var thresholdedImage: CIImage!
         self.measure {
@@ -43,7 +43,6 @@ class LeafByteTests: XCTestCase {
         settings.measurementSaveLocation = .googleDrive
         settings.imageSaveLocation = .googleDrive
         settings.datasetName = "The Tale of Genji"
-        settings.nextSampleNumber = 4
         settings.saveGpsData = true
         
         let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)

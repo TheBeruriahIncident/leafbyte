@@ -10,6 +10,23 @@ import XCTest
 @testable import LeafByte
 
 class DataStructureTests: XCTestCase {
+    func testQueue() {
+        var queue = Queue();
+        let point1 = CGPoint(x: 1, y: 2)
+        let point2 = CGPoint(x: 4, y: 3)
+        
+        XCTAssert(queue.isEmpty)
+        queue.enqueue(point1)
+        XCTAssertFalse(queue.isEmpty)
+        queue.enqueue(point2)
+        XCTAssertFalse(queue.isEmpty)
+        XCTAssertEqual(point1, queue.dequeue())
+        XCTAssertFalse(queue.isEmpty)
+        XCTAssertEqual(point2, queue.dequeue())
+        XCTAssert(queue.isEmpty)
+        XCTAssertEqual(nil, queue.dequeue())
+    }
+    
     func testUnionFind() {
         let unionFind = UnionFind()
         unionFind.createSubsetWith(1)
