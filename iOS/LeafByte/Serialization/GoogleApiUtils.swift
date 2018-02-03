@@ -12,7 +12,6 @@ func createFolder(name: String, folderId: String? = nil, accessToken: String, on
     createFile(name: name, folderId: folderId, type: "folder", accessToken: accessToken, onFileId: onFolderId, onFailure: onFailure)
 }
 
-// TODO: this seemingly in the root for a moment
 func createSheet(name: String, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     createFile(name: name, folderId: folderId, type: "spreadsheet", accessToken: accessToken, onFileId: onSpreadsheetId, onFailure: onFailure)
 }
