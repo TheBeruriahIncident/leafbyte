@@ -72,6 +72,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
 
         baseImageView.contentMode = .scaleAspectFit
         baseImageView.image = uiImage
+        scaleMarkingView.contentMode = .scaleAspectFit
         
         baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -207,7 +208,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         resultsText.text = "Scale found: \(candidateScaleMarkPixelLength) pixels long"
         
         // Draw a line where we think the scale mark is.
-        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.frame.size, withProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
         drawingManager.context.setLineWidth(2)
         drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
