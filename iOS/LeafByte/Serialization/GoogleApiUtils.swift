@@ -38,14 +38,13 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
     body.append(data)
     body.append(Data("\r\n--\(boundary)--\r\n".utf8))
     
-    makeRestCall(method: "POST",
-                 url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-        accessToken: accessToken,
-        body: body,
-        contentType: "multipart/related; boundary=\(boundary)",
-        onSuccessfulResponse: { _ in onSuccess() },
-        onUnsuccessfulResponse: { _ in onFailure() },
-        onError: { _ in onFailure() })
+    post(url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+            accessToken: accessToken,
+            body: body,
+            contentType: "multipart/related; boundary=\(boundary)",
+            onSuccessfulResponse: { _ in onSuccess() },
+            onUnsuccessfulResponse: { _ in onFailure() },
+            onError: { _ in onFailure() })
 }
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {

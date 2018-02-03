@@ -8,12 +8,15 @@
 
 import Foundation
 
-// TODO: need these be separate?
 func post(url: String, accessToken: String, jsonBody: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
-    makeRestCall(method: "POST", url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, contentType: "application/json", onSuccessfulResponse: onSuccessfulResponse, onUnsuccessfulResponse: onUnsuccessfulResponse, onError: onError)
+    post(url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, onSuccessfulResponse: onSuccessfulResponse, onUnsuccessfulResponse: onUnsuccessfulResponse, onError: onError)
 }
 
-func makeRestCall(method: String, url urlString: String, accessToken: String, body: Data, contentType: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
+func post(url: String, accessToken: String, body: Data, contentType: String = "application/json", onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
+    makeRestCall(method: "POST", url: url, accessToken: accessToken, body: body, contentType: contentType, onSuccessfulResponse: onSuccessfulResponse, onUnsuccessfulResponse: onUnsuccessfulResponse, onError: onError)
+}
+
+private func makeRestCall(method: String, url urlString: String, accessToken: String, body: Data, contentType: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
     let url = URL(string: urlString)
     
     var request = URLRequest(url: url!)
