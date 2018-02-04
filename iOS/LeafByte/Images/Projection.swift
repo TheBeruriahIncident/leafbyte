@@ -12,11 +12,10 @@ import UIKit
 // Represents a projection from one space to another ( https://en.wikipedia.org/wiki/Projection_(mathematics) ).
 // For example, finding the matching pixel in two different spaces that have different dimensions.
 class Projection {
-    static let identity = Projection(scale: 1, xOffset: 0, yOffset: 0)
-    
     let scale: Double
     let xOffset: Double
     let yOffset: Double
+    let bounds: CGSize
     
     init(fromView view: UIView, toImageInView image: UIImage) {
         let viewSize = view.frame.size
@@ -31,18 +30,22 @@ class Projection {
         
         xOffset = Double(imageSize.width - viewSize.width * scalingRatio) / 2
         yOffset = Double(imageSize.height - viewSize.height * scalingRatio) / 2
+        
+        bounds = image.size
     }
     
     init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Double = 0, withExtraYOffset extraYOffset: Double = 0) {
         scale = baseProjection.scale
         xOffset = baseProjection.xOffset + extraXOffset
         yOffset = baseProjection.yOffset + extraYOffset
+        bounds = baseProjection.bounds
     }
     
-    init(scale: Double, xOffset: Double, yOffset: Double) {
+    init(scale: Double, xOffset: Double, yOffset: Double, bounds: CGSize) {
         self.scale = scale
         self.xOffset = xOffset
         self.yOffset = yOffset
+        self.bounds = bounds
     }
     
     func project(x: Int, y: Int) -> (Int, Int) {
@@ -61,8 +64,9 @@ class Projection {
     }
     
     func project(x: Double, y: Double) -> (Double, Double) {
-        let projectedX = x * scale + xOffset
-        let projectedY = y * scale + yOffset
+        // Project and constrain inside the bounds.
+        let projectedX = min(max(x * scale + xOffset, 0), Double(bounds.width) - 1)
+        let projectedY = min(max(y * scale + yOffset, 0), Double(bounds.height) - 1)
         return (projectedX, projectedY)
     }
 }

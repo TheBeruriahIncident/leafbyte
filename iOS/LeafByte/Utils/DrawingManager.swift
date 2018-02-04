@@ -21,7 +21,7 @@ class DrawingManager {
     private let projection: Projection
     private let canvasSize: CGSize
     
-    init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection = Projection.identity) {
+    init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection? = nil) {
         self.canvasSize = canvasSize
         UIGraphicsBeginImageContext(canvasSize)
         context = UIGraphicsGetCurrentContext()!
@@ -32,7 +32,11 @@ class DrawingManager {
         context.setAllowsAntialiasing(false)
         context.setShouldAntialias(false)
         
-        self.projection = Projection(fromProjection: baseProjection, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
+        if baseProjection == nil {
+            self.projection = Projection(scale: 1, xOffset: DrawingManager.pixelOffset, yOffset: DrawingManager.pixelOffset, bounds: canvasSize)
+        } else {
+            self.projection = Projection(fromProjection: baseProjection!, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
+        }
     }
     
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
