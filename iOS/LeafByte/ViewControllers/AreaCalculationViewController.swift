@@ -483,7 +483,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             self.present(alertController, animated: true, completion: nil)
         }
         
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func drawScaleMark() {
