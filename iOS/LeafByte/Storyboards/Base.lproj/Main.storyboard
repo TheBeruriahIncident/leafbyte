@@ -10,6 +10,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -166,22 +167,17 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="492"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qTT-Z1-hQg" userLabel="Scale Marking">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="505"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="qTT-Z1-hQg" secondAttribute="trailing" constant="-8" id="1aS-wH-uN6"/>
-                                            <constraint firstItem="qTT-Z1-hQg" firstAttribute="top" secondItem="W7I-Wp-QLc" secondAttribute="top" id="Oy2-83-W6y"/>
-                                            <constraint firstItem="qTT-Z1-hQg" firstAttribute="leading" secondItem="W7I-Wp-QLc" secondAttribute="leadingMargin" constant="-8" id="SUi-N4-qS9"/>
-                                            <constraint firstItem="qTT-Z1-hQg" firstAttribute="bottom" secondItem="Sfh-f1-P2L" secondAttribute="bottom" constant="9" id="edB-MY-YeX"/>
-                                            <constraint firstAttribute="bottom" secondItem="qTT-Z1-hQg" secondAttribute="bottom" constant="-13" id="mQa-AF-Mx7"/>
-                                            <constraint firstItem="qTT-Z1-hQg" firstAttribute="centerX" secondItem="Sfh-f1-P2L" secondAttribute="centerX" id="mVp-uR-iDf"/>
+                                            <constraint firstAttribute="top" secondItem="W7I-Wp-QLc" secondAttribute="top" id="Oy2-83-W6y"/>
+                                            <constraint firstAttribute="leading" secondItem="W7I-Wp-QLc" secondAttribute="leadingMargin" constant="-8" id="SUi-N4-qS9"/>
+                                            <constraint firstAttribute="bottom" secondItem="Sfh-f1-P2L" secondAttribute="bottom" constant="9" id="edB-MY-YeX"/>
+                                            <constraint firstAttribute="centerX" secondItem="Sfh-f1-P2L" secondAttribute="centerX" id="mVp-uR-iDf"/>
                                             <constraint firstItem="Sfh-f1-P2L" firstAttribute="leading" secondItem="W7I-Wp-QLc" secondAttribute="leading" id="u4y-7v-76F"/>
-                                            <constraint firstItem="qTT-Z1-hQg" firstAttribute="top" secondItem="Sfh-f1-P2L" secondAttribute="top" id="vJJ-sl-Rql"/>
+                                            <constraint firstAttribute="top" secondItem="Sfh-f1-P2L" secondAttribute="top" id="vJJ-sl-Rql"/>
                                             <constraint firstAttribute="height" constant="492" id="xyE-fm-lt5"/>
                                         </constraints>
                                     </view>
@@ -195,7 +191,7 @@
                                 </constraints>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kcc-Px-YPY" userLabel="Sample Number Label">
-                                <rect key="frame" x="15" y="80" width="83" height="28"/>
+                                <rect key="frame" x="15" y="80" width="200" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -260,7 +256,6 @@
                         <outlet property="gestureRecognizingView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
                         <outlet property="histogramImageView" destination="U3R-Nq-htd" id="blG-hr-nVp"/>
                         <outlet property="sampleNumberLabel" destination="Kcc-Px-YPY" id="HcB-8C-mBQ"/>
-                        <outlet property="scaleMarkingView" destination="qTT-Z1-hQg" id="XsN-8p-QnS"/>
                         <outlet property="scrollableView" destination="W7I-Wp-QLc" id="Mft-Ax-Z21"/>
                         <outlet property="thresholdSlider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
@@ -707,7 +702,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cf-iP-jgz" userLabel="Sample Number Label">
-                                <rect key="frame" x="15" y="70" width="83" height="28"/>
+                                <rect key="frame" x="15" y="70" width="200" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -777,7 +772,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mka-gV-IFE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2011.5" y="988.5"/>
+            <point key="canvasLocation" x="2010.4000000000001" y="988.15592203898063"/>
         </scene>
     </scenes>
     <resources>

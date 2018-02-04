@@ -180,7 +180,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         initializeImage(view: userDrawingView, size: uiImage.size)
         drawScaleMark()
         
-        userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
@@ -369,8 +369,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
         
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
-        let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
-        drawingManager.context.setStrokeColor(lightGreen.cgColor)
+        drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
         
         var consumedAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {
