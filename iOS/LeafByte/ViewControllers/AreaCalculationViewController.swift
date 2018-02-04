@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.
@@ -62,6 +62,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     @IBOutlet weak var sampleNumberLabel: UILabel!
     @IBOutlet weak var resultsText: UILabel!
+    @IBOutlet weak var notesField: UITextField!
     
     // MARK: - Actions
     
@@ -187,6 +188,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
+        
+        // Setup to get a callback when return is pressed on a keyboard.
+        // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
+        notesField.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -221,9 +226,23 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         return scrollableView
     }
     
+    // If a user interacts outside of the keyboard, close the keyboard.
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        dismissKeyboard()
+    }
+    
+    // If a user interacts outside of the keyboard, close the keyboard.
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        dismissKeyboard()
+    }
+    
     // MARK: - UIResponder overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // If a user taps outside of the keyboard, close the keyboard.
+        // Note that this callback doesn't run when interacting with the scroll view; those cases are handled in the UIScrollViewDelegate overrides above.
+        dismissKeyboard()
+        
         // No drawing in scrolling mode.
         if inScrollingMode {
             return
@@ -295,6 +314,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
         dismissNavigationController(self: self)
+    }
+    
+    // MARK: - UITextFieldDelegate overrides
+    
+    // Called when return is pressed on the keyboard.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dismissKeyboard()
+        return true
     }
     
     // MARK: - Helpers
@@ -484,5 +511,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
         
         drawingManager.finish(imageView: grid)
+    }
+    
+    private func dismissKeyboard() {
+        self.view.endEditing(true)
     }
 }
