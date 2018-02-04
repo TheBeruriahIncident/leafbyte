@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,40 +24,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4JX-mo-AE7" userLabel="LeafByte Title">
-                                <rect key="frame" x="0.0" y="251" width="375" height="57.5"/>
+                            <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4JX-mo-AE7" userLabel="LeafByte Title">
+                                <rect key="frame" x="0.0" y="441" width="375" height="57.5"/>
                                 <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&amp; Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXf-ws-RDr" userLabel="Credits Line 2">
-                                <rect key="frame" x="0.0" y="339.5" width="375" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="By Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRC-ID-7Cc" userLabel="Credits Line 1">
+                                <rect key="frame" x="-6" y="497" width="375" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRC-ID-7Cc" userLabel="Credits Line 1">
-                                <rect key="frame" x="0.0" y="318.5" width="375" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="xcP-gT-E35" userLabel="Leaf Image">
-                                <rect key="frame" x="125.5" y="117" width="124" height="129"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="xcP-gT-E35" userLabel="Leaf Image">
+                                <rect key="frame" x="125" y="314" width="124" height="129"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="124" id="kVT-xe-qXy"/>
                                     <constraint firstAttribute="height" constant="129" id="uvB-iS-u52"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="&amp; Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXf-ws-RDr" userLabel="Credits Line 2">
+                                <rect key="frame" x="0.0" y="574" width="375" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="SXf-ws-RDr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="A2I-Yx-MpN"/>
-                            <constraint firstItem="xcP-gT-E35" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="97" id="MSq-Z1-68Y"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" multiplier="2" constant="30" id="FDH-5Q-ERe"/>
                             <constraint firstItem="ZRC-ID-7Cc" firstAttribute="top" secondItem="4JX-mo-AE7" secondAttribute="bottom" constant="10" id="VsJ-xW-BmP"/>
                             <constraint firstItem="4JX-mo-AE7" firstAttribute="top" secondItem="xcP-gT-E35" secondAttribute="bottom" constant="5" id="YGt-nK-BpD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" id="aCq-ql-lYb"/>
                             <constraint firstItem="4JX-mo-AE7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bEE-E7-6nR"/>
-                            <constraint firstItem="4JX-mo-AE7" firstAttribute="centerX" secondItem="xcP-gT-E35" secondAttribute="centerX" id="eBm-9x-UMs"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" id="evF-c4-Ht0"/>
                             <constraint firstItem="ZRC-ID-7Cc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hHs-OJ-kaa"/>
                             <constraint firstItem="4JX-mo-AE7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ksZ-M8-vPa"/>
                             <constraint firstItem="SXf-ws-RDr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pVs-PE-snA"/>
@@ -72,6 +74,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Leaf" width="256" height="279"/>
+        <image name="Leaf" width="128" height="139"/>
     </resources>
 </document>
