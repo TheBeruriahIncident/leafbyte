@@ -11,6 +11,8 @@ import UIKit
 
 // This class manages drawing on a CGContext.
 class DrawingManager {
+    static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
+    
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
     
@@ -46,6 +48,32 @@ class DrawingManager {
         context.move(to: projectedFromPoint)
         context.addLine(to: projectedToPoint)
         context.strokePath()
+    }
+    
+    func drawStar(atPoint point: CGPoint, withSize size: CGFloat) {
+        let angleBetweenStarPoints = 2 / 5 * CGFloat.pi
+        
+        var starPointAngles = [ -CGFloat.pi / 2 ]
+        for i in 0...3 {
+            starPointAngles.append(starPointAngles[i] + angleBetweenStarPoints)
+        }
+        
+        var starPoints = [CGPoint]()
+        for i in 0...4 {
+            let starPointAngle = starPointAngles[i]
+            starPoints.append(CGPoint(x: point.x + size * cos(starPointAngle), y: point.y + size * sin(starPointAngle)))
+        }
+        
+        let starPath = UIBezierPath()
+        starPath.move(to: starPoints[2])
+        starPath.addLine(to: starPoints[0])
+        starPath.addLine(to: starPoints[3])
+        starPath.addLine(to: starPoints[1])
+        starPath.addLine(to: starPoints[4])
+        starPath.addLine(to: starPoints[2])
+        starPath.close()
+        
+        starPath.fill()
     }
     
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {

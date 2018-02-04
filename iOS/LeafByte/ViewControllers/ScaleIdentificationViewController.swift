@@ -24,6 +24,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // The current mode can be scrolling or identifying.
     var inScrollingMode = true
     
+    var pointOnLeaf: (Int, Int)?
+    
     // This is the number of pixels across the scale mark in the image.
     // It's calculated in this view (if possible) and passed forward.
     var scaleMarkPixelLength: Int?
@@ -61,7 +63,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         scaleMarkPixelLength = nil
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil
-        scaleMarkingView.image = nil
+        drawMarkers()
         resultsText.text = "No scale"
         
         setScrollingMode(true)
@@ -189,8 +191,14 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             return
         }
         
+        let sortedOccupiedLabelsAndSizes = occupiedLabelsAndSizes.sorted { $0.1 > $1.1 }
+        
+        // The leaf is the biggest label.
+        let leafLabel = sortedOccupiedLabelsAndSizes[0].key
+        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabel]!
+        
         // The scale mark is the second biggest label.
-        let scaleMarkLabel = occupiedLabelsAndSizes.sorted { $0.1 > $1.1 }[1].key
+        let scaleMarkLabel = sortedOccupiedLabelsAndSizes[1].key
         
         // Get a point in the scale mark.
         let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
@@ -217,11 +225,27 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         scaleMarkEnd2 = farthestPoint2
         resultsText.text = "Scale found: \(candidateScaleMarkPixelLength) pixels long"
         
-        // Draw a line where we think the scale mark is.
+        drawMarkers()
+    }
+    
+    private func drawMarkers() {
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        drawingManager.drawLine(from: farthestPoint1, to: farthestPoint2)
+        
+        // Draw a line where we think the scale mark is.
+        if scaleMarkPixelLength != nil {
+            drawingManager.context.setLineWidth(2)
+            drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
+        }
+        
+        // Draw an outlined star where we think the leaf is.
+        if pointOnLeaf != nil {
+            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
+            
+            drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
+            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+        }
+        
         drawingManager.finish(imageView: scaleMarkingView)
     }
     
@@ -230,6 +254,6 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         scaleMarkPixelLength = nil
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil
-        scaleMarkingView.image = nil
+        drawMarkers()
     }
 }
