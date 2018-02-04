@@ -10,6 +10,8 @@ import Accelerate
 import UIKit
 
 class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
+    let HISTOGRAM_MAX = 100
+    
     // MARK: - Fields
     
     // These are passed from the main menu view.
@@ -123,13 +125,15 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func drawHistogram(lumaHistogram: [Int]) {
+        let drawingManager = DrawingManager(withCanvasSize: CGSize(width: NUMBER_OF_HISTOGRAM_BUCKETS, height: HISTOGRAM_MAX))
+        
         let maxValue = lumaHistogram.max()!
         
-        let drawingManager = DrawingManager(withCanvasSize: CGSize(width: NUMBER_OF_HISTOGRAM_BUCKETS, height: maxValue))
         for i in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
             let x = NUMBER_OF_HISTOGRAM_BUCKETS - i - 1
+            let height = roundToInt(Double(HISTOGRAM_MAX) * Double(lumaHistogram[i]) / Double(maxValue), rule: .down)
             
-            drawingManager.drawLine(from: CGPoint(x: x, y: maxValue), to: CGPoint(x: x, y: maxValue - lumaHistogram[i]))
+            drawingManager.drawLine(from: CGPoint(x: x, y: HISTOGRAM_MAX), to: CGPoint(x: x, y: HISTOGRAM_MAX - height))
         }
         drawingManager.finish(imageView: histogramImageView)
     }
