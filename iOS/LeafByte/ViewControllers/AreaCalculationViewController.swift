@@ -52,6 +52,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var leafHolesView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     @IBOutlet weak var userDrawingView: UIImageView!
+    @IBOutlet weak var grid: UIImageView!
     
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var undoButton: UIButton!
@@ -186,6 +187,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        initializeGrid()
     }
     
     // This is called before transitioning from this view to another view.
@@ -324,6 +329,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         self.inScrollingMode = inScrollingMode
         
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
+        grid.isHidden = inScrollingMode
         
         if inScrollingMode {
             modeToggleButton.setTitle("Draw", for: .normal)
@@ -463,5 +469,20 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
         drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         drawingManager.finish(imageView: scaleMarkingView)
+    }
+    
+    private func initializeGrid() {
+        let size = 25
+        let drawingManager = DrawingManager(withCanvasSize: grid.frame.size)
+        drawingManager.context.setStrokeColor(gray: 0.5, alpha: 0.4)
+        
+        for y in stride(from: 0, to: roundToInt(grid.frame.height, rule: .down), by: size) {
+            drawingManager.drawLine(from: CGPoint(x: 0, y: y), to: CGPoint(x: grid.frame.width, y: CGFloat(y)))
+        }
+        for x in stride(from: 0, to: roundToInt(grid.frame.width, rule: .down), by: size) {
+            drawingManager.drawLine(from: CGPoint(x: x, y: 0), to: CGPoint(x: CGFloat(x), y: grid.frame.height))
+        }
+        
+        drawingManager.finish(imageView: grid)
     }
 }
