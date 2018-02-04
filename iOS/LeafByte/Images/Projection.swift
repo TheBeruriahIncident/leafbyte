@@ -18,25 +18,19 @@ class Projection {
     let xOffset: Double
     let yOffset: Double
     
-    init(fromImageInView image: UIImage, toView view: UIView ) {
+    init(fromView view: UIView, toImageInView image: UIImage) {
         let viewSize = view.frame.size
         let imageSize = image.size
         
         // Work back to find how the image was scaled into the view.
-        let scalingRatioForWidth = viewSize.width / imageSize.width
-        let scalingRatioForHeight = viewSize.height / imageSize.height
-        let scalingRatio = min(scalingRatioForWidth, scalingRatioForHeight)
+        let scalingRatioForWidth = imageSize.width / viewSize.width
+        let scalingRatioForHeight = imageSize.height / viewSize.height
+        let scalingRatio = max(scalingRatioForWidth, scalingRatioForHeight)
         
         scale = Double(scalingRatio)
         
-        xOffset = Double(viewSize.width - imageSize.width * scalingRatio) / 2
-        yOffset = Double(viewSize.height - imageSize.height * scalingRatio) / 2
-    }
-    
-    init(invertProjection baseProjection: Projection) {
-        scale = 1 / baseProjection.scale
-        xOffset = -baseProjection.xOffset / baseProjection.scale
-        yOffset = -baseProjection.yOffset / baseProjection.scale
+        xOffset = Double(imageSize.width - viewSize.width * scalingRatio) / 2
+        yOffset = Double(imageSize.height - viewSize.height * scalingRatio) / 2
     }
     
     init(fromProjection baseProjection: Projection, withExtraXOffset extraXOffset: Double = 0, withExtraYOffset extraYOffset: Double = 0) {

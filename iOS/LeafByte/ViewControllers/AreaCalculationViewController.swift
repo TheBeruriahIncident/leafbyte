@@ -180,7 +180,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         initializeImage(view: userDrawingView, size: uiImage.size)
         drawScaleMark()
         
-        userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"

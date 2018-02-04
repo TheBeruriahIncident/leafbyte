@@ -80,7 +80,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         baseImageView.image = uiImage
         scaleMarkingView.contentMode = .scaleAspectFit
         
-        baseImageViewToImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
+        baseImageViewToImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
