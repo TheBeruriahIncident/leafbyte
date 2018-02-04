@@ -11,6 +11,8 @@ import UIKit
 
 // This class manages drawing on a CGContext.
 class DrawingManager {
+    static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
+    
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
     
@@ -19,7 +21,7 @@ class DrawingManager {
     private let projection: Projection
     private let canvasSize: CGSize
     
-    init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection = Projection.identity) {
+    init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection? = nil) {
         self.canvasSize = canvasSize
         UIGraphicsBeginImageContext(canvasSize)
         context = UIGraphicsGetCurrentContext()!
@@ -30,7 +32,11 @@ class DrawingManager {
         context.setAllowsAntialiasing(false)
         context.setShouldAntialias(false)
         
-        self.projection = Projection(fromProjection: baseProjection, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
+        if baseProjection == nil {
+            self.projection = Projection(scale: 1, xOffset: DrawingManager.pixelOffset, yOffset: DrawingManager.pixelOffset, bounds: canvasSize)
+        } else {
+            self.projection = Projection(fromProjection: baseProjection!, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
+        }
     }
     
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
@@ -46,6 +52,34 @@ class DrawingManager {
         context.move(to: projectedFromPoint)
         context.addLine(to: projectedToPoint)
         context.strokePath()
+    }
+    
+    func drawStar(atPoint point: CGPoint, withSize size: CGFloat) {
+        let projectedPoint = projection.project(point: point)
+        
+        let angleBetweenStarPoints = 2 / 5 * CGFloat.pi
+        
+        var starPointAngles = [ -CGFloat.pi / 2 ]
+        for i in 0...3 {
+            starPointAngles.append(starPointAngles[i] + angleBetweenStarPoints)
+        }
+        
+        var starPoints = [CGPoint]()
+        for i in 0...4 {
+            let starPointAngle = starPointAngles[i]
+            starPoints.append(CGPoint(x: projectedPoint.x + size * cos(starPointAngle), y: projectedPoint.y + size * sin(starPointAngle)))
+        }
+        
+        let starPath = UIBezierPath()
+        starPath.move(to: starPoints[2])
+        starPath.addLine(to: starPoints[0])
+        starPath.addLine(to: starPoints[3])
+        starPath.addLine(to: starPoints[1])
+        starPath.addLine(to: starPoints[4])
+        starPath.addLine(to: starPoints[2])
+        starPath.close()
+        
+        starPath.fill()
     }
     
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {

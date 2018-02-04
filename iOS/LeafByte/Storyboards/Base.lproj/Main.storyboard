@@ -168,9 +168,6 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qTT-Z1-hQg" userLabel="Scale Marking">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="505"/>
-                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -260,7 +257,6 @@
                         <outlet property="gestureRecognizingView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
                         <outlet property="histogramImageView" destination="U3R-Nq-htd" id="blG-hr-nVp"/>
                         <outlet property="sampleNumberLabel" destination="Kcc-Px-YPY" id="HcB-8C-mBQ"/>
-                        <outlet property="scaleMarkingView" destination="qTT-Z1-hQg" id="XsN-8p-QnS"/>
                         <outlet property="scrollableView" destination="W7I-Wp-QLc" id="Mft-Ax-Z21"/>
                         <outlet property="thresholdSlider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
