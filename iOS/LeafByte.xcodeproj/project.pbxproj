@@ -26,6 +26,7 @@
 		4652850A201EE176004E8864 /* GpsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46528509201EE176004E8864 /* GpsManager.swift */; };
 		4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */; };
 		468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C075A1FFDD9840015B815 /* SettingsViewController.swift */; };
+		468C432120264D8C003FEECC /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C432020264D8C003FEECC /* Queue.swift */; };
 		469E3B002012EC8A009C7337 /* SerializationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */; };
 		469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E3B022013DB4E009C7337 /* FileUtils.swift */; };
 		46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */; };
@@ -67,7 +68,7 @@
 		460F687020140A31002C8BA7 /* GoogleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
 		460F687220145AC5002C8BA7 /* RestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestUtils.swift; sourceTree = "<group>"; };
 		460F687420145E28002C8BA7 /* GoogleApiUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiUtils.swift; sourceTree = "<group>"; };
-		46130550200EEFDC00141B68 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		46130550200EEFDC00141B68 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4621EE371FEB70AD004C3011 /* LeafByte.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafByte.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +89,7 @@
 		46528509201EE176004E8864 /* GpsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GpsManager.swift; sourceTree = "<group>"; };
 		4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingFilter.swift; sourceTree = "<group>"; };
 		468C075A1FFDD9840015B815 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		468C432020264D8C003FEECC /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationUtils.swift; sourceTree = "<group>"; };
 		469E3B022013DB4E009C7337 /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingViewController.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 		46F1063920007ABC000B4B83 /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				468C432020264D8C003FEECC /* Queue.swift */,
 				46F1063A20007D1A000B4B83 /* UnionFind.swift */,
 			);
 			path = "Data Structures";
@@ -519,6 +522,7 @@
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
 				469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */,
 				46F1063B20007D1A000B4B83 /* UnionFind.swift in Sources */,
+				468C432120264D8C003FEECC /* Queue.swift in Sources */,
 				4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */,
 				46DB8A8C1FFEF88200EF59BE /* ImageProcessing.swift in Sources */,
 				46C424BC1FEF688500301F59 /* SegueFromRight.swift in Sources */,

@@ -330,18 +330,18 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qat-PS-tnN">
-                                <rect key="frame" x="5" y="613" width="163" height="35"/>
+                                <rect key="frame" x="5" y="613" width="115" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="35"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="16" height="30"/>
                                         <state key="normal" image="Blue Undo"/>
                                         <connections>
                                             <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
-                                        <rect key="frame" x="40" y="0.0" width="83" height="35"/>
+                                        <rect key="frame" x="16" y="0.0" width="83" height="30"/>
                                         <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                         <state key="normal" title="&lt;autofilled&gt;"/>
                                         <connections>
@@ -349,7 +349,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
-                                        <rect key="frame" x="123" y="0.0" width="40" height="35"/>
+                                        <rect key="frame" x="99" y="0.0" width="16" height="30"/>
                                         <state key="normal" image="blue redo"/>
                                         <connections>
                                             <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
@@ -732,16 +732,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Blue Undo" width="40" height="35"/>
+        <image name="Blue Undo" width="16" height="16"/>
         <image name="Camera" width="98" height="94"/>
         <image name="Gallery" width="98" height="98"/>
         <image name="Home" width="40" height="35"/>
         <image name="Leaf" width="128" height="139"/>
         <image name="Share" width="32" height="29"/>
-        <image name="blue redo" width="40" height="35"/>
+        <image name="blue redo" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

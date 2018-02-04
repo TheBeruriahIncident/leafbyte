@@ -12,7 +12,6 @@ func createFolder(name: String, folderId: String? = nil, accessToken: String, on
     createFile(name: name, folderId: folderId, type: "folder", accessToken: accessToken, onFileId: onFolderId, onFailure: onFailure)
 }
 
-// TODO: this seemingly in the root for a moment
 func createSheet(name: String, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
     createFile(name: name, folderId: folderId, type: "spreadsheet", accessToken: accessToken, onFileId: onSpreadsheetId, onFailure: onFailure)
 }
@@ -27,25 +26,25 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
         onError: { _ in onFailure() })
 }
 
-// TODO: simplify this with multipart upload
 func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
-    let parentsParam = " parents: [{id: \"\(folderId)\"}]"
+    let boundary = "Boundary-\(UUID().uuidString)"
+
+    var body = Data()
+    body.append(Data("--\(boundary)\r\n".utf8))
+    body.append(Data("Content-Type: application/json; charset=UTF-8\r\n\r\n".utf8))
+    body.append(Data("{name: \"\(name)\", parents: [\"\(folderId)\"]}\r\n\r\n".utf8))
+    body.append(Data("--\(boundary)\r\n".utf8))
+    body.append(Data("Content-Type: image/png\r\n\r\n".utf8))
+    body.append(data)
+    body.append(Data("\r\n--\(boundary)--\r\n".utf8))
     
-    post(url: "https://www.googleapis.com/drive/v2/files",
-        accessToken: accessToken,
-        jsonBody: "{title: \"\(name)\",\(parentsParam)}",
-        onSuccessfulResponse: { response in
-            let fileId = response["id"] as! String
-            makeRestCall(method: "PUT",
-                 url: "https://www.googleapis.com/upload/drive/v2/files/\(fileId)?uploadType=media",
-                 accessToken: accessToken,
-                 body: data,
-                 contentType: "image/png",
-                 onSuccessfulResponse: { _ in onSuccess() },
-                 onUnsuccessfulResponse: { _ in onFailure() },
-                 onError: { _ in onFailure() })
-        }, onUnsuccessfulResponse: { _ in onFailure() },
-        onError: { _ in onFailure() })
+    post(url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+            accessToken: accessToken,
+            body: body,
+            contentType: "multipart/related; boundary=\(boundary)",
+            onSuccessfulResponse: { _ in onSuccess() },
+            onUnsuccessfulResponse: { _ in onFailure() },
+            onError: { _ in onFailure() })
 }
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {

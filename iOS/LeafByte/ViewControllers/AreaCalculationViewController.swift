@@ -167,7 +167,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.contentMode = .scaleAspectFit
+        userDrawingView.contentMode = .scaleAspectFit
+        leafHolesView.contentMode = .scaleAspectFit
+        
         baseImageView.image = uiImage
+        initializeImage(view: leafHolesView, size: uiImage.size)
+        initializeImage(view: userDrawingView, size: uiImage.size)
         
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -175,9 +180,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
         
         setScrollingMode(true)
-        
-        initializeImage(view: leafHolesView)
-        initializeImage(view: userDrawingView)
     }
     
     // This is called before transitioning from this view to another view.
@@ -307,9 +309,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     private func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
         redoButton.isEnabled = false
         
-        let drawingManager = DrawingManager(withCanvasSize: userDrawingView.frame.size)
-        // TODO: this is hacking around the gaps due to rounding. remove
-        drawingManager.context.setLineWidth(CGFloat(1 / userDrawingToBaseImage.scale))
+        let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
@@ -334,8 +334,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
         
         // Then we include any user drawings.
-        let userDrawingProjection = Projection(fromImageInView: baseImageView.image!, toView: baseImageView)
-        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!), withProjection: userDrawingProjection)
+        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         combinedImage.addImage(userDrawing, withPixelToBoolConversion: { $0.isVisible() })
         
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
@@ -363,11 +362,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         // Assume the biggest is the background, and everything else is potentially a hole.
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
         
-        let drawingManager = DrawingManager(withCanvasSize: leafHolesView.frame.size, withProjection: userDrawingProjection)
+        let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
         drawingManager.context.setStrokeColor(lightGreen.cgColor)
-        // Prevents space between lines when rounding skew causes a line to be skipped.
-        drawingManager.context.setLineWidth(CGFloat(userDrawingProjection.scale))
         
         var consumedAreaInPixels = 0
         for emptyLabelAndSize in emptyLabelsWithoutBackground {

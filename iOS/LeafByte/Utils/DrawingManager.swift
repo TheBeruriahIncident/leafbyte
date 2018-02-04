@@ -17,8 +17,10 @@ class DrawingManager {
     let context: CGContext
     
     private let projection: Projection
+    private let canvasSize: CGSize
     
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection = Projection.identity) {
+        self.canvasSize = canvasSize
         UIGraphicsBeginImageContext(canvasSize)
         context = UIGraphicsGetCurrentContext()!
         // Make all the drawing precise.
@@ -48,7 +50,7 @@ class DrawingManager {
     
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
         if addToPreviousImage {
-            imageView.image?.draw(in: CGRect(x: 0, y: 0, width: imageView.frame.size.width, height: imageView.frame.size.height))
+            imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
         }
         
         imageView.image = UIGraphicsGetImageFromCurrentImageContext()!
