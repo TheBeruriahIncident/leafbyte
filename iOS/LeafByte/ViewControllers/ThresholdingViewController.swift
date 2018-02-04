@@ -10,6 +10,8 @@ import Accelerate
 import UIKit
 
 class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
+    let HISTOGRAM_MAX = 100
+    
     // MARK: - Fields
     
     // These are passed from the main menu view.
@@ -30,6 +32,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollableView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
+    @IBOutlet weak var histogramImageView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var sampleNumberLabel: UILabel!
@@ -63,6 +66,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         
         baseImageView.contentMode = .scaleAspectFit
         scaleMarkingView.contentMode = .scaleAspectFit
+        histogramImageView.contentMode = .scaleToFill
         
         sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
     }
@@ -71,10 +75,15 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidAppear(animated)
         
         if !viewDidAppearHasRun {
+            let lumaHistogram = getLumaHistogram(image: image)
+            
             // Guess a good threshold to start at; the user can adjust with the slider later.
-            let suggestedThreshold = getSuggestedThreshold(image: image)
+            let suggestedThreshold = otsusMethod(histogram: lumaHistogram)
             thresholdSlider.value = 1 - suggestedThreshold
             setThreshold(suggestedThreshold)
+            
+            // Draw the histogram to make user adjustment easier.
+            drawHistogram(lumaHistogram: lumaHistogram)
             
             thresholdSlider.isEnabled = true
             completeButton.isEnabled = true
@@ -113,5 +122,19 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
         filter.threshold = threshold
         ciImageThresholded = filter.outputImage
         baseImageView.image = ciToUiImage(ciImageThresholded!)
+    }
+    
+    private func drawHistogram(lumaHistogram: [Int]) {
+        let drawingManager = DrawingManager(withCanvasSize: CGSize(width: NUMBER_OF_HISTOGRAM_BUCKETS, height: HISTOGRAM_MAX))
+        
+        let maxValue = lumaHistogram.max()!
+        
+        for i in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
+            let x = NUMBER_OF_HISTOGRAM_BUCKETS - i - 1
+            let height = roundToInt(Double(HISTOGRAM_MAX) * Double(lumaHistogram[i]) / Double(maxValue), rule: .down)
+            
+            drawingManager.drawLine(from: CGPoint(x: x, y: HISTOGRAM_MAX), to: CGPoint(x: x, y: HISTOGRAM_MAX - height))
+        }
+        drawingManager.finish(imageView: histogramImageView)
     }
 }

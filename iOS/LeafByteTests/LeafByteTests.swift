@@ -24,6 +24,9 @@ class LeafByteTests: XCTestCase {
         
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
         XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isNonWhite())
+        XCTAssert(indexableImage.getPixel(x: 1820, y: 1690).isNonWhite())
+        XCTAssert(indexableImage.getPixel(x: 1660, y: 1820).isWhite())
+        XCTAssert(indexableImage.getPixel(x: 1740, y: 1820).isNonWhite())
     }
     
     func testSuggestedThreshold() {
@@ -32,7 +35,7 @@ class LeafByteTests: XCTestCase {
         
         var suggestedThreshold: Float!
         self.measure {
-            suggestedThreshold = getSuggestedThreshold(image: cgImage)
+            suggestedThreshold = otsusMethod(histogram: getLumaHistogram(image: cgImage))
         }
         
         XCTAssertEqual(139, roundToInt(suggestedThreshold * 255))

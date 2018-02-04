@@ -9,15 +9,11 @@
 import Accelerate
 import CoreGraphics
 
-func getSuggestedThreshold(image: CGImage) -> Float {
-    return otsusMethod(histogram: getLumaHistogram(image: image))
-}
-
-private let NUMBER_OF_HISTOGRAM_BUCKETS = 256
+let NUMBER_OF_HISTOGRAM_BUCKETS = 256
 
 // Turns an image into a histogram of luma, or intensity.
 // The histogram is represented as an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
-private func getLumaHistogram(image: CGImage) -> [Int] {
+func getLumaHistogram(image: CGImage) -> [Int] {
     let pixelData = image.dataProvider!.data!
     var initialVImage = vImage_Buffer(
         data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)),
@@ -63,7 +59,7 @@ private func getLumaHistogram(image: CGImage) -> [Int] {
 
 // Use Otsu's method, an algorithm that takes a histogram of intensities (that it assumes is roughly bimodal, corresponding to foreground and background) and tries to find the cut that separates the two modes ( https://en.wikipedia.org/wiki/Otsu%27s_method ).
 // Note that this implementation is the optimized form that maximizes inter-class variance as opposed to minimizing intra-class variance (also described at the above link).
-private func otsusMethod(histogram: [Int]) -> Float {
+func otsusMethod(histogram: [Int]) -> Float {
     // The following equations and algorithm are taken from https://en.wikipedia.org/wiki/Otsu%27s_method#Otsu's_Method , and variable names here refer to variable names in equations there.
     
     // We can transform omega0 and mu0Numerator as we go through the loop. Both omega1 and mu1Numerator are easily derivable, since both omegas and muNumerators sum to constants.
