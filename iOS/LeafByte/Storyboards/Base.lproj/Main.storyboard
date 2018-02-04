@@ -275,33 +275,16 @@
                                 <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="shadowOffset" width="1" height="-1"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
-                                <rect key="frame" x="28" y="618" width="83" height="30"/>
-                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="BRt-kX-O3t"/>
-                                </constraints>
-                                <state key="normal" title="&lt;autofilled&gt;"/>
-                                <connections>
-                                    <action selector="toggleScrollingMode:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="VBr-Fj-GyK"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-ad-Z94" userLabel="Complete Button">
-                                <rect key="frame" x="281" y="618" width="84" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-ad-Z94" userLabel="Complete Button">
+                                <rect key="frame" x="285.5" y="618" width="84" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="GPe-uA-1AQ"/>
-                                </constraints>
                                 <state key="normal" title="Save &amp; Next"/>
                                 <connections>
                                     <action selector="nextImage:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="rdX-D3-N69"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4l-IF-yMI" userLabel="Calculate Button">
-                                <rect key="frame" x="178" y="618" width="64" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="f3n-jW-xTa"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4l-IF-yMI" userLabel="Calculate Button">
+                                <rect key="frame" x="175.5" y="618" width="64" height="30"/>
                                 <state key="normal" title="Calculate"/>
                                 <connections>
                                     <action selector="calculate:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="pjR-Mb-HWu"/>
@@ -341,51 +324,54 @@
                                 </constraints>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
-                                <rect key="frame" x="0.0" y="557" width="0.0" height="55"/>
+                                <rect key="frame" x="0.0" y="557" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
-                                <rect key="frame" x="16" y="612" width="40" height="35"/>
-                                <state key="normal" image="Blue Undo"/>
-                                <connections>
-                                    <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
-                                <rect key="frame" x="109" y="613" width="40" height="35"/>
-                                <state key="normal" image="blue redo"/>
-                                <connections>
-                                    <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qat-PS-tnN">
+                                <rect key="frame" x="5" y="613" width="163" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvf-tt-efy" userLabel="Undo Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="35"/>
+                                        <state key="normal" image="Blue Undo"/>
+                                        <connections>
+                                            <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
+                                        <rect key="frame" x="40" y="0.0" width="83" height="35"/>
+                                        <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
+                                        <state key="normal" title="&lt;autofilled&gt;"/>
+                                        <connections>
+                                            <action selector="toggleScrollingMode:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="VBr-Fj-GyK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
+                                        <rect key="frame" x="123" y="0.0" width="40" height="35"/>
+                                        <state key="normal" image="blue redo"/>
+                                        <connections>
+                                            <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="8" symbolic="YES" id="5Cd-AD-4Lj"/>
-                            <constraint firstItem="Xwt-8a-K9l" firstAttribute="leading" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="-2" id="6fM-nk-wuI"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="trailing" secondItem="Dk9-tD-hbE" secondAttribute="trailing" id="B7y-dZ-lSQ"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="tVl-5H-cS7" secondAttribute="top" constant="51" id="BWC-gO-UjE"/>
-                            <constraint firstItem="Id9-ad-Z94" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="M4l-IF-yMI" secondAttribute="trailing" symbolic="YES" id="ElP-Sp-RTD"/>
-                            <constraint firstItem="Xwt-8a-K9l" firstAttribute="bottom" secondItem="zKJ-Ch-T7e" secondAttribute="bottom" id="I0X-IF-I7h"/>
-                            <constraint firstItem="Id9-ad-Z94" firstAttribute="bottom" secondItem="zKJ-Ch-T7e" secondAttribute="bottom" id="IKB-15-HHc"/>
-                            <constraint firstAttribute="bottom" secondItem="rvf-tt-efy" secondAttribute="bottom" constant="20" id="L96-tW-8Ya"/>
                             <constraint firstAttribute="trailing" secondItem="JMU-FQ-tF0" secondAttribute="trailing" constant="375" id="Lur-5N-Weu"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" secondItem="Dk9-tD-hbE" secondAttribute="leading" id="NBu-xz-GRO"/>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="top" secondItem="JMU-FQ-tF0" secondAttribute="bottom" constant="6" id="OIg-9A-3EK"/>
-                            <constraint firstAttribute="trailing" secondItem="Id9-ad-Z94" secondAttribute="trailing" constant="10" id="QdX-xT-7hF"/>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="bottom" secondItem="zKJ-Ch-T7e" secondAttribute="bottom" id="RdJ-3g-Nv2"/>
-                            <constraint firstItem="rvf-tt-efy" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="16" id="SE9-4V-3np"/>
                             <constraint firstAttribute="trailing" secondItem="XUO-j6-TH2" secondAttribute="trailing" id="WhW-yi-DkC"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JMU-FQ-tF0" secondAttribute="leading" id="aZj-EQ-9dm"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="7" id="eLL-KQ-rtS"/>
-                            <constraint firstItem="rvf-tt-efy" firstAttribute="bottom" secondItem="zKJ-Ch-T7e" secondAttribute="bottom" constant="-1" id="g2V-ew-BlU"/>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="leading" secondItem="tVl-5H-cS7" secondAttribute="leading" constant="178" id="gYf-xW-IPe"/>
+                            <constraint firstItem="Id9-ad-Z94" firstAttribute="centerX" secondItem="tVl-5H-cS7" secondAttribute="centerX" constant="140" id="hg8-v1-cIe"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="top" secondItem="XUO-j6-TH2" secondAttribute="bottom" constant="1" id="j6D-dR-XI2"/>
-                            <constraint firstItem="zKJ-Ch-T7e" firstAttribute="leading" secondItem="tVl-5H-cS7" secondAttribute="leading" constant="28" id="jFK-Ul-GKy"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" secondItem="tVl-5H-cS7" secondAttribute="leading" id="jhX-1A-BdO"/>
                             <constraint firstAttribute="bottom" secondItem="XUO-j6-TH2" secondAttribute="bottom" constant="111" id="kNy-4O-aAG"/>
+                            <constraint firstItem="M4l-IF-yMI" firstAttribute="centerX" secondItem="tVl-5H-cS7" secondAttribute="centerX" constant="20" id="tSp-wd-mAs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
@@ -423,7 +409,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2221.5" y="939.5"/>
+            <point key="canvasLocation" x="2757.5999999999999" y="868.51574212893559"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Nbb-yx-jpU">
@@ -649,8 +635,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fQ-lo-BNS" userLabel="Clear Scale Button">
-                                <rect key="frame" x="189" y="618" width="61" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fQ-lo-BNS" userLabel="Clear Scale Button">
+                                <rect key="frame" x="172" y="618" width="61" height="30"/>
                                 <state key="normal" title="No Scale"/>
                                 <connections>
                                     <action selector="clearScale:" destination="e5s-F7-9rn" eventType="touchUpInside" id="INO-Jb-63Q"/>
@@ -685,20 +671,17 @@
                                     <constraint firstAttribute="bottom" secondItem="ZFn-5a-U1t" secondAttribute="bottom" constant="-8" id="yZy-YC-wY8"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Mode Toggle Button">
-                                <rect key="frame" x="16" y="618" width="130" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Mode Toggle Button">
+                                <rect key="frame" x="16" y="618" width="83" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
                                     <action selector="toggleScrollingMode:" destination="e5s-F7-9rn" eventType="touchUpInside" id="UcQ-Hw-DaS"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
-                                <rect key="frame" x="304" y="618" width="55" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
+                                <rect key="frame" x="300" y="618" width="55" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="z54-7h-iay"/>
-                                </constraints>
                                 <state key="normal" title="Confirm"/>
                                 <connections>
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="scaleIdentificationComplete" id="ni1-Va-100"/>
@@ -708,23 +691,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="leading" secondItem="h7r-i1-MtO" secondAttribute="leading" id="3br-YE-g4V"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="baseline" secondItem="7fQ-lo-BNS" secondAttribute="baseline" id="4PF-LO-3QV"/>
                             <constraint firstAttribute="bottom" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="100" id="5x1-c8-bGC"/>
-                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="leading" secondItem="0YM-1m-Hod" secondAttribute="trailing" constant="43" id="8fe-KA-htN"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leadingMargin" id="9ZS-vM-YAU"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="A67-1Z-vF9"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="leading" secondItem="6Mb-ZC-YBF" secondAttribute="leading" id="HcU-Zf-Ncf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aFd-8f-9XM" secondAttribute="trailing" constant="-25" id="J4X-aW-rqF"/>
-                            <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="Odx-Xc-7pu" secondAttribute="trailing" constant="16" id="JrA-dN-d6b"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" id="JNZ-8i-1R4"/>
+                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="15" id="LLl-HJ-d77"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="wTv-BJ-FVQ" secondAttribute="top" constant="44" id="Mld-mj-rbu"/>
+                            <constraint firstItem="Odx-Xc-7pu" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="140" id="Y8Q-GZ-FZO"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="-130" id="Yjd-j4-LwW"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6Mb-ZC-YBF" secondAttribute="trailing" constant="20" symbolic="YES" id="amH-Aq-gNy"/>
-                            <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="hrn-GN-m2y"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="top" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="-7" id="nXD-D7-7IJ"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="top" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="51" id="q3F-Sp-C0b"/>
                             <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
-                            <constraint firstItem="Odx-Xc-7pu" firstAttribute="leading" secondItem="7fQ-lo-BNS" secondAttribute="trailing" constant="54" id="tYd-to-252"/>
-                            <constraint firstAttribute="bottom" secondItem="7fQ-lo-BNS" secondAttribute="bottom" constant="19" id="yTS-p9-wsU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
@@ -749,7 +728,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mka-gV-IFE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1520.8" y="927.88605697151434"/>
+            <point key="canvasLocation" x="2012" y="989"/>
         </scene>
     </scenes>
     <resources>
@@ -762,6 +741,7 @@
         <image name="blue redo" width="40" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
