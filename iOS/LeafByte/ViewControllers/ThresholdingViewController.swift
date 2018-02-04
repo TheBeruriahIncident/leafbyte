@@ -9,7 +9,7 @@
 import Accelerate
 import UIKit
 
-class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
+class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     let HISTOGRAM_MAX = 100
     
     // MARK: - Fields
@@ -105,7 +105,15 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate {
             destination.uiImage = baseImageView.image
             
             setBackButton(self: self)
+        } else if segue.identifier == "helpPopover" {
+            let popoverViewController = segue.destination
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController.popoverPresentationController!.delegate = self
         }
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
     
     // MARK: - UIScrollViewDelegate overrides
