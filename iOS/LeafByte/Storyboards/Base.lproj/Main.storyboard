@@ -255,6 +255,10 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="481"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZhN-ja-Acn" userLabel="Scale Marking">
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="481"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vz2-Bn-w9W" userLabel="User Drawing">
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="481"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -352,6 +356,7 @@
                         <outlet property="redoButton" destination="Xwt-8a-K9l" id="OE7-0c-0FF"/>
                         <outlet property="resultsText" destination="JMU-FQ-tF0" id="glq-CW-sZ8"/>
                         <outlet property="sampleNumberLabel" destination="aD4-fI-h2J" id="bhb-76-Inu"/>
+                        <outlet property="scaleMarkingView" destination="ZhN-ja-Acn" id="GdI-0P-AKu"/>
                         <outlet property="scrollableView" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
                         <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
                         <outlet property="userDrawingView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
@@ -672,7 +677,6 @@
         <image name="Undo" width="50" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Iaq-x1-uxo"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

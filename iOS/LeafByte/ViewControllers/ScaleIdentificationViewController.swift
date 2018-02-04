@@ -27,6 +27,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     // This is the number of pixels across the scale mark in the image.
     // It's calculated in this view (if possible) and passed forward.
     var scaleMarkPixelLength: Int?
+    var scaleMarkEnd1: CGPoint?
+    var scaleMarkEnd2: CGPoint?
     
     // Projection from the full base image view to the actual image, so we can check if the touch is within the image.
     var baseImageViewToImage: Projection!
@@ -57,6 +59,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     }
     @IBAction func clearScale(_ sender: Any) {
         scaleMarkPixelLength = nil
+        scaleMarkEnd1 = nil
+        scaleMarkEnd2 = nil
         scaleMarkingView.image = nil
         resultsText.text = "No scale"
         
@@ -91,6 +95,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             modeToggleButton.isEnabled = true
             clearScaleButton.isEnabled = true
             completeButton.isEnabled = true
+            
+            viewDidAppearHasRun = true
         }
     }
     
@@ -108,6 +114,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             destination.cgImage = cgImage
             destination.uiImage = uiImage
             destination.scaleMarkPixelLength = scaleMarkPixelLength
+            destination.scaleMarkEnd1 = scaleMarkEnd1
+            destination.scaleMarkEnd2 = scaleMarkEnd2
             
             setBackButton(self: self)
         }
@@ -205,6 +213,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
         }
         
         scaleMarkPixelLength = candidateScaleMarkPixelLength
+        scaleMarkEnd1 = farthestPoint1
+        scaleMarkEnd2 = farthestPoint2
         resultsText.text = "Scale found: \(candidateScaleMarkPixelLength) pixels long"
         
         // Draw a line where we think the scale mark is.
@@ -217,6 +227,9 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
     
     private func setScaleNotFound() {
         resultsText.text = "Scale not found"
+        scaleMarkPixelLength = nil
+        scaleMarkEnd1 = nil
+        scaleMarkEnd2 = nil
         scaleMarkingView.image = nil
     }
 }

@@ -18,6 +18,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     var cgImage: CGImage!
     var uiImage: UIImage!
     var scaleMarkPixelLength: Int?
+    var scaleMarkEnd1: CGPoint?
+    var scaleMarkEnd2: CGPoint?
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
@@ -47,8 +49,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     @IBOutlet weak var gestureRecognizingView: UIScrollView!
     @IBOutlet weak var scrollableView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
-    @IBOutlet weak var userDrawingView: UIImageView!
     @IBOutlet weak var leafHolesView: UIImageView!
+    @IBOutlet weak var scaleMarkingView: UIImageView!
+    @IBOutlet weak var userDrawingView: UIImageView!
     
     @IBOutlet weak var modeToggleButton: UIButton!
     @IBOutlet weak var undoButton: UIButton!
@@ -167,12 +170,15 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.contentMode = .scaleAspectFit
-        userDrawingView.contentMode = .scaleAspectFit
         leafHolesView.contentMode = .scaleAspectFit
+        scaleMarkingView.contentMode = .scaleAspectFit
+        userDrawingView.contentMode = .scaleAspectFit
         
         baseImageView.image = uiImage
         initializeImage(view: leafHolesView, size: uiImage.size)
+        initializeImage(view: scaleMarkingView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
+        drawScaleMark()
         
         userDrawingToBaseImage = Projection(invertProjection: Projection(fromImageInView: baseImageView.image!, toView: baseImageView))
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -414,7 +420,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     private func getCombinedImage() -> UIImage {
-        return combineImages([ baseImageView, leafHolesView, userDrawingView ])
+        return combineImages([ baseImageView, leafHolesView, scaleMarkingView, userDrawingView ])
     }
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
@@ -446,5 +452,17 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         }
         
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, onSuccess: onSuccess, onFailure: onFailure)
+    }
+    
+    private func drawScaleMark() {
+        if scaleMarkPixelLength == nil {
+            return
+        }
+        
+        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
+        drawingManager.finish(imageView: scaleMarkingView)
     }
 }
