@@ -51,6 +51,8 @@ class DrawingManager {
     }
     
     func drawStar(atPoint point: CGPoint, withSize size: CGFloat) {
+        let projectedPoint = projection.project(point: point)
+        
         let angleBetweenStarPoints = 2 / 5 * CGFloat.pi
         
         var starPointAngles = [ -CGFloat.pi / 2 ]
@@ -61,7 +63,7 @@ class DrawingManager {
         var starPoints = [CGPoint]()
         for i in 0...4 {
             let starPointAngle = starPointAngles[i]
-            starPoints.append(CGPoint(x: point.x + size * cos(starPointAngle), y: point.y + size * sin(starPointAngle)))
+            starPoints.append(CGPoint(x: projectedPoint.x + size * cos(starPointAngle), y: projectedPoint.y + size * sin(starPointAngle)))
         }
         
         let starPath = UIBezierPath()
