@@ -76,6 +76,12 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
     imagePicker.allowsEditing = false
 }
 
+func setupPopoverViewController(_ popoverViewController: UIViewController, self hostingViewController: UIPopoverPresentationControllerDelegate) {
+    popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+    popoverViewController.popoverPresentationController!.delegate = hostingViewController
+    popoverViewController.popoverPresentationController?.passthroughViews = nil
+}
+
 func smoothTransitions(self viewController: UIViewController) {
     // This prevents a black shadow from appearing in the navigation bar during transitions (see https://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5 ).
     viewController.navigationController!.view.backgroundColor = UIColor.white

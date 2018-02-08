@@ -217,9 +217,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             destination.image = selectedImage!
             destination.inTutorial = false
         } else if segue.identifier == "helpPopover" {
-            let popoverViewController = segue.destination
-            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController!.delegate = self
+            setupPopoverViewController(segue.destination, self: self)
         }
     }
     
