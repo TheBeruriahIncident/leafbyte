@@ -56,8 +56,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        // This prevents a black shadow from appearing in the navigation bar during transitions (see https://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5 ).
-        self.navigationController!.view.backgroundColor = UIColor.white
+        smoothTransitions(self: self)
         
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         

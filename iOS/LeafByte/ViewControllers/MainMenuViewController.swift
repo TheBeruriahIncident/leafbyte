@@ -92,7 +92,17 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             
             destination.settings = settings
         }
-        
+        // If the segue is toTutorial, we're starting the tutorial, and we need to pass the settings forward.
+        else if segue.identifier == "toTutorial" {
+            guard let navigationController = segue.destination as? UINavigationController else {
+                fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
+            }
+            guard let destination = navigationController.topViewController as? TutorialViewController else {
+                fatalError("Expected the view inside the navigation controller to be the tutorial view but is  \(String(describing: navigationController.topViewController))")
+            }
+            
+            destination.settings = settings
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {

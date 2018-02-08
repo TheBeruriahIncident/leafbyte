@@ -21,7 +21,7 @@ func finishWithImagePicker(self viewController: UIViewController, info: [String 
     }
     
     // We scale it down to make the following operations happen in tolerable time.
-    let resizedImage = resizeImage(selectedImage, within: CGSize(width: 400, height: 400))
+    let resizedImage = resizeImage(selectedImage)
     
     // Save the selectedImage off so that during the segue, we can set it onto the next view.
     selectImage(resizedImage)
@@ -74,4 +74,9 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
     // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
     // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
     imagePicker.allowsEditing = false
+}
+
+func smoothTransitions(self viewController: UIViewController) {
+    // This prevents a black shadow from appearing in the navigation bar during transitions (see https://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5 ).
+    viewController.navigationController!.view.backgroundColor = UIColor.white
 }

@@ -15,6 +15,10 @@ func initializeImage(view: UIImageView, size: CGSize) {
     UIGraphicsEndImageContext()
 }
 
+func resizeImage(_ image: UIImage) -> CGImage {
+    return resizeImage(image, within: CGSize(width: 400, height: 400))
+}
+
 // See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
 // Code to account for orientation was adapted from there.
 func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
