@@ -14,6 +14,12 @@ class TutorialViewController: UIViewController {
     // These are passed from the main menu view.
     var settings: Settings!
     
+    // MARK: - Actions
+
+    @IBAction func goHome(_ sender: Any) {
+        dismissNavigationController(self: self)
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad(){

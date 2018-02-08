@@ -689,9 +689,23 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="wRd-5d-Siz"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Evj-Ag-BdO"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Evj-Ag-BdO">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="528-MI-JgF" userLabel="Back Button">
+                            <connections>
+                                <segue destination="8w8-3J-pKY" kind="unwind" unwindAction="backToMainMenuWithSegue:" id="edq-nN-R5L"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Home" id="H3h-Uf-TJo" userLabel="Home Button">
+                            <connections>
+                                <action selector="goHome:" destination="XwM-Qo-LDR" id="TUT-k9-ahY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bvA-H1-l0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="8w8-3J-pKY" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-572" y="937.78110944527748"/>
         </scene>
