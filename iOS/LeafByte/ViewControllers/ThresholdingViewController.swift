@@ -14,10 +14,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
     
     // MARK: - Fields
     
-    // These are passed from the main menu view.
+    // These are passed from the previous view.
     var settings: Settings!
     var sourceType: UIImagePickerControllerSourceType!
     var image: CGImage!
+    var inTutorial: Bool!
     
     let filter = ThresholdingFilter()
     
@@ -86,6 +87,10 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
             completeButton.isEnabled = true
             
             viewDidAppearHasRun = true
+            
+            if inTutorial {
+                self.performSegue(withIdentifier: "helpPopover", sender: nil)
+            }
         }
     }
     
@@ -102,6 +107,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
             destination.sourceType = sourceType
             destination.cgImage = ciToCgImage(ciImageThresholded!)
             destination.uiImage = baseImageView.image
+            destination.inTutorial = inTutorial
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {

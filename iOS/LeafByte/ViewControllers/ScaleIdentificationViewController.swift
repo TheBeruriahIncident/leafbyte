@@ -17,6 +17,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
     var sourceType: UIImagePickerControllerSourceType!
     var cgImage: CGImage!
     var uiImage: UIImage!
+    var inTutorial: Bool!
     
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
@@ -99,6 +100,10 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
             completeButton.isEnabled = true
             
             viewDidAppearHasRun = true
+            
+            if inTutorial {
+                self.performSegue(withIdentifier: "helpPopover", sender: nil)
+            }
         }
     }
     
@@ -118,6 +123,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
             destination.scaleMarkPixelLength = scaleMarkPixelLength
             destination.scaleMarkEnd1 = scaleMarkEnd1
             destination.scaleMarkEnd2 = scaleMarkEnd2
+            destination.inTutorial = inTutorial
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {

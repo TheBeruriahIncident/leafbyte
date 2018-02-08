@@ -20,6 +20,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     var scaleMarkPixelLength: Int?
     var scaleMarkEnd1: CGPoint?
     var scaleMarkEnd2: CGPoint?
+    var inTutorial: Bool!
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
@@ -196,6 +197,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     override func viewDidAppear(_ animated: Bool) {
         initializeGrid()
+        
+        if inTutorial {
+            self.performSegue(withIdentifier: "helpPopover", sender: nil)
+        }
     }
     
     // This is called before transitioning from this view to another view.
@@ -210,6 +215,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage!
+            destination.inTutorial = false
         } else if segue.identifier == "helpPopover" {
             let popoverViewController = segue.destination
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover

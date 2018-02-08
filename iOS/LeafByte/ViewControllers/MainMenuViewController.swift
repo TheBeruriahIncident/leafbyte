@@ -80,6 +80,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
             destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage
+            destination.inTutorial = false
         }
         // If the segue is toSettings, we're transitioning to the settings, and we need to pass the settings forward.
         else if segue.identifier == "toSettings" {
