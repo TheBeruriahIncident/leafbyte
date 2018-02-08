@@ -269,6 +269,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backButton" destination="zfi-8V-mUx" id="7bj-AO-Uiw"/>
                         <outlet property="baseImageView" destination="Sfh-f1-P2L" id="yHG-Pn-Hn5"/>
                         <outlet property="completeButton" destination="5RZ-7f-3CS" id="QGA-ME-JKn"/>
                         <outlet property="gestureRecognizingView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>

@@ -41,6 +41,8 @@ class TutorialViewController: UIViewController {
             destination.sourceType = .photoLibrary
             destination.image = resizeImage(UIImage(named: "Example Image")!)
             destination.inTutorial = true
+            
+            setBackButton(self: self, next: destination)
         }
     }
 }

@@ -36,6 +36,7 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
     @IBOutlet weak var thresholdSlider: UISlider!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var sampleNumberLabel: UILabel!
+    @IBOutlet weak var backButton: UIBarButtonItem!
     
     // MARK: - Actions
     
@@ -56,6 +57,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        if inTutorial {
+            // Since we'll have a real back button, hide our fake back button.
+            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems![1]]
+        }
         
         smoothTransitions(self: self)
         
