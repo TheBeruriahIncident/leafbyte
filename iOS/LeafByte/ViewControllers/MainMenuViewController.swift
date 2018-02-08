@@ -150,6 +150,7 @@ class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate,
                 self.settings.serialize()
                 
                 presentAlert(self: self, title: nil, message: "Cannot save to Google Drive without Google sign-in")
+                setSavingSummary()
             })
     }
     
