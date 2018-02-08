@@ -465,7 +465,6 @@
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <barButtonItem key="leftBarButtonItem" title="?" id="oKl-3T-MdZ" userLabel="Help Button">
                             <connections>
-                                <action selector="goHome:" destination="ueh-Tb-xxm" id="hSY-ba-g2t"/>
                                 <segue destination="gAc-Aq-5u4" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="oKl-3T-MdZ" id="3DF-9I-fwW">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
@@ -775,7 +774,7 @@
                                 <rect key="frame" x="0.0" y="44" width="384" height="523"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-5a-U1t" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="31" width="376" height="520"/>
+                                        <rect key="frame" x="0.0" y="11" width="376" height="520"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wST-nu-Esm" userLabel="Base Image">
                                                 <rect key="frame" x="0.0" y="-1" width="376" height="572"/>
@@ -861,7 +860,6 @@
                     <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
                         <barButtonItem key="leftBarButtonItem" title="?" id="5nA-2H-mzx" userLabel="Help Button">
                             <connections>
-                                <action selector="goHome:" destination="e5s-F7-9rn" id="zeS-oY-PZS"/>
                                 <segue destination="oJr-2p-Elg" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="5nA-2H-mzx" id="qQn-7H-fvo">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
@@ -973,6 +971,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="n9g-fF-EuL"/>
+        <segue reference="ni1-Va-100"/>
+        <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

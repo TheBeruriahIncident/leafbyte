@@ -99,11 +99,11 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
             clearScaleButton.isEnabled = true
             completeButton.isEnabled = true
             
-            viewDidAppearHasRun = true
-            
             if inTutorial {
                 self.performSegue(withIdentifier: "helpPopover", sender: nil)
             }
+            
+            viewDidAppearHasRun = true
         }
     }
     

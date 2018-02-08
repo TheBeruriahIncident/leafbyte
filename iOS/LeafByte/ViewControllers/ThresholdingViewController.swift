@@ -92,11 +92,11 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
             thresholdSlider.isEnabled = true
             completeButton.isEnabled = true
             
-            viewDidAppearHasRun = true
-            
             if inTutorial {
                 self.performSegue(withIdentifier: "helpPopover", sender: nil)
             }
+            
+            viewDidAppearHasRun = true
         }
     }
     

@@ -32,6 +32,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     var currentDrawing = [CGPoint]()
     var redoBuffer = [[CGPoint]]()
     
+    // Tracks whether viewDidAppear has run, so that we can initialize only once.
+    // It seems like this view should only appear once anyways, except that the flicker when the image picker closes counts as an appearance.
+    var viewDidAppearHasRun = false
+    
     // The current mode can be scrolling or drawing.
     var inScrollingMode = true
     
@@ -196,10 +200,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        initializeGrid()
-        
-        if inTutorial {
-            self.performSegue(withIdentifier: "helpPopover", sender: nil)
+        if !viewDidAppearHasRun {
+            initializeGrid()
+            
+            if inTutorial {
+                self.performSegue(withIdentifier: "helpPopover", sender: nil)
+            }
+            
+            viewDidAppearHasRun = true
         }
     }
     
