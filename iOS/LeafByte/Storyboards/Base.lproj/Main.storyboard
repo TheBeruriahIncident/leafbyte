@@ -255,7 +255,6 @@
                             </barButtonItem>
                             <barButtonItem title="?" id="4zZ-gJ-L7f" userLabel="Help Button">
                                 <connections>
-                                    <action selector="goHome:" destination="bUK-Ir-gu8" id="ePt-TI-xAq"/>
                                     <segue destination="bVw-Fm-rhy" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="4zZ-gJ-L7f" id="1bb-LS-Ggr">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
