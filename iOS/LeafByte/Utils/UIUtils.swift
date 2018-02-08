@@ -53,11 +53,14 @@ func requestCameraAccess(self viewController: UIViewController, onSuccess: @esca
     }
 }
 
-// Make the back button say "Back" rather than the full title of the previous page.
-func setBackButton(self viewController: UIViewController) {
+func setBackButton(self previousViewController: UIViewController, next nextViewController: UIViewController ) {
+    // Make the back button say "Back" rather than the full title of the previous page.
     let backItem = UIBarButtonItem()
     backItem.title = "Back"
-    viewController.navigationItem.backBarButtonItem = backItem
+    previousViewController.navigationItem.backBarButtonItem = backItem
+    
+    // Make the back button appear even if there are other buttons.
+    nextViewController.navigationItem.leftItemsSupplementBackButton = true
 }
 
 func setupGestureRecognizingView(gestureRecognizingView: UIScrollView, self viewController: UIScrollViewDelegate) {

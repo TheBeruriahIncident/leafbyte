@@ -276,17 +276,18 @@
             </objects>
             <point key="canvasLocation" x="912.79999999999995" y="927.88605697151434"/>
         </scene>
-        <!--View Controller-->
+        <!--Thresholding Help View Controller-->
         <scene sceneID="KtJ-ek-1IP">
             <objects>
-                <viewController id="bVw-Fm-rhy" sceneMemberID="viewController">
+                <viewController id="bVw-Fm-rhy" userLabel="Thresholding Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vkR-CT-iZw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cut out the background" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
-                                <rect key="frame" x="0.0" y="0.0" width="189" height="80"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
+                                <rect key="frame" x="16" y="0.0" width="264" height="289"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">First, we remove any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -295,8 +296,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="xnA-VR-1qA"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="200" height="100"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="500"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrm-ec-C4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -453,6 +455,14 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
+                        <barButtonItem key="leftBarButtonItem" title="?" id="oKl-3T-MdZ" userLabel="Help Button">
+                            <connections>
+                                <action selector="goHome:" destination="ueh-Tb-xxm" id="hSY-ba-g2t"/>
+                                <segue destination="gAc-Aq-5u4" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="oKl-3T-MdZ" id="3DF-9I-fwW">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="Home" id="iBa-sP-sQi" userLabel="Home Button">
                                 <connections>
@@ -794,6 +804,14 @@
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
                     <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
+                        <barButtonItem key="leftBarButtonItem" title="?" id="5nA-2H-mzx" userLabel="Help Button">
+                            <connections>
+                                <action selector="goHome:" destination="e5s-F7-9rn" id="zeS-oY-PZS"/>
+                                <segue destination="oJr-2p-Elg" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="5nA-2H-mzx" id="qQn-7H-fvo">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Home" id="U5O-AA-j7F" userLabel="Home Button">
                             <connections>
                                 <action selector="goHome:" destination="e5s-F7-9rn" id="iSZ-6d-s7C"/>
@@ -816,6 +834,62 @@
             </objects>
             <point key="canvasLocation" x="2010.4000000000001" y="988.15592203898063"/>
         </scene>
+        <!--Scale Identification Help View Controller-->
+        <scene sceneID="H7e-Ph-8OO">
+            <objects>
+                <viewController id="oJr-2p-Elg" userLabel="Scale Identification Help View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DYp-jC-BAx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
+                                <rect key="frame" x="16" y="0.0" width="264" height="283"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">First, we remove any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="E1c-5i-snk"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="500"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ebj-2Y-9T5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1958" y="1710"/>
+        </scene>
+        <!--Area Calculation Help View Controller-->
+        <scene sceneID="SXK-7H-soF">
+            <objects>
+                <viewController id="gAc-Aq-5u4" userLabel="Area Calculation Help View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bbE-Y3-Btg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
+                                <rect key="frame" x="16" y="0.0" width="264" height="283"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">First, we remove any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="fXY-Qz-jK8"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="500"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mA4-9i-fhx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2822" y="1618"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Camera" width="98" height="94"/>
@@ -827,7 +901,6 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Iaq-x1-uxo"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>

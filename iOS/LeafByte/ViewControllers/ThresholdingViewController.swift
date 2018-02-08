@@ -104,13 +104,15 @@ class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopo
             destination.cgImage = ciToCgImage(ciImageThresholded!)
             destination.uiImage = baseImageView.image
             
-            setBackButton(self: self)
+            setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {
             let popoverViewController = segue.destination
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             popoverViewController.popoverPresentationController!.delegate = self
         }
     }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate overrides
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none

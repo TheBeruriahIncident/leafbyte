@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.
@@ -210,6 +210,10 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage!
+        } else if segue.identifier == "helpPopover" {
+            let popoverViewController = segue.destination
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController.popoverPresentationController!.delegate = self
         }
     }
     
@@ -218,6 +222,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
+    }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate overrides
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
     
     // MARK: - UIScrollViewDelegate overrides

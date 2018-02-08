@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate {
+class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.
@@ -119,8 +119,18 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate 
             destination.scaleMarkEnd1 = scaleMarkEnd1
             destination.scaleMarkEnd2 = scaleMarkEnd2
             
-            setBackButton(self: self)
+            setBackButton(self: self, next: destination)
+        } else if segue.identifier == "helpPopover" {
+            let popoverViewController = segue.destination
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController.popoverPresentationController!.delegate = self
         }
+    }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate overrides
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
     
     // MARK: - UIScrollViewDelegate overrides
