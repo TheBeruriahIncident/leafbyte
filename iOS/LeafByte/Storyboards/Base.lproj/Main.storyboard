@@ -694,7 +694,7 @@
                     <navigationItem key="navigationItem" id="Evj-Ag-BdO">
                         <barButtonItem key="leftBarButtonItem" title="Back" id="528-MI-JgF" userLabel="Back Button">
                             <connections>
-                                <segue destination="8w8-3J-pKY" kind="unwind" unwindAction="backToMainMenuWithSegue:" id="edq-nN-R5L"/>
+                                <segue destination="8w8-3J-pKY" kind="unwind" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="edq-nN-R5L"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Home" id="H3h-Uf-TJo" userLabel="Home Button">
