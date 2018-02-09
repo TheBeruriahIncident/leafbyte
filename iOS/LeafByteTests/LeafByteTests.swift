@@ -41,6 +41,29 @@ class LeafByteTests: XCTestCase {
         XCTAssertEqual(139, roundToInt(suggestedThreshold * 255))
     }
     
+    func testConnectedComponents() {
+        let originalImage = resizeImage(loadImage(named: "leafWithScale"))
+        
+        let filter = ThresholdingFilter()
+        filter.setInputImage(originalImage)
+        let thresholdedImage = filter.outputImage!
+        
+        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
+        let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
+        image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
+
+        var connectedComponentsInfo: ConnectedComponentsInfo!
+        self.measure {
+            connectedComponentsInfo = labelConnectedComponents(image: image)
+        }
+        
+        let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key < 0 }).map({ $0.value.standardPart }).sorted()
+        let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key > 0 }).map({ $0.value.standardPart }).sorted()
+        
+        XCTAssertEqual([373, 107820], whiteAreaSizes)
+        XCTAssertEqual([118, 11689], nonWhiteAreaSizes)
+    }
+    
     func testSettingsSerialization() {
         let settings = Settings()
         settings.measurementSaveLocation = .googleDrive
