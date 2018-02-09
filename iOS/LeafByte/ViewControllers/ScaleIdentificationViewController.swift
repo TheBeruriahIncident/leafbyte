@@ -197,7 +197,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
         
         // We're going to find the second biggest occupied component; we assume the biggest is the leaf and the second biggest is the scale mark.
         // As such, filter down to just occupied components.
-        let occupiedLabelsAndSizes: [Int: Int] = connectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
+        let occupiedLabelsAndSizes: [Int: Size] = connectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
         
         // If we have less than two, we don't have a scale mark.
         if occupiedLabelsAndSizes.count < 2 {
@@ -205,7 +205,7 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
             return
         }
         
-        let sortedOccupiedLabelsAndSizes = occupiedLabelsAndSizes.sorted { $0.1 > $1.1 }
+        let sortedOccupiedLabelsAndSizes = occupiedLabelsAndSizes.sorted { $0.1.standardPart > $1.1.standardPart }
         
         // The leaf is the biggest label.
         let leafLabel = sortedOccupiedLabelsAndSizes[0].key

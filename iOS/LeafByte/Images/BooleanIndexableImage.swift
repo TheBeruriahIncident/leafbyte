@@ -24,8 +24,19 @@ class BooleanIndexableImage {
     }
     
     func getPixel(x: Int, y: Int) -> Bool {
-        return imagesWithConvertors.contains(where: { (image, convertor) in
-            convertor(image.getPixel(x: x, y: y)) })
+        return getLayerWithPixel(x: x, y: y) > -1
+    }
+    
+    // Finds the first image layer which is true, or -1 if no layers are true.
+    func getLayerWithPixel(x: Int, y: Int) -> Int {
+        for (index, imageWithConvertor) in imagesWithConvertors.enumerated() {
+            let (image, convertor) = imageWithConvertor
+            if convertor(image.getPixel(x: x, y: y)) {
+                return index
+            }
+        }
+        
+        return -1
     }
     
     // Useful for debugging: prints the image to the console as 1s and 0s, supporting different modes of what pixels become 1s vs 0s.

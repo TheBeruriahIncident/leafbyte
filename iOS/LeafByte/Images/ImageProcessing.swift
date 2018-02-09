@@ -95,13 +95,27 @@ func otsusMethod(histogram: [Int]) -> Float {
     return Float(bestCut) / Float(NUMBER_OF_HISTOGRAM_BUCKETS - 1)
 }
 
+struct Size {
+    var standardPart = 0
+    var drawingPart = 0
+    
+    func total() -> Int {
+        return standardPart + drawingPart
+    }
+    
+    static func +=(left: inout Size, right: Size) {
+        left.standardPart += right.standardPart
+        left.drawingPart += right.drawingPart
+    }
+}
+
 class ConnectedComponentsInfo {
     let labelToMemberPoint: [Int: (Int, Int)]
     let emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>]
-    let labelToSize: [Int: Int]
+    let labelToSize: [Int: Size]
     let equivalenceClasses: UnionFind
     
-    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Int], equivalenceClasses: UnionFind) {
+    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind) {
         self.labelToMemberPoint = labelToMemberPoint
         self.emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels
         self.labelToSize = labelToSize
@@ -112,6 +126,7 @@ class ConnectedComponentsInfo {
 // Find all the connected components in an image, that is the contiguous areas that are the same ( https://en.wikipedia.org/wiki/Connected-component_labeling ).
 // "Occupied" refers to "true" values in the image, and "empty" refers to "false" values in the image.
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
+// It is assumed that the input combined image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
 func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponentsInfo {
     let width = image.width
     let height = image.height
@@ -122,7 +137,7 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     // Tells what occupied components surround any empty component.
     var emptyLabelToNeighboringOccupiedLabels = [Int: Set<Int>]()
     // Tells the size of each component.
-    var labelToSize = [Int: Int]()
+    var labelToSize = [Int: Size]()
     
     // A matrix the size of the image with the label for each pixel.
     var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
@@ -138,11 +153,12 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     let outsideOfImageLabel = -1
     equivalenceClasses.createSubsetWith(outsideOfImageLabel)
     emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = []
-    labelToSize[outsideOfImageLabel] = 0
+    labelToSize[outsideOfImageLabel] = Size()
     
     for y in 0...height - 1 {
         for x in 0...width - 1 {
-            let isOccupied = image.getPixel(x: x, y: y)
+            let layerWithPixel = image.getLayerWithPixel(x: x, y: y)
+            let isOccupied = layerWithPixel > -1
             
             // Check the pixel's neighbors.
             // Note that we're using 4-connectivity ( https://en.wikipedia.org/wiki/Pixel_connectivity ) for speed.
@@ -184,12 +200,20 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
                 // Initialize the new label.
                 labelToMemberPoint[label] = (x, y)
                 emptyLabelToNeighboringOccupiedLabels[label] = []
-                labelToSize[label] = 0
+                labelToSize[label] = Size()
                 equivalenceClasses.createSubsetWith(label)
             }
             
-            // Actually label the pixel and increment size.
-            labelToSize[label]! += 1
+            // Increment size.
+            // If the pixel was on the 1st layer, it's the user drawing.
+            // If on the 0th layer, it's the main leaf.
+            // If -1, it was unoccupied.
+            if layerWithPixel == 1 {
+                labelToSize[label]!.drawingPart += 1
+            } else {
+                labelToSize[label]!.standardPart += 1
+            }
+            // Actually label the pixel.
             labelledImage[y][x] = label
             
             // Update the neighbor map if we have neighboring occupied and empty.

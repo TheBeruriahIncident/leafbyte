@@ -41,7 +41,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
     
     // Track the actual results.
     var formattedPercentConsumed: String!
-    var formattedLeafAreaInCm2: String?
+    var formattedLeafAreaIncludingConsumedAreaInCm2: String?
     var formattedConsumedAreaInCm2: String?
     
     let imagePicker = UIImagePickerController()
@@ -400,7 +400,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         
-        let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1 > $1.1 }
+        let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
         
         // Assume the largest occupied component is the leaf.
         let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
@@ -410,7 +410,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             return
         }
         let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
-        let leafAreaInPixels = leafLabelAndSize!.value
+        let leafAreaInPixels = leafLabelAndSize!.value.standardPart
         
         let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
         
@@ -426,12 +426,12 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
         
-        var consumedAreaInPixels = 0
+        var consumedAreaInPixels = leafLabelAndSize!.value.drawingPart
         for emptyLabelAndSize in emptyLabelsWithoutBackground {
             // This component is a hole if it neighbors the leaf (since we already filtered out the background).
             if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.intersection(leafLabels).isEmpty {
                 // Add to the consumed size.
-                consumedAreaInPixels += emptyLabelAndSize.value
+                consumedAreaInPixels += emptyLabelAndSize.value.standardPart
                 
                 // And fill in the consumed area.
                 let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
@@ -442,22 +442,25 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         drawingManager.finish(imageView: leafHolesView)
         
         // Set the result of the calculation, giving absolute area if the scale is set.
-        let percentConsumed = Double(consumedAreaInPixels) / Double(leafAreaInPixels) * 100
+        let leafAreaIncludingConsumedAreaInPixels = leafAreaInPixels + consumedAreaInPixels
+        let percentConsumed = Double(consumedAreaInPixels) / Double(leafAreaIncludingConsumedAreaInPixels) * 100
         formattedPercentConsumed = formatDouble(withThreeDecimalPoints: percentConsumed)
         if scaleMarkPixelLength != nil {
-            let leafAreaInCm2 = convertPixelsToCm2(leafAreaInPixels)
-            formattedLeafAreaInCm2 = formatDouble(withThreeDecimalPoints: leafAreaInCm2)
+            let leafAreaIncludingConsumedAreaInCm2 = convertPixelsToCm2(leafAreaIncludingConsumedAreaInPixels)
+            formattedLeafAreaIncludingConsumedAreaInCm2 = formatDouble(withThreeDecimalPoints: leafAreaIncludingConsumedAreaInCm2)
             let consumedAreaInCm2 = convertPixelsToCm2(consumedAreaInPixels)
             formattedConsumedAreaInCm2 = formatDouble(withThreeDecimalPoints: consumedAreaInCm2)
             
             // Set the number of lines or else lines past the first are dropped.
             resultsText.numberOfLines = 3
-            resultsText.text = "Total Leaf Area= \(formattedLeafAreaInCm2!) cm2\nConsumed Leaf Area= \(formattedConsumedAreaInCm2!) cm2 \nPercent Consumed= \(formattedPercentConsumed!)%"
+            resultsText.text = "Total Leaf Area= \(formattedLeafAreaIncludingConsumedAreaInCm2!) cm2\nConsumed Leaf Area= \(formattedConsumedAreaInCm2!) cm2 \nPercent Consumed= \(formattedPercentConsumed!)%"
         } else {
-            formattedLeafAreaInCm2 = nil
+            formattedLeafAreaIncludingConsumedAreaInCm2 = nil
             formattedConsumedAreaInCm2 = nil
             resultsText.text = "Leaf is \(formattedPercentConsumed!)% consumed."
         }
+        
+        print(resultsText.text!)
     }
     
     private func convertPixelsToCm2(_ pixels: Int) -> Double {
@@ -505,7 +508,7 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             self.present(alertController, animated: true, completion: nil)
         }
         
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func drawScaleMark() {
