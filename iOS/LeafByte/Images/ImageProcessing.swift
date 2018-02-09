@@ -155,12 +155,18 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = []
     labelToSize[outsideOfImageLabel] = Size()
     
+    // As an optimization (speeds this loop up by 25%), save off the isOccupied value for the previous y layer for the next loop through.
+    var previousYIsOccupied: [Bool]!
+    
     for y in 0...height - 1 {
-        // As an optimization (speeds this loop up by 25%), save off the previous isOccupied value for the next loop through.
-        var previousIsOccupied: Bool!
+        var currentYIsOccupied = [Bool]()
+        
+        // As an optimization (speeds this loop up by another 25%), save off the isOccupied value for the previous x for the next loop through.
+        var previousXIsOccupied: Bool!
         for x in 0...width - 1 {
             let layerWithPixel = image.getLayerWithPixel(x: x, y: y)
             let isOccupied = layerWithPixel > -1
+            currentYIsOccupied.append(isOccupied)
             
             // Check the pixel's neighbors.
             // Note that we're using 4-connectivity ( https://en.wikipedia.org/wiki/Pixel_connectivity ) for speed.
@@ -168,14 +174,14 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
             var westIsOccupied: Bool?
             var westLabel: Int?
             if x > 0 {
-                westIsOccupied = previousIsOccupied
+                westIsOccupied = previousXIsOccupied
                 westLabel = labelledImage[y][x - 1]
             }
-            previousIsOccupied = isOccupied
+            previousXIsOccupied = isOccupied
             var northIsOccupied: Bool?
             var northLabel: Int?
             if y > 0 {
-                northIsOccupied = image.getPixel(x: x, y: y - 1)
+                northIsOccupied = previousYIsOccupied[x]
                 northLabel = labelledImage[y - 1][x]
             }
             
@@ -242,6 +248,7 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
                 equivalenceClasses.combineClassesContaining(labelledImage[y][x], and: outsideOfImageLabel)
             }
         }
+        previousYIsOccupied = currentYIsOccupied
     }
    
     // -1, the label for the outside of the image, has a fake member point.
