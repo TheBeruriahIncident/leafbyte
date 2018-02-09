@@ -156,6 +156,8 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
     labelToSize[outsideOfImageLabel] = Size()
     
     for y in 0...height - 1 {
+        // As an optimization (speeds this loop up by 25%), save off the previous isOccupied value for the next loop through.
+        var previousIsOccupied: Bool!
         for x in 0...width - 1 {
             let layerWithPixel = image.getLayerWithPixel(x: x, y: y)
             let isOccupied = layerWithPixel > -1
@@ -166,9 +168,10 @@ func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponen
             var westIsOccupied: Bool?
             var westLabel: Int?
             if x > 0 {
-                westIsOccupied = image.getPixel(x: x - 1, y: y)
+                westIsOccupied = previousIsOccupied
                 westLabel = labelledImage[y][x - 1]
             }
+            previousIsOccupied = isOccupied
             var northIsOccupied: Bool?
             var northLabel: Int?
             if y > 0 {
