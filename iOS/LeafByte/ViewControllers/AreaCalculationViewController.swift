@@ -459,8 +459,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
             formattedConsumedAreaInCm2 = nil
             resultsText.text = "Leaf is \(formattedPercentConsumed!)% consumed."
         }
-        
-        print(resultsText.text!)
     }
     
     private func convertPixelsToCm2(_ pixels: Int) -> Double {

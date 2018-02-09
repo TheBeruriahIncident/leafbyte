@@ -145,7 +145,7 @@ class Settings: NSObject, NSCoding {
         return datasetNameToNextSampleNumber[datasetName]!
     }
     
-    func setGoogleFolderId(userId: String, googleFolderId: String) {
+    func setGoogleFolderId(userId: String, googleFolderId: String?) {
         if datasetNameToUserIdToGoogleFolderId[datasetName] == nil {
             datasetNameToUserIdToGoogleFolderId[datasetName] = [String: String]()
         }
@@ -153,7 +153,7 @@ class Settings: NSObject, NSCoding {
         datasetNameToUserIdToGoogleFolderId[datasetName]![userId] = googleFolderId
     }
     
-    func setGoogleSpreadsheetId(userId: String, googleSpreadsheetId: String) {
+    func setGoogleSpreadsheetId(userId: String, googleSpreadsheetId: String?) {
         if datasetNameToUserIdToGoogleSpreadsheetId[datasetName] == nil {
             datasetNameToUserIdToGoogleSpreadsheetId[datasetName] = [String: String]()
         }
@@ -161,7 +161,7 @@ class Settings: NSObject, NSCoding {
         datasetNameToUserIdToGoogleSpreadsheetId[datasetName]![userId] = googleSpreadsheetId
     }
     
-    func setTopLevelGoogleFolderId(userId: String, topLevelGoogleFolderId: String) {
+    func setTopLevelGoogleFolderId(userId: String, topLevelGoogleFolderId: String?) {
         userIdToTopLevelGoogleFolderId[userId] = topLevelGoogleFolderId
     }
     

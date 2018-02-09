@@ -68,16 +68,30 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
-                getGoogleSpreadsheetId(settings: settings, folderId: folderId, accessToken: accessToken, userId: userId, onSpreadsheetId: { spreadsheetId in
-                    appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
-                }, onFailure: onFailure)
-            }, onFailure: onFailure)
+            appendMeasurementToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure)
         }, onError: { _ in () })
 
     default:
         fatalError("\(settings.measurementSaveLocation) not handled in switch")
     }
+}
+
+private func appendMeasurementToGoogleDrive(settings: Settings, row: [String], accessToken: String, userId: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
+    getGoogleSpreadsheetId(settings: settings, accessToken: accessToken, userId: userId, onSpreadsheetId: { spreadsheetId in
+        appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
+            if !failedBecauseNotFound || alreadyFailedOnce {
+                onFailure()
+                return
+            }
+            
+            // Handle the case where measurement couldn't be appended because the sheet was deleted.
+            settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: nil)
+            settings.serialize()
+            
+            // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
+            appendMeasurementToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
+        })
+    }, onFailure: onFailure)
 }
 
 // This serializes just the image.
@@ -99,14 +113,31 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
-            getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
-                uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: onFailure)
-            }, onFailure: onFailure)
+            uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: onFailure)
         }, onError: { _ in onFailure() })
     
     default:
         fatalError("\(settings.imageSaveLocation) not handled in switch")
     }
+}
+
+private func uploadDataToGoogleDrive(settings: Settings, filename: String, accessToken: String, userId: String, pngImage: Data, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
+    getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
+        uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure:
+            { (failedBecauseNotFound: Bool) in
+                if !failedBecauseNotFound || alreadyFailedOnce {
+                    onFailure()
+                    return
+                }
+                
+                // Handle the case where data couldn't be uploaded because the dataset folder was deleted.
+                settings.setGoogleFolderId(userId: userId, googleFolderId: nil)
+                settings.serialize()
+                
+                // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
+                uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
+            })
+    }, onFailure: onFailure)
 }
 
 private func stringRowToCsvRow(_ row: [String]) -> Data {
@@ -123,12 +154,12 @@ private func getTopLevelGoogleFolderId(settings: Settings, accessToken: String, 
             settings.serialize()
             
             onFolderId(folderId)
-        }, onFailure: onFailure)
+        }, onFailure: { _ in onFailure() })
     }
 }
 
 // Get the folder id for the current dataset. It'll hold both the sheet and the images.
-private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, userId: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, userId: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     if let googleFolderId = settings.getGoogleFolderId(userId: userId) {
         onFolderId(googleFolderId)
     } else {
@@ -138,23 +169,49 @@ private func getDatasetGoogleFolderId(settings: Settings, accessToken: String, u
                 settings.serialize()
                 
                 onFolderId(datasetFolderId)
-            }, onFailure: onFailure)
+            }, onFailure: { (failedBecauseNotFound: Bool) in
+                if !failedBecauseNotFound || alreadyFailedOnce {
+                    onFailure()
+                    return
+                }
+                
+                // Handle the case where a dataset folder couldn't be created because the top level folder was deleted.
+                settings.setTopLevelGoogleFolderId(userId: userId, topLevelGoogleFolderId: nil)
+                settings.serialize()
+                
+                // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
+                getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: onFolderId, onFailure: onFailure, alreadyFailedOnce: true)
+            })
         }, onFailure: onFailure)
     }
 }
 
 // Get the spreadsheet id for sheet for the the current dataset.
-private func getGoogleSpreadsheetId(settings: Settings, folderId: String, accessToken: String, userId: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, userId: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     if let googleSpreadsheetId = settings.getGoogleSpreadsheetId(userId: userId) {
         onSpreadsheetId(googleSpreadsheetId)
     } else {
-        createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
-            appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, onSuccess: {
-                settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
+        getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
+            createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
+                appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, onSuccess: {
+                    settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
+                    settings.serialize()
+                    
+                    onSpreadsheetId(spreadsheetId)
+                }, onFailure: { _ in onFailure() })
+            }, onFailure: { (failedBecauseNotFound: Bool) in
+                if !failedBecauseNotFound || alreadyFailedOnce {
+                    onFailure()
+                    return
+                }
+                
+                // Handle the case where a sheet couldn't be created because the dataset folder was deleted.
+                settings.setGoogleFolderId(userId: userId, googleFolderId: nil)
                 settings.serialize()
                 
-                onSpreadsheetId(spreadsheetId)
-            }, onFailure: onFailure)
+                // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
+                getGoogleSpreadsheetId(settings: settings, accessToken: accessToken, userId: userId, onSpreadsheetId: onSpreadsheetId, onFailure: onFailure, alreadyFailedOnce: true)
+            })
         }, onFailure: onFailure)
     }
 }

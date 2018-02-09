@@ -8,15 +8,15 @@
 
 import Foundation
 
-func post(url: String, accessToken: String, jsonBody: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
+func post(url: String, accessToken: String, jsonBody: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping (Int, [String: Any]) -> Void, onError: @escaping (Error) -> Void) {
     post(url: url, accessToken: accessToken, body: jsonBody.data(using: .utf8)!, onSuccessfulResponse: onSuccessfulResponse, onUnsuccessfulResponse: onUnsuccessfulResponse, onError: onError)
 }
 
-func post(url: String, accessToken: String, body: Data, contentType: String = "application/json", onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
+func post(url: String, accessToken: String, body: Data, contentType: String = "application/json", onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping (Int, [String: Any]) -> Void, onError: @escaping (Error) -> Void) {
     makeRestCall(method: "POST", url: url, accessToken: accessToken, body: body, contentType: contentType, onSuccessfulResponse: onSuccessfulResponse, onUnsuccessfulResponse: onUnsuccessfulResponse, onError: onError)
 }
 
-private func makeRestCall(method: String, url urlString: String, accessToken: String, body: Data, contentType: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping ([String: Any]) -> Void, onError: @escaping (Error) -> Void) {
+private func makeRestCall(method: String, url urlString: String, accessToken: String, body: Data, contentType: String, onSuccessfulResponse: @escaping ([String: Any]) -> Void, onUnsuccessfulResponse: @escaping (Int, [String: Any]) -> Void, onError: @escaping (Error) -> Void) {
     let url = URL(string: urlString)
     
     var request = URLRequest(url: url!)
@@ -41,7 +41,7 @@ private func makeRestCall(method: String, url urlString: String, accessToken: St
         let statusCode = (response! as! HTTPURLResponse).statusCode
         if statusCode < 200 || statusCode >= 300 {
             print("Unsuccessful REST response: \(dataJson)")
-            onUnsuccessfulResponse(dataJson)
+            onUnsuccessfulResponse(statusCode, dataJson)
             return
         }
         

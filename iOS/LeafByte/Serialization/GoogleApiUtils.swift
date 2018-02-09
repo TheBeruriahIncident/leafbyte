@@ -8,25 +8,25 @@
 
 import Foundation
 
-func createFolder(name: String, folderId: String? = nil, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+func createFolder(name: String, folderId: String? = nil, accessToken: String, onFolderId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     createFile(name: name, folderId: folderId, type: "folder", accessToken: accessToken, onFileId: onFolderId, onFailure: onFailure)
 }
 
-func createSheet(name: String, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+func createSheet(name: String, folderId: String, accessToken: String, onSpreadsheetId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     createFile(name: name, folderId: folderId, type: "spreadsheet", accessToken: accessToken, onFileId: onSpreadsheetId, onFailure: onFailure)
 }
 
-func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let formattedRow = row.map({"\"\($0)\""}).joined(separator: ",")
     post(url: "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId)/values/Sheet1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS",
         accessToken: accessToken,
         jsonBody: "{values: [[\(formattedRow)]]}",
         onSuccessfulResponse: { response in onSuccess() },
-        onUnsuccessfulResponse: { _ in onFailure() },
-        onError: { _ in onFailure() })
+        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onError: { _ in onFailure(false) })
 }
 
-func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let boundary = "Boundary-\(UUID().uuidString)"
 
     var body = Data()
@@ -43,11 +43,11 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
             body: body,
             contentType: "multipart/related; boundary=\(boundary)",
             onSuccessfulResponse: { _ in onSuccess() },
-            onUnsuccessfulResponse: { _ in onFailure() },
-            onError: { _ in onFailure() })
+            onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+            onError: { _ in onFailure(false) })
 }
 
-private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping () -> Void) {
+private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let parentsParam = folderId != nil
         ? " parents: [{id: \"\(folderId!)\"}],"
         : ""
@@ -56,6 +56,10 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
          accessToken: accessToken,
          jsonBody: "{title: \"\(name)\",\(parentsParam) mimeType: \"application/vnd.google-apps.\(type)\"}",
          onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
-         onUnsuccessfulResponse: { _ in onFailure() },
-         onError: { _ in onFailure() })
+         onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+         onError: { _ in onFailure(false) })
+}
+
+private func isStatusCodeNotFound(_ statusCode: Int) -> Bool {
+    return statusCode == 404
 }
