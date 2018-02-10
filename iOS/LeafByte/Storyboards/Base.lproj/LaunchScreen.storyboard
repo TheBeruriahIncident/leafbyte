@@ -6,7 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,46 +24,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4JX-mo-AE7" userLabel="LeafByte Title">
-                                <rect key="frame" x="0.0" y="441" width="375" height="57.5"/>
-                                <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="By Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRC-ID-7Cc" userLabel="Credits Line 1">
-                                <rect key="frame" x="-6" y="497" width="375" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="xcP-gT-E35" userLabel="Leaf Image">
-                                <rect key="frame" x="125" y="314" width="124" height="129"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rMJ-TU-Ce2">
+                                <rect key="frame" x="0.0" y="259" width="375" height="89.5"/>
+                                <subviews>
+                                    <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgP-Zn-tNz" userLabel="LeafByte Title">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
+                                        <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zA9-DI-sN7" userLabel="Credits Line 1">
+                                        <rect key="frame" x="0.0" y="57.5" width="375" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&amp; Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7X-Lh-oxd" userLabel="Credits Line 2">
+                                        <rect key="frame" x="0.0" y="73.5" width="375" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="124" id="kVT-xe-qXy"/>
-                                    <constraint firstAttribute="height" constant="129" id="uvB-iS-u52"/>
+                                    <constraint firstItem="zgP-Zn-tNz" firstAttribute="leading" secondItem="rMJ-TU-Ce2" secondAttribute="leading" id="mCT-Pd-gWY"/>
+                                    <constraint firstAttribute="trailing" secondItem="zgP-Zn-tNz" secondAttribute="trailing" id="yL7-JC-BUY"/>
+                                </constraints>
+                            </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJQ-XB-bjD" userLabel="Leaf Image">
+                                <rect key="frame" x="143.5" y="120" width="128" height="139"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="up8-F1-du7"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="&amp; Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXf-ws-RDr" userLabel="Credits Line 2">
-                                <rect key="frame" x="0.0" y="574" width="375" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="SXf-ws-RDr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="A2I-Yx-MpN"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" multiplier="2" constant="30" id="FDH-5Q-ERe"/>
-                            <constraint firstItem="ZRC-ID-7Cc" firstAttribute="top" secondItem="4JX-mo-AE7" secondAttribute="bottom" constant="10" id="VsJ-xW-BmP"/>
-                            <constraint firstItem="4JX-mo-AE7" firstAttribute="top" secondItem="xcP-gT-E35" secondAttribute="bottom" constant="5" id="YGt-nK-BpD"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" id="aCq-ql-lYb"/>
-                            <constraint firstItem="4JX-mo-AE7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bEE-E7-6nR"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SXf-ws-RDr" secondAttribute="bottom" id="evF-c4-Ht0"/>
-                            <constraint firstItem="ZRC-ID-7Cc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hHs-OJ-kaa"/>
-                            <constraint firstItem="4JX-mo-AE7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ksZ-M8-vPa"/>
-                            <constraint firstItem="SXf-ws-RDr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pVs-PE-snA"/>
-                            <constraint firstItem="ZRC-ID-7Cc" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tVI-Ni-PcW"/>
-                            <constraint firstItem="SXf-ws-RDr" firstAttribute="top" secondItem="ZRC-ID-7Cc" secondAttribute="bottom" constant="5" id="upA-15-vxD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rMJ-TU-Ce2" secondAttribute="trailing" id="B8V-jb-34Q"/>
+                            <constraint firstItem="fJQ-XB-bjD" firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="Bgc-W2-rqN"/>
+                            <constraint firstItem="fJQ-XB-bjD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" constant="20" id="Tfb-5I-9Rz"/>
+                            <constraint firstItem="rMJ-TU-Ce2" firstAttribute="top" secondItem="fJQ-XB-bjD" secondAttribute="bottom" id="azW-ny-c2B"/>
+                            <constraint firstItem="rMJ-TU-Ce2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="m9d-Qm-SGX"/>
+                            <constraint firstItem="rMJ-TU-Ce2" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-30" id="zai-mQ-5ac"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
