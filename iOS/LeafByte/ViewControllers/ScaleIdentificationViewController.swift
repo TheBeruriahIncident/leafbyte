@@ -33,6 +33,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var scaleMarkEnd1: CGPoint?
     var scaleMarkEnd2: CGPoint?
     
+    var connectedComponentsInfo: ConnectedComponentsInfo!
+    
     // Projection from the full base image view to the actual image, so we can check if the touch is within the image.
     var baseImageViewToImage: Projection!
     var baseImageRect: CGRect!
@@ -124,6 +126,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.scaleMarkEnd1 = scaleMarkEnd1
             destination.scaleMarkEnd2 = scaleMarkEnd2
             destination.inTutorial = inTutorial
+            destination.initialConnectedComponentsInfo = connectedComponentsInfo
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {
@@ -193,7 +196,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         let image = LayeredIndexableImage(width: indexableImage.width, height: indexableImage.height)
         image.addImage(indexableImage)
         
-        let connectedComponentsInfo = labelConnectedComponents(image: image)
+        connectedComponentsInfo = labelConnectedComponents(image: image)
         
         // We're going to find the second biggest occupied component; we assume the biggest is the leaf and the second biggest is the scale mark.
         // As such, filter down to just occupied components.

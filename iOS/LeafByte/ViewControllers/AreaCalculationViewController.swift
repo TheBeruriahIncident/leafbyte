@@ -21,6 +21,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var scaleMarkEnd1: CGPoint?
     var scaleMarkEnd2: CGPoint?
     var inTutorial: Bool!
+    var initialConnectedComponentsInfo: ConnectedComponentsInfo!
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
@@ -204,6 +205,12 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         if !viewDidAppearHasRun {
+            calculateButton.isEnabled = false
+            let baseImage = IndexableImage(cgImage)
+            let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
+            combinedImage.addImage(baseImage)
+            useConnectedComponentsResults(connectedComponentsInfo: initialConnectedComponentsInfo, image: combinedImage)
+            
             initializeGrid()
             
             if inTutorial {
@@ -405,6 +412,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         
+        useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: combinedImage)
+    }
+    
+    private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
         
         // Assume the largest occupied component is the leaf.
@@ -440,7 +451,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
                 
                 // And fill in the consumed area.
                 let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
-                floodFill(image: combinedImage, fromPoint: CGPoint(x: floodStartX, y: floodStartY), drawingTo: drawingManager)
+                floodFill(image: image, fromPoint: CGPoint(x: floodStartX, y: floodStartY), drawingTo: drawingManager)
             }
         }
         
