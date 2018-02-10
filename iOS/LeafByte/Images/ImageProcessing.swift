@@ -160,6 +160,7 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
     
     for y in 0...height - 1 {
         var currentYIsOccupied = [Bool]()
+        currentYIsOccupied.reserveCapacity(width)
         
         // As an optimization (speeds this loop up by another 25%), save off the isOccupied value for the previous x for the next loop through.
         var previousXIsOccupied: Bool!
