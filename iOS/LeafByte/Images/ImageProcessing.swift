@@ -109,7 +109,7 @@ struct Size {
     }
 }
 
-class ConnectedComponentsInfo {
+struct ConnectedComponentsInfo {
     let labelToMemberPoint: [Int: (Int, Int)]
     let emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>]
     let labelToSize: [Int: Size]
