@@ -370,6 +370,8 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         redoButton.isEnabled = false
         
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
+        drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
+        drawingManager.context.setLineWidth(2)
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
@@ -391,12 +393,14 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         // The BooleanIndexableImage will be a view across both sources of pixels.
         // First we add the base iamge of the leaf.
         let baseImage = IndexableImage(cgImage)
-        let combinedImage = BooleanIndexableImage(width: baseImage.width, height: baseImage.height)
-        combinedImage.addImage(baseImage, withPixelToBoolConversion: { $0.isNonWhite() })
+        let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
+        combinedImage.addImage(baseImage)
         
         // Then we include any user drawings.
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
-        combinedImage.addImage(userDrawing, withPixelToBoolConversion: { $0.isVisible() })
+        combinedImage.addImage(userDrawing)
+        
+        print(baseImage.getPixel(x: 0, y: 0))
         
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         

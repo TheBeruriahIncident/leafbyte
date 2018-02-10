@@ -6,21 +6,21 @@
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
-// This image combines multiple indexable images along with functions that make those images boolean.
+// This image combines multiple indexable images.
 // The final image is effectively the sum of those other boolean images.
-class BooleanIndexableImage {
+class LayeredIndexableImage {
     let width: Int
     let height: Int
     
-    var imagesWithConvertors = [(IndexableImage, (Pixel) -> Bool)]()
+    var images = [IndexableImage]()
     
     init(width: Int, height: Int) {
         self.width = width
         self.height = height
     }
 
-    func addImage(_ image: IndexableImage, withPixelToBoolConversion convertor: @escaping (Pixel) -> Bool) {
-        imagesWithConvertors.append((image, convertor))
+    func addImage(_ image: IndexableImage) {
+        images.append(image)
     }
     
     func getPixel(x: Int, y: Int) -> Bool {
@@ -29,9 +29,8 @@ class BooleanIndexableImage {
     
     // Finds the first image layer which is true, or -1 if no layers are true.
     func getLayerWithPixel(x: Int, y: Int) -> Int {
-        for (index, imageWithConvertor) in imagesWithConvertors.enumerated() {
-            let (image, convertor) = imageWithConvertor
-            if convertor(image.getPixel(x: x, y: y)) {
+        for (index, image) in images.enumerated() {
+            if image.getPixel(x: x, y: y).isVisible() {
                 return index
             }
         }

@@ -126,8 +126,8 @@ class ConnectedComponentsInfo {
 // Find all the connected components in an image, that is the contiguous areas that are the same ( https://en.wikipedia.org/wiki/Connected-component_labeling ).
 // "Occupied" refers to "true" values in the image, and "empty" refers to "false" values in the image.
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
-// It is assumed that the input combined image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
-func labelConnectedComponents(image: BooleanIndexableImage) -> ConnectedComponentsInfo {
+// It is assumed that the input layered image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
+func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponentsInfo {
     let width = image.width
     let height = image.height
     

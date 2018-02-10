@@ -160,15 +160,15 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
         
         let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
-        let nonWhitePixel = searchForNonWhite(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
-        if nonWhitePixel == nil {
+        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 90)
+        if visiblePixel == nil {
             setScaleNotFound()
             setScrollingMode(true)
             return
         }
         
         // Since a non-white section in the image was touched, it may be a scale mark.
-        measureScaleMark(fromPointInMark: nonWhitePixel!, inImage: indexableImage, withMinimumLength: 1)
+        measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1)
         
         // Switch back to scrolling after each scale mark identified.
         setScrollingMode(true)
@@ -190,8 +190,8 @@ class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate,
     
     private func findScaleMark() {
         let indexableImage = IndexableImage(cgImage)
-        let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
-        image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
+        let image = LayeredIndexableImage(width: indexableImage.width, height: indexableImage.height)
+        image.addImage(indexableImage)
         
         let connectedComponentsInfo = labelConnectedComponents(image: image)
         

@@ -45,7 +45,7 @@
 		46F1063F2001250E000B4B83 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1063E2001250E000B4B83 /* Projection.swift */; };
 		46F1064120012F06000B4B83 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064020012F06000B4B83 /* Extensions.swift */; };
 		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
-		46F1064520013D6E000B4B83 /* BooleanIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* BooleanIndexableImage.swift */; };
+		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +109,7 @@
 		46F1063E2001250E000B4B83 /* Projection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
 		46F1064020012F06000B4B83 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		46F10642200133CF000B4B83 /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
-		46F1064420013D6E000B4B83 /* BooleanIndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanIndexableImage.swift; sourceTree = "<group>"; };
+		46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayeredIndexableImage.swift; sourceTree = "<group>"; };
 		505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
@@ -205,11 +205,11 @@
 		4623585E20016AF9005EA36E /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				46F1064420013D6E000B4B83 /* BooleanIndexableImage.swift */,
-				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
 				46DB8A851FFE9AA900EF59BE /* ImageConversions.swift */,
 				46DB8A8B1FFEF88200EF59BE /* ImageProcessing.swift */,
 				46DB8A8F1FFFD74900EF59BE /* ImageUtils.swift */,
+				46DB8A871FFE9C0C00EF59BE /* IndexableImage.swift */,
+				46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */,
 				46DB8A891FFE9DAF00EF59BE /* Pixel.swift */,
 				46F1063E2001250E000B4B83 /* Projection.swift */,
 			);
@@ -533,7 +533,7 @@
 				46A969D2202BED9300B98898 /* TutorialViewController.swift in Sources */,
 				46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */,
 				46F1064120012F06000B4B83 /* Extensions.swift in Sources */,
-				46F1064520013D6E000B4B83 /* BooleanIndexableImage.swift in Sources */,
+				46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */,
 				460F687120140A31002C8BA7 /* GoogleSignInManager.swift in Sources */,
 				4651F0262011896800365F93 /* Settings.swift in Sources */,
 				46DB8A8E1FFF332C00EF59BE /* UIUtils.swift in Sources */,

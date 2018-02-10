@@ -34,28 +34,15 @@ class IndexableImage {
     }
     
     // Useful for debugging: prints the image to the console as 1s and 0s, supporting different modes of what pixels become 1s vs 0s.
-    func printInBinary(mode: BinaryPrintingMode = .blackAndWhite) {
+    func printInBinary() {
         for y in 0...height - 1 {
             for x in 0...width - 1 {
                 let pixel = getPixel(x: x, y: y)
                 
-                var isOne: Bool!
-                switch mode {
-                case .blackAndWhite:
-                    // White pixels are 0s, non-white pixels are 1s.
-                    isOne = pixel.isNonWhite()
-                case .visible:
-                    // Invisible pixels are 0s, visible pixels are 1s.
-                    isOne = pixel.isVisible()
-                }
-                
-                print(isOne ? "1" : "0", terminator: "")
+                // Invisible pixels are 0s, visible pixels are 1s.
+                print(pixel.isVisible() ? "1" : "0", terminator: "")
             }
             print("")
         }
-    }
-    
-    enum BinaryPrintingMode {
-        case blackAndWhite, visible
     }
 }

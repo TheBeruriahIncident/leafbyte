@@ -8,8 +8,6 @@
 
 // A representation of a single pixel.
 struct Pixel: Equatable {
-    private static let white = Pixel(red: 255, green: 255, blue: 255, alpha: 255)
-    
     let red: UInt8
     let green: UInt8
     let blue: UInt8
@@ -28,14 +26,6 @@ struct Pixel: Equatable {
     
     func isInvisible() -> Bool {
         return self.alpha == 0
-    }
-    
-    func isWhite() -> Bool {
-        return self == Pixel.white
-    }
-    
-    func isNonWhite() -> Bool {
-        return self != Pixel.white
     }
     
     // MARK: Equatable overrides

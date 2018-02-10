@@ -27,10 +27,10 @@ class ThresholdingFilter: CIFilter {
         // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
         "  const vec3 rgbToLuma = vec3(0.299, 0.587, 0.114);" +
         "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
-        // (1, 1, 1) is the color white, and 1 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it solid
-        "const vec4 whitePixel = vec4(1.0);" +
-        // If the pixel is not intense enough, return white; otherwise, return a pixel of the actual (saturated) image, darkened to make it more distinct from white.
-        "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : whitePixel;" +
+        // 0 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it invisible.
+        "const vec4 invisiblePixel = vec4(0.0);" +
+        // If the pixel is not intense enough, return invisible; otherwise, return a pixel of the actual (saturated) image, darkened to make it more distinct.
+        "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : invisiblePixel;" +
         "}")!
     
     func setInputImage(_ inputImage: CGImage) {

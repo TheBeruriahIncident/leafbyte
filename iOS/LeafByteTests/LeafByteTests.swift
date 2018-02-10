@@ -22,11 +22,11 @@ class LeafByteTests: XCTestCase {
         
         let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
         
-        XCTAssert(indexableImage.getPixel(x: 5, y: 5).isWhite())
-        XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isNonWhite())
-        XCTAssert(indexableImage.getPixel(x: 1820, y: 1690).isNonWhite())
-        XCTAssert(indexableImage.getPixel(x: 1660, y: 1820).isWhite())
-        XCTAssert(indexableImage.getPixel(x: 1740, y: 1820).isNonWhite())
+        XCTAssert(indexableImage.getPixel(x: 5, y: 5).isInvisible())
+        XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isVisible())
+        XCTAssert(indexableImage.getPixel(x: 1820, y: 1690).isVisible())
+        XCTAssert(indexableImage.getPixel(x: 1660, y: 1820).isInvisible())
+        XCTAssert(indexableImage.getPixel(x: 1740, y: 1820).isVisible())
     }
     
     func testSuggestedThreshold() {
@@ -49,8 +49,8 @@ class LeafByteTests: XCTestCase {
         let thresholdedImage = filter.outputImage!
         
         let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
-        let image = BooleanIndexableImage(width: indexableImage.width, height: indexableImage.height)
-        image.addImage(indexableImage, withPixelToBoolConversion: { $0.isNonWhite() })
+        let image = LayeredIndexableImage(width: indexableImage.width, height: indexableImage.height)
+        image.addImage(indexableImage)
 
         var connectedComponentsInfo: ConnectedComponentsInfo!
         self.measure {

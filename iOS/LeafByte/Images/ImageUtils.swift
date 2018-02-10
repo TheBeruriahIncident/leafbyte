@@ -162,19 +162,19 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         let y = roundToInt(point.y)
         
         let westPoint = CGPoint(x: x - 1, y: y)
-        if x > 0 && image.getPixel(x: x - 1, y: y).isNonWhite() && !explored.contains(westPoint) {
+        if x > 0 && image.getPixel(x: x - 1, y: y).isVisible() && !explored.contains(westPoint) {
             queue.enqueue(westPoint)
         }
         let eastPoint = CGPoint(x: x + 1, y: y)
-        if x < width - 1 && image.getPixel(x: x + 1, y: y).isNonWhite() && !explored.contains(eastPoint) {
+        if x < width - 1 && image.getPixel(x: x + 1, y: y).isVisible() && !explored.contains(eastPoint) {
             queue.enqueue(eastPoint)
         }
         let southPoint = CGPoint(x: x, y: y - 1)
-        if y > 0 && image.getPixel(x: x, y: y - 1).isNonWhite() && !explored.contains(southPoint) {
+        if y > 0 && image.getPixel(x: x, y: y - 1).isVisible() && !explored.contains(southPoint) {
             queue.enqueue(southPoint)
         }
         let northPoint = CGPoint(x: x, y: y + 1)
-        if y < height - 1 && image.getPixel(x: x, y: y + 1).isNonWhite() && !explored.contains(northPoint) {
+        if y < height - 1 && image.getPixel(x: x, y: y + 1).isVisible() && !explored.contains(northPoint) {
             queue.enqueue(northPoint)
         }
         
@@ -186,7 +186,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
 }
 
 // Starting at a point, breadth-first searches around to find a non-white point, bounded in search size by maxPixelsToCheck.
-func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
+func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
     let width = image.width
     let height = image.height
     
@@ -200,7 +200,7 @@ func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: C
         }
         
         // Stop if we've found non-white.
-        if image.getPixel(x: roundToInt(point.x), y: roundToInt(point.y)).isNonWhite() {
+        if image.getPixel(x: roundToInt(point.x), y: roundToInt(point.y)).isVisible() {
             return point
         }
         
@@ -232,7 +232,7 @@ func searchForNonWhite(inImage image: IndexableImage, fromPoint startingPoint: C
 
 // Flood fills an image from a point ( https://en.wikipedia.org/wiki/Flood_fill ).
 // Assumes that the starting point is "empty" (false) in the boolean image, and draws to the drawing manager.
-func floodFill(image: BooleanIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
+func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, drawingTo drawingManager: DrawingManager) {
     // This tracks what ranges are already filled in, mapping a y coordinate to a list of x ranges.
     var filledRanges = [Int: [(Int, Int)]]()
     // This is a list of points to fill from.
