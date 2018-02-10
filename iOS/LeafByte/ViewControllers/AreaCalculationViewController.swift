@@ -152,6 +152,9 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         if calculateButton.isEnabled {
             calculateButton.isEnabled = false
             calculateArea()
+            
+            // Pause for .25s so this isn't a weird flicker.
+            usleep(250000)
         }
         
         let afterSerialization = {
@@ -399,8 +402,6 @@ class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UII
         // Then we include any user drawings.
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         combinedImage.addImage(userDrawing)
-        
-        print(baseImage.getPixel(x: 0, y: 0))
         
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
         
