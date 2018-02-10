@@ -138,11 +138,11 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
     var emptyLabelToNeighboringOccupiedLabels = [Int: Set<Int>]()
     // Tells the size of each component.
     var labelToSize = [Int: Size]()
+    // A data structure to track what labels actually correspond to the same component (because of the way the algorithm runs, a single blob might get partially marked with one label and partially with another).
+    let equivalenceClasses = UnionFind()
     
     // A matrix the size of the image with the label for each pixel.
     var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
-    // A data structure to track what labels actually correspond to the same component (because of the way the algorithm runs, a single blob might get partially marked with one label and partially with another).
-    let equivalenceClasses = UnionFind()
     
     // Negative labels will refer to empty components; positive will refer to occupied components.
     // Track what labels to give out next as we create new groups.
@@ -246,7 +246,7 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
 
             // Any empty pixels on the edge of the image are part of the "outside of the image" component.
             if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
-                equivalenceClasses.combineClassesContaining(labelledImage[y][x], and: outsideOfImageLabel)
+                equivalenceClasses.combineClassesContaining(label, and: outsideOfImageLabel)
             }
         }
         previousYIsOccupied = currentYIsOccupied
