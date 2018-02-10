@@ -141,9 +141,6 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
     // A data structure to track what labels actually correspond to the same component (because of the way the algorithm runs, a single blob might get partially marked with one label and partially with another).
     let equivalenceClasses = UnionFind()
     
-    // A matrix the size of the image with the label for each pixel.
-    var labelledImage = Array(repeating: Array(repeating: 0, count: width), count: height)
-    
     // Negative labels will refer to empty components; positive will refer to occupied components.
     // Track what labels to give out next as we create new groups.
     var nextOccupiedLabel = 1
@@ -155,15 +152,20 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
     emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = []
     labelToSize[outsideOfImageLabel] = Size()
     
-    // As an optimization (speeds this loop up by 25%), save off the isOccupied value for the previous y layer for the next loop through.
+    // As an optimization (speeds this loop up by 40%), save off the isOccupied and label values for the previous y layer for the next loop through.
     var previousYIsOccupied: [Bool]!
+    var previousYLabels: [Int]!
     
     for y in 0...height - 1 {
         var currentYIsOccupied = [Bool]()
         currentYIsOccupied.reserveCapacity(width)
         
-        // As an optimization (speeds this loop up by another 25%), save off the isOccupied value for the previous x for the next loop through.
+        var currentYLabels = [Int]()
+        currentYLabels.reserveCapacity(width)
+        
+        // As an optimization (speeds this loop up by another 40%), save off the isOccupied and label value for the previous x for the next loop through.
         var previousXIsOccupied: Bool!
+        var previousXLabel: Int!
         for x in 0...width - 1 {
             let layerWithPixel = image.getLayerWithPixel(x: x, y: y)
             let isOccupied = layerWithPixel > -1
@@ -176,14 +178,14 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
             var westLabel: Int?
             if x > 0 {
                 westIsOccupied = previousXIsOccupied
-                westLabel = labelledImage[y][x - 1]
+                westLabel = previousXLabel
             }
             previousXIsOccupied = isOccupied
             var northIsOccupied: Bool?
             var northLabel: Int?
             if y > 0 {
                 northIsOccupied = previousYIsOccupied[x]
-                northLabel = labelledImage[y - 1][x]
+                northLabel = previousYLabels[x]
             }
             
             // Determine what label this pixel should have.
@@ -223,8 +225,6 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
             } else {
                 labelToSize[label]!.standardPart += 1
             }
-            // Actually label the pixel.
-            labelledImage[y][x] = label
             
             // Update the neighbor map if we have neighboring occupied and empty.
             if isOccupied {
@@ -248,8 +248,12 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
             if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
                 equivalenceClasses.combineClassesContaining(label, and: outsideOfImageLabel)
             }
+            
+            previousXLabel = label
+            currentYLabels.append(label)
         }
         previousYIsOccupied = currentYIsOccupied
+        previousYLabels = currentYLabels
     }
    
     // -1, the label for the outside of the image, has a fake member point.
