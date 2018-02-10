@@ -16,7 +16,7 @@ func initializeImage(view: UIImageView, size: CGSize) {
 }
 
 func resizeImage(_ image: UIImage) -> CGImage {
-    return resizeImage(image, within: CGSize(width: 400, height: 400))
+    return resizeImage(image, within: CGSize(width: 1200, height: 1200))
 }
 
 // See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
