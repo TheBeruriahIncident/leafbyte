@@ -8,7 +8,7 @@
 
 // This image combines multiple indexable images.
 // The final image is effectively the sum of those other boolean images.
-class LayeredIndexableImage {
+final class LayeredIndexableImage {
     let width: Int
     let height: Int
     

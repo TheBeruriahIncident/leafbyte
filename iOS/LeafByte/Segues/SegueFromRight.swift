@@ -9,7 +9,7 @@
 import UIKit
 
 // This allows views to transition from the right side over the current view.
-class SegueFromRight: UIStoryboardSegue {
+final class SegueFromRight: UIStoryboardSegue {
     // MARK: UIStoryboardSegue overrides
     
     override func perform() {

@@ -9,7 +9,7 @@
 import Accelerate
 import UIKit
 
-class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
+final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     let HISTOGRAM_MAX = 100
     
     // MARK: - Fields

@@ -9,7 +9,7 @@
 import GoogleSignIn
 
 // This pretends to be a view controller to handle Google sign-in, because the delegate has a runtime requirement of being a view controller.
-class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
+final class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
     static let googleSignInManager = GoogleSignInManager()
     

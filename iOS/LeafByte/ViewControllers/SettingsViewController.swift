@@ -9,7 +9,7 @@
 import GoogleSignIn
 import UIKit
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
+final class SettingsViewController: UIViewController, UITextFieldDelegate {
     var settings: Settings!
     
     // MARK: - Outlets

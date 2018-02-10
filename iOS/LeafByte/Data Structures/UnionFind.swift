@@ -9,7 +9,7 @@
 // A union-find allows us to keep track of a partition of a set of elements and combine equivalence classes ( https://en.wikipedia.org/wiki/Disjoint-set_data_structure ).
 // This implementation is adapted from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift .
 // This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .
-class UnionFind {
+final class UnionFind {
     var classToElements = [Int: Set<Int>]()
     
     private var elementToSubset = [Int: Int]()

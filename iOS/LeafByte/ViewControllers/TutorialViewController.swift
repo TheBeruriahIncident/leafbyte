@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TutorialViewController: UIViewController {
+final class TutorialViewController: UIViewController {
     // MARK: - Fields
     
     // These are passed from the main menu view.

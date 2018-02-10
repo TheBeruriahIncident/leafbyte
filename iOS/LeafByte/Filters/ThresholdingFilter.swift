@@ -12,7 +12,7 @@ import UIKit
 // This Core Image Filter ( https://developer.apple.com/documentation/coreimage/cifilter ) is used to remove the image background via thresholding ( https://en.wikipedia.org/wiki/Thresholding_(image_processing) ).
 // Because Core Image saturates images to make them more vibrant by default, we use both a saturated form of the image and one in the original color space.
 // This allows us to do the thresholding using the unmanipulated image but only show pixels from the more vibrant image.
-class ThresholdingFilter: CIFilter {
+final class ThresholdingFilter: CIFilter {
     var threshold: Float = 0.5
     
     private var inputImageOriginalColorSpace: CIImage!

@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 // This class controls the main menu view, the first view in the app.
-class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
     var settings: Settings!

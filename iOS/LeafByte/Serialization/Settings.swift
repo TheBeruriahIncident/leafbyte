@@ -9,7 +9,7 @@
 import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
-class Settings: NSObject, NSCoding {
+final class Settings: NSObject, NSCoding {
     static let defaultDatasetName = "Herbivory Measurement"
     static let defaultNextSampleNumber = 1
     static let defaultScaleMarkLength = 10.0

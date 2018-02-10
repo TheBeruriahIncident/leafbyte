@@ -11,7 +11,7 @@ import UIKit
 // This class represnts the entry point to our app and is discussed at https://developer.apple.com/documentation/uikit/uiapplicationdelegate .
 // If we wanted custom behavior for lifecycle events, such as when a user switches away from the app, this is where we'd handle that.
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 

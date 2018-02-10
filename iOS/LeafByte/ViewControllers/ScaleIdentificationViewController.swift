@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
+final class ScaleIdentificationViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.

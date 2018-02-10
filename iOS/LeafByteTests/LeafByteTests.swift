@@ -9,7 +9,7 @@
 import XCTest
 @testable import LeafByte
 
-class LeafByteTests: XCTestCase {
+final class LeafByteTests: XCTestCase {
     func testThresholdingFilter() {
         let image = uiToCgImage(loadImage(named: "leafWithScale"))
         

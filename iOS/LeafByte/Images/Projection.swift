@@ -11,7 +11,7 @@ import UIKit
 
 // Represents a projection from one space to another ( https://en.wikipedia.org/wiki/Projection_(mathematics) ).
 // For example, finding the matching pixel in two different spaces that have different dimensions.
-class Projection {
+final class Projection {
     let scale: Double
     let xOffset: Double
     let yOffset: Double

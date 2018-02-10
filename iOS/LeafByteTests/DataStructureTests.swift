@@ -9,7 +9,7 @@
 import XCTest
 @testable import LeafByte
 
-class DataStructureTests: XCTestCase {
+final class DataStructureTests: XCTestCase {
     func testQueue() {
         var queue = Queue();
         let point1 = CGPoint(x: 1, y: 2)
