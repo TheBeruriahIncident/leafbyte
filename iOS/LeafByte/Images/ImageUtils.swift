@@ -32,7 +32,9 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
     // Find the resizing ratio that maintains the aspect ratio.
     let resizingRatioForWidth = newBounds.width / image.size.width
     let resizingRatioForHeight = newBounds.height / image.size.height
-    let resizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
+    let uncappedResizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
+    // Make sure we don't scale up.
+    let resizingRatio = min(uncappedResizingRatio, 1)
     
     // Calculate the new image size.
     let newWidth = image.size.width * resizingRatio
