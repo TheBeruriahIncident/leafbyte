@@ -510,7 +510,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2757.5" y="868.5"/>
+            <point key="canvasLocation" x="3193" y="880"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Nbb-yx-jpU">
@@ -977,7 +977,6 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
