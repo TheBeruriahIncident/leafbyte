@@ -280,30 +280,28 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWasShown(notification: NSNotification){
-        var info = notification.userInfo!
+        // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
+        let info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
-        
         let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0)
-        self.scrollView.contentInset = contentInsets
-        self.scrollView.scrollIndicatorInsets = contentInsets
+        scrollView.contentInset = contentInsets
         
-        var aRect = self.view.frame
-        aRect.size.height -= keyboardSize.height
-        if let activeField = self.activeField {
-            print(aRect)
-            print(activeField.frame.origin)
-            if (!aRect.contains(activeField.frame.origin)){
-                scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: true)
-            }
+        var visibleFrame = self.view.frame
+        
+        visibleFrame.size.height -= keyboardSize.height
+        if !visibleFrame.contains(activeField!.frame.origin) {
+            let scrollOffsetBuffer = 20
+            let scrollOffset = Int(self.view.frame.height - (activeField!.frame.origin.y + activeField!.frame.size.height)) + scrollOffsetBuffer
+            
+            scrollView.setContentOffset(CGPoint(x: 0, y: scrollOffset), animated: true)
         }
     }
     
     @objc func keyboardWillBeHidden(notification: NSNotification){
         // When the keyboard is to be hidden, scroll the view back.
-        var info = notification.userInfo!
+        let info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
         let contentInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize.height, 0.0)
-        self.scrollView.contentInset = contentInsets
-        self.scrollView.scrollIndicatorInsets = contentInsets
+        scrollView.contentInset = contentInsets
     }
 }
