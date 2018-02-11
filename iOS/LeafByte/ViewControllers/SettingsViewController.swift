@@ -10,9 +10,15 @@ import GoogleSignIn
 import UIKit
 
 final class SettingsViewController: UIViewController, UITextFieldDelegate {
+    // MARK: - Fields
+    
     var settings: Settings!
     
+    var activeField: UITextField?
+    
     // MARK: - Outlets
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var datasetName: UITextField!
     @IBOutlet weak var imageSaveLocation: UISegmentedControl!
@@ -175,8 +181,20 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
         datasetName.delegate = self
         nextSampleNumber.delegate = self
+        scaleMarkLength.delegate = self
         
         updateEnabledness()
+        
+        registerForKeyboardNotifications()
+        
+        // Make sure touch events aren't intercepted by the scroll view.
+        let recog = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissKeyboard))
+        recog.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(recog)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        deregisterFromKeyboardNotifications()
     }
     
     // If a user taps outside of the keyboard, close the keyboard.
@@ -192,9 +210,20 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField){
+        // Track the current edited fields.
+        activeField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField){
+        // Clear the current edited fields.
+        activeField = nil
+    }
+    
     // MARK: - Helpers
     
-    private func dismissKeyboard() {
+    // @objc to allow calling as a Selector.
+    @objc private func dismissKeyboard() {
         self.view.endEditing(true)
     }
     
@@ -238,5 +267,43 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     private func presentFailedGoogleSignInAlert() {
         presentAlert(self: self, title: nil, message: "Google sign-in is required for saving to Google Drive")
+    }
+    
+    func registerForKeyboardNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardWasShown(notification: NSNotification){
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
+        
+        let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0)
+        self.scrollView.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
+        
+        var aRect = self.view.frame
+        aRect.size.height -= keyboardSize.height
+        if let activeField = self.activeField {
+            print(aRect)
+            print(activeField.frame.origin)
+            if (!aRect.contains(activeField.frame.origin)){
+                scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: true)
+            }
+        }
+    }
+    
+    @objc func keyboardWillBeHidden(notification: NSNotification){
+        // When the keyboard is to be hidden, scroll the view back.
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
+        let contentInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize.height, 0.0)
+        self.scrollView.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
     }
 }
