@@ -258,16 +258,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         return scrollableView
     }
     
-    // If a user interacts outside of the keyboard, close the keyboard.
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        dismissKeyboard()
-    }
-    
-    // If a user interacts outside of the keyboard, close the keyboard.
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        dismissKeyboard()
-    }
-    
     // MARK: - UIResponder overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
