@@ -27,6 +27,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
         serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime, location: location, notes: notes, onSuccess: {
             serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
                 settings.incrementNextSampleNumber()
+                settings.noteDatasetUsed()
                 settings.serialize()
                 
                 onSuccess()

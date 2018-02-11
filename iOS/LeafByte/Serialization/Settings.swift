@@ -22,6 +22,7 @@ final class Settings: NSObject, NSCoding {
     
     struct PropertyKey {
         static let datasetName = "datasetName"
+        static let datasetNameToEpochTimeOfLastUse = "datasetNameToEpochTimeOfLastUse"
         static let datasetNameToNextSampleNumber = "datasetNameToNextSampleNumber"
         static let datasetNameToUserIdToGoogleFolderId = "datasetNameToUserIdToGoogleFolderId"
         static let datasetNameToUserIdToGoogleSpreadsheetId = "datasetNameToUserIdToGoogleSpreadsheetId"
@@ -34,6 +35,7 @@ final class Settings: NSObject, NSCoding {
     
     var datasetName = Settings.defaultDatasetName
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
+    var datasetNameToEpochTimeOfLastUse = [String: Int]()
     var datasetNameToNextSampleNumber = [defaultDatasetName: defaultNextSampleNumber]
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUserIdToGoogleSpreadsheetId = [String: [String: String]]()
@@ -51,6 +53,9 @@ final class Settings: NSObject, NSCoding {
     required init(coder decoder: NSCoder) {
         if let datasetName = decoder.decodeObject(forKey: PropertyKey.datasetName) as? String {
             self.datasetName = datasetName
+        }
+        if let datasetNameToEpochTimeOfLastUse = decoder.decodeObject(forKey: PropertyKey.datasetNameToEpochTimeOfLastUse) as? [String: Int] {
+            self.datasetNameToEpochTimeOfLastUse = datasetNameToEpochTimeOfLastUse
         }
         if let datasetNameToNextSampleNumber = decoder.decodeObject(forKey: PropertyKey.datasetNameToNextSampleNumber) as? [String: Int] {
             self.datasetNameToNextSampleNumber = datasetNameToNextSampleNumber
@@ -81,6 +86,7 @@ final class Settings: NSObject, NSCoding {
     // This defines how to serialize (how to save a Settings to disk).
     func encode(with coder: NSCoder) {
         coder.encode(datasetName, forKey: PropertyKey.datasetName)
+        coder.encode(datasetNameToEpochTimeOfLastUse, forKey: PropertyKey.datasetNameToEpochTimeOfLastUse)
         coder.encode(datasetNameToNextSampleNumber, forKey: PropertyKey.datasetNameToNextSampleNumber)
         coder.encode(datasetNameToUserIdToGoogleFolderId, forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId)
         coder.encode(datasetNameToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUserIdToGoogleSpreadsheetId)
@@ -99,6 +105,7 @@ final class Settings: NSObject, NSCoding {
         }
         
         return datasetName == other.datasetName
+            && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
             && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleFolderId).isEqual(to: other.datasetNameToUserIdToGoogleFolderId)
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUserIdToGoogleSpreadsheetId)
@@ -132,8 +139,15 @@ final class Settings: NSObject, NSCoding {
         return datasetNameToNextSampleNumber[datasetName]!
     }
     
+    func noteDatasetUsed() {
+        datasetNameToEpochTimeOfLastUse[datasetName] = Int(Date().timeIntervalSince1970)
+    }
+    
     func getPreviousDatasetNames() -> [String] {
-        return Array(datasetNameToUserIdToGoogleFolderId.keys) + [ datasetName ]
+        // Order the previously used datasets by most recently used, then put the current dataset name first on the list.
+        var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted(by: { $0.1 > $1.1 }).map({ $0.key }).filter({ $0 != datasetName })
+        previousDatasets.insert(datasetName, at: 0)
+        return previousDatasets
     }
     
     func incrementNextSampleNumber() {
