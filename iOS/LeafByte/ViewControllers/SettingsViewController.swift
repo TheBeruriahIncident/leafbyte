@@ -9,12 +9,14 @@
 import GoogleSignIn
 import UIKit
 
-final class SettingsViewController: UIViewController, UITextFieldDelegate {
+final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     // MARK: - Fields
     
     var settings: Settings!
     
     var activeField: UITextField?
+    
+    var previousDatasetPickerData = [String]()
     
     // MARK: - Outlets
     
@@ -26,35 +28,48 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var saveGps: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
+    @IBOutlet weak var previousDatasetPicker: UIPickerView!
     
     @IBOutlet weak var datasetNameLabel: UILabel!
     @IBOutlet weak var nextSampleNumberLabel: UILabel!
     @IBOutlet weak var saveGpsLabel: UILabel!
     
+    @IBOutlet weak var previousDatasetButton: UIButton!
     @IBOutlet weak var signOutOfGoogleButton: UIButton!
     
     // MARK: - Actions
     
     @IBAction func datasetNameChanged(_ sender: UITextField) {
+        datasetNameChanged(sender.text!)
+    }
+    
+    func datasetNameChanged(_ candidateNewName: String) {
         // Fall back to the default if the box is empty.
         var newDatasetName: String!
-        if sender.text!.isEmpty {
+        if candidateNewName.isEmpty {
             newDatasetName = Settings.defaultDatasetName
-            
-            // If we fallback, update the box too.
-            datasetName.text = newDatasetName
         } else {
-            newDatasetName = sender.text!
+            newDatasetName = candidateNewName
         }
         
         settings.datasetName = newDatasetName
         // Switch to the next sample number associated with this dataset.
         nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
         settings.serialize()
+        
+        // Update the box, in case this was a fallback or via the picker.
+        datasetName.text = newDatasetName
+    }
+    
+    @IBAction func choosePreviousDataset(_ sender: Any) {
+        previousDatasetPickerData = settings.getPreviousDatasetNames()
+        previousDatasetPicker.reloadAllComponents()
+        
+        previousDatasetPicker.isHidden = false
     }
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
-        dismissKeyboard()
+        dismissInput()
         
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         let persistChange = {
@@ -80,7 +95,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
-        dismissKeyboard()
+        dismissInput()
         
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         let persistChange = {
@@ -122,7 +137,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveGpsChanged(_ sender: UISwitch) {
-        dismissKeyboard()
+        dismissInput()
         
         settings.saveGpsData = sender.isOn
         settings.serialize()
@@ -181,9 +196,15 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
         registerForKeyboardNotifications()
         
         // Make sure touch events aren't intercepted by the scroll view.
-        let recog = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissKeyboard))
+        let recog = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissInput))
         recog.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(recog)
+        
+        previousDatasetPicker.dataSource = self
+        previousDatasetPicker.delegate = self
+        previousDatasetPicker.isHidden = true
+        
+        previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -192,14 +213,14 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     // If a user taps outside of the keyboard, close the keyboard.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        dismissKeyboard()
+        dismissInput()
     }
     
     // MARK: - UITextFieldDelegate overrides
     
     // Called when return is pressed on the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dismissKeyboard()
+        dismissInput()
         return true
     }
     
@@ -213,10 +234,29 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate {
         activeField = nil
     }
     
+    // MARK: - UIPickerViewDataSource, UIPickerViewDelegate overrides
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return previousDatasetPickerData.count;
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return previousDatasetPickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        datasetNameChanged(previousDatasetPickerData[row])
+    }
+    
     // MARK: - Helpers
     
     // @objc to allow calling as a Selector.
-    @objc private func dismissKeyboard() {
+    @objc private func dismissInput() {
+        previousDatasetPicker.isHidden = true
         self.view.endEditing(true)
     }
     

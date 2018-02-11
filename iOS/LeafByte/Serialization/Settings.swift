@@ -132,6 +132,10 @@ final class Settings: NSObject, NSCoding {
         return datasetNameToNextSampleNumber[datasetName]!
     }
     
+    func getPreviousDatasetNames() -> [String] {
+        return Array(datasetNameToUserIdToGoogleFolderId.keys) + [ datasetName ]
+    }
+    
     func incrementNextSampleNumber() {
         return datasetNameToNextSampleNumber[datasetName]! += 1
     }
