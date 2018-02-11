@@ -350,6 +350,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UITextFieldDelegate overrides
     
+    func textFieldDidBeginEditing(_ textField: UITextField){
+        // Disable the gesture recognition so that we can catch touches outside of the keyboard to cancel the keyboard.
+        gestureRecognizingView.isUserInteractionEnabled = false
+    }
+    
     // Called when return is pressed on the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
@@ -553,6 +558,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func dismissKeyboard() {
+        // Reenable gesture recognition if we disabled it for the keyboard.
+        gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
+        
         self.view.endEditing(true)
     }
 }
