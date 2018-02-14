@@ -86,3 +86,32 @@ func smoothTransitions(self viewController: UIViewController) {
     // This prevents a black shadow from appearing in the navigation bar during transitions (see https://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5 ).
     viewController.navigationController!.view.backgroundColor = UIColor.white
 }
+
+func setSampleNumberButtonText(_ sampleNumberButton: UIButton, settings: Settings) {
+    sampleNumberButton.setTitle("Sample \(settings.getNextSampleNumber())", for: .normal)
+}
+
+func presentSampleNumberAlert(self viewController: UIViewController, sampleNumberButton: UIButton, settings: Settings) {
+    let alert = UIAlertController(title: "Sample Number", message: nil, preferredStyle: .alert)
+    
+    alert.addTextField { (textField) in
+        textField.placeholder = String(settings.getNextSampleNumber())
+        textField.keyboardType = UIKeyboardType.numberPad
+    }
+    
+    let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+    let okAction = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+        let newSampleNumber = alert.textFields![0].text!
+        
+        if !newSampleNumber.isEmpty {
+            settings.datasetNameToNextSampleNumber[settings.datasetName] = Int(newSampleNumber)
+            settings.serialize()
+            setSampleNumberButtonText(sampleNumberButton, settings: settings)
+        }
+    })
+    
+    alert.addAction(cancelAction)
+    alert.addAction(okAction)
+    
+    viewController.present(alert, animated: true, completion: nil)
+}

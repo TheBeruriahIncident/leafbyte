@@ -35,7 +35,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     @IBOutlet weak var histogramImageView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
     @IBOutlet weak var completeButton: UIButton!
-    @IBOutlet weak var sampleNumberLabel: UILabel!
+    @IBOutlet weak var sampleNumberButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
     
     // MARK: - Actions
@@ -51,6 +51,10 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     
     @IBAction func sliderMoved(_ sender: UISlider) {
         setThreshold(1 - sender.value)
+    }
+    
+    @IBAction func editSampleNumber(_ sender: Any) {
+        presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
     }
     
     // MARK: - UIViewController overrides
@@ -72,7 +76,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
         baseImageView.contentMode = .scaleAspectFit
         histogramImageView.contentMode = .scaleToFill
         
-        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
+        setSampleNumberButtonText(sampleNumberButton, settings: settings)
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -50,7 +50,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     @IBOutlet weak var clearScaleButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     
-    @IBOutlet weak var sampleNumberLabel: UILabel!
+    @IBOutlet weak var sampleNumberButton: UIButton!
     @IBOutlet weak var resultsText: UILabel!
     
     // MARK: - Actions
@@ -72,6 +72,10 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         setScrollingMode(true)
     }
     
+    @IBAction func editSampleNumber(_ sender: Any) {
+        presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
+    }
+    
     // MARK: - UIViewController overrides
 
     override func viewDidLoad(){
@@ -86,7 +90,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         baseImageViewToImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
-        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
+        setSampleNumberButtonText(sampleNumberButton, settings: settings)
         
         setScrollingMode(true)
     }

@@ -66,7 +66,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBOutlet weak var calculateButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     
-    @IBOutlet weak var sampleNumberLabel: UILabel!
+    @IBOutlet weak var sampleNumberButton: UIButton!
     @IBOutlet weak var resultsText: UILabel!
     @IBOutlet weak var notesField: UITextField!
     
@@ -172,6 +172,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         handleSerialization(onSuccess: afterSerialization)
     }
     
+    @IBAction func editSampleNumber(_ sender: Any) {
+        presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad(){
@@ -194,7 +198,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
-        sampleNumberLabel.text = "Sample \(settings.getNextSampleNumber())"
+        setSampleNumberButtonText(sampleNumberButton, settings: settings)
         
         setScrollingMode(true)
         

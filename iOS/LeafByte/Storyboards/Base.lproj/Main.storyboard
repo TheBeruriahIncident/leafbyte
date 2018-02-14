@@ -199,15 +199,19 @@
                                     <constraint firstItem="W7I-Wp-QLc" firstAttribute="top" secondItem="fcW-8Z-FmF" secondAttribute="top" id="gus-RT-pnX"/>
                                 </constraints>
                             </scrollView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kcc-Px-YPY" userLabel="Sample Number Label">
-                                <rect key="frame" x="15" y="80" width="200" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
+                                <rect key="frame" x="17" y="79" width="176" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="shadowOffset" width="1" height="-1"/>
-                            </label>
+                                <size key="titleShadowOffset" width="1" height="-1"/>
+                                <state key="normal" title="Sample X">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="3Cx-CF-rTQ"/>
+                                </connections>
+                            </button>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             </navigationBar>
@@ -273,7 +277,7 @@
                         <outlet property="completeButton" destination="5RZ-7f-3CS" id="QGA-ME-JKn"/>
                         <outlet property="gestureRecognizingView" destination="fcW-8Z-FmF" id="hmz-qh-0lL"/>
                         <outlet property="histogramImageView" destination="U3R-Nq-htd" id="blG-hr-nVp"/>
-                        <outlet property="sampleNumberLabel" destination="Kcc-Px-YPY" id="HcB-8C-mBQ"/>
+                        <outlet property="sampleNumberButton" destination="X9Q-JC-Czl" id="DEv-Hd-v4O"/>
                         <outlet property="scrollableView" destination="W7I-Wp-QLc" id="Mft-Ax-Z21"/>
                         <outlet property="thresholdSlider" destination="C16-Ki-FNI" id="W65-Nj-1Lv"/>
                         <segue destination="0Yy-Wp-gv7" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="gqi-KD-IDy"/>
@@ -368,14 +372,20 @@
                                     <constraint firstItem="y5V-Yh-WUw" firstAttribute="leading" secondItem="XUO-j6-TH2" secondAttribute="leading" id="oOX-Er-f6f"/>
                                 </constraints>
                             </scrollView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aD4-fI-h2J" userLabel="Sample Number Label">
-                                <rect key="frame" x="19" y="70" width="74" height="22"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Otk-oa-PcB" userLabel="Sample Number Button">
+                                <rect key="frame" x="20" y="67" width="176" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="shadowOffset" width="1" height="-1"/>
-                            </label>
+                                <size key="titleShadowOffset" width="1" height="-1"/>
+                                <state key="normal" title="Sample X">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="editSampleNumber:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="PIr-dK-TOv"/>
+                                    <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="Qkd-DC-aRc"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="seQ-tA-Ei2">
                                 <rect key="frame" x="0.0" y="81" width="375" height="449"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -399,7 +409,7 @@
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
                                 <rect key="frame" x="16" y="554" width="359" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="nJw-9I-BKV"/>
@@ -452,19 +462,15 @@
                             <constraint firstItem="Id9-ad-Z94" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tVl-5H-cS7" secondAttribute="leading" constant="20" symbolic="YES" id="Vgb-DS-fnf"/>
                             <constraint firstAttribute="trailing" secondItem="XUO-j6-TH2" secondAttribute="trailing" id="WhW-yi-DkC"/>
                             <constraint firstItem="zKJ-Ch-T7e" firstAttribute="leading" secondItem="rvf-tt-efy" secondAttribute="trailing" constant="-1" id="Zdl-by-GFX"/>
-                            <constraint firstItem="aD4-fI-h2J" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="19" id="aC1-Zh-7Ka"/>
                             <constraint firstItem="wgi-tn-3fx" firstAttribute="trailing" secondItem="Id9-ad-Z94" secondAttribute="trailing" constant="21" id="bmg-Vi-dRg"/>
                             <constraint firstItem="zKJ-Ch-T7e" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="46" id="cRV-sT-oEG"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="7" id="eLL-KQ-rtS"/>
                             <constraint firstAttribute="bottom" secondItem="Id9-ad-Z94" secondAttribute="bottom" constant="19" id="eyu-CY-rNJ"/>
                             <constraint firstAttribute="bottom" secondItem="zKJ-Ch-T7e" secondAttribute="bottom" constant="19" id="f3I-hb-lUr"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" secondItem="tVl-5H-cS7" secondAttribute="leading" id="jhX-1A-BdO"/>
-                            <constraint firstItem="aD4-fI-h2J" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="26" id="jyg-NQ-0RY"/>
                             <constraint firstAttribute="bottom" secondItem="XUO-j6-TH2" secondAttribute="bottom" constant="111" id="kNy-4O-aAG"/>
                             <constraint firstItem="M4l-IF-yMI" firstAttribute="centerX" secondItem="tVl-5H-cS7" secondAttribute="centerX" constant="20" id="tSp-wd-mAs"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="wgi-tn-3fx" secondAttribute="trailing" id="uIv-zR-HDK"/>
-                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="top" secondItem="aD4-fI-h2J" secondAttribute="bottom" constant="462" id="w1F-Bt-lLH"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aD4-fI-h2J" secondAttribute="trailing" constant="20" symbolic="YES" id="x4v-mb-z7A"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="16" id="z90-ce-yV8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
@@ -503,7 +509,7 @@
                         <outlet property="notesField" destination="Igz-Jt-RJ9" id="lmw-OZ-tqU"/>
                         <outlet property="redoButton" destination="Xwt-8a-K9l" id="OE7-0c-0FF"/>
                         <outlet property="resultsText" destination="JMU-FQ-tF0" id="glq-CW-sZ8"/>
-                        <outlet property="sampleNumberLabel" destination="aD4-fI-h2J" id="bhb-76-Inu"/>
+                        <outlet property="sampleNumberButton" destination="Otk-oa-PcB" id="XR3-Er-oVG"/>
                         <outlet property="scaleMarkingView" destination="ZhN-ja-Acn" id="GdI-0P-AKu"/>
                         <outlet property="scrollableView" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
                         <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
@@ -798,7 +804,7 @@
                                 <rect key="frame" x="0.0" y="44" width="384" height="523"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-5a-U1t" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="31" width="376" height="520"/>
+                                        <rect key="frame" x="0.0" y="11" width="376" height="520"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wST-nu-Esm" userLabel="Base Image">
                                                 <rect key="frame" x="0.0" y="-1" width="376" height="572"/>
@@ -832,15 +838,20 @@
                                     <action selector="toggleScrollingMode:" destination="e5s-F7-9rn" eventType="touchUpInside" id="UcQ-Hw-DaS"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sample X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cf-iP-jgz" userLabel="Sample Number Label">
-                                <rect key="frame" x="15" y="70" width="200" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
+                                <rect key="frame" x="15" y="69" width="176" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="shadowOffset" width="1" height="-1"/>
-                            </label>
+                                <size key="titleShadowOffset" width="1" height="-1"/>
+                                <state key="normal" title="Sample X">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="editSampleNumber:" destination="e5s-F7-9rn" eventType="touchUpInside" id="a35-o4-oxG"/>
+                                    <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="uUa-Zh-Ieg"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
                                 <rect key="frame" x="301.5" y="619" width="52" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
@@ -904,7 +915,7 @@
                         <outlet property="gestureRecognizingView" destination="aFd-8f-9XM" id="ZNy-2l-H1H"/>
                         <outlet property="modeToggleButton" destination="0YM-1m-Hod" id="c08-PW-eiI"/>
                         <outlet property="resultsText" destination="6Mb-ZC-YBF" id="0hX-54-0BK"/>
-                        <outlet property="sampleNumberLabel" destination="5cf-iP-jgz" id="bEh-Bd-WfX"/>
+                        <outlet property="sampleNumberButton" destination="2WT-re-HH5" id="rQK-EW-16o"/>
                         <outlet property="scaleMarkingView" destination="Xu9-FW-Xu6" id="95g-1v-i7M"/>
                         <outlet property="scrollableView" destination="ZFn-5a-U1t" id="cbx-Ct-Mx1"/>
                     </connections>
@@ -1005,6 +1016,6 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="03T-NI-k5w"/>
+        <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
