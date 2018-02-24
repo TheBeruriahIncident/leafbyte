@@ -19,6 +19,21 @@
         </array>
     </customFonts>
     <scenes>
+        <!--Barcode Scanning View Controller-->
+        <scene sceneID="leP-6l-hPX">
+            <objects>
+                <viewController id="c2E-oZ-WI5" customClass="BarcodeScanningViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0dk-vU-IbX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="amH-sk-YpV"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="06u-Gg-YYQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="153" y="-633"/>
+        </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -111,6 +126,14 @@
                                 <state key="normal" title="Tutorial"/>
                                 <connections>
                                     <segue destination="Eyd-i1-QQB" kind="show" identifier="toTutorial" customClass="SegueFromRight" customModule="LeafByte" customModuleProvider="target" id="eGn-ej-9zb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYL-2m-Qxe">
+                                <rect key="frame" x="32" y="120" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="c2E-oZ-WI5" kind="show" id="XEa-cj-Dbh"/>
                                 </connections>
                             </button>
                         </subviews>

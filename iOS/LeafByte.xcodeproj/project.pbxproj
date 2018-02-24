@@ -46,6 +46,7 @@
 		46F1064120012F06000B4B83 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064020012F06000B4B83 /* Extensions.swift */; };
 		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
+		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		46F1064020012F06000B4B83 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		46F10642200133CF000B4B83 /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
 		46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayeredIndexableImage.swift; sourceTree = "<group>"; };
+		46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanningViewController.swift; sourceTree = "<group>"; };
 		505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
+				46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
 				464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */,
 				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
@@ -514,6 +517,7 @@
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
+				46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */,
 				460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */,
 				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
 				468C075B1FFDD9840015B815 /* SettingsViewController.swift in Sources */,
