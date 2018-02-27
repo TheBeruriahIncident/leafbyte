@@ -36,7 +36,13 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             return
         }
         
-        requestCameraAccess(self: self, onSuccess: { self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera) })
+        requestCameraAccess(self: self, onSuccess: {
+            if self.settings.useBarcode {
+                self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+            } else {
+                self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
+            }
+        })
     }
     
     @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
