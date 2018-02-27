@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 
 class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+    // MARK: - Fields
+    
     private let supportedBarcodeTypes = [
         // 2D
         AVMetadataObject.ObjectType.code128,
@@ -28,6 +30,13 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         AVMetadataObject.ObjectType.pdf417,
         AVMetadataObject.ObjectType.qr,
     ]
+    
+    // MARK: - Actions
+    @IBAction func goHome(_ sender: Any) {
+        dismissNavigationController(self: self)
+    }
+    
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +65,8 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         // Start the capture session.
         captureSession.startRunning()
     }
+    
+    // MARK: - AVCaptureMetadataOutputObjectsDelegate overrides
     
     // Accept the captured barcode.
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
