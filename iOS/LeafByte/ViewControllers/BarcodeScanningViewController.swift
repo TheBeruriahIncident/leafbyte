@@ -43,9 +43,9 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         
         // Setup the capture session output.
         let captureMetadataOutput = AVCaptureMetadataOutput()
+        captureSession.addOutput(captureMetadataOutput)
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         captureMetadataOutput.metadataObjectTypes = supportedBarcodeTypes
-        captureSession.addOutput(captureMetadataOutput)
         
         // Add a view of the camera to the screen.
         let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -59,6 +59,9 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
     
     // Accept the captured barcode.
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        if metadataObjects.isEmpty {
+            return
+        }
         let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         
         if supportedBarcodeTypes.contains(metadataObject.type) {
