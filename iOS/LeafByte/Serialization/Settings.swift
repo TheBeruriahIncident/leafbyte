@@ -30,6 +30,7 @@ final class Settings: NSObject, NSCoding {
         static let measurementSaveLocation = "measurementSaveLocation"
         static let saveGpsData = "saveGpsData"
         static let scaleMarkLength = "scaleMarkLength"
+        static let useBarcode = "useBarcode"
         static let userIdToTopLevelGoogleFolderId = "userIdToTopLevelGoogleFolderId"
     }
     
@@ -43,6 +44,7 @@ final class Settings: NSObject, NSCoding {
     var measurementSaveLocation = SaveLocation.none
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
+    var useBarcode = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
     
     required override init() {}
@@ -78,6 +80,9 @@ final class Settings: NSObject, NSCoding {
         if decoder.containsValue(forKey: PropertyKey.scaleMarkLength) {
             self.scaleMarkLength = decoder.decodeDouble(forKey: PropertyKey.scaleMarkLength)
         }
+        if decoder.containsValue(forKey: PropertyKey.useBarcode) {
+            self.useBarcode = decoder.decodeBool(forKey: PropertyKey.useBarcode)
+        }
         if let userIdToTopLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.userIdToTopLevelGoogleFolderId) as? [String: String] {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
         }
@@ -94,6 +99,7 @@ final class Settings: NSObject, NSCoding {
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
+        coder.encode(useBarcode, forKey: PropertyKey.useBarcode)
         coder.encode(userIdToTopLevelGoogleFolderId, forKey: PropertyKey.userIdToTopLevelGoogleFolderId)
     }
     
@@ -113,6 +119,7 @@ final class Settings: NSObject, NSCoding {
             && measurementSaveLocation == other.measurementSaveLocation
             && saveGpsData == other.saveGpsData
             && scaleMarkLength == other.scaleMarkLength
+            && useBarcode == other.useBarcode
             && userIdToTopLevelGoogleFolderId == other.userIdToTopLevelGoogleFolderId
     }
     

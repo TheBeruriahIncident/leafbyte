@@ -26,6 +26,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var imageSaveLocation: UISegmentedControl!
     @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
     @IBOutlet weak var nextSampleNumber: UITextField!
+    @IBOutlet weak var useBarcode: UISwitch!
     @IBOutlet weak var saveGps: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
     @IBOutlet weak var previousDatasetPicker: UIPickerView!
@@ -143,6 +144,13 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         settings.serialize()
     }
     
+    @IBAction func useBarcodesChanged(_ sender: UISwitch) {
+        dismissInput()
+        
+        settings.useBarcode = sender.isOn
+        settings.serialize()
+    }
+    
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         var newScaleMarkLength: Double!
@@ -183,6 +191,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
         nextSampleNumber.text = String(settings.getNextSampleNumber())
         saveGps.setOn(settings.saveGpsData, animated: false)
+        useBarcode.setOn(settings.useBarcode, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
         
         // Setup to get a callback when return is pressed on a keyboard.
