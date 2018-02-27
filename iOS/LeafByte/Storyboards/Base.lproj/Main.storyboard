@@ -253,7 +253,7 @@
                                     <action selector="backFromThreshold:" destination="bUK-Ir-gu8" id="bfW-eO-osm"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="?" id="4zZ-gJ-L7f" userLabel="Help Button">
+                            <barButtonItem title="  ?" id="4zZ-gJ-L7f" userLabel="Help Button">
                                 <connections>
                                     <segue destination="bVw-Fm-rhy" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="4zZ-gJ-L7f" id="1bb-LS-Ggr">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -292,10 +292,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
-                                <rect key="frame" x="16" y="0.0" width="264" height="289"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
+                                <rect key="frame" x="10" y="282" width="264" height="218"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">First, we remove any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
+                                <string key="text">Explanation:                                   First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3uy-K5-z41">
+                                <rect key="frame" x="10" y="20" width="264" height="263"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Tips:                                                 1.  Avoid having any shadow larger than your leaf. If you do this, the app may measure the shadow instead of the leaf.                         2.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -310,7 +318,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrm-ec-C4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="957.60000000000002" y="1666.4167916041981"/>
+            <point key="canvasLocation" x="956.79999999999995" y="1665.9670164917543"/>
         </scene>
         <!--Area Calculation View Controller-->
         <scene sceneID="RBc-bI-pyN">
@@ -471,7 +479,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
-                        <barButtonItem key="leftBarButtonItem" title="?" id="oKl-3T-MdZ" userLabel="Help Button">
+                        <barButtonItem key="leftBarButtonItem" title="  ?" id="oKl-3T-MdZ" userLabel="Help Button">
                             <connections>
                                 <segue destination="gAc-Aq-5u4" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="oKl-3T-MdZ" id="3DF-9I-fwW">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -523,38 +531,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q2Z-fV-jwP">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2Z-fV-jwP">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </navigationBar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Atb-RN-ny0">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atb-RN-ny0">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Nr-u4-Yuh" userLabel="Save GPS Toggle">
-                                        <rect key="frame" x="164" y="424" width="49" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Nr-u4-Yuh" userLabel="Save GPS Toggle">
+                                        <rect key="frame" x="164" y="424" width="51" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="31" id="uKM-wT-mDE"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                         </connections>
                                     </switch>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Data Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
                                         <rect key="frame" x="106" y="20" width="147" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Image Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image Save Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
                                         <rect key="frame" x="94" y="120" width="167" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
                                         <rect key="frame" x="27" y="49" width="302" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="None"/>
                                             <segment title="Files App"/>
@@ -564,9 +569,8 @@
                                             <action selector="measurementSaveLocationChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="T9p-jd-w8u"/>
                                         </connections>
                                     </segmentedControl>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
                                         <rect key="frame" x="27" y="149" width="302" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="None"/>
                                             <segment title="Files App"/>
@@ -576,9 +580,8 @@
                                             <action selector="imageSaveLocationChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="2Gn-uf-Y5M"/>
                                         </connections>
                                     </segmentedControl>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
                                         <rect key="frame" x="24" y="257" width="197" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
@@ -586,9 +589,11 @@
                                             <action selector="datasetNameChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="wHR-ur-o4O"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="adf-uG-4TS" userLabel="Next Sample Number Text Box">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="adf-uG-4TS" userLabel="Next Sample Number Text Box">
                                         <rect key="frame" x="137" y="357" width="83" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="83" id="I1j-Ih-IPe"/>
+                                        </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
@@ -596,31 +601,34 @@
                                             <action selector="nextSampleNumberChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="veq-fM-XQ7"/>
                                         </connections>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dataset Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dataset Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
                                         <rect key="frame" x="122" y="228" width="109" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Next Sample Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyF-9a-8bS" userLabel="Next Sample Number Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Sample Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyF-9a-8bS" userLabel="Next Sample Number Label">
                                         <rect key="frame" x="96" y="319" width="164" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
                                         <rect key="frame" x="115" y="550" width="128" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="1cg-4r-LU0"/>
+                                        </constraints>
                                         <state key="normal" title="Sign out of Google"/>
                                         <connections>
                                             <action selector="signOutOfGoogle:" destination="ayx-Do-FJf" eventType="touchUpInside" id="xXM-kR-foo"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b7d-8V-V4U" userLabel="Scale Mark Length Text Box">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b7d-8V-V4U" userLabel="Scale Mark Length Text Box">
                                         <rect key="frame" x="138" y="501" width="83" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="XsS-AE-zea"/>
+                                            <constraint firstAttribute="width" constant="83" id="dmK-Nv-0d5"/>
+                                        </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad" enablesReturnKeyAutomatically="YES"/>
@@ -628,37 +636,87 @@
                                             <action selector="scaleMarkLengthChanged:" destination="ayx-Do-FJf" eventType="editingDidEnd" id="aTr-YF-buC"/>
                                         </connections>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scale Mark Length (cm)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOl-m9-gNp" userLabel="Scale Mark Length Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scale Mark Length (cm)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOl-m9-gNp" userLabel="Scale Mark Length Label">
                                         <rect key="frame" x="97" y="463" width="183" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="ONm-yr-Dt8"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kMV-EV-6eU">
-                                        <rect key="frame" x="0.0" y="441" width="375" height="162"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                    </pickerView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3F-9h-21N">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3F-9h-21N">
                                         <rect key="frame" x="241" y="224" width="113" height="62"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Choose previous dataset"/>
                                         <connections>
                                             <action selector="choosePreviousDataset:" destination="ayx-Do-FJf" eventType="touchUpInside" id="v0l-Ur-3cK"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Save GPS Location (Can greatly slow saving)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Save GPS Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save GPS Location (Can greatly slow saving)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Save GPS Label">
                                         <rect key="frame" x="18" y="395" width="341" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kMV-EV-6eU">
+                                        <rect key="frame" x="0.0" y="441" width="375" height="162"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    </pickerView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="ID5-9Q-Zb9" firstAttribute="top" secondItem="adf-uG-4TS" secondAttribute="bottom" constant="8" symbolic="YES" id="3Ld-a2-3iS"/>
+                                    <constraint firstItem="JrM-pU-kJA" firstAttribute="top" secondItem="4hE-lk-Cd3" secondAttribute="bottom" constant="8" symbolic="YES" id="4tL-SX-MKw"/>
+                                    <constraint firstItem="kMV-EV-6eU" firstAttribute="top" secondItem="ID5-9Q-Zb9" secondAttribute="bottom" constant="25" id="5O9-38-6I2"/>
+                                    <constraint firstAttribute="bottom" secondItem="kMV-EV-6eU" secondAttribute="bottom" id="6hX-YQ-UAP"/>
+                                    <constraint firstItem="4hE-lk-Cd3" firstAttribute="top" secondItem="A8e-Un-uuG" secondAttribute="bottom" constant="51" id="70h-WI-HfT"/>
+                                    <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="JrM-pU-kJA" secondAttribute="bottom" constant="32" id="7PJ-mt-2Iz"/>
+                                    <constraint firstAttribute="trailing" secondItem="P3F-9h-21N" secondAttribute="trailing" constant="21" id="95k-c1-bxy"/>
+                                    <constraint firstItem="P3F-9h-21N" firstAttribute="leading" secondItem="4hE-lk-Cd3" secondAttribute="trailing" constant="10" id="AFs-45-8dg"/>
+                                    <constraint firstItem="z79-vT-qHF" firstAttribute="centerX" secondItem="b7d-8V-V4U" secondAttribute="centerX" id="AIX-2Q-dzy"/>
+                                    <constraint firstItem="b7d-8V-V4U" firstAttribute="centerX" secondItem="KqO-AI-fbL" secondAttribute="centerX" id="B1a-4R-1tg"/>
+                                    <constraint firstItem="P3F-9h-21N" firstAttribute="top" secondItem="A8e-Un-uuG" secondAttribute="bottom" constant="47" id="Cll-nr-N3m"/>
+                                    <constraint firstItem="8gj-2h-2Ic" firstAttribute="leading" secondItem="A8e-Un-uuG" secondAttribute="leading" id="Dcy-DI-bgb"/>
+                                    <constraint firstItem="8gj-2h-2Ic" firstAttribute="trailing" secondItem="A8e-Un-uuG" secondAttribute="trailing" id="EDN-mM-F2S"/>
+                                    <constraint firstItem="ID5-9Q-Zb9" firstAttribute="centerX" secondItem="6Nr-u4-Yuh" secondAttribute="centerX" id="FlS-ca-GdA"/>
+                                    <constraint firstItem="zyF-9a-8bS" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" constant="96" id="G6I-e6-pIz"/>
+                                    <constraint firstItem="KqO-AI-fbL" firstAttribute="top" secondItem="b7d-8V-V4U" secondAttribute="bottom" constant="19" id="GXG-4X-UtK"/>
+                                    <constraint firstItem="V1C-Gd-7rk" firstAttribute="centerX" secondItem="A8e-Un-uuG" secondAttribute="centerX" id="Gdk-HK-PUn"/>
+                                    <constraint firstItem="8gj-2h-2Ic" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" constant="27" id="Pr9-rU-y1s"/>
+                                    <constraint firstItem="zOl-m9-gNp" firstAttribute="top" secondItem="6Nr-u4-Yuh" secondAttribute="bottom" constant="8" symbolic="YES" id="QZx-Ks-Dc8"/>
+                                    <constraint firstItem="JrM-pU-kJA" firstAttribute="trailing" secondItem="b7d-8V-V4U" secondAttribute="trailing" id="Y6O-7d-ahj"/>
+                                    <constraint firstItem="V1C-Gd-7rk" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" constant="94" id="eNQ-BB-jhn"/>
+                                    <constraint firstItem="V1C-Gd-7rk" firstAttribute="top" secondItem="8gj-2h-2Ic" secondAttribute="bottom" constant="43" id="emJ-Pa-d4S"/>
+                                    <constraint firstItem="6Nr-u4-Yuh" firstAttribute="centerX" secondItem="zOl-m9-gNp" secondAttribute="centerX" id="fBe-NK-cj4"/>
+                                    <constraint firstItem="adf-uG-4TS" firstAttribute="centerX" secondItem="KqO-AI-fbL" secondAttribute="centerX" id="jLR-46-d0t"/>
+                                    <constraint firstItem="kMV-EV-6eU" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" id="jUG-Ko-ral"/>
+                                    <constraint firstItem="adf-uG-4TS" firstAttribute="top" secondItem="zyF-9a-8bS" secondAttribute="bottom" constant="17" id="jmu-AJ-fty"/>
+                                    <constraint firstItem="zyF-9a-8bS" firstAttribute="centerX" secondItem="adf-uG-4TS" secondAttribute="centerX" id="kG5-IX-szB"/>
+                                    <constraint firstItem="6Nr-u4-Yuh" firstAttribute="top" secondItem="ID5-9Q-Zb9" secondAttribute="bottom" constant="8" symbolic="YES" id="kf6-XL-9u4"/>
+                                    <constraint firstItem="A8e-Un-uuG" firstAttribute="top" secondItem="V1C-Gd-7rk" secondAttribute="bottom" constant="8" symbolic="YES" id="lGt-tg-rPh"/>
+                                    <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="P3F-9h-21N" secondAttribute="bottom" constant="33" id="mKa-PX-6bD"/>
+                                    <constraint firstItem="z79-vT-qHF" firstAttribute="top" secondItem="Atb-RN-ny0" secondAttribute="top" constant="20" id="pWw-Ql-2Om"/>
+                                    <constraint firstItem="JrM-pU-kJA" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" constant="24" id="paa-bE-sAf"/>
+                                    <constraint firstItem="8gj-2h-2Ic" firstAttribute="top" secondItem="z79-vT-qHF" secondAttribute="bottom" constant="8" symbolic="YES" id="qrs-ms-mM5"/>
+                                    <constraint firstItem="kMV-EV-6eU" firstAttribute="centerX" secondItem="Atb-RN-ny0" secondAttribute="centerX" id="ruI-Hc-ukc"/>
+                                    <constraint firstItem="ID5-9Q-Zb9" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" constant="18" id="s8m-bc-sTj"/>
+                                    <constraint firstAttribute="bottom" secondItem="KqO-AI-fbL" secondAttribute="bottom" constant="23" id="sVX-rQ-6c3"/>
+                                    <constraint firstItem="b7d-8V-V4U" firstAttribute="top" secondItem="zOl-m9-gNp" secondAttribute="bottom" constant="17" id="t8L-pj-LFO"/>
+                                    <constraint firstItem="P3F-9h-21N" firstAttribute="leading" secondItem="JrM-pU-kJA" secondAttribute="trailing" constant="20" id="xUu-7z-Q4I"/>
+                                    <constraint firstAttribute="trailing" secondItem="kMV-EV-6eU" secondAttribute="trailing" id="yKP-fi-rOI"/>
+                                    <constraint firstItem="A8e-Un-uuG" firstAttribute="centerX" secondItem="zyF-9a-8bS" secondAttribute="centerX" id="yvo-ub-ppa"/>
+                                </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="q2Z-fV-jwP" secondAttribute="leading" id="GbX-jw-Sa5"/>
+                            <constraint firstItem="q2Z-fV-jwP" firstAttribute="top" secondItem="Pet-gA-Fqc" secondAttribute="top" id="T6X-vw-cPp"/>
+                            <constraint firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="U8b-a6-Nbt"/>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="trailing" secondItem="q2Z-fV-jwP" secondAttribute="trailing" id="VuV-DX-xVB"/>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="top" secondItem="bzd-wJ-GYf" secondAttribute="top" id="icN-wO-A8M"/>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="Pet-gA-Fqc" secondAttribute="leading" id="oRd-5m-OhB"/>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="bottom" secondItem="bzd-wJ-GYf" secondAttribute="bottom" id="vs7-kc-lFH"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="bzd-wJ-GYf"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="roH-yQ-Vce" userLabel="Navigation Content">
@@ -798,7 +856,7 @@
                                 <rect key="frame" x="0.0" y="44" width="384" height="523"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-5a-U1t" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="31" width="376" height="520"/>
+                                        <rect key="frame" x="0.0" y="11" width="376" height="520"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wST-nu-Esm" userLabel="Base Image">
                                                 <rect key="frame" x="0.0" y="-1" width="376" height="572"/>
@@ -884,7 +942,7 @@
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
                     <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
-                        <barButtonItem key="leftBarButtonItem" title="?" id="5nA-2H-mzx" userLabel="Help Button">
+                        <barButtonItem key="leftBarButtonItem" title="  ?" id="5nA-2H-mzx" userLabel="Help Button">
                             <connections>
                                 <segue destination="oJr-2p-Elg" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="5nA-2H-mzx" id="qQn-7H-fvo">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -921,12 +979,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
-                                <rect key="frame" x="16" y="20" width="288" height="460"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
+                                <rect key="frame" x="16" y="20" width="288" height="152"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="Lat-T6-Xa5"/>
                                 </constraints>
-                                <string key="text">You need a thin straight line of a known length to act as the scale. Next, we guess the location of the scale marking by identifying the second largest blob. If the guess is wrong, you can pick a different object. With the object determined, we find the farthest apart two points to determine the length of the scale.</string>
+                                <string key="text">Tips:                                                Draw a line on your paper. You need a thin straight line of a known length to act as the scale.                                        If your line is crooked or too thick, the measurement may be less acurate.    </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOo-eh-LpA">
+                                <rect key="frame" x="16" y="298" width="288" height="173"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Explanation:                                                                       LeafByte will find  the location of the scale marking by identifying the second largest blob. If the guess is wrong, you can pick a different object. With the object determined, we find the farthest apart two points to determine the length of the scale. </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -947,7 +1013,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebj-2Y-9T5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1956" y="1709"/>
+            <point key="canvasLocation" x="1955.2" y="1708.2458770614694"/>
         </scene>
         <!--Area Calculation Help View Controller-->
         <scene sceneID="SXK-7H-soF">
@@ -957,9 +1023,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Finally, we calculate the area. dasf asdf a asdfa dsf asdf adsfa" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
                                 <rect key="frame" x="16" y="0.0" width="304" height="283"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <mutableString key="text">Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    You must tap draw each time you want to draw a line.                    2. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      </mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86B-9V-BR8">
+                                <rect key="frame" x="16" y="282" width="304" height="198"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -974,7 +1049,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mA4-9i-fhx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2822" y="1618"/>
+            <point key="canvasLocation" x="2820.8000000000002" y="1617.3913043478262"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xEb-V8-96W">
@@ -1005,5 +1080,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Iaq-x1-uxo"/>
+        <segue reference="gAP-T7-MBM"/>
     </inferredMetricsTieBreakers>
 </document>
