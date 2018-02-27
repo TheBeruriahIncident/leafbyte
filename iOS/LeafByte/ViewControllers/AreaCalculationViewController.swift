@@ -163,7 +163,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             self.imagePicker.sourceType = self.sourceType
             
             if self.sourceType == .camera {
-                requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+                requestCameraAccess(self: self, onSuccess: {
+                    if self.settings.useBarcode {
+                        self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                    } else {
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
+                })
             } else {
                 self.present(self.imagePicker, animated: true, completion: nil)
             }
@@ -239,7 +245,17 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             destination.sourceType = sourceType
             destination.image = selectedImage!
             destination.inTutorial = false
-        } else if segue.identifier == "helpPopover" {
+        }
+        // If the segue is toBarcodeScanning, we're transitioning forward in the main flow, but with barcode scanning.
+        else if segue.identifier == "toBarcodeScanning"
+        {
+            guard let destination = segue.destination as? BarcodeScanningViewController else {
+                fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
+            }
+            
+            destination.settings = settings
+        }
+        else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
     }

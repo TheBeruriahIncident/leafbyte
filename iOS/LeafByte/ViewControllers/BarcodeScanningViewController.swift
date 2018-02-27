@@ -47,6 +47,10 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         dismissNavigationController(self: self)
     }
     
+    // MARK: - Outlets
+    
+    @IBOutlet weak var label: UILabel!
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
@@ -72,7 +76,7 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         videoPreviewLayer.frame = view.layer.bounds
-        view.layer.addSublayer(videoPreviewLayer)
+        view.layer.sublayers?.insert(videoPreviewLayer, at: 0)
         
         // Start the capture session.
         captureSession.startRunning()
@@ -113,6 +117,11 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         if supportedBarcodeTypes.contains(metadataObject.type) {
             captureSession.stopRunning()
             barcode = metadataObject.stringValue!
+            label.text = barcode
+            
+            // Pause for .75s to preview what was scanned.
+            usleep(750000)
+            
             requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
         }
     }

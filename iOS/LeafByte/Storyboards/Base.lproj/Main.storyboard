@@ -26,6 +26,17 @@
                     <view key="view" contentMode="scaleToFill" id="0dk-vU-IbX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scan your barcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8By-1v-d1a">
+                                <rect key="frame" x="115" y="595" width="144" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="amH-sk-YpV"/>
                     </view>
@@ -44,6 +55,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="label" destination="8By-1v-d1a" id="SQw-0p-t3z"/>
                         <segue destination="bUK-Ir-gu8" kind="show" identifier="imageChosen" id="Mj2-iv-vfZ"/>
                     </connections>
                 </viewController>
@@ -557,6 +569,7 @@
                         <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
                         <outlet property="userDrawingView" destination="Vz2-Bn-w9W" id="Crh-nH-fBC"/>
                         <segue destination="bUK-Ir-gu8" kind="show" identifier="imageChosen" id="gAP-T7-MBM"/>
+                        <segue destination="c2E-oZ-WI5" kind="show" identifier="toBarcodeScanning" id="euu-36-foe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -918,7 +931,7 @@
                                 <rect key="frame" x="0.0" y="44" width="384" height="523"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-5a-U1t" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="31" width="376" height="520"/>
+                                        <rect key="frame" x="0.0" y="11" width="376" height="520"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wST-nu-Esm" userLabel="Base Image">
                                                 <rect key="frame" x="0.0" y="-1" width="376" height="572"/>
@@ -1166,5 +1179,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Mj2-iv-vfZ"/>
+        <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>
