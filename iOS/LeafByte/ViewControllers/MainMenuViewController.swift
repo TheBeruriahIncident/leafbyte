@@ -104,6 +104,17 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             
             destination.settings = settings
         }
+        // If the segue is toBarcodeScanning, we're starting the main flow, but with barcode scanning at the start instead of image picking.
+        else if segue.identifier == "toBarcodeScanning" {
+            guard let navigationController = segue.destination as? UINavigationController else {
+                fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
+            }
+            guard let destination = navigationController.topViewController as? BarcodeScanningViewController else {
+                fatalError("Expected the view inside the navigation controller to be the barcode scanning view but is  \(String(describing: navigationController.topViewController))")
+            }
+            
+            destination.settings = settings
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {

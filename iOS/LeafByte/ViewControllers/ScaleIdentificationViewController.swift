@@ -18,6 +18,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var cgImage: CGImage!
     var uiImage: UIImage!
     var inTutorial: Bool!
+    var barcode: String?
     
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
@@ -130,6 +131,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.scaleMarkEnd1 = scaleMarkEnd1
             destination.scaleMarkEnd2 = scaleMarkEnd2
             destination.inTutorial = inTutorial
+            destination.barcode = barcode
             destination.initialConnectedComponentsInfo = connectedComponentsInfo
             
             setBackButton(self: self, next: destination)

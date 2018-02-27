@@ -19,6 +19,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     var sourceType: UIImagePickerControllerSourceType!
     var image: CGImage!
     var inTutorial: Bool!
+    var barcode: String?
     
     let filter = ThresholdingFilter()
     
@@ -118,6 +119,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
             destination.cgImage = ciToCgImage(ciImageThresholded!)
             destination.uiImage = baseImageView.image
             destination.inTutorial = inTutorial
+            destination.barcode = barcode
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {

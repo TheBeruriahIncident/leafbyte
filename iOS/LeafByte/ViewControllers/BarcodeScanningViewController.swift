@@ -9,10 +9,10 @@
 import UIKit
 import AVFoundation
 
-class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
     
-    private let supportedBarcodeTypes = [
+    let supportedBarcodeTypes = [
         // 2D
         AVMetadataObject.ObjectType.code128,
         AVMetadataObject.ObjectType.ean8,
@@ -31,6 +31,17 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         AVMetadataObject.ObjectType.qr,
     ]
     
+    // This is passed from the previous view.
+    var settings: Settings!
+    
+    let captureSession = AVCaptureSession()
+    var barcode: String?
+    
+    let imagePicker = UIImagePickerController()
+    
+    // This is set while choosing the next image and is passed to the next thresholding view.
+    var selectedImage: CGImage?
+    
     // MARK: - Actions
     @IBAction func goHome(_ sender: Any) {
         dismissNavigationController(self: self)
@@ -41,7 +52,8 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let captureSession = AVCaptureSession()
+        setupImagePicker(imagePicker: imagePicker, self: self)
+        imagePicker.sourceType = .camera
         
         // Setup the capture session input.
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
@@ -66,6 +78,29 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         captureSession.startRunning()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
+        UIView.setAnimationsEnabled(true)
+    }
+    
+    // This is called before transitioning from this view to another view.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
+        if segue.identifier == "imageChosen" {
+            guard let destination = segue.destination as? ThresholdingViewController else {
+                fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: segue.destination))")
+            }
+            
+            destination.settings = settings
+            destination.sourceType = .camera
+            destination.image = selectedImage
+            destination.inTutorial = false
+            destination.barcode = barcode
+        }
+    }
+    
     // MARK: - AVCaptureMetadataOutputObjectsDelegate overrides
     
     // Accept the captured barcode.
@@ -76,7 +111,22 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         
         if supportedBarcodeTypes.contains(metadataObject.type) {
-            print(metadataObject.stringValue!)
+            captureSession.stopRunning()
+            barcode = metadataObject.stringValue!
+            requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
         }
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate overrides
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
+    }
+    
+    // If the image picker is canceled, dismiss it.
+    // Also go back to the home screen, to make it consistent that going back from after taking a picture goes to the home screen.
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+        dismissNavigationController(self: self)
     }
 }

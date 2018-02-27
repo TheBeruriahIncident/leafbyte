@@ -21,6 +21,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var scaleMarkEnd1: CGPoint?
     var scaleMarkEnd2: CGPoint?
     var inTutorial: Bool!
+    var barcode: String?
     var initialConnectedComponentsInfo: ConnectedComponentsInfo!
     
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
@@ -521,7 +522,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             self.present(alertController, animated: true, completion: nil)
         }
         
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func drawScaleMark() {
