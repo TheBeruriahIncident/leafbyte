@@ -1,3 +1,3 @@
 # LeafByte on iOS
 
-In progress. Developing in Xcode
+Essentially complete, in validation and testing. Developing in Xcode
