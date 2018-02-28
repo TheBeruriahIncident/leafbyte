@@ -27,8 +27,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scan your barcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8By-1v-d1a">
-                                <rect key="frame" x="115" y="595" width="144" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scan your barcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8By-1v-d1a">
+                                <rect key="frame" x="53" y="595" width="261" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -62,7 +62,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="06u-Gg-YYQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iXG-Zq-i5j" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="926" y="-604"/>
+            <point key="canvasLocation" x="925.60000000000002" y="-604.04797601199402"/>
         </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -1180,7 +1180,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gAP-T7-MBM"/>
+        <segue reference="Mj2-iv-vfZ"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>
