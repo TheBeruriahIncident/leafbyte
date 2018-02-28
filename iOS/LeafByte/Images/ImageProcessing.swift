@@ -34,10 +34,10 @@ func getLumaHistogram(image: CGImage) -> [Int] {
     // Essentially each pixel in the image is a row vector [R, G, B, A] and is post-multiplied by a matrix to create a new transformed image.
     // Because luma = RGB * [.299, .587, .114]' ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ), we can use this multiplication to get a luma value for each pixel.
     // The following matrix will replace the first channel of each pixel (previously red) with luma, while zeroing everything else (since nothing else matters to us).
-    let matrix: [Int16] = [299, 0, 0, 0,
-                           587, 0, 0, 0,
-                           114, 0, 0, 0,
-                           0,   0, 0, 0]
+    let matrix: [Int16] = [ 299, 0, 0, 0,
+                            587, 0, 0, 0,
+                            114, 0, 0, 0,
+                            0,   0, 0, 0 ]
     // Our matrix can only have integers, but this is accomodated for by having a post-divisor applied to the result of the multiplication.
     // As such, we're actually doing luma = RGB * [299, 587, 114]' / 1000 .
     let divisor: Int32 = 1000

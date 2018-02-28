@@ -165,7 +165,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             if self.sourceType == .camera {
                 requestCameraAccess(self: self, onSuccess: {
                     if self.settings.useBarcode {
-                        self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                        }
                     } else {
                         self.present(self.imagePicker, animated: true, completion: nil)
                     }

@@ -60,7 +60,7 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
         imagePicker.sourceType = .camera
         
         // Setup the capture session input.
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [ .builtInWideAngleCamera ], mediaType: AVMediaType.video, position: .back)
         guard let camera = deviceDiscoverySession.devices.first else {
             fatalError("Failed to get a camera device")
         }
