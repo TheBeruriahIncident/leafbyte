@@ -119,10 +119,12 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
             barcode = metadataObject.stringValue!
             label.text = barcode
             
-            // Pause for .75s to preview what was scanned.
-            usleep(750000)
-            
-            requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+            DispatchQueue.main.async {
+                // Pause for 1s to preview what was scanned.
+                usleep(1000000)
+                
+                requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+            }
         }
     }
     
