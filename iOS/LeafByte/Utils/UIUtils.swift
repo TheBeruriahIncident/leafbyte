@@ -11,7 +11,9 @@ import UIKit
 
 // Dismisses the current navigation controller, showing what is beneath.
 func dismissNavigationController(self viewController: UIViewController) {
-    viewController.navigationController!.dismiss(animated: true)
+    DispatchQueue.main.async {
+        viewController.navigationController!.dismiss(animated: true)
+    }
 }
 
 func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (CGImage) -> Void) {
