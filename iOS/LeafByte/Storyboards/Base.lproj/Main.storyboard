@@ -444,8 +444,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="seQ-tA-Ei2">
                                 <rect key="frame" x="0.0" y="81" width="375" height="449"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
-                                <rect key="frame" x="46" y="619" width="66" height="29"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKJ-Ch-T7e" userLabel="Mode Toggle Button">
+                                <rect key="frame" x="46" y="619" width="78" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="59" id="vfg-q6-0vn"/>
@@ -456,8 +456,8 @@
                                     <action selector="toggleScrollingMode:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="VBr-Fj-GyK"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
-                                <rect key="frame" x="111" y="620" width="32" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-8a-K9l" userLabel="Redo Button">
+                                <rect key="frame" x="123" y="620" width="32" height="28"/>
                                 <state key="normal" image="Redo"/>
                                 <connections>
                                     <action selector="redo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="Ngp-ci-lfb"/>
@@ -509,7 +509,7 @@
                         <constraints>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="trailing" secondItem="Dk9-tD-hbE" secondAttribute="trailing" id="B7y-dZ-lSQ"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="tVl-5H-cS7" secondAttribute="top" constant="51" id="BWC-gO-UjE"/>
-                            <constraint firstItem="Xwt-8a-K9l" firstAttribute="leading" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="-4" id="FB8-10-VRZ"/>
+                            <constraint firstItem="Xwt-8a-K9l" firstAttribute="leading" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="-1" id="FB8-10-VRZ"/>
                             <constraint firstAttribute="bottom" secondItem="M4l-IF-yMI" secondAttribute="bottom" constant="19" id="GJo-GH-L28"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="seQ-tA-Ei2" secondAttribute="trailing" id="MJK-ff-1WY"/>
                             <constraint firstItem="seQ-tA-Ei2" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="37" id="N6h-cC-5ME"/>
@@ -1066,7 +1066,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
                                 <rect key="frame" x="16" y="20" width="288" height="152"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="Lat-T6-Xa5"/>
@@ -1088,7 +1088,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uJo-qK-h47" firstAttribute="top" secondItem="E1c-5i-snk" secondAttribute="top" id="fwH-Uv-BiI"/>
-                            <constraint firstAttribute="bottom" secondItem="uJo-qK-h47" secondAttribute="bottom" constant="20" symbolic="YES" id="j3u-a7-hRL"/>
+                            <constraint firstAttribute="bottom" secondItem="uJo-qK-h47" secondAttribute="bottom" constant="328" id="j3u-a7-hRL"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uJo-qK-h47" secondAttribute="trailingMargin" id="kSt-D9-1Si"/>
                             <constraint firstItem="uJo-qK-h47" firstAttribute="leading" secondItem="DYp-jC-BAx" secondAttribute="leadingMargin" id="tMf-tP-7UP"/>
                         </constraints>
