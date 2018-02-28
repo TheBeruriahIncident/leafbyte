@@ -144,7 +144,7 @@
                                     <constraint firstAttribute="width" secondItem="fV7-74-OmP" secondAttribute="height" multiplier="128:139" id="CFh-VO-3N6"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-gX-Mwe">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-gX-Mwe">
                                 <rect key="frame" x="229" y="553" width="83" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -187,6 +187,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraButton" destination="neI-sd-kIs" id="ULl-Ez-AkV"/>
+                        <outlet property="cameraLabel" destination="hMs-gX-Mwe" id="Jka-8Q-haj"/>
                         <outlet property="savingSummary" destination="2BA-tP-TZU" id="JpK-zT-xa4"/>
                         <segue destination="X9a-Dg-dvv" kind="show" identifier="imageChosen" id="8fQ-EQ-ksU"/>
                         <segue destination="OA0-cn-27N" kind="show" identifier="toBarcodeScanning" id="17B-iF-pbT"/>

@@ -28,6 +28,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     
     @IBOutlet weak var savingSummary: UILabel!
     @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var cameraLabel: UILabel!
     
     // MARK: - Actions
     
@@ -74,6 +75,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         
         let imageToUse = settings.useBarcode ? "Barcode" : "Camera"
         cameraButton.setBackgroundImage(UIImage(named: imageToUse), for: .normal)
+        cameraLabel.text = settings.useBarcode ? "Scan Barcode and\nTake a Photo" : "Take a Photo"
+        cameraLabel.numberOfLines = settings.useBarcode ? 2 : 1
     }
     
     // This is called before transitioning from this view to another view.
