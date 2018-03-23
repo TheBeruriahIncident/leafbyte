@@ -846,9 +846,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idG-FB-9Wd">
-                                <rect key="frame" x="0.0" y="94" width="375" height="488"/>
+                                <rect key="frame" x="16" y="94" width="279" height="488"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <mutableString key="text">Step 1: Use a white background.  Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</mutableString>
+                                <mutableString key="text">Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1018,7 +1018,7 @@
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="A67-1Z-vF9"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
-                            <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" constant="40" id="GT1-e5-FY8"/>
+                            <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="bottom" constant="-539" id="GT1-e5-FY8"/>
                             <constraint firstItem="Odx-Xc-7pu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wTv-BJ-FVQ" secondAttribute="leading" constant="20" symbolic="YES" id="H5R-zN-rKi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aFd-8f-9XM" secondAttribute="trailing" constant="-25" id="J4X-aW-rqF"/>
                             <constraint firstAttribute="bottom" secondItem="7fQ-lo-BNS" secondAttribute="bottom" constant="19" id="Jrx-oN-9n6"/>
