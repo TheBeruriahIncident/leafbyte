@@ -82,7 +82,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         redoBuffer.append(undoBuffer.popLast()!)
         
         // Wipe the screen and redraw all drawings except the one we just "undid".
-        userDrawingView.image = nil
+        initializeImage(view: userDrawingView, size: uiImage.size)
         undoBuffer.forEach { drawing in drawCompleteDrawing(drawing) }
         
         // Update the buttons.
