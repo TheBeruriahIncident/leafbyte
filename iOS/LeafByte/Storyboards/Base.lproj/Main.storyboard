@@ -17,9 +17,6 @@
         <array key="GurmukhiMN.ttc">
             <string>GurmukhiMN</string>
         </array>
-        <array key="TimesNewRoman.ttf">
-            <string>TimesNewRomanPSMT</string>
-        </array>
     </customFonts>
     <scenes>
         <!--Barcode Scanning View Controller-->
@@ -347,18 +344,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
-                                <rect key="frame" x="16" y="282" width="279" height="218"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3uy-K5-z41">
+                                <rect key="frame" x="16" y="20" width="279" height="127"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
+                                <string key="text">Tips:                                                             1.  Avoid having any shadow larger than your leaf. If you do this, the app may measure the shadow instead of the leaf.                                </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3uy-K5-z41">
-                                <rect key="frame" x="16" y="20" width="279" height="263"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
+                                <rect key="frame" x="16" y="144" width="279" height="208"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Tips:                                                             1.  Avoid having any shadow larger than your leaf. If you do this, the app may measure the shadow instead of the leaf.                                </string>
+                                <string key="text">Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1088,11 +1085,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOo-eh-LpA">
-                                <rect key="frame" x="16" y="298" width="279" height="173"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOo-eh-LpA">
+                                <rect key="frame" x="16" y="204" width="279" height="187"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Explanation:                                                                       LeafByte will find the location of the scale marking by identifying the second largest blob. If the guess is wrong, you can pick a different object. With the object determined, we find the farthest apart two points to determine the length of the scale. </string>
-                                <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1123,7 +1120,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
-                                <rect key="frame" x="16" y="0.0" width="279" height="283"/>
+                                <rect key="frame" x="16" y="20" width="279" height="230"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <mutableString key="text">Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      </mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1131,7 +1128,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86B-9V-BR8">
-                                <rect key="frame" x="16" y="282" width="279" height="198"/>
+                                <rect key="frame" x="16" y="249" width="279" height="107"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
