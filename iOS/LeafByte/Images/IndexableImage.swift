@@ -33,7 +33,7 @@ final class IndexableImage {
         return Pixel(red: pixelDataPointer[offset], green: pixelDataPointer[offset + 1], blue: pixelDataPointer[offset + 2], alpha: pixelDataPointer[offset + 3])
     }
     
-    // Useful for debugging: prints the image to the console as 1s and 0s, supporting different modes of what pixels become 1s vs 0s.
+    // Useful for debugging: prints the image to the console as 1s and 0s.
     func printInBinary() {
         for y in 0...height - 1 {
             for x in 0...width - 1 {
