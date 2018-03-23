@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="GurmukhiMN.ttc">
+            <string>GurmukhiMN</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFK-Ft-h66" userLabel="Title">
+                                <rect key="frame" x="0.0" y="249" width="375" height="57.5"/>
+                                <fontDescription key="fontDescription" name="GurmukhiMN" family="Gurmukhi MN" pointSize="41"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and Adam Campbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHy-RJ-4Ww">
+                                <rect key="frame" x="0.0" y="338.5" width="375" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Zoe Getman-Pickering" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXn-Hi-YUB">
+                                <rect key="frame" x="0.0" y="317.5" width="375" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Leaf" translatesAutoresizingMaskIntoConstraints="NO" id="cxN-M2-dDD">
+                                <rect key="frame" x="148" y="121" width="124" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="AXn-Hi-YUB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0Vd-xm-DEc"/>
+                            <constraint firstItem="pHy-RJ-4Ww" firstAttribute="top" secondItem="AXn-Hi-YUB" secondAttribute="bottom" constant="5" id="9SV-37-gVb"/>
+                            <constraint firstItem="nFK-Ft-h66" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Au5-vs-HDW"/>
+                            <constraint firstItem="pHy-RJ-4Ww" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MVa-ff-8lD"/>
+                            <constraint firstItem="nFK-Ft-h66" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="aV9-zv-Mv3"/>
+                            <constraint firstItem="AXn-Hi-YUB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fGO-DQ-mnm"/>
+                            <constraint firstItem="AXn-Hi-YUB" firstAttribute="top" secondItem="nFK-Ft-h66" secondAttribute="bottom" constant="10" id="qHJ-zB-1P4"/>
+                            <constraint firstItem="pHy-RJ-4Ww" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="twc-oc-tJe"/>
+                            <constraint firstItem="nFK-Ft-h66" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="230" id="upT-1P-Q0R"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Leaf" width="256" height="279"/>
+    </resources>
+</document>
