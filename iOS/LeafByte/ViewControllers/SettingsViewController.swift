@@ -110,7 +110,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
             GoogleSignInManager.initiateSignIn(
                 onAccessTokenAndUserId: { _, _ in 
                     persistChange()
-            },
+                },
                 onError: { _ in
                     // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
                     self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
