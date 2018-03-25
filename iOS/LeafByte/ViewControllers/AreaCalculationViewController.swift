@@ -251,11 +251,15 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // If the segue is toBarcodeScanning, we're transitioning forward in the main flow, but with barcode scanning.
         else if segue.identifier == "toBarcodeScanning"
         {
-            guard let destination = segue.destination as? BarcodeScanningViewController else {
-                fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
+            if #available(iOS 10.0, *) {
+                guard let destination = segue.destination as? BarcodeScanningViewController else {
+                    fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
+                }
+                
+                destination.settings = settings
+            } else {
+                fatalError("Attempting to use barcode scanning pre-iOS 10.0")
             }
-            
-            destination.settings = settings
         }
         else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)

@@ -24,7 +24,7 @@ func cgToUiImage(_ cgImage: CGImage) -> UIImage {
 // Convert a Core Image image to a Core Graphics image.
 let context: CIContext = CIContext(options: nil)
 func ciToCgImage(_ ciImage: CIImage) -> CGImage {
-    if ciImage.cgImage != nil {
+    if #available(iOS 10.0, *), ciImage.cgImage != nil {
         return ciImage.cgImage!
     }
     

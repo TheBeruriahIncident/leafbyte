@@ -729,7 +729,7 @@
                                         <rect key="frame" x="0.0" y="441" width="375" height="162"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                     </pickerView>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Save GPS Toggle">
+                                    <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Save GPS Toggle">
                                         <rect key="frame" x="251" y="356" width="51" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="31" id="0VI-JF-yyz"/>
@@ -739,7 +739,7 @@
                                             <action selector="useBarcodesChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="CTT-L6-Y2a"/>
                                         </connections>
                                     </switch>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barcode?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wep-GW-bl2">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barcode?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wep-GW-bl2">
                                         <rect key="frame" x="235" y="318" width="73" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -830,6 +830,7 @@
                         <outlet property="scrollView" destination="Atb-RN-ny0" id="4lg-05-Okg"/>
                         <outlet property="signOutOfGoogleButton" destination="KqO-AI-fbL" id="RDV-X8-wwc"/>
                         <outlet property="useBarcode" destination="2xi-47-qHi" id="NpC-UI-n0N"/>
+                        <outlet property="useBarcodeLabel" destination="Wep-GW-bl2" id="uoP-VX-9wA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KC5-I7-Tcv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -848,7 +849,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idG-FB-9Wd">
                                 <rect key="frame" x="16" y="94" width="279" height="488"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <mutableString key="text">Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</mutableString>
+                                <string key="text">Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1122,7 +1123,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
                                 <rect key="frame" x="16" y="20" width="279" height="230"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <mutableString key="text">Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      </mutableString>
+                                <string key="text">Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

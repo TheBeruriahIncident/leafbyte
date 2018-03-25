@@ -33,6 +33,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     
     @IBOutlet weak var datasetNameLabel: UILabel!
     @IBOutlet weak var nextSampleNumberLabel: UILabel!
+    @IBOutlet weak var useBarcodeLabel: UILabel!
     @IBOutlet weak var saveGpsLabel: UILabel!
     
     @IBOutlet weak var previousDatasetButton: UIButton!
@@ -214,6 +215,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPicker.isHidden = true
         
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
+        
+        if #available(iOS 10.0, *) {
+            useBarcode.isHidden = false
+            useBarcodeLabel.isHidden = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
