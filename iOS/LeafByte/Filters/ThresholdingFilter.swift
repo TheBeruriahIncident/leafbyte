@@ -29,8 +29,8 @@ final class ThresholdingFilter: CIFilter {
         "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
         // 0 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it invisible.
         "const vec4 invisiblePixel = vec4(0.0);" +
-        // If the pixel is not intense enough, return invisible; otherwise, return a pixel of the actual (saturated) image, darkened to make it more distinct.
-        "  return luma < threshold ? vec4(saturatedPixel.rgb/3.0, 1) : invisiblePixel;" +
+        // If the pixel is not intense enough, return invisible; otherwise, return a pixel of the actual (saturated) image.
+        "  return luma < threshold ? vec4(saturatedPixel.rgb, 1) : invisiblePixel;" +
         "}")!
     
     func setInputImage(_ inputImage: CGImage) {
