@@ -11,6 +11,7 @@ import UIKit
 
 final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     let HISTOGRAM_MAX = 100
+    let FUZZINESS_THRESHOLD = 400
     
     // MARK: - Fields
     
@@ -38,6 +39,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var sampleNumberButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var fuzzinessWarning: UIButton!
     
     // MARK: - Actions
     
@@ -90,6 +92,16 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
             let suggestedThreshold = otsusMethod(histogram: lumaHistogram)
             thresholdSlider.value = 1 - suggestedThreshold
             setThreshold(suggestedThreshold)
+            
+            // Sum the 2 buckets before and after the threshold in the histogram to get the "fuzziness level".
+            // If the fuzziness level is above a threshold (different threshold than the main threshold here), the image is warned to be fuzzy.
+            // This essentially represents the amount of pixels that'll change if you slightly adjust the slider.
+            let intThreshold = roundToInt(suggestedThreshold * Float(NUMBER_OF_HISTOGRAM_BUCKETS))
+            let fuzzinessLevel = lumaHistogram[intThreshold - 1...intThreshold + 2].reduce(0, +)
+            if fuzzinessLevel > FUZZINESS_THRESHOLD {
+                fuzzinessWarning.isEnabled = true
+                fuzzinessWarning.setTitle("Warning: Image may be fuzzy", for: .normal)
+            }
             
             // Draw the histogram to make user adjustment easier.
             drawHistogram(lumaHistogram: lumaHistogram)
