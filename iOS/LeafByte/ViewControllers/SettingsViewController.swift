@@ -195,6 +195,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         useBarcode.setOn(settings.useBarcode, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
         
+        // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+        var localStorageName: String
+        if #available(iOS 11.0, *) {
+            localStorageName = "Files App"
+        } else {
+            localStorageName = "Phone"
+        }
+        measurementSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
+        imageSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
+        
         // Setup to get a callback when return is pressed on a keyboard.
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
         datasetName.delegate = self
