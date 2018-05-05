@@ -310,7 +310,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8Uc-b0-2VM"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Thresholding" id="hvJ-Y3-oXj" userLabel="Navigation Content">
+                    <navigationItem key="navigationItem" title="Background Removal" id="hvJ-Y3-oXj" userLabel="Navigation Content">
                         <leftBarButtonItems>
                             <barButtonItem title="Back" id="zfi-8V-mUx" userLabel="Back Button">
                                 <connections>
