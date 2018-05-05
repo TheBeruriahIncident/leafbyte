@@ -24,6 +24,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var sourceType: UIImagePickerControllerSourceType?
     var selectedImage: CGImage?
     
+    // To prevent double tapping from double seguing, we disable segue after the first tap until coming back to this view.
+    var segueEnabled = true
+    
     // MARK: - Outlets
     
     @IBOutlet weak var savingSummary: UILabel!
@@ -31,6 +34,20 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     @IBOutlet weak var cameraLabel: UILabel!
     
     // MARK: - Actions
+    
+    @IBAction func goToSettings() {
+        if segueEnabled {
+            segueEnabled = false
+            performSegue(withIdentifier: "toSettings", sender: self)
+        }
+    }
+    
+    @IBAction func goToTutorial() {
+        if segueEnabled {
+            segueEnabled = false
+            performSegue(withIdentifier: "toTutorial", sender: self)
+        }
+    }
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
@@ -65,6 +82,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        segueEnabled = true
         
         if !viewDidAppearHasRun {
             maybeDoGoogleSignIn()
