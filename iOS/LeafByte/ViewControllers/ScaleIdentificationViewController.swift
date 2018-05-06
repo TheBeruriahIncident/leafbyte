@@ -246,7 +246,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         scaleMarkPixelLength = candidateScaleMarkPixelLength
         scaleMarkEnd1 = farthestPoint1
         scaleMarkEnd2 = farthestPoint2
-        resultsText.text = "Scale found: \(candidateScaleMarkPixelLength) pixels long"
+        resultsText.text = "Scale found"
         
         drawMarkers()
     }
