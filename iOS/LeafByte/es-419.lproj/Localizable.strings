@@ -39,3 +39,11 @@
 
 /* Multiple views */
 "Cancel" = "Cancelar";
+
+/* UIUtils */
+"OK" = "De acuerdo";
+"Back" = "Espalda";
+"Sample Number" = "Numero de muestra";
+"Sample %@" = "Muestra %@";
+"Camera access denied" = "Acceso a la cámara denegado";
+"To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON." = "Para permitir tomar fotos para el análisis, vaya a Configuración -> Privacidad -> Cámara y configure LeafByte en ENCENDIDO.";

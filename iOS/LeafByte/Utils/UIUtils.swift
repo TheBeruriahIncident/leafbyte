@@ -39,7 +39,7 @@ func finishWithImagePicker(self viewController: UIViewController, info: [String 
 
 func presentAlert(self viewController: UIViewController, title: String?, message: String) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "OK", style: .default)
+    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm an alert"), style: .default)
     alertController.addAction(okAction)
     
     viewController.present(alertController, animated: true, completion: nil)
@@ -50,7 +50,7 @@ func requestCameraAccess(self viewController: UIViewController, onSuccess: @esca
         if response {
             onSuccess()
         } else {
-            presentAlert(self: viewController, title: "Camera access denied", message: "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.")
+            presentAlert(self: viewController, title: NSLocalizedString("Camera access denied", comment: "Title of the alert that camera access is denied"), message: NSLocalizedString("To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.", comment: "Explanation of how to give camera access"))
         }
     }
 }
@@ -58,7 +58,7 @@ func requestCameraAccess(self viewController: UIViewController, onSuccess: @esca
 func setBackButton(self previousViewController: UIViewController, next nextViewController: UIViewController ) {
     // Make the back button say "Back" rather than the full title of the previous page.
     let backItem = UIBarButtonItem()
-    backItem.title = "Back"
+    backItem.title = NSLocalizedString("Back", comment: "Title for button to go to previous screen")
     previousViewController.navigationItem.backBarButtonItem = backItem
     
     // Make the back button appear even if there are other buttons.
@@ -90,19 +90,19 @@ func smoothTransitions(self viewController: UIViewController) {
 }
 
 func setSampleNumberButtonText(_ sampleNumberButton: UIButton, settings: Settings) {
-    sampleNumberButton.setTitle("Sample \(settings.getNextSampleNumber())", for: .normal)
+    sampleNumberButton.setTitle(String.localizedStringWithFormat(NSLocalizedString("Sample %d", comment: "Current sample number"), settings.getNextSampleNumber()), for: .normal)
 }
 
 func presentSampleNumberAlert(self viewController: UIViewController, sampleNumberButton: UIButton, settings: Settings) {
-    let alert = UIAlertController(title: "Sample Number", message: nil, preferredStyle: .alert)
+    let alert = UIAlertController(title: NSLocalizedString("Sample Number", comment: "Title of alert asking for the new sample number"), message: nil, preferredStyle: .alert)
     
     alert.addTextField { (textField) in
         textField.placeholder = String(settings.getNextSampleNumber())
         textField.keyboardType = UIKeyboardType.numberPad
     }
     
-    let cancelAction = UIAlertAction(title: "Cancel", style: .default)
-    let okAction = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+    let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel the new sample number"), style: .default)
+    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { (_) in
         let newSampleNumber = alert.textFields![0].text!
         
         if !newSampleNumber.isEmpty {
