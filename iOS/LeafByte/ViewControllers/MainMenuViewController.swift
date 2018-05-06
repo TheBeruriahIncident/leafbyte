@@ -256,7 +256,12 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         case .none:
             return NSLocalizedString("none", comment: "Not saving")
         case .local:
-            return NSLocalizedString("the Files App", comment: "Name of the Files App")
+            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+            if #available(iOS 11.0, *) {
+                return NSLocalizedString("the Files App", comment: "Name for local storage on iOS 11 and newer")
+            } else {
+                return NSLocalizedString("the phone", comment: "Name for local storage before iOS 11")
+            }
         case .googleDrive:
             return NSLocalizedString("Google Drive", comment: "Name of Google Drive")
         }
