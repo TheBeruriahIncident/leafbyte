@@ -12,19 +12,19 @@
 "3uy-K5-z41.text" = "Tips:                                                             1.  Avoid having any shadow larger than your leaf. If you do this, the app may measure the shadow instead of the leaf.                                ";
 
 /* Class = "UILabel"; text = "Dataset Name"; ObjectID = "4hE-lk-Cd3"; */
-"4hE-lk-Cd3.text" = "Dataset Name";
+"4hE-lk-Cd3.text" = "Nombre del conjunto de datos";
 
 /* Class = "UIBarButtonItem"; title = "?"; ObjectID = "4zZ-gJ-L7f"; */
 "4zZ-gJ-L7f.title" = "?";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "528-MI-JgF"; */
-"528-MI-JgF.title" = "Back";
+"528-MI-JgF.title" = "Espalda";
 
 /* Class = "UIButton"; accessibilityLabel = "Next"; ObjectID = "5RZ-7f-3CS"; */
-"5RZ-7f-3CS.accessibilityLabel" = "Next";
+"5RZ-7f-3CS.accessibilityLabel" = "Siguiente";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "5RZ-7f-3CS"; */
-"5RZ-7f-3CS.normalTitle" = "Next";
+"5RZ-7f-3CS.normalTitle" = "Siguiente";
 
 /* Class = "UILabel"; text = "Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary."; ObjectID = "5k2-Es-xYP"; */
 "5k2-Es-xYP.text" = "Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.";
@@ -33,31 +33,31 @@
 "5nA-2H-mzx.title" = "?";
 
 /* Class = "UIButton"; accessibilityLabel = "Photo Library"; ObjectID = "7Fv-Ge-wCb"; */
-"7Fv-Ge-wCb.accessibilityLabel" = "Photo Library";
+"7Fv-Ge-wCb.accessibilityLabel" = "Librería fotográfica";
 
 /* Class = "UIButton"; normalTitle = "No Scale"; ObjectID = "7fQ-lo-BNS"; */
-"7fQ-lo-BNS.normalTitle" = "No Scale";
+"7fQ-lo-BNS.normalTitle" = "Sin escala";
 
 /* Class = "UILabel"; text = "Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. "; ObjectID = "86B-9V-BR8"; */
 "86B-9V-BR8.text" = "Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. ";
 
 /* Class = "UILabel"; text = "Scan barcode"; ObjectID = "8By-1v-d1a"; */
-"8By-1v-d1a.text" = "Scan barcode";
+"8By-1v-d1a.text" = "Escanear código de barras";
 
 /* Class = "UILabel"; text = "Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      "; ObjectID = "8Ik-W8-Way"; */
 "8Ik-W8-Way.text" = "Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      ";
 
 /* Class = "UISegmentedControl"; 8gj-2h-2Ic.segmentTitles[0] = "None"; ObjectID = "8gj-2h-2Ic"; */
-"8gj-2h-2Ic.segmentTitles[0]" = "None";
+"8gj-2h-2Ic.segmentTitles[0]" = "Ninguna";
 
 /* Class = "UISegmentedControl"; 8gj-2h-2Ic.segmentTitles[1] = "Files App"; ObjectID = "8gj-2h-2Ic"; */
-"8gj-2h-2Ic.segmentTitles[1]" = "Files App";
+"8gj-2h-2Ic.segmentTitles[1]" = "Aplicación de Archivos";
 
 /* Class = "UISegmentedControl"; 8gj-2h-2Ic.segmentTitles[2] = "Google Drive"; ObjectID = "8gj-2h-2Ic"; */
 "8gj-2h-2Ic.segmentTitles[2]" = "Google Drive";
 
 /* Class = "UISegmentedControl"; A8e-Un-uuG.segmentTitles[0] = "None"; ObjectID = "A8e-Un-uuG"; */
-"A8e-Un-uuG.segmentTitles[0]" = "None";
+"A8e-Un-uuG.segmentTitles[0]" = "Ninguna";
 
 /* Class = "UISegmentedControl"; A8e-Un-uuG.segmentTitles[1] = "Files App"; ObjectID = "A8e-Un-uuG"; */
 "A8e-Un-uuG.segmentTitles[1]" = "Files App";
@@ -69,49 +69,49 @@
 "Bh7-Ol-hI2.normalTitle" = "Tutorial";
 
 /* Class = "UISlider"; accessibilityLabel = "Threshold"; ObjectID = "C16-Ki-FNI"; */
-"C16-Ki-FNI.accessibilityLabel" = "Threshold";
+"C16-Ki-FNI.accessibilityLabel" = "Límite";
 
 /* Class = "UILabel"; text = "Notes:"; ObjectID = "FLK-Tc-phh"; */
-"FLK-Tc-phh.text" = "Notes:";
+"FLK-Tc-phh.text" = "Notas:";
 
 /* Class = "UILabel"; text = "Save GPS Location (May slow saving)"; ObjectID = "ID5-9Q-Zb9"; */
-"ID5-9Q-Zb9.text" = "Save GPS Location (May slow saving)";
+"ID5-9Q-Zb9.text" = "Guardar ubicación del GPS (puede ralentizar el ahorro)";
 
 /* Class = "UINavigationItem"; title = "Results"; ObjectID = "IGS-wx-LA2"; */
-"IGS-wx-LA2.title" = "Results";
+"IGS-wx-LA2.title" = "Resultados";
 
 /* Class = "UIButton"; accessibilityLabel = "Next"; ObjectID = "Id9-ad-Z94"; */
-"Id9-ad-Z94.accessibilityLabel" = "Next";
+"Id9-ad-Z94.accessibilityLabel" = "Siguiente";
 
 /* Class = "UIButton"; normalTitle = "Save & Next"; ObjectID = "Id9-ad-Z94"; */
-"Id9-ad-Z94.normalTitle" = "Save & Next";
+"Id9-ad-Z94.normalTitle" = "Guardar y Siguiente";
 
 /* Class = "UIButton"; normalTitle = "Sign out of Google"; ObjectID = "KqO-AI-fbL"; */
-"KqO-AI-fbL.normalTitle" = "Sign out of Google";
+"KqO-AI-fbL.normalTitle" = "Salir de Google";
 
 /* Class = "UIButton"; normalTitle = "Calculate"; ObjectID = "M4l-IF-yMI"; */
-"M4l-IF-yMI.normalTitle" = "Calculate";
+"M4l-IF-yMI.normalTitle" = "Calcular";
 
 /* Class = "UIButton"; accessibilityLabel = "Next"; ObjectID = "Odx-Xc-7pu"; */
-"Odx-Xc-7pu.accessibilityLabel" = "Next";
+"Odx-Xc-7pu.accessibilityLabel" = "Siguiente";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "Odx-Xc-7pu"; */
-"Odx-Xc-7pu.normalTitle" = "Next";
+"Odx-Xc-7pu.normalTitle" = "Siguiente";
 
 /* Class = "UIButton"; normalTitle = "Sample X"; ObjectID = "Otk-oa-PcB"; */
 "Otk-oa-PcB.normalTitle" = "Sample X";
 
 /* Class = "UIButton"; normalTitle = "Use previous dataset"; ObjectID = "P3F-9h-21N"; */
-"P3F-9h-21N.normalTitle" = "Use previous dataset";
+"P3F-9h-21N.normalTitle" = "Usar el conjunto de datos anterior";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "Spc-9V-d8W"; */
-"Spc-9V-d8W.title" = "Back";
+"Spc-9V-d8W.title" = "Espalda";
 
 /* Class = "UILabel"; text = "Image Save Location"; ObjectID = "V1C-Gd-7rk"; */
-"V1C-Gd-7rk.text" = "Image Save Location";
+"V1C-Gd-7rk.text" = "Imagen Guardar ubicación";
 
 /* Class = "UILabel"; text = "Scan Barcodes?"; ObjectID = "Wep-GW-bl2"; */
-"Wep-GW-bl2.text" = "Scan Barcodes?";
+"Wep-GW-bl2.text" = "¿Escanear códigos de barras?";
 
 /* Class = "UIButton"; normalTitle = "Sample X"; ObjectID = "X9Q-JC-Czl"; */
 "X9Q-JC-Czl.normalTitle" = "Sample X";
@@ -120,34 +120,34 @@
 "ayx-Do-FJf.title" = "Settings View Controller";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "b5g-Ga-ipG"; */
-"b5g-Ga-ipG.title" = "Back";
+"b5g-Ga-ipG.title" = "Espalda";
 
 /* Class = "UIViewController"; title = "Thresholding View Controller"; ObjectID = "bUK-Ir-gu8"; */
 "bUK-Ir-gu8.title" = "Thresholding View Controller";
 
 /* Class = "UILabel"; text = "Choose from Gallery"; ObjectID = "cPB-VP-BSe"; */
-"cPB-VP-BSe.text" = "Choose from Gallery";
+"cPB-VP-BSe.text" = "Elegir de la galería";
 
 /* Class = "UIViewController"; title = "Scale Identification View Controller"; ObjectID = "e5s-F7-9rn"; */
 "e5s-F7-9rn.title" = "Scale Identification View Controller";
 
 /* Class = "UILabel"; text = "& Zoe Getman-Pickering"; ObjectID = "gE2-ly-MV0"; */
-"gE2-ly-MV0.text" = "& Zoe Getman-Pickering";
+"gE2-ly-MV0.text" = "y Zoe Getman-Pickering";
 
 /* Class = "UILabel"; text = "Take a Photo"; ObjectID = "hMs-gX-Mwe"; */
-"hMs-gX-Mwe.text" = "Take a Photo";
+"hMs-gX-Mwe.text" = "Tomar una foto";
 
 /* Class = "UINavigationItem"; title = "Background Removal"; ObjectID = "hvJ-Y3-oXj"; */
-"hvJ-Y3-oXj.title" = "Background Removal";
+"hvJ-Y3-oXj.title" = "Remoción de fondo";
 
 /* Class = "UILabel"; text = "Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow."; ObjectID = "idG-FB-9Wd"; */
 "idG-FB-9Wd.text" = "Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.";
 
 /* Class = "UINavigationItem"; title = "Scale Identification"; ObjectID = "khl-eo-np4"; */
-"khl-eo-np4.title" = "Scale Identification";
+"khl-eo-np4.title" = "Identificación de escala";
 
 /* Class = "UIButton"; accessibilityLabel = "Camera"; ObjectID = "neI-sd-kIs"; */
-"neI-sd-kIs.accessibilityLabel" = "Camera";
+"neI-sd-kIs.accessibilityLabel" = "Cámara";
 
 /* Class = "UILabel"; text = "So fuzzy"; ObjectID = "nfU-Kl-doO"; */
 "nfU-Kl-doO.text" = "So fuzzy";
@@ -156,7 +156,7 @@
 "oKl-3T-MdZ.title" = "?";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "roH-yQ-Vce"; */
-"roH-yQ-Vce.title" = "Settings";
+"roH-yQ-Vce.title" = "Configuraciones";
 
 /* Class = "UILabel"; text = "LeafByte"; ObjectID = "tMm-Do-q8c"; */
 "tMm-Do-q8c.text" = "LeafByte";
@@ -168,34 +168,34 @@
 "ueh-Tb-xxm.title" = "Area Calculation View Controller";
 
 /* Class = "UILabel"; text = "By Adam Campbell"; ObjectID = "uh0-1K-0gr"; */
-"uh0-1K-0gr.text" = "By Adam Campbell";
+"uh0-1K-0gr.text" = "Por Adam Campbell";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "x28-4n-nZt"; */
-"x28-4n-nZt.normalTitle" = "Next";
+"x28-4n-nZt.normalTitle" = "Siguente";
 
 /* Class = "UILabel"; text = "Explanation:                                                                       LeafByte will find the location of the scale marking by identifying the second largest blob. If the guess is wrong, you can pick a different object. With the object determined, we find the farthest apart two points to determine the length of the scale. "; ObjectID = "xOo-eh-LpA"; */
 "xOo-eh-LpA.text" = "Explanation:                                                                       LeafByte will find the location of the scale marking by identifying the second largest blob. If the guess is wrong, you can pick a different object. With the object determined, we find the farthest apart two points to determine the length of the scale. ";
 
 /* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "y7J-0u-w5M"; */
-"y7J-0u-w5M.accessibilityLabel" = "Settings";
+"y7J-0u-w5M.accessibilityLabel" = "Configuraciones";
 
 /* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "y7J-0u-w5M"; */
-"y7J-0u-w5M.normalTitle" = "Settings";
+"y7J-0u-w5M.normalTitle" = "Configuraciones";
 
 /* Class = "UILabel"; text = "Data Save Location"; ObjectID = "z79-vT-qHF"; */
-"z79-vT-qHF.text" = "Data Save Location";
+"z79-vT-qHF.text" = "Datos Guardar ubicación";
 
 /* Class = "UIButton"; accessibilityLabel = "Mode Toggle"; ObjectID = "zKJ-Ch-T7e"; */
-"zKJ-Ch-T7e.accessibilityLabel" = "Mode Toggle";
+"zKJ-Ch-T7e.accessibilityLabel" = "Modo de alternancia";
 
 /* Class = "UIButton"; normalTitle = "<autofilled>"; ObjectID = "zKJ-Ch-T7e"; */
 "zKJ-Ch-T7e.normalTitle" = "<autofilled>";
 
 /* Class = "UILabel"; text = "Scale Mark Length (cm)"; ObjectID = "zOl-m9-gNp"; */
-"zOl-m9-gNp.text" = "Scale Mark Length (cm)";
+"zOl-m9-gNp.text" = "Longitud de la marca de escala (cm)";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "zfi-8V-mUx"; */
-"zfi-8V-mUx.title" = "Back";
+"zfi-8V-mUx.title" = "Espalda";
 
 /* Class = "UILabel"; text = "Next Sample Number"; ObjectID = "zyF-9a-8bS"; */
-"zyF-9a-8bS.text" = "Next Sample Number";
+"zyF-9a-8bS.text" = "Siguiente número de muestra";
