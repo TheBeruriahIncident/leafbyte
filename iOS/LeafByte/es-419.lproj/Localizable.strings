@@ -6,4 +6,29 @@
   Copyright © 2018 The Blue Folder Project. All rights reserved.
 */
 
+/* MainMenuViewController */
 "No available camera" = "No hay cámara disponible";
+"Scan Barcode and\nTake a Photo" = "Scan Barcode and\nTake a Photo";
+"Take a Photo" = "Take a Photo";
+"Cannot save to Google Drive without Google sign-in" = "Cannot save to Google Drive without Google sign-in";
+
+/* ThresholdingViewController */
+"Warning: Image may be fuzzy" = "Warning: Image may be fuzzy";
+
+/* ScaleIdentificationViewController */
+"No scale" = "No scale";
+"Touch the scale" = "Touch the scale";
+"Scale found" = "Scale found";
+"Scale not found" = "Scale not found";
+
+/* AreaCalculationViewController */
+"Loading" = "Loading";
+" Analyzed with LeafByte https://github.com/akroy/leafbyte" = " Analyzed with LeafByte https://github.com/akroy/leafbyte";
+"Draw" = "Draw";
+"No leaf found" = "No leaf found";
+"Could not save to Google Drive." = "Could not save to Google Drive.";
+"Switch to Files App" = "Switch to Files App";
+"Retry" = "Retry";
+
+/* Multiple views */
+"Cancel" = "Cancel";

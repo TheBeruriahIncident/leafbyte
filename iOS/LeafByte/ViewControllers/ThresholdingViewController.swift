@@ -100,7 +100,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
             let fuzzinessLevel = lumaHistogram[intThreshold - 1...intThreshold + 2].reduce(0, +)
             if fuzzinessLevel > FUZZINESS_THRESHOLD {
                 fuzzinessWarning.isEnabled = true
-                fuzzinessWarning.setTitle("Warning: Image may be fuzzy", for: .normal)
+                fuzzinessWarning.setTitle(NSLocalizedString("Warning: Image may be fuzzy", comment: "Shown if slight adjustments to the slider would have too much affect on the image"), for: .normal)
             }
             
             // Draw the histogram to make user adjustment easier.

@@ -109,7 +109,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Don't allow recalculation until there's a possibility of a different result.
         calculateButton.isEnabled = false
         
-        resultsText.text = "Loading"
+        resultsText.text = NSLocalizedString("Loading", comment: "Shown while the results are being calculated")
         // The label won't update until this action returns, so put this calculation on the queue, and it'll be executed right after this function ends.
         DispatchQueue.main.async {
             self.calculateArea()
@@ -128,7 +128,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         }
         
         let imageToShare = getCombinedImage()
-        let dataToShare = [ imageToShare, resultsText.text! + " Analyzed with LeafByte https://github.com/akroy/leafbyte" ] as [Any]
+        let dataToShare = [ imageToShare, resultsText.text! + NSLocalizedString(" Analyzed with LeafByte https://github.com/akroy/leafbyte", comment: "Shown after the results when sharing the results, e.g. on social media. Note the leading space that separates from the results") ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
         
         // Exclude activity types that don't make sense here.
@@ -415,9 +415,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         grid.isHidden = inScrollingMode
         
         if inScrollingMode {
-            modeToggleButton.setTitle("Draw", for: .normal)
+            modeToggleButton.setTitle(NSLocalizedString("Draw", comment: "Enters the mode to draw leaf edges"), for: .normal)
         } else {
-            modeToggleButton.setTitle("Cancel", for: .normal)
+            modeToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to draw leaf edges"), for: .normal)
         }
     }
     
@@ -444,7 +444,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
         if leafLabelAndSize == nil {
             // This is a blank image, and trying to calculate area will crash.
-            resultsText.text = "No leaf found"
+            resultsText.text = NSLocalizedString("No leaf found", comment: "Shown if the image is not valid to calculate results")
             return
         }
         let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
@@ -454,7 +454,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         if emptyLabelsAndSizes.count == 0 {
             // This is a solid image, so calculating area is pointless.
-            resultsText.text = "No leaf found"
+            resultsText.text = NSLocalizedString("No leaf found", comment: "Shown if the image is not valid to calculate results")
             return
         }
         
@@ -518,11 +518,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = {
-            let alertController = UIAlertController(title: nil, message: "Could not save to Google Drive.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { _ in
+            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
                 self.completeButton.isEnabled = true
             })
-            let switchToLocalAction = UIAlertAction(title: "Switch to Files App", style: .default, handler: { _ in
+            let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Switch to Files App", comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
                 if self.settings.measurementSaveLocation == .googleDrive {
                     self.settings.measurementSaveLocation = .local
                 }
@@ -533,7 +533,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
                 
                 self.handleSerialization(onSuccess: onSuccess)
             })
-            let retryAction = UIAlertAction(title: "Retry", style: .default, handler: { _ in
+            let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
                 self.handleSerialization(onSuccess: onSuccess)
             })
             

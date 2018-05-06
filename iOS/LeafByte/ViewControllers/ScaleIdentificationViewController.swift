@@ -68,7 +68,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil
         drawMarkers()
-        resultsText.text = "No scale"
+        resultsText.text = NSLocalizedString("No scale", comment: "Shown if the user clears the scale")
         
         setScrollingMode(true)
     }
@@ -191,9 +191,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
 
         if inScrollingMode {
-            modeToggleButton.setTitle("Touch the scale", for: .normal)
+            modeToggleButton.setTitle(NSLocalizedString("Touch the scale", comment: "Enters the mode to identify the scale"), for: .normal)
         } else {
-            modeToggleButton.setTitle("Cancel", for: .normal)
+            modeToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to identify the scale"), for: .normal)
         }
     }
     
@@ -246,7 +246,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         scaleMarkPixelLength = candidateScaleMarkPixelLength
         scaleMarkEnd1 = farthestPoint1
         scaleMarkEnd2 = farthestPoint2
-        resultsText.text = "Scale found"
+        resultsText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
         
         drawMarkers()
     }
@@ -273,7 +273,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func setScaleNotFound() {
-        resultsText.text = "Scale not found"
+        resultsText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
         scaleMarkPixelLength = nil
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil

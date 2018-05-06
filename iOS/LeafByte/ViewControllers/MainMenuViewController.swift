@@ -93,7 +93,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         
         let imageToUse = settings.useBarcode ? "Barcode" : "Camera"
         cameraButton.setBackgroundImage(UIImage(named: imageToUse), for: .normal)
-        cameraLabel.text = settings.useBarcode ? "Scan Barcode and\nTake a Photo" : "Take a Photo"
+        cameraLabel.text = settings.useBarcode ? NSLocalizedString("Scan Barcode and\nTake a Photo", comment: "Option for the user") : NSLocalizedString("Take a Photo", comment: "Option for the user")
         cameraLabel.numberOfLines = settings.useBarcode ? 2 : 1
     }
     
@@ -195,7 +195,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 }
                 self.settings.serialize()
                 
-                presentAlert(self: self, title: nil, message: "Cannot save to Google Drive without Google sign-in")
+                presentAlert(self: self, title: nil, message: NSLocalizedString("Cannot save to Google Drive without Google sign-in", comment: "Shown if Google sign-in does not complete successfully"))
                 self.setSavingSummary()
             })
     }
