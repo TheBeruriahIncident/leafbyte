@@ -203,10 +203,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RZ-7f-3CS" userLabel="Complete Button">
-                                <rect key="frame" x="302" y="621" width="52" height="29"/>
+                                <rect key="frame" x="324" y="621" width="30" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Confirm"/>
+                                <state key="normal" title="Next"/>
                                 <connections>
                                     <segue destination="e5s-F7-9rn" kind="show" identifier="thresholdingComplete" id="Iaq-x1-uxo"/>
                                 </connections>
@@ -271,7 +271,7 @@
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalCompressionResistancePriority="751" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0jp-qd-ypR" userLabel="Fuzziness Warning">
-                                <rect key="frame" x="17" y="620" width="257" height="32"/>
+                                <rect key="frame" x="17" y="620" width="279" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal">
@@ -557,7 +557,7 @@
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Area Calculation" id="IGS-wx-LA2" userLabel="Navigation Content">
+                    <navigationItem key="navigationItem" title="Results" id="IGS-wx-LA2" userLabel="Navigation Content">
                         <barButtonItem key="leftBarButtonItem" title="?" id="oKl-3T-MdZ" userLabel="Help Button">
                             <connections>
                                 <segue destination="gAc-Aq-5u4" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="oKl-3T-MdZ" id="3DF-9I-fwW">
@@ -727,7 +727,7 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3F-9h-21N">
                                         <rect key="frame" x="235.5" y="224" width="118.5" height="62"/>
-                                        <state key="normal" title="Choose previous dataset"/>
+                                        <state key="normal" title="Use previous dataset"/>
                                         <connections>
                                             <action selector="choosePreviousDataset:" destination="ayx-Do-FJf" eventType="touchUpInside" id="v0l-Ur-3cK"/>
                                         </connections>
@@ -768,7 +768,7 @@
                                     <constraint firstItem="4hE-lk-Cd3" firstAttribute="top" secondItem="A8e-Un-uuG" secondAttribute="bottom" constant="51" id="70h-WI-HfT"/>
                                     <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="JrM-pU-kJA" secondAttribute="bottom" constant="32" id="7PJ-mt-2Iz"/>
                                     <constraint firstAttribute="trailing" secondItem="P3F-9h-21N" secondAttribute="trailing" constant="21" id="95k-c1-bxy"/>
-                                    <constraint firstItem="P3F-9h-21N" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4hE-lk-Cd3" secondAttribute="trailing" symbolic="YES" id="AFs-45-8dg"/>
+                                    <constraint firstItem="P3F-9h-21N" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4hE-lk-Cd3" secondAttribute="trailing" constant="8" symbolic="YES" id="AFs-45-8dg"/>
                                     <constraint firstItem="z79-vT-qHF" firstAttribute="centerX" secondItem="b7d-8V-V4U" secondAttribute="centerX" id="AIX-2Q-dzy"/>
                                     <constraint firstItem="b7d-8V-V4U" firstAttribute="centerX" secondItem="KqO-AI-fbL" secondAttribute="centerX" id="B1a-4R-1tg"/>
                                     <constraint firstItem="P3F-9h-21N" firstAttribute="top" secondItem="A8e-Un-uuG" secondAttribute="bottom" constant="47" id="Cll-nr-N3m"/>
@@ -1007,10 +1007,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
-                                <rect key="frame" x="302" y="619" width="52" height="29"/>
+                                <rect key="frame" x="324" y="619" width="30" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Complete"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Confirm"/>
+                                <state key="normal" title="Next"/>
                                 <connections>
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="scaleIdentificationComplete" id="ni1-Va-100"/>
                                 </connections>
@@ -1235,6 +1235,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ni1-Va-100"/>
         <segue reference="gAP-T7-MBM"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
