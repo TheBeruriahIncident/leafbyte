@@ -14,8 +14,8 @@
 /* Class = "UILabel"; text = "Dataset Name"; ObjectID = "4hE-lk-Cd3"; */
 "4hE-lk-Cd3.text" = "Dataset Name";
 
-/* Class = "UIBarButtonItem"; title = "  ?"; ObjectID = "4zZ-gJ-L7f"; */
-"4zZ-gJ-L7f.title" = "  ?";
+/* Class = "UIBarButtonItem"; title = "?"; ObjectID = "4zZ-gJ-L7f"; */
+"4zZ-gJ-L7f.title" = "?";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "528-MI-JgF"; */
 "528-MI-JgF.title" = "Back";
@@ -23,14 +23,14 @@
 /* Class = "UIButton"; accessibilityLabel = "Complete"; ObjectID = "5RZ-7f-3CS"; */
 "5RZ-7f-3CS.accessibilityLabel" = "Complete";
 
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "5RZ-7f-3CS"; */
-"5RZ-7f-3CS.normalTitle" = "Confirm";
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "5RZ-7f-3CS"; */
+"5RZ-7f-3CS.normalTitle" = "Next";
 
 /* Class = "UILabel"; text = "Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary."; ObjectID = "5k2-Es-xYP"; */
 "5k2-Es-xYP.text" = "Explanation:                                                      First, LeafByte removes any background to leave just the leaf. This is done by taking a histogram of the brightness of the image, then picking a point on the histogram that divides the foreground from the background. You can move the slider to tweak that division as necessary.";
 
-/* Class = "UIBarButtonItem"; title = "  ?"; ObjectID = "5nA-2H-mzx"; */
-"5nA-2H-mzx.title" = "  ?";
+/* Class = "UIBarButtonItem"; title = "?"; ObjectID = "5nA-2H-mzx"; */
+"5nA-2H-mzx.title" = "?";
 
 /* Class = "UIButton"; accessibilityLabel = "Photo Library"; ObjectID = "7Fv-Ge-wCb"; */
 "7Fv-Ge-wCb.accessibilityLabel" = "Photo Library";
@@ -41,8 +41,8 @@
 /* Class = "UILabel"; text = "Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. "; ObjectID = "86B-9V-BR8"; */
 "86B-9V-BR8.text" = "Explanation:                                                Drawn lines will count as 'leaf area consumed' in any area that it does not overlap with your leaf. ";
 
-/* Class = "UILabel"; text = "Scan your barcode"; ObjectID = "8By-1v-d1a"; */
-"8By-1v-d1a.text" = "Scan your barcode";
+/* Class = "UILabel"; text = "Scan barcode"; ObjectID = "8By-1v-d1a"; */
+"8By-1v-d1a.text" = "Scan barcode";
 
 /* Class = "UILabel"; text = "Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      "; ObjectID = "8Ik-W8-Way"; */
 "8Ik-W8-Way.text" = "Tips:                                                                          1. You can use the drawing mode to fill in areas where the leaf margin is missing.                                                                                                                                    2. You must tap draw each time you want to draw a line.                                                  3. Saving with GPS enabled will add a few seconds to the save time. To speed up saving, disable GPS in the settings.                                      ";
@@ -74,11 +74,11 @@
 /* Class = "UILabel"; text = "Notes:"; ObjectID = "FLK-Tc-phh"; */
 "FLK-Tc-phh.text" = "Notes:";
 
-/* Class = "UILabel"; text = "Save GPS Location (Can greatly slow saving)"; ObjectID = "ID5-9Q-Zb9"; */
-"ID5-9Q-Zb9.text" = "Save GPS Location (Can greatly slow saving)";
+/* Class = "UILabel"; text = "Save GPS Location (May slow saving)"; ObjectID = "ID5-9Q-Zb9"; */
+"ID5-9Q-Zb9.text" = "Save GPS Location (May slow saving)";
 
-/* Class = "UINavigationItem"; title = "Area Calculation"; ObjectID = "IGS-wx-LA2"; */
-"IGS-wx-LA2.title" = "Area Calculation";
+/* Class = "UINavigationItem"; title = "Results"; ObjectID = "IGS-wx-LA2"; */
+"IGS-wx-LA2.title" = "Results";
 
 /* Class = "UIButton"; accessibilityLabel = "Complete"; ObjectID = "Id9-ad-Z94"; */
 "Id9-ad-Z94.accessibilityLabel" = "Complete";
@@ -95,14 +95,14 @@
 /* Class = "UIButton"; accessibilityLabel = "Complete"; ObjectID = "Odx-Xc-7pu"; */
 "Odx-Xc-7pu.accessibilityLabel" = "Complete";
 
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "Odx-Xc-7pu"; */
-"Odx-Xc-7pu.normalTitle" = "Confirm";
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "Odx-Xc-7pu"; */
+"Odx-Xc-7pu.normalTitle" = "Next";
 
 /* Class = "UIButton"; normalTitle = "Sample X"; ObjectID = "Otk-oa-PcB"; */
 "Otk-oa-PcB.normalTitle" = "Sample X";
 
-/* Class = "UIButton"; normalTitle = "Choose previous dataset"; ObjectID = "P3F-9h-21N"; */
-"P3F-9h-21N.normalTitle" = "Choose previous dataset";
+/* Class = "UIButton"; normalTitle = "Use previous dataset"; ObjectID = "P3F-9h-21N"; */
+"P3F-9h-21N.normalTitle" = "Use previous dataset";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "Spc-9V-d8W"; */
 "Spc-9V-d8W.title" = "Back";
@@ -110,8 +110,8 @@
 /* Class = "UILabel"; text = "Image Save Location"; ObjectID = "V1C-Gd-7rk"; */
 "V1C-Gd-7rk.text" = "Image Save Location";
 
-/* Class = "UILabel"; text = "Barcode?"; ObjectID = "Wep-GW-bl2"; */
-"Wep-GW-bl2.text" = "Barcode?";
+/* Class = "UILabel"; text = "Scan Barcodes?"; ObjectID = "Wep-GW-bl2"; */
+"Wep-GW-bl2.text" = "Scan Barcodes?";
 
 /* Class = "UIButton"; normalTitle = "Sample X"; ObjectID = "X9Q-JC-Czl"; */
 "X9Q-JC-Czl.normalTitle" = "Sample X";
@@ -152,8 +152,8 @@
 /* Class = "UILabel"; text = "So fuzzy"; ObjectID = "nfU-Kl-doO"; */
 "nfU-Kl-doO.text" = "So fuzzy";
 
-/* Class = "UIBarButtonItem"; title = "  ?"; ObjectID = "oKl-3T-MdZ"; */
-"oKl-3T-MdZ.title" = "  ?";
+/* Class = "UIBarButtonItem"; title = "?"; ObjectID = "oKl-3T-MdZ"; */
+"oKl-3T-MdZ.title" = "?";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "roH-yQ-Vce"; */
 "roH-yQ-Vce.title" = "Settings";
