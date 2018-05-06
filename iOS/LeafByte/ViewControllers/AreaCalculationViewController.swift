@@ -491,11 +491,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             
             // Set the number of lines or else lines past the first are dropped.
             resultsText.numberOfLines = 3
-            resultsText.text = "Total Leaf Area= \(formattedLeafAreaIncludingConsumedAreaInCm2!) cm2\nConsumed Leaf Area= \(formattedConsumedAreaInCm2!) cm2 \nPercent Consumed= \(formattedPercentConsumed!)%"
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInCm2!, formattedConsumedAreaInCm2!, formattedPercentConsumed!)
         } else {
             formattedLeafAreaIncludingConsumedAreaInCm2 = nil
             formattedConsumedAreaInCm2 = nil
-            resultsText.text = "Leaf is \(formattedPercentConsumed!)% consumed."
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Leaf is %d%% consumed.", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
     }
     

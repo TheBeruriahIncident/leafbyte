@@ -198,9 +198,9 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
         var localStorageName: String
         if #available(iOS 11.0, *) {
-            localStorageName = "Files App"
+            localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
         } else {
-            localStorageName = "Phone"
+            localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
         }
         measurementSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
         imageSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
@@ -324,7 +324,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     private func presentFailedGoogleSignInAlert() {
-        presentAlert(self: self, title: nil, message: "Google sign-in is required for saving to Google Drive")
+        presentAlert(self: self, title: nil, message: NSLocalizedString("Google sign-in is required for saving to Google Drive", comment: "Shown if Google sign-in fails after choosing to save to Google Drive"))
     }
     
     func registerForKeyboardNotifications(){

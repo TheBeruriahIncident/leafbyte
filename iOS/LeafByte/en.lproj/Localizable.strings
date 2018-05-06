@@ -29,6 +29,13 @@
 "Could not save to Google Drive." = "Could not save to Google Drive.";
 "Switch to Files App" = "Switch to Files App";
 "Retry" = "Retry";
+"Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%" = "Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%";
+"Leaf is %d%% consumed." = "Leaf is %d%% consumed.";
+
+/* SettingsViewController */
+"Files App" = "Files App";
+"Phone" = "Phone";
+"Google sign-in is required for saving to Google Drive" = "Google sign-in is required for saving to Google Drive";
 
 /* Multiple views */
 "Cancel" = "Cancel";

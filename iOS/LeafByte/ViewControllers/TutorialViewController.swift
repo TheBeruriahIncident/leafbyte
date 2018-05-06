@@ -28,7 +28,6 @@ final class TutorialViewController: UIViewController {
         smoothTransitions(self: self)
     }
     
-    
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is continueTutorial, we're transitioning forward in the main flow, and we need to pass our data forward.

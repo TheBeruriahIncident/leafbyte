@@ -1,6 +1,6 @@
 
 /* Class = "UIButton"; accessibilityLabel = "Mode Toggle"; ObjectID = "0YM-1m-Hod"; */
-"0YM-1m-Hod.accessibilityLabel" = "Mode Toggle";
+"0YM-1m-Hod.accessibilityLabel" = "Modo de alternancia";
 
 /* Class = "UIButton"; normalTitle = "<autofilled>"; ObjectID = "0YM-1m-Hod"; */
 "0YM-1m-Hod.normalTitle" = "<autofilled>";
@@ -12,13 +12,13 @@
 "3uy-K5-z41.text" = "Tips:                                                             1.  Avoid having any shadow larger than your leaf. If you do this, the app may measure the shadow instead of the leaf.                                ";
 
 /* Class = "UILabel"; text = "Dataset Name"; ObjectID = "4hE-lk-Cd3"; */
-"4hE-lk-Cd3.text" = "Dataset Name";
+"4hE-lk-Cd3.text" = "Nombre del conjunto de datos";
 
 /* Class = "UIBarButtonItem"; title = "?"; ObjectID = "4zZ-gJ-L7f"; */
 "4zZ-gJ-L7f.title" = "?";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "528-MI-JgF"; */
-"528-MI-JgF.title" = "Back";
+"528-MI-JgF.title" = "Espalda";
 
 /* Class = "UIButton"; accessibilityLabel = "Complete"; ObjectID = "5RZ-7f-3CS"; */
 "5RZ-7f-3CS.accessibilityLabel" = "Complete";
