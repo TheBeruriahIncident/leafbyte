@@ -18,14 +18,35 @@ class LeafByteUITests: XCTestCase {
         XCUIApplication().launch()
     }
     
-    func testBeginningOfApp() {
+    func testBasicFlow() {
+        // Main Menu
         let app = XCUIApplication()
         app.buttons["Settings"].tap()
-        app.navigationBars["Settings"].buttons["Back"].tap()
-        app.buttons["Photo Library"].tap()
         
-        app.tables.cells.element(boundBy: 1).tap()
-        // I don't know how to make the UIAutomation proceed through the ImagePicker, so the test stops here.
-        // TODO: maybe use a sample flow to get around the ImagePicker
+        // Settings
+        let scrollViewsQuery = app.scrollViews
+        scrollViewsQuery.children(matching: .segmentedControl).element(boundBy: 0).buttons["Files App"].tap()
+        scrollViewsQuery.children(matching: .segmentedControl).element(boundBy: 1).buttons["Files App"].tap()
+        app.navigationBars["Settings"].buttons["Back"].tap()
+        
+        // Main Menu
+        app.buttons["Tutorial"].tap()
+        
+        // Tutorial
+        let nextButton = app.buttons["Next"]
+        nextButton.tap()
+        
+        // Background Removal
+        let popoverdismissregionElement = app/*@START_MENU_TOKEN@*/.otherElements["PopoverDismissRegion"]/*[[".otherElements[\"dismiss popup\"]",".otherElements[\"PopoverDismissRegion\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        popoverdismissregionElement.tap()
+        nextButton.tap()
+        
+        // Scale Identification
+        popoverdismissregionElement.tap()
+        nextButton.tap()
+        
+        // Results
+        popoverdismissregionElement.tap()
+        XCTAssert(app.staticTexts["Total Leaf Area= 521.427 cm2\nConsumed Leaf Area= 14.364 cm2 \nPercent Consumed= 2.755%"].exists)
     }
 }
