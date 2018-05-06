@@ -11,6 +11,19 @@
 "Scan Barcode and\nTake a Photo" = "Escanear código de barras\ny tomar una foto";
 "Take a Photo" = "Tomar una foto";
 "Cannot save to Google Drive without Google sign-in" = "No se puede guardar en Google Drive sin el inicio de sesión de Google";
+"Saving data and images to %@" = "Guardando datos e imágenes en %@";
+" and " = " y ";
+"data to %@" = "datos a %@";
+"images to %@" = "imágenes to %@";
+"Saving " = "Ahorro ";
+"none" = "ninguna";
+"the Files App" = "la Aplicación de Archivos";
+"Google Drive" = "Google Drive";
+" under the name " = " bajo el nombre ";
+"Data and images" = "Datos y imágenes";
+"Data" = "Datos";
+"Images" = "Imágenes";
+" are not being saved. Go to Settings to change." = " no se están salvando. Ve a Configuración para cambiar.";
 
 /* ThresholdingViewController */
 "Warning: Image may be fuzzy" = "Advertencia: la imagen puede ser borrosa";

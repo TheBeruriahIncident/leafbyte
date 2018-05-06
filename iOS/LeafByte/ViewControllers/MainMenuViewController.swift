@@ -208,13 +208,13 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         if measurementSaveLocation != .none || imageSaveLocation != .none {
             var savedMessageStart: String!
             if measurementSaveLocation == imageSaveLocation {
-                savedMessageStart = "Saving data and images to \(saveLocationToName(measurementSaveLocation))"
+                savedMessageStart = String.localizedStringWithFormat(NSLocalizedString("Saving data and images to %@", comment: "Says that both data and images are being saved somewhere"), saveLocationToName(measurementSaveLocation))
             } else {
-                let dataSavedMessage = measurementSaveLocation != .none ? "data to \(saveLocationToName(measurementSaveLocation))" : ""
-                let imageSavedMessage = imageSaveLocation != .none ? "images to \(saveLocationToName(imageSaveLocation))" : ""
-                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? " and " : ""
+                let dataSavedMessage = measurementSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("data to %@", comment: "Says data are being saved somewhere"), saveLocationToName(measurementSaveLocation)) : ""
+                let imageSavedMessage = imageSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("images to %@", comment: "Says images are being saved somewhere"), saveLocationToName(imageSaveLocation)) : ""
+                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? NSLocalizedString(" and ", comment: "Conjunction connecting where data and iamges are being saved") : ""
                 
-                savedMessageStart = "Saving \(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
+                savedMessageStart = NSLocalizedString("Saving ", comment: "Beginning of message of where things are saved") + "\(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
             }
             
             // Cap the displayed length of the dataset name.
@@ -226,7 +226,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 displayDatasetName = settings.datasetName
             }
             
-            savedMessage = "\(savedMessageStart!) under the name \(displayDatasetName!)."
+            savedMessage = savedMessageStart + NSLocalizedString(" under the name ", comment: "Connector saying that something is saved with a certain name") + "\(displayDatasetName!)."
         } else {
             savedMessage = ""
         }
@@ -235,14 +235,14 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         if measurementSaveLocation == .none || imageSaveLocation == .none {
             var notSavedMessageElements: String!
             if measurementSaveLocation == .none && imageSaveLocation == .none {
-                notSavedMessageElements = "Data and images"
+                notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
             } else if measurementSaveLocation == .none {
-                notSavedMessageElements = "Data"
+                notSavedMessageElements = NSLocalizedString("Data", comment: "Name for what's being saved")
             } else {
-                notSavedMessageElements = "Images"
+                notSavedMessageElements = NSLocalizedString("Images", comment: "Name for what's being saved")
             }
             
-            notSavedMessage = "\(notSavedMessageElements!) are not being saved. Go to Settings to change."
+            notSavedMessage = notSavedMessageElements! + NSLocalizedString(" are not being saved. Go to Settings to change.", comment: "Says that something is not being saved")
         } else {
             notSavedMessage = ""
         }
@@ -254,11 +254,11 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
         switch saveLocation {
         case .none:
-            return "none"
+            return NSLocalizedString("none", comment: "Not saving")
         case .local:
-            return "the Files App"
+            return NSLocalizedString("the Files App", comment: "Name of the Files App")
         case .googleDrive:
-            return "Google Drive"
+            return NSLocalizedString("Google Drive", comment: "Name of Google Drive")
         }
     }
 }

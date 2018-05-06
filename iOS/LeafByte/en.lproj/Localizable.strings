@@ -11,6 +11,19 @@
 "Scan Barcode and\nTake a Photo" = "Scan Barcode and\nTake a Photo";
 "Take a Photo" = "Take a Photo";
 "Cannot save to Google Drive without Google sign-in" = "Cannot save to Google Drive without Google sign-in";
+"Saving data and images to %@" = "Saving data and images to %@";
+" and " = " and ";
+"data to %@" = "data to %@";
+"images to %@" = "images to %@";
+"Saving " = "Saving ";
+"none" = "none";
+"the Files App" = "the Files App";
+"Google Drive" = "Google Drive";
+" under the name " = " under the name ";
+"Data and images" = "Data and images";
+"Data" = "Data";
+"Images" = "Images";
+" are not being saved. Go to Settings to change." = " are not being saved. Go to Settings to change.";
 
 /* ThresholdingViewController */
 "Warning: Image may be fuzzy" = "Warning: Image may be fuzzy";
