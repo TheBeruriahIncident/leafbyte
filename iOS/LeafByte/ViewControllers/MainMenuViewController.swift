@@ -51,7 +51,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
-            presentAlert(self: self, title: nil, message: "No available camera")
+            presentAlert(self: self, title: nil, message: NSLocalizedString("No available camera", comment: "Shown when trying to take a picture if no camera is available, e.g. in a simulator"))
             return
         }
         
