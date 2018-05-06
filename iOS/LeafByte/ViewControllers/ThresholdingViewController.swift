@@ -134,7 +134,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
             destination.barcode = barcode
             
             setBackButton(self: self, next: destination)
-        } else if segue.identifier == "helpPopover" {
+        } else if segue.identifier == "helpPopover" || segue.identifier == "fuzzinessHelpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
     }

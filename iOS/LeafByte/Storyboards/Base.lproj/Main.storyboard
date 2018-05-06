@@ -279,7 +279,7 @@
                                     <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="UYa-D0-4JW" kind="popoverPresentation" identifier="helpPopover" popoverAnchorView="0jp-qd-ypR" id="Dn5-rM-J4U">
+                                    <segue destination="UYa-D0-4JW" kind="popoverPresentation" identifier="fuzzinessHelpPopover" popoverAnchorView="0jp-qd-ypR" id="Dn5-rM-J4U">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
