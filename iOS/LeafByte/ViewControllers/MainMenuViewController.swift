@@ -36,22 +36,32 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     // MARK: - Actions
     
     @IBAction func goToSettings() {
-        if segueEnabled {
-            segueEnabled = false
-            performSegue(withIdentifier: "toSettings", sender: self)
+        if !segueEnabled {
+            return
         }
+        segueEnabled = false
+        
+        performSegue(withIdentifier: "toSettings", sender: self)
     }
     
     @IBAction func goToTutorial() {
-        if segueEnabled {
-            segueEnabled = false
-            performSegue(withIdentifier: "toTutorial", sender: self)
+        if !segueEnabled {
+            return
         }
+        segueEnabled = false
+        
+        performSegue(withIdentifier: "toTutorial", sender: self)
     }
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
+        if !segueEnabled {
+            return
+        }
+        segueEnabled = false
+        
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
             presentAlert(self: self, title: nil, message: NSLocalizedString("No available camera", comment: "Shown when trying to take a picture if no camera is available, e.g. in a simulator"))
+            segueEnabled = true
             return
         }
         
@@ -61,10 +71,15 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             } else {
                 self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
             }
-        })
+        }, onFailure: { self.segueEnabled = true })
     }
     
     @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
+        if !segueEnabled {
+            return
+        }
+        segueEnabled = false
+        
         presentImagePicker(sourceType: UIImagePickerControllerSourceType.photoLibrary)
     }
     
