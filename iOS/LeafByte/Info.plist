@@ -39,6 +39,8 @@
 	<string>To take photos for analysis</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To record location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To use photos for analysis</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
