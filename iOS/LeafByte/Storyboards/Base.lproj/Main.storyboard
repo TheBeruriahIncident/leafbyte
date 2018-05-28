@@ -1095,8 +1095,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
-                                <rect key="frame" x="17" y="619" width="30" height="29"/>
+                                <rect key="frame" x="17" y="619" width="94" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="XrN-bt-8qb"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <connections>
                                     <action selector="toggleLeafIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="y3c-TC-3Ue"/>
@@ -1111,9 +1114,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
-                                <rect key="frame" x="119" y="619" width="85" height="29"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
+                                <rect key="frame" x="119" y="619" width="94" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="t1c-ZM-noO"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <connections>
                                     <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
@@ -1155,7 +1161,6 @@
                             <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="2" id="lPo-zq-0ZE"/>
                             <constraint firstItem="0YM-1m-Hod" firstAttribute="top" secondItem="YIf-ZL-LyU" secondAttribute="bottom" constant="3" id="rFl-bG-m9f"/>
                             <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0YM-1m-Hod" secondAttribute="trailing" constant="20" symbolic="YES" id="xV9-4g-G1H"/>
                             <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="leading" id="yPJ-fh-99L"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
