@@ -120,7 +120,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             leafIdentificationToggleButton.isEnabled = true
             scaleIdentificationToggleButton.isEnabled = true
             clearScaleButton.isEnabled = true
-            completeButton.isEnabled = true
+            completeButton.isEnabled = pointOnLeaf != nil
             
             if inTutorial {
                 self.performSegue(withIdentifier: "helpPopover", sender: nil)
@@ -205,6 +205,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         if mode == .identifyingLeaf {
             pointOnLeaf = (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y))
             leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
+            completeButton.isEnabled = true
             drawMarkers()
         } else if mode == .identifyingScale {
             // Since a non-white section in the image was touched, it may be a scale mark.
@@ -263,6 +264,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         // If we have less than two, we don't have a scale mark.
         if occupiedLabelsAndSizes.count < 2 {
+            setLeafNotFound()
             setScaleNotFound()
             return
         }
@@ -327,6 +329,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func setLeafNotFound() {
+        completeButton.isEnabled = false
         leafStatusText.text = NSLocalizedString("Leaf not found", comment: "Shown when a leaf is not found")
         pointOnLeaf = nil
         drawMarkers()
