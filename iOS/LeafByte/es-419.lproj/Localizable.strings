@@ -30,10 +30,15 @@
 "Warning: Image may be fuzzy" = "Advertencia: la imagen puede ser borrosa";
 
 /* ScaleIdentificationViewController */
-"No scale" = "Sin escala";
-"Touch the scale" = "Toca la escala";
+"Touch leaf" = "Toca hoja";
+"Change leaf" = "Cambia hoja";
+"Leaf found" = "Hoja encontrada";
+"Leaf not found" = "Hoja no encontrada";
+"Touch scale" = "Toca escala";
+"Change scale" = "Cambia escala";
 "Scale found" = "Escala encontrada";
 "Scale not found" = "Escala no encontrada";
+"No scale" = "Sin escala";
 
 /* AreaCalculationViewController */
 "Loading" = "Cargando";

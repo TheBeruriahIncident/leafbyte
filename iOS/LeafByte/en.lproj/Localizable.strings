@@ -30,10 +30,15 @@
 "Warning: Image may be fuzzy" = "Warning: Image may be fuzzy";
 
 /* ScaleIdentificationViewController */
-"No scale" = "No scale";
-"Touch the scale" = "Touch the scale";
+"Touch leaf" = "Touch leaf";
+"Change leaf" = "Change leaf";
+"Leaf found" = "Leaf found";
+"Leaf not found" = "Leaf not found";
+"Touch scale" = "Touch scale";
+"Change scale" = "Change scale";
 "Scale found" = "Scale found";
 "Scale not found" = "Scale not found";
+"No scale" = "No scale";
 
 /* AreaCalculationViewController */
 "Loading" = "Loading";
