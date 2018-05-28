@@ -984,13 +984,13 @@
                                     <constraint firstAttribute="bottom" secondItem="ZFn-5a-U1t" secondAttribute="bottom" constant="-8" id="yZy-YC-wY8"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Mode Toggle Button">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
                                 <rect key="frame" x="21" y="619" width="78" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
-                                    <action selector="toggleScrollingMode:" destination="e5s-F7-9rn" eventType="touchUpInside" id="UcQ-Hw-DaS"/>
+                                    <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
@@ -1024,6 +1024,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
+                                <rect key="frame" x="0.0" y="582" width="78" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="&lt;autofilled&gt;"/>
+                                <connections>
+                                    <action selector="toggleLeafIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="y3c-TC-3Ue"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1051,7 +1061,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
+                    <navigationItem key="navigationItem" title="Object Identification" id="khl-eo-np4" userLabel="Navigation Content">
                         <barButtonItem key="leftBarButtonItem" title="?" id="5nA-2H-mzx" userLabel="Help Button">
                             <connections>
                                 <segue destination="oJr-2p-Elg" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="5nA-2H-mzx" id="qQn-7H-fvo">
@@ -1070,9 +1080,10 @@
                         <outlet property="clearScaleButton" destination="7fQ-lo-BNS" id="2xG-kJ-wet"/>
                         <outlet property="completeButton" destination="Odx-Xc-7pu" id="f2b-fT-yWa"/>
                         <outlet property="gestureRecognizingView" destination="aFd-8f-9XM" id="ZNy-2l-H1H"/>
-                        <outlet property="modeToggleButton" destination="0YM-1m-Hod" id="c08-PW-eiI"/>
+                        <outlet property="leafIdentificationToggleButton" destination="p0t-VW-fbi" id="xdW-LV-wXI"/>
                         <outlet property="resultsText" destination="6Mb-ZC-YBF" id="0hX-54-0BK"/>
                         <outlet property="sampleNumberButton" destination="2WT-re-HH5" id="rQK-EW-16o"/>
+                        <outlet property="scaleIdentificationToggleButton" destination="0YM-1m-Hod" id="F7Q-sW-hfX"/>
                         <outlet property="scaleMarkingView" destination="Xu9-FW-Xu6" id="95g-1v-i7M"/>
                         <outlet property="scrollableView" destination="ZFn-5a-U1t" id="cbx-Ct-Mx1"/>
                     </connections>
@@ -1236,7 +1247,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ni1-Va-100"/>
-        <segue reference="gAP-T7-MBM"/>
+        <segue reference="Mj2-iv-vfZ"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>

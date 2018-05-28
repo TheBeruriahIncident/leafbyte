@@ -51,6 +51,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
     
+    // Set if the user chose a new point to mark the leaf.
+    var pointOnLeaf: (Int, Int)?
+    
     // MARK: - Outlets
     
     @IBOutlet weak var gestureRecognizingView: UIScrollView!
@@ -222,6 +225,12 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             let baseImage = IndexableImage(cgImage)
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
             combinedImage.addImage(baseImage)
+            
+            if pointOnLeaf != nil {
+                // The user has chosen a new point to mark the leaf, so refresh our calculations.
+                initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeaf)
+            }
+            
             useConnectedComponentsResults(connectedComponentsInfo: initialConnectedComponentsInfo, image: combinedImage)
             
             initializeGrid()
@@ -432,19 +441,25 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         combinedImage.addImage(userDrawing)
         
-        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage)
+        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeaf)
         
         useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: combinedImage)
     }
     
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
+        var leafLabelAndSize: (key: Int, value: Size)?
+        if connectedComponentsInfo.labelOfPointToIdentify != nil {
+            // A specific point on the leaf has been marked.
+            leafLabelAndSize = labelsAndSizes.first(where: { $0.key == connectedComponentsInfo.labelOfPointToIdentify! })
+        } else {
+            // Assume the largest occupied component is the leaf.
+            leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
+        }
         
-        // Assume the largest occupied component is the leaf.
-        let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
         if leafLabelAndSize == nil {
             // This is a blank image, and trying to calculate area will crash.
-            resultsText.text = NSLocalizedString("No leaf found", comment: "Shown if the image is not valid to calculate results")
+            setNoLeafFound()
             return
         }
         let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
@@ -454,7 +469,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         if emptyLabelsAndSizes.count == 0 {
             // This is a solid image, so calculating area is pointless.
-            resultsText.text = NSLocalizedString("No leaf found", comment: "Shown if the image is not valid to calculate results")
+            setNoLeafFound()
             return
         }
         
@@ -514,6 +529,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func getCombinedImage() -> UIImage {
         return combineImages([ baseImageView, leafHolesView, scaleMarkingView, userDrawingView ])
+    }
+    
+    private func setNoLeafFound() {
+        resultsText.text = NSLocalizedString("No leaf found", comment: "Shown if the image is not valid to calculate results")
     }
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
