@@ -114,12 +114,14 @@ struct ConnectedComponentsInfo {
     let emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>]
     let labelToSize: [Int: Size]
     let equivalenceClasses: UnionFind
+    let labelOfPointToIdentify: Int?
     
-    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind) {
+    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind, labelOfPointToIdentify: Int? = nil) {
         self.labelToMemberPoint = labelToMemberPoint
         self.emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels
         self.labelToSize = labelToSize
         self.equivalenceClasses = equivalenceClasses
+        self.labelOfPointToIdentify = labelOfPointToIdentify
     }
 }
 
@@ -127,7 +129,8 @@ struct ConnectedComponentsInfo {
 // "Occupied" refers to "true" values in the image, and "empty" refers to "false" values in the image.
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
 // It is assumed that the input layered image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
-func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponentsInfo {
+// If pointToIdentify is passed in, the label of that point will be returned.
+func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (Int, Int)? = nil) -> ConnectedComponentsInfo {
     let width = image.width
     let height = image.height
     
@@ -155,6 +158,9 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
     // As an optimization (speeds this loop up by 40%), save off the isOccupied and label values for the previous y layer for the next loop through.
     var previousYIsOccupied: [Bool]!
     var previousYLabels: [Int]!
+    
+    // If pointToIdentify is set, the associated label will be saved.
+    var labelOfPointToIdentify: Int?
     
     for y in 0...height - 1 {
         var currentYIsOccupied = [Bool]()
@@ -252,6 +258,12 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
             previousXLabel = label
             currentYLabels.append(label)
         }
+        
+        // If pointToIdentify is set, save the associated label.
+        if pointToIdentify != nil && pointToIdentify!.1 == y {
+            labelOfPointToIdentify = currentYLabels[pointToIdentify!.0]
+        }
+        
         previousYIsOccupied = currentYIsOccupied
         previousYLabels = currentYLabels
     }
@@ -271,9 +283,18 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
         equivalenceClasses.classToElements[outsideOfImageClass] = nil
     }
     
+    // Update the label of the pointToIdentify as labels are consolidated.
+    var finalLabelOfPointToIdentify: Int?
+    
     // "Normalize" by combining equivalent labels.
     for equivalenceClassElements in equivalenceClasses.classToElements.values {
         let first = equivalenceClassElements.first
+        
+        // The labelOfPointToIdentify would now be obsolete, so save off the new canonical label.
+        if labelOfPointToIdentify != nil && equivalenceClassElements.contains(labelOfPointToIdentify!) {
+            finalLabelOfPointToIdentify = first
+        }
+        
         equivalenceClassElements.filter { $0 != first! }.forEach { label in
             // Normalize labelToSize.
             labelToSize[first!]! += labelToSize[label]!
@@ -289,5 +310,6 @@ func labelConnectedComponents(image: LayeredIndexableImage) -> ConnectedComponen
         labelToMemberPoint: labelToMemberPoint,
         emptyLabelToNeighboringOccupiedLabels: emptyLabelToNeighboringOccupiedLabels,
         labelToSize: labelToSize,
-        equivalenceClasses: equivalenceClasses)
+        equivalenceClasses: equivalenceClasses,
+        labelOfPointToIdentify: finalLabelOfPointToIdentify)
 }

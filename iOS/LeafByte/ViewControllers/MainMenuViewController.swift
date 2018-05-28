@@ -36,22 +36,32 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     // MARK: - Actions
     
     @IBAction func goToSettings() {
-        if segueEnabled {
-            segueEnabled = false
-            performSegue(withIdentifier: "toSettings", sender: self)
+        if !segueEnabled {
+            return
         }
+        segueEnabled = false
+        
+        performSegue(withIdentifier: "toSettings", sender: self)
     }
     
     @IBAction func goToTutorial() {
-        if segueEnabled {
-            segueEnabled = false
-            performSegue(withIdentifier: "toTutorial", sender: self)
+        if !segueEnabled {
+            return
         }
+        segueEnabled = false
+        
+        performSegue(withIdentifier: "toTutorial", sender: self)
     }
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
+        if !segueEnabled {
+            return
+        }
+        segueEnabled = false
+        
         if !UIImagePickerController.isSourceTypeAvailable(.camera){
             presentAlert(self: self, title: nil, message: NSLocalizedString("No available camera", comment: "Shown when trying to take a picture if no camera is available, e.g. in a simulator"))
+            segueEnabled = true
             return
         }
         
@@ -61,10 +71,15 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             } else {
                 self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
             }
-        })
+        }, onFailure: { self.segueEnabled = true })
     }
     
     @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
+        if !segueEnabled {
+            return
+        }
+        segueEnabled = false
+        
         presentImagePicker(sourceType: UIImagePickerControllerSourceType.photoLibrary)
     }
     
@@ -208,13 +223,13 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         if measurementSaveLocation != .none || imageSaveLocation != .none {
             var savedMessageStart: String!
             if measurementSaveLocation == imageSaveLocation {
-                savedMessageStart = "Saving data and images to \(saveLocationToName(measurementSaveLocation))"
+                savedMessageStart = String.localizedStringWithFormat(NSLocalizedString("Saving data and images to %@", comment: "Says that both data and images are being saved somewhere"), saveLocationToName(measurementSaveLocation))
             } else {
-                let dataSavedMessage = measurementSaveLocation != .none ? "data to \(saveLocationToName(measurementSaveLocation))" : ""
-                let imageSavedMessage = imageSaveLocation != .none ? "images to \(saveLocationToName(imageSaveLocation))" : ""
-                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? " and " : ""
+                let dataSavedMessage = measurementSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("data to %@", comment: "Says data are being saved somewhere"), saveLocationToName(measurementSaveLocation)) : ""
+                let imageSavedMessage = imageSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("images to %@", comment: "Says images are being saved somewhere"), saveLocationToName(imageSaveLocation)) : ""
+                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? NSLocalizedString(" and ", comment: "Conjunction connecting where data and iamges are being saved") : ""
                 
-                savedMessageStart = "Saving \(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
+                savedMessageStart = NSLocalizedString("Saving ", comment: "Beginning of message of where things are saved") + "\(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
             }
             
             // Cap the displayed length of the dataset name.
@@ -226,7 +241,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 displayDatasetName = settings.datasetName
             }
             
-            savedMessage = "\(savedMessageStart!) under the name \(displayDatasetName!)."
+            savedMessage = savedMessageStart + NSLocalizedString(" under the name ", comment: "Connector saying that something is saved with a certain name") + "\(displayDatasetName!)."
         } else {
             savedMessage = ""
         }
@@ -235,14 +250,14 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         if measurementSaveLocation == .none || imageSaveLocation == .none {
             var notSavedMessageElements: String!
             if measurementSaveLocation == .none && imageSaveLocation == .none {
-                notSavedMessageElements = "Data and images"
+                notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
             } else if measurementSaveLocation == .none {
-                notSavedMessageElements = "Data"
+                notSavedMessageElements = NSLocalizedString("Data", comment: "Name for what's being saved")
             } else {
-                notSavedMessageElements = "Images"
+                notSavedMessageElements = NSLocalizedString("Images", comment: "Name for what's being saved")
             }
             
-            notSavedMessage = "\(notSavedMessageElements!) are not being saved. Go to Settings to change."
+            notSavedMessage = notSavedMessageElements! + NSLocalizedString(" are not being saved. Go to Settings to change.", comment: "Says that something is not being saved")
         } else {
             notSavedMessage = ""
         }
@@ -254,11 +269,16 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
         switch saveLocation {
         case .none:
-            return "none"
+            return NSLocalizedString("none", comment: "Not saving")
         case .local:
-            return "the Files App"
+            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+            if #available(iOS 11.0, *) {
+                return NSLocalizedString("the Files App", comment: "Name for local storage on iOS 11 and newer")
+            } else {
+                return NSLocalizedString("the phone", comment: "Name for local storage before iOS 11")
+            }
         case .googleDrive:
-            return "Google Drive"
+            return NSLocalizedString("Google Drive", comment: "Name of Google Drive")
         }
     }
 }

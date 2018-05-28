@@ -45,11 +45,12 @@ func presentAlert(self viewController: UIViewController, title: String?, message
     viewController.present(alertController, animated: true, completion: nil)
 }
 
-func requestCameraAccess(self viewController: UIViewController, onSuccess: @escaping () -> Void) {
+func requestCameraAccess(self viewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void = {}) {
     AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
         if response {
             onSuccess()
         } else {
+            onFailure()
             presentAlert(self: viewController, title: NSLocalizedString("Camera access denied", comment: "Title of the alert that camera access is denied"), message: NSLocalizedString("To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.", comment: "Explanation of how to give camera access"))
         }
     }
