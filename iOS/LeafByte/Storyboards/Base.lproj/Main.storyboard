@@ -621,16 +621,16 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1500"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="irP-4g-Ft7">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="irP-4g-Ft7">
                                                 <rect key="frame" x="48" y="23" width="281" height="48.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
                                                         <rect key="frame" x="67" y="0.0" width="147" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
                                                         <rect key="frame" x="0.0" y="20.5" width="281" height="29"/>
                                                         <segments>
                                                             <segment title="None"/>
@@ -643,7 +643,7 @@
                                                     </segmentedControl>
                                                 </subviews>
                                             </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Dataset Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dataset Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
                                                 <rect key="frame" x="48" y="179" width="281" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -686,16 +686,16 @@
                                                     <action selector="choosePreviousDataset:" destination="ayx-Do-FJf" eventType="touchUpInside" id="v0l-Ur-3cK"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UO7-Zs-jlm">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UO7-Zs-jlm">
                                                 <rect key="frame" x="48" y="101" width="281" height="48.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Image Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
                                                         <rect key="frame" x="61.5" y="0.0" width="158" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
                                                         <rect key="frame" x="0.0" y="20.5" width="281" height="29"/>
                                                         <segments>
                                                             <segment title="None"/>
@@ -709,16 +709,16 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C5q-Pr-o92">
-                                                <rect key="frame" x="21" y="1346" width="149" height="22"/>
+                                                <rect key="frame" x="21" y="1346" width="148" height="22"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save GPS Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDu-AL-rj6" userLabel="Save GPS Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="149" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="148" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="fill" text="(May slow saving)" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xer-YT-H9q">
-                                                        <rect key="frame" x="0.0" y="18" width="149" height="4"/>
+                                                        <rect key="frame" x="0.0" y="18" width="148" height="4"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -747,7 +747,7 @@
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                                 </connections>
                                             </switch>
-                                            <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
                                                 <rect key="frame" x="25" y="200" width="327" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -950,7 +950,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idG-FB-9Wd">
                                 <rect key="frame" x="16" y="94" width="279" height="488"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <mutableString key="text">Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</mutableString>
+                                <string key="text">Step 1: Use a white background.                            Step 2: draw a black line of a known length to act as a scale. We recommend  using the same background and scale for all of your photos.                                                                Step 3: In settings, select location to save data to and the scale length.                                                                         Step 4:  Position leaf on the center of the page.                                                                                Step 5: Photograph your leaf from directly above, while minimizing shadow.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1095,10 +1095,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
-                                <rect key="frame" x="17" y="619" width="78" height="29"/>
+                                <rect key="frame" x="17" y="619" width="30" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
                                     <action selector="toggleLeafIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="y3c-TC-3Ue"/>
                                 </connections>
@@ -1116,7 +1115,6 @@
                                 <rect key="frame" x="119" y="619" width="85" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="&lt;autofilled&gt;"/>
                                 <connections>
                                     <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
                                 </connections>
