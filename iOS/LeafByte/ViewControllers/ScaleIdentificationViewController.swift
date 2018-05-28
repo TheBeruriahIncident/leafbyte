@@ -61,7 +61,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberButton: UIButton!
-    @IBOutlet weak var resultsText: UILabel!
+    @IBOutlet weak var scaleStatusText: UILabel!
+    @IBOutlet weak var leafStatusText: UILabel!
     
     // MARK: - Actions
     
@@ -82,7 +83,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil
         drawMarkers()
-        resultsText.text = NSLocalizedString("No scale", comment: "Shown if the user clears the scale")
+        scaleStatusText.text = NSLocalizedString("No scale", comment: "Shown if the user clears the scale")
         
         setScrollingMode(Mode.scrolling)
     }
@@ -203,7 +204,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         if mode == .identifyingLeaf {
             pointOnLeaf = (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y))
-            resultsText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
+            leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
             drawMarkers()
         } else if mode == .identifyingScale {
             // Since a non-white section in the image was touched, it may be a scale mark.
@@ -271,6 +272,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // The leaf is the biggest label.
         let leafLabel = sortedOccupiedLabelsAndSizes[0].key
         pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabel]!
+        leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
         
         // The scale mark is the second biggest label.
         let scaleMarkLabel = sortedOccupiedLabelsAndSizes[1].key
@@ -298,7 +300,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         scaleMarkPixelLength = candidateScaleMarkPixelLength
         scaleMarkEnd1 = farthestPoint1
         scaleMarkEnd2 = farthestPoint2
-        resultsText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
+        scaleStatusText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
         
         drawMarkers()
     }
@@ -325,13 +327,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func setLeafNotFound() {
-        resultsText.text = NSLocalizedString("Leaf not found", comment: "Shown when a leaf is not found")
+        leafStatusText.text = NSLocalizedString("Leaf not found", comment: "Shown when a leaf is not found")
         pointOnLeaf = nil
         drawMarkers()
     }
     
     private func setScaleNotFound() {
-        resultsText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
+        scaleStatusText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
         scaleMarkPixelLength = nil
         scaleMarkEnd1 = nil
         scaleMarkEnd2 = nil
