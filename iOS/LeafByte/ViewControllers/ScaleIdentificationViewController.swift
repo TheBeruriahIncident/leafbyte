@@ -107,8 +107,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
-        
-        setScrollingMode(Mode.scrolling)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -116,6 +114,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         if !viewDidAppearHasRun {
             findScaleMark()
+            setScrollingMode(Mode.scrolling)
             
             leafIdentificationToggleButton.isEnabled = true
             scaleIdentificationToggleButton.isEnabled = true
@@ -236,7 +235,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func enableLeafIdentification() {
-        leafIdentificationToggleButton.setTitle(NSLocalizedString("Touch leaf", comment: "Enters the mode to identify the leaf"), for: .normal)
+        if pointOnLeaf == nil {
+            leafIdentificationToggleButton.setTitle(NSLocalizedString("Touch leaf", comment: "Enters the mode to identify the leaf"), for: .normal)
+        } else {
+            leafIdentificationToggleButton.setTitle(NSLocalizedString("Change leaf", comment: "Enters the mode to change the leaf identification"), for: .normal)
+        }
     }
     
     private func disableLeafIdentification() {
@@ -244,7 +247,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func enableScaleIdentification() {
-    scaleIdentificationToggleButton.setTitle(NSLocalizedString("Touch scale", comment: "Enters the mode to identify the scale"), for: .normal)
+        if scaleMarkPixelLength == nil {
+            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Touch scale", comment: "Enters the mode to identify the scale"), for: .normal)
+        } else {
+            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Change scale", comment: "Enters the mode to change the scale identification"), for: .normal)
+        }
     }
     
     private func disableScaleIdentification() {
