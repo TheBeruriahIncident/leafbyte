@@ -51,8 +51,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
     
-    // Set if the user chose a new point to mark the leaf.
+    // A point on the leaf at which to mark the leaf and whether the user has changed that point.
     var pointOnLeaf: (Int, Int)?
+    var pointOnLeafHasBeenChanged = false
     
     // MARK: - Outlets
     
@@ -205,7 +206,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         initializeImage(view: leafHolesView, size: uiImage.size)
         initializeImage(view: scaleMarkingView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
-        drawScaleMark()
+        drawMarkers()
         
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -226,7 +227,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
             combinedImage.addImage(baseImage)
             
-            if pointOnLeaf != nil {
+            if pointOnLeafHasBeenChanged == true {
                 // The user has chosen a new point to mark the leaf, so refresh our calculations.
                 initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeaf)
             }
@@ -441,7 +442,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         combinedImage.addImage(userDrawing)
         
-        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeaf)
+        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeafHasBeenChanged ? pointOnLeaf : nil)
         
         useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: combinedImage)
     }
@@ -566,15 +567,19 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
-    private func drawScaleMark() {
-        if scaleMarkPixelLength == nil {
-            return
+    private func drawMarkers() {
+        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
+        
+        if scaleMarkPixelLength != nil {
+            drawingManager.context.setLineWidth(2)
+            drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         
-        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
+        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
+        drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
+        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+        
         drawingManager.finish(imageView: scaleMarkingView)
     }
     

@@ -32,9 +32,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         case identifyingLeaf
     }
     
-    // Track if the user has marked a new point for the leaf and what that point is.
-    var pointOnLeafHasBeenChanged = false
+    // Track a point on the leaf at which to mark the leaf and whether the user has changed that point.
     var pointOnLeaf: (Int, Int)?
+    var pointOnLeafHasBeenChanged = false
     
     // This is the number of pixels across the scale mark in the image.
     // It's calculated in this view (if possible) and passed forward.
@@ -148,10 +148,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.inTutorial = inTutorial
             destination.barcode = barcode
             destination.initialConnectedComponentsInfo = connectedComponentsInfo
-            if pointOnLeafHasBeenChanged {
-                // In the next view, pointOnLeaf is nil if default.
-                destination.pointOnLeaf = pointOnLeaf
-            }
+            destination.pointOnLeaf = pointOnLeaf
+            destination.pointOnLeafHasBeenChanged = pointOnLeafHasBeenChanged
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {
