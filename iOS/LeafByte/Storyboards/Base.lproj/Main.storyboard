@@ -1022,7 +1022,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fQ-lo-BNS" userLabel="Clear Scale Button">
-                                <rect key="frame" x="174" y="619" width="58" height="29"/>
+                                <rect key="frame" x="228" y="619" width="58" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="No Scale"/>
                                 <connections>
@@ -1058,15 +1058,6 @@
                                     <constraint firstAttribute="bottom" secondItem="ZFn-5a-U1t" secondAttribute="bottom" constant="-8" id="yZy-YC-wY8"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
-                                <rect key="frame" x="21" y="619" width="78" height="29"/>
-                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="&lt;autofilled&gt;"/>
-                                <connections>
-                                    <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
                                 <rect key="frame" x="15" y="84" width="176" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1089,18 +1080,8 @@
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="scaleIdentificationComplete" id="ni1-Va-100"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mb-ZC-YBF" userLabel="Scale Status Text">
-                                <rect key="frame" x="16" y="568" width="155" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="lAT-gQ-Cj4"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
-                                <rect key="frame" x="0.0" y="582" width="78" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
+                                <rect key="frame" x="17" y="619" width="78" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="&lt;autofilled&gt;"/>
@@ -1108,10 +1089,28 @@
                                     <action selector="toggleLeafIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="y3c-TC-3Ue"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIf-ZL-LyU" userLabel="Leaf Status Text">
-                                <rect key="frame" x="174" y="568" width="201" height="50"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIf-ZL-LyU" userLabel="Leaf Status Text">
+                                <rect key="frame" x="17" y="566" width="78" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="j3K-wF-Bgh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
+                                <rect key="frame" x="119" y="619" width="85" height="29"/>
+                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="&lt;autofilled&gt;"/>
+                                <connections>
+                                    <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mb-ZC-YBF" userLabel="Scale Status Text">
+                                <rect key="frame" x="119" y="566" width="265" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="lAT-gQ-Cj4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
@@ -1123,24 +1122,29 @@
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="leading" secondItem="h7r-i1-MtO" secondAttribute="leading" id="3br-YE-g4V"/>
                             <constraint firstAttribute="bottom" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="100" id="5x1-c8-bGC"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="A67-1Z-vF9"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="6Mb-ZC-YBF" secondAttribute="leading" id="B8o-lb-5gu"/>
+                            <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="17" id="E2K-uv-wWR"/>
+                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="trailing" constant="24" id="EB3-PB-D8l"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="bottom" constant="-539" id="GT1-e5-FY8"/>
+                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="Gfs-IP-yy6"/>
                             <constraint firstItem="Odx-Xc-7pu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wTv-BJ-FVQ" secondAttribute="leading" constant="20" symbolic="YES" id="H5R-zN-rKi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aFd-8f-9XM" secondAttribute="trailing" constant="-25" id="J4X-aW-rqF"/>
                             <constraint firstAttribute="bottom" secondItem="7fQ-lo-BNS" secondAttribute="bottom" constant="19" id="Jrx-oN-9n6"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="21" id="Kke-hx-1HS"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="119" id="Kke-hx-1HS"/>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="2WT-re-HH5" secondAttribute="trailing" constant="184" id="Kvr-gG-Bc3"/>
-                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="15" id="LLl-HJ-d77"/>
+                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="69.5" id="LLl-HJ-d77"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="wTv-BJ-FVQ" secondAttribute="top" constant="44" id="Mld-mj-rbu"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="MpT-y0-0Yh"/>
+                            <constraint firstAttribute="bottom" secondItem="p0t-VW-fbi" secondAttribute="bottom" constant="19" id="TFb-FP-2vQ"/>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="Odx-Xc-7pu" secondAttribute="trailing" constant="21" id="UuN-Pn-U6D"/>
-                            <constraint firstAttribute="bottom" secondItem="0YM-1m-Hod" secondAttribute="bottom" constant="19.5" id="Wou-UT-2IR"/>
+                            <constraint firstAttribute="bottom" secondItem="0YM-1m-Hod" secondAttribute="bottom" constant="19" id="Wou-UT-2IR"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="15" id="hn5-cT-0gu"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="top" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="1" id="mnz-P2-aC0"/>
+                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="2" id="lPo-zq-0ZE"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="top" secondItem="YIf-ZL-LyU" secondAttribute="bottom" constant="3" id="rFl-bG-m9f"/>
                             <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0YM-1m-Hod" secondAttribute="trailing" constant="20" symbolic="YES" id="xV9-4g-G1H"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="16" id="yqK-Ui-r7d"/>
+                            <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="leading" id="yPJ-fh-99L"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
