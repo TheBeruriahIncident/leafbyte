@@ -139,10 +139,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         activityViewController.excludedActivityTypes = [
             UIActivityType.addToReadingList,
             UIActivityType.assignToContact,
-            UIActivityType.openInIBooks,
             UIActivityType.postToVimeo,
             UIActivityType.print,
         ]
+        
+        if #available(iOS 9.0, *) {
+            activityViewController.excludedActivityTypes!.append(UIActivityType.openInIBooks)
+        }
         
         // Make this work on iPads ( https://stackoverflow.com/questions/25644054/uiactivityviewcontroller-crashing-on-ios8-ipads ).
         activityViewController.popoverPresentationController?.sourceView = self.view

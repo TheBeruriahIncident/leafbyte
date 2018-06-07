@@ -35,6 +35,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var nextSampleNumberLabel: UILabel!
     @IBOutlet weak var useBarcodeLabel: UILabel!
     @IBOutlet weak var saveGpsLabel: UILabel!
+    @IBOutlet weak var saveGpsNoteLabel: UILabel!
     
     @IBOutlet weak var previousDatasetButton: UIButton!
     @IBOutlet weak var signOutOfGoogleButton: UIButton!
@@ -226,6 +227,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
         
+        if #available(iOS 9.0, *) {
+            saveGps.isHidden = false
+            saveGpsLabel.isHidden = false
+            saveGpsNoteLabel.isHidden = false
+        }
         if #available(iOS 10.0, *) {
             useBarcode.isHidden = false
             useBarcodeLabel.isHidden = false
@@ -312,6 +318,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         let measurementSavingEnabled = settings.measurementSaveLocation != .none
         saveGps.isEnabled = measurementSavingEnabled
         saveGpsLabel.isEnabled = measurementSavingEnabled
+        saveGpsNoteLabel.isEnabled = measurementSavingEnabled
         
         let anySavingEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
         datasetName.isEnabled = anySavingEnabled

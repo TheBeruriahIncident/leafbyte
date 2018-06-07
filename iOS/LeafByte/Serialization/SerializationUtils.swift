@@ -36,7 +36,11 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     }
     
     if settings.saveGpsData {
-        GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
+        if #available(iOS 9.0, *) {
+            GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
+        } else {
+            fatalError("Attempting to request GPS location pre-iOS 9.0")
+        }
     } else {
         onLocation(nil)
     }
