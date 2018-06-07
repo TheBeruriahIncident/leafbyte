@@ -227,11 +227,6 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
         
-        if #available(iOS 9.0, *) {
-            saveGps.isHidden = false
-            saveGpsLabel.isHidden = false
-            saveGpsNoteLabel.isHidden = false
-        }
         if #available(iOS 10.0, *) {
             useBarcode.isHidden = false
             useBarcodeLabel.isHidden = false

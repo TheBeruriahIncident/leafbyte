@@ -10,7 +10,6 @@ import CoreLocation
 import UIKit
 
 // This pretends to be a view controller to get GPS location, because the delegate has a runtime requirement of being a view controller.
-@available(iOS 9.0, *)
 final class GpsManager: UIViewController, CLLocationManagerDelegate {
     // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
     static let gpsManager = GpsManager()
