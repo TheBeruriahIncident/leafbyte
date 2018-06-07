@@ -230,6 +230,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         if #available(iOS 10.0, *) {
             useBarcode.isHidden = false
             useBarcodeLabel.isHidden = false
+        } else {
+            useBarcodeLabel.text = "Barcode Scanning requires iOS 10"
+            useBarcodeLabel.toggleItalics(self)
+            useBarcodeLabel.isHidden = false
         }
     }
     
