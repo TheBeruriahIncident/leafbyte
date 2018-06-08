@@ -1101,7 +1101,7 @@
                                     <action selector="toggleScaleIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="Gdj-9m-zG0"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mb-ZC-YBF" userLabel="Scale Status Text">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mb-ZC-YBF" userLabel="Scale Status Text">
                                 <rect key="frame" x="119" y="566" width="265" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="lAT-gQ-Cj4"/>
@@ -1121,7 +1121,7 @@
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="trailing" constant="24" id="EB3-PB-D8l"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="Gfs-IP-yy6"/>
+                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" constant="9" id="Gfs-IP-yy6"/>
                             <constraint firstItem="Odx-Xc-7pu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wTv-BJ-FVQ" secondAttribute="leading" constant="20" symbolic="YES" id="H5R-zN-rKi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aFd-8f-9XM" secondAttribute="trailing" constant="-25" id="J4X-aW-rqF"/>
                             <constraint firstAttribute="bottom" secondItem="7fQ-lo-BNS" secondAttribute="bottom" constant="19" id="Jrx-oN-9n6"/>
@@ -1132,7 +1132,7 @@
                             <constraint firstAttribute="bottom" secondItem="p0t-VW-fbi" secondAttribute="bottom" constant="19" id="TFb-FP-2vQ"/>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="Odx-Xc-7pu" secondAttribute="trailing" constant="21" id="UuN-Pn-U6D"/>
                             <constraint firstAttribute="bottom" secondItem="0YM-1m-Hod" secondAttribute="bottom" constant="19" id="Wou-UT-2IR"/>
-                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="2" id="lPo-zq-0ZE"/>
+                            <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="3" id="lPo-zq-0ZE"/>
                             <constraint firstItem="0YM-1m-Hod" firstAttribute="top" secondItem="YIf-ZL-LyU" secondAttribute="bottom" constant="3" id="rFl-bG-m9f"/>
                             <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="top" constant="15" id="wjY-Uk-rO4"/>
