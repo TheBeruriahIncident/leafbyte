@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -699,7 +699,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Save GPS Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Scale Mark Unit Label">
                                                 <rect key="frame" x="227" y="322" width="33" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="849-OD-gfG"/>
@@ -708,7 +708,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Save GPS Toggle">
+                                            <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Use Barcodes Toggle">
                                                 <rect key="frame" x="162" y="484" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="VYj-39-eDu"/>
@@ -730,7 +730,7 @@
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                                 </connections>
                                             </switch>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*May slow saving" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaJ-zx-PBS" userLabel="Save GPS Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*May slow saving" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaJ-zx-PBS" userLabel="Save GPS Note Label">
                                                 <rect key="frame" x="133" y="600" width="105" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
@@ -747,13 +747,13 @@
                                                     <action selector="choosePreviousDataset:" destination="ayx-Do-FJf" eventType="touchUpInside" id="v0l-Ur-3cK"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invert colors?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-ux-tfh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Invert colors?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-ux-tfh">
                                                 <rect key="frame" x="0.0" y="639" width="372" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
                                                 <rect key="frame" x="122" y="737" width="128" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="1cg-4r-LU0"/>
@@ -763,7 +763,7 @@
                                                     <action selector="signOutOfGoogle:" destination="ayx-Do-FJf" eventType="touchUpInside" id="xXM-kR-foo"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Use a black background and white object" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-jb-4aB">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="*Use a black background and white object" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-jb-4aB">
                                                 <rect key="frame" x="8" y="697" width="356" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
@@ -786,20 +786,13 @@
                                                     <action selector="imageSaveLocationChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="2Gn-uf-Y5M"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kMV-EV-6eU">
-                                                <rect key="frame" x="258" y="704" width="320" height="201"/>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="201" id="lde-jk-OPz"/>
-                                                </constraints>
-                                            </pickerView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save GPS Location?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDu-AL-rj6" userLabel="Save GPS Label">
                                                 <rect key="frame" x="8" y="542" width="356" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69">
                                                 <rect key="frame" x="162" y="664" width="51" height="31"/>
                                             </switch>
                                         </subviews>
@@ -822,7 +815,6 @@
                                             <constraint firstItem="6Nr-u4-Yuh" firstAttribute="centerX" secondItem="Wep-GW-bl2" secondAttribute="centerX" id="L18-rd-4mC"/>
                                             <constraint firstItem="nnO-ux-tfh" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="LxG-F5-hJ5"/>
                                             <constraint firstItem="A8e-Un-uuG" firstAttribute="top" secondItem="V1C-Gd-7rk" secondAttribute="bottom" constant="2" id="MU3-7D-ni0"/>
-                                            <constraint firstItem="kMV-EV-6eU" firstAttribute="top" secondItem="nnO-ux-tfh" secondAttribute="bottom" constant="44" id="MqA-FD-mbs"/>
                                             <constraint firstItem="P3F-9h-21N" firstAttribute="centerX" secondItem="JrM-pU-kJA" secondAttribute="centerX" id="OrB-MD-u0k"/>
                                             <constraint firstItem="2xi-47-qHi" firstAttribute="top" secondItem="Wep-GW-bl2" secondAttribute="bottom" constant="2" id="QLh-4l-syI"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="TEv-Ja-dbH"/>
@@ -831,7 +823,6 @@
                                             <constraint firstItem="LYp-jb-4aB" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="WHd-E4-aUb"/>
                                             <constraint firstItem="adf-uG-4TS" firstAttribute="top" secondItem="zyF-9a-8bS" secondAttribute="bottom" constant="2" id="Wlx-MC-pSN"/>
                                             <constraint firstItem="P3F-9h-21N" firstAttribute="top" secondItem="JrM-pU-kJA" secondAttribute="bottom" constant="2" id="X6P-ju-6cS"/>
-                                            <constraint firstItem="kMV-EV-6eU" firstAttribute="leading" secondItem="KqO-AI-fbL" secondAttribute="trailing" constant="8" symbolic="YES" id="XYx-eE-rtN"/>
                                             <constraint firstItem="KqO-AI-fbL" firstAttribute="top" secondItem="LYp-jb-4aB" secondAttribute="bottom" constant="24" id="ZKm-gf-O82"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="top" secondItem="8gj-2h-2Ic" secondAttribute="bottom" constant="28" id="Zat-x9-s72"/>
                                             <constraint firstItem="8gj-2h-2Ic" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="aZY-J6-AnS"/>
@@ -852,7 +843,6 @@
                                             <constraint firstItem="A8e-Un-uuG" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="n8Y-EA-FPT"/>
                                             <constraint firstItem="LYp-jb-4aB" firstAttribute="trailing" secondItem="kHP-PA-Tth" secondAttribute="trailingMargin" id="pEw-UT-SFB"/>
                                             <constraint firstItem="z79-vT-qHF" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="rcR-Hk-QP5"/>
-                                            <constraint firstAttribute="bottom" secondItem="kMV-EV-6eU" secondAttribute="bottom" constant="-65" id="tsW-V6-pXG"/>
                                             <constraint firstItem="LYp-jb-4aB" firstAttribute="top" secondItem="S9r-LJ-W69" secondAttribute="bottom" constant="2" id="u4k-eo-jdk"/>
                                             <constraint firstItem="ID5-9Q-Zb9" firstAttribute="top" secondItem="zOl-m9-gNp" secondAttribute="bottom" constant="2" id="uJ0-eq-xa8"/>
                                             <constraint firstItem="SaJ-zx-PBS" firstAttribute="top" secondItem="6Nr-u4-Yuh" secondAttribute="bottom" constant="3" id="w6D-TE-22e"/>
@@ -869,16 +859,27 @@
                                     <constraint firstAttribute="trailing" secondItem="kHP-PA-Tth" secondAttribute="trailing" constant="3" id="pLV-Zk-CN7"/>
                                 </constraints>
                             </scrollView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kMV-EV-6eU">
+                                <rect key="frame" x="0.0" y="639" width="375" height="201"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="201" id="lde-jk-OPz"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="201" id="pIW-EK-aF6"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="q2Z-fV-jwP" secondAttribute="leading" id="GbX-jw-Sa5"/>
+                            <constraint firstItem="bzd-wJ-GYf" firstAttribute="trailing" secondItem="kMV-EV-6eU" secondAttribute="trailing" id="IqR-r8-9SL"/>
+                            <constraint firstItem="kMV-EV-6eU" firstAttribute="leading" secondItem="bzd-wJ-GYf" secondAttribute="leading" id="JUO-rn-Loc"/>
                             <constraint firstItem="q2Z-fV-jwP" firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="P5c-9M-oFv"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="top" secondItem="bzd-wJ-GYf" secondAttribute="top" id="SYu-Sr-PaB"/>
                             <constraint firstItem="q2Z-fV-jwP" firstAttribute="top" secondItem="Pet-gA-Fqc" secondAttribute="top" id="T6X-vw-cPp"/>
                             <constraint firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="U8b-a6-Nbt"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="bzd-wJ-GYf" secondAttribute="leading" id="Yhn-rG-CwX"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="trailing" secondItem="bzd-wJ-GYf" secondAttribute="trailing" id="flN-y2-m7Q"/>
+                            <constraint firstItem="bzd-wJ-GYf" firstAttribute="bottom" secondItem="kMV-EV-6eU" secondAttribute="bottom" id="nxO-FG-6Ya"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="bottom" secondItem="bzd-wJ-GYf" secondAttribute="bottom" id="vs7-kc-lFH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bzd-wJ-GYf"/>
@@ -902,7 +903,8 @@
                         <outlet property="previousDatasetButton" destination="P3F-9h-21N" id="tXa-qd-XvR"/>
                         <outlet property="previousDatasetPicker" destination="kMV-EV-6eU" id="2U0-db-434"/>
                         <outlet property="saveGps" destination="6Nr-u4-Yuh" id="Jy1-3a-JvC"/>
-                        <outlet property="saveGpsLabel" destination="ID5-9Q-Zb9" id="4S2-NR-eXM"/>
+                        <outlet property="saveGpsLabel" destination="PDu-AL-rj6" id="6W3-fH-uIo"/>
+                        <outlet property="saveGpsNoteLabel" destination="SaJ-zx-PBS" id="Ll4-wO-fgv"/>
                         <outlet property="scaleMarkLength" destination="b7d-8V-V4U" id="sUv-0b-6sV"/>
                         <outlet property="scrollView" destination="Atb-RN-ny0" id="4lg-05-Okg"/>
                         <outlet property="signOutOfGoogleButton" destination="KqO-AI-fbL" id="RDV-X8-wwc"/>
@@ -1326,8 +1328,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
-        <segue reference="gAP-T7-MBM"/>
+        <segue reference="Mj2-iv-vfZ"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>

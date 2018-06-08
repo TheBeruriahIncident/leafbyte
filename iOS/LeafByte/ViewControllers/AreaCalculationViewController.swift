@@ -191,7 +191,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UIViewController overrides
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
@@ -377,7 +377,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UITextFieldDelegate overrides
     
-    func textFieldDidBeginEditing(_ textField: UITextField){
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         // Disable the gesture recognition so that we can catch touches outside of the keyboard to cancel the keyboard.
         gestureRecognizingView.isUserInteractionEnabled = false
     }

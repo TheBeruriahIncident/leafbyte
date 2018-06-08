@@ -59,7 +59,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         segueEnabled = false
         
-        if !UIImagePickerController.isSourceTypeAvailable(.camera){
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             presentAlert(self: self, title: nil, message: NSLocalizedString("No available camera", comment: "Shown when trying to take a picture if no camera is available, e.g. in a simulator"))
             segueEnabled = true
             return
