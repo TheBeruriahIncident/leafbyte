@@ -94,7 +94,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     // MARK: - UIViewController overrides
 
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)

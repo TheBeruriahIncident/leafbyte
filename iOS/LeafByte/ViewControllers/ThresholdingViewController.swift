@@ -62,7 +62,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     
     // MARK: - UIViewController overrides
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         if inTutorial {

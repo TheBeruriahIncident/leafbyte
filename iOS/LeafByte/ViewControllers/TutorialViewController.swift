@@ -22,7 +22,7 @@ final class TutorialViewController: UIViewController {
     
     // MARK: - UIViewController overrides
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         smoothTransitions(self: self)

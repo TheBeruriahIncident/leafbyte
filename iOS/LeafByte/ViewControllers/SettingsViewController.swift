@@ -254,12 +254,12 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField){
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         // Track the current edited fields.
         activeField = textField
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField){
+    func textFieldDidEndEditing(_ textField: UITextField) {
         // Clear the current edited fields.
         activeField = nil
     }
@@ -333,17 +333,17 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         presentAlert(self: self, title: nil, message: NSLocalizedString("Google sign-in is required for saving to Google Drive", comment: "Shown if Google sign-in fails after choosing to save to Google Drive"))
     }
     
-    func registerForKeyboardNotifications(){
+    func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func deregisterFromKeyboardNotifications(){
+    func deregisterFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    @objc func keyboardWasShown(notification: NSNotification){
+    @objc func keyboardWasShown(notification: NSNotification) {
         // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
         let info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
@@ -361,7 +361,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
     }
     
-    @objc func keyboardWillBeHidden(notification: NSNotification){
+    @objc func keyboardWillBeHidden(notification: NSNotification) {
         // When the keyboard is to be hidden, scroll the view back.
         let info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
