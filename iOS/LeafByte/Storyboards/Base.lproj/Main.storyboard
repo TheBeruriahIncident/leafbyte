@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -666,7 +666,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
-                                                <rect key="frame" x="48.5" y="209" width="275" height="30"/>
+                                                <rect key="frame" x="49" y="209" width="275" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="275" id="IQg-pr-ueZ"/>
                                                 </constraints>
@@ -747,13 +747,13 @@
                                                     <action selector="choosePreviousDataset:" destination="ayx-Do-FJf" eventType="touchUpInside" id="v0l-Ur-3cK"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Invert colors?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-ux-tfh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invert colors?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-ux-tfh">
                                                 <rect key="frame" x="0.0" y="639" width="372" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
                                                 <rect key="frame" x="122" y="737" width="128" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="1cg-4r-LU0"/>
@@ -763,7 +763,7 @@
                                                     <action selector="signOutOfGoogle:" destination="ayx-Do-FJf" eventType="touchUpInside" id="xXM-kR-foo"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="*Use a black background and white object" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-jb-4aB">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Use a black background and white object" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-jb-4aB">
                                                 <rect key="frame" x="8" y="697" width="356" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
@@ -792,7 +792,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69">
                                                 <rect key="frame" x="162" y="664" width="51" height="31"/>
                                             </switch>
                                         </subviews>
@@ -816,6 +816,7 @@
                                             <constraint firstItem="nnO-ux-tfh" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="LxG-F5-hJ5"/>
                                             <constraint firstItem="A8e-Un-uuG" firstAttribute="top" secondItem="V1C-Gd-7rk" secondAttribute="bottom" constant="2" id="MU3-7D-ni0"/>
                                             <constraint firstItem="P3F-9h-21N" firstAttribute="centerX" secondItem="JrM-pU-kJA" secondAttribute="centerX" id="OrB-MD-u0k"/>
+                                            <constraint firstItem="nnO-ux-tfh" firstAttribute="top" secondItem="SaJ-zx-PBS" secondAttribute="bottom" constant="23" id="Ph8-NP-qOR"/>
                                             <constraint firstItem="2xi-47-qHi" firstAttribute="top" secondItem="Wep-GW-bl2" secondAttribute="bottom" constant="2" id="QLh-4l-syI"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="TEv-Ja-dbH"/>
                                             <constraint firstItem="PDu-AL-rj6" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="Tzc-RY-FRl"/>
