@@ -31,6 +31,7 @@ final class Settings: NSObject, NSCoding {
         static let saveGpsData = "saveGpsData"
         static let scaleMarkLength = "scaleMarkLength"
         static let useBarcode = "useBarcode"
+        static let useBlackBackground = "useBlackBackground"
         static let userIdToTopLevelGoogleFolderId = "userIdToTopLevelGoogleFolderId"
     }
     
@@ -45,6 +46,7 @@ final class Settings: NSObject, NSCoding {
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var useBarcode = false
+    var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
     
     required override init() {}
@@ -83,6 +85,9 @@ final class Settings: NSObject, NSCoding {
         if decoder.containsValue(forKey: PropertyKey.useBarcode) {
             self.useBarcode = decoder.decodeBool(forKey: PropertyKey.useBarcode)
         }
+        if decoder.containsValue(forKey: PropertyKey.useBlackBackground) {
+            self.useBarcode = decoder.decodeBool(forKey: PropertyKey.useBlackBackground)
+        }
         if let userIdToTopLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.userIdToTopLevelGoogleFolderId) as? [String: String] {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
         }
@@ -100,6 +105,7 @@ final class Settings: NSObject, NSCoding {
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
         coder.encode(useBarcode, forKey: PropertyKey.useBarcode)
+        coder.encode(useBlackBackground, forKey: PropertyKey.useBlackBackground)
         coder.encode(userIdToTopLevelGoogleFolderId, forKey: PropertyKey.userIdToTopLevelGoogleFolderId)
     }
     
@@ -120,6 +126,7 @@ final class Settings: NSObject, NSCoding {
             && saveGpsData == other.saveGpsData
             && scaleMarkLength == other.scaleMarkLength
             && useBarcode == other.useBarcode
+            && useBlackBackground == other.useBlackBackground
             && userIdToTopLevelGoogleFolderId == other.userIdToTopLevelGoogleFolderId
     }
     

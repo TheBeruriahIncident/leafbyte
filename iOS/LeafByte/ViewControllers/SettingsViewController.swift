@@ -28,6 +28,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var useBarcode: UISwitch!
     @IBOutlet weak var saveGps: UISwitch!
+    @IBOutlet weak var blackBackground: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
     @IBOutlet weak var previousDatasetPicker: UIPickerView!
     
@@ -158,6 +159,13 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         settings.serialize()
     }
     
+    @IBAction func blackBackgroundChanged(_ sender: UISwitch) {
+        dismissInput()
+        
+        settings.useBlackBackground = sender.isOn
+        settings.serialize()
+    }
+    
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         var newScaleMarkLength: Double!
@@ -199,6 +207,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         nextSampleNumber.text = String(settings.getNextSampleNumber())
         saveGps.setOn(settings.saveGpsData, animated: false)
         useBarcode.setOn(settings.useBarcode, animated: false)
+        blackBackground.setOn(settings.useBlackBackground, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
         
         // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
