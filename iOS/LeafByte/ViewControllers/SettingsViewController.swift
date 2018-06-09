@@ -68,6 +68,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPickerData = settings.getPreviousDatasetNames()
         previousDatasetPicker.reloadAllComponents()
         
+        let currentSelection = previousDatasetPickerData.index(of: settings.datasetName)
+        if currentSelection != nil {
+            previousDatasetPicker.selectRow(currentSelection!, inComponent: 0, animated: true)
+        }
+        
         previousDatasetPicker.isHidden = false
     }
     
