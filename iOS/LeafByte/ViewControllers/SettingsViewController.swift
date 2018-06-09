@@ -340,37 +340,34 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     
     func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func deregisterFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
     @objc func keyboardWasShown(notification: NSNotification) {
-        // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
-        let info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0)
-        scrollView.contentInset = contentInsets
-        
         var visibleFrame = self.view.frame
         
-        visibleFrame.size.height -= keyboardSize.height
-        if !visibleFrame.contains(activeField!.frame.origin) {
-            let scrollOffsetBuffer = 20
-            let scrollOffset = Int(self.view.frame.height - (activeField!.frame.origin.y + activeField!.frame.size.height)) + scrollOffsetBuffer
-            
-            scrollView.setContentOffset(CGPoint(x: 0, y: scrollOffset), animated: true)
+        // The visible frame is covered partially by the status bar, the nav bar, and the keyboard.
+        visibleFrame.size.height -= getKeyboardHeight(notification: notification)
+        visibleFrame.size.height -= self.navigationController!.navigationBar.frame.height
+        visibleFrame.size.height -= UIApplication.shared.statusBarFrame.height
+        
+        // Account for any scrolling that has already happened.
+        visibleFrame.size.height += scrollView.contentOffset.y
+
+        // Check if the field is out of the view.
+        if visibleFrame.size.height < activeField!.frame.maxY {
+            // Scroll down if so.
+            scrollView.contentOffset = CGPoint(x: 0, y: (activeField!.frame.maxY - visibleFrame.size.height) + scrollView.contentOffset.y)
         }
     }
     
-    @objc func keyboardWillBeHidden(notification: NSNotification) {
-        // When the keyboard is to be hidden, scroll the view back.
+    private func getKeyboardHeight(notification: NSNotification) -> CGFloat {
         let info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize.height, 0.0)
-        scrollView.contentInset = contentInsets
+        return keyboardSize.height
     }
 }
