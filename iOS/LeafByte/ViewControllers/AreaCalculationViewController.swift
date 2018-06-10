@@ -507,11 +507,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             
             // Set the number of lines or else lines past the first are dropped.
             resultsText.numberOfLines = 3
-            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInCm2!, formattedConsumedAreaInCm2!, formattedPercentConsumed!)
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2\nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInCm2!, formattedConsumedAreaInCm2!, formattedPercentConsumed!)
         } else {
             formattedLeafAreaIncludingConsumedAreaInCm2 = nil
             formattedConsumedAreaInCm2 = nil
-            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Leaf is %d%% consumed.", comment: "Results with only relative data"), formattedPercentConsumed!)
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %d%%", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
     }
     
@@ -542,7 +542,16 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
                 self.completeButton.isEnabled = true
             })
-            let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Switch to Files App", comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
+            
+            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+            var localStorageName: String
+            if #available(iOS 11.0, *) {
+                localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
+            } else {
+                localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
+            }
+            
+            let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
                 if self.settings.measurementSaveLocation == .googleDrive {
                     self.settings.measurementSaveLocation = .local
                 }

@@ -46,14 +46,12 @@
 "Draw" = "Dibujar";
 "No leaf found" = "No se encontró ninguna hoja";
 "Could not save to Google Drive." = "No se pudo guardar en Google Drive.";
-"Switch to Files App" = "Cambiar a la aplicación de archivos";
+"Switch to " = "Ahorrar a ";
 "Retry" = "Rever";
 "Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%" = "Área total de la hoja= %@ cm2\nÁrea consumida de la hoja= %@ cm2 \nPorcentaje consumido= %@%%";
-"Leaf is %d%% consumed." = "La hoja se consume en un %d%%.";
+"Percent Consumed= %d%%" = "Porcentaje consumido= %@%%";
 
 /* SettingsViewController */
-"Files App" = "Aplicación de Archivos";
-"Phone" = "Teléfono";
 "Google sign-in is required for saving to Google Drive" = "Se requiere iniciar sesión en Google para guardar en Google Drive";
 
 /* Multiple views */
@@ -66,3 +64,5 @@
 "Sample %@" = "Muestra %@";
 "Camera access denied" = "Acceso a la cámara denegado";
 "To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON." = "Para permitir tomar fotos para el análisis, vaya a Configuración -> Privacidad -> Cámara y configure LeafByte en ENCENDIDO.";
+"Files App" = "Aplicación de Archivos";
+"Phone" = "Teléfono";
