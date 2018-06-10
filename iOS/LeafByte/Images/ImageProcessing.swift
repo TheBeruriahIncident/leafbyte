@@ -84,7 +84,9 @@ func otsusMethod(histogram: [Int]) -> Float {
         let mu1Numerator = sumOfMuNumerators - mu0Numerator
         let mu0 = Double(mu0Numerator) / Double(omega0)
         let mu1 = Double(mu1Numerator) / Double(omega1)
-        let interClassVariance = Double(omega0 * omega1) * pow(mu0 - mu1, 2)
+        // Note that omega0 and omega1 are turned into Doubles before multiplying.
+        // They were Ints and while Int has been equivalent to Int64 since iPad 4 and iPhone 5, on older devices it was equivalent to Int32, and the multiplications would overflow ( https://en.wikipedia.org/wiki/Integer_overflow ).
+        let interClassVariance = Double(omega0) * Double(omega1) * pow(mu0 - mu1, 2)
         
         if interClassVariance >= maximumInterClassVariance {
             maximumInterClassVariance = interClassVariance
