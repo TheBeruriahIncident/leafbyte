@@ -44,8 +44,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var undoBuffer = [Action]()
     var redoBuffer = [Action]()
     
-    // Track the current drawing, which is a list of points to be connected by lines.
-    var currentDrawing = [CGPoint]()
+    // Track the current touch path. If in drawing mode, this list of points will be connected by lines.
+    var currentTouchPath = [CGPoint]()
     
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     // It seems like this view should only appear once anyways, except that the flicker when the image picker closes counts as an appearance.
@@ -102,10 +102,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     @IBAction func undo(_ sender: Any) {
-        // Move the drawing from the undo buffer to the redo buffer.
+        // Move the action from the undo buffer to the redo buffer.
         redoBuffer.append(undoBuffer.popLast()!)
         
-        // Wipe the screen and redraw all drawings except the one we just "undid".
+        // Wipe the screen and redo all action except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
         initializeImage(view: scaleMarkingView, size: uiImage.size)
         drawMarkers()
@@ -118,12 +118,12 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     @IBAction func redo(_ sender: Any) {
-        // Move the drawing from the redo buffer to the undo buffer.
-        let drawingToRedo = redoBuffer.popLast()!
-        undoBuffer.append(drawingToRedo)
+        // Move the action from the redo buffer to the undo buffer.
+        let actionToRedo = redoBuffer.popLast()!
+        undoBuffer.append(actionToRedo)
         
-        // Simpler than undo, we can simply draw this one drawing.
-        doAction(drawingToRedo)
+        // Simpler than undo, we can simply repo this one action.
+        doAction(actionToRedo)
         
         // Update the buttons.
         calculateButton.isEnabled = true
@@ -321,67 +321,58 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UIResponder overrides
     
+    // Note that these callbacks don't run when in scroll mode, because gestureRecognizingView isn't enabled for user interaction.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // If a user taps outside of the keyboard, close the keyboard.
-        // Note that this callback doesn't run when interacting with the scroll view; those cases are handled in the UIScrollViewDelegate overrides above.
         dismissKeyboard()
-        
-        // No drawing in scrolling mode.
-        if mode != .scrolling {
-            return
-        }
         
         let candidatePoint = (touches.first?.location(in: userDrawingView))!
         // "Drawing" outside the image doesn't count.
-        if !isDrawingPointInBaseImage(candidatePoint) {
+        if !isTouchedPointInBaseImage(candidatePoint) {
             return
         }
         
-        currentDrawing.append(candidatePoint)
+        currentTouchPath.append(candidatePoint)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if mode == .scrolling {
-            return
-        }
-        
         let candidatePoint = touches.first!.location(in: userDrawingView)
-        // "Drawing" outside the image doesn't count.
-        if !isDrawingPointInBaseImage(candidatePoint) {
+        // Touching outside the image doesn't count.
+        if !isTouchedPointInBaseImage(candidatePoint) {
             return
         }
         
         // If there was a previous point, connect the dots.
-        if !currentDrawing.isEmpty && mode == .drawing {
-            drawLine(fromPoint: currentDrawing.last!, toPoint: candidatePoint)
+        if !currentTouchPath.isEmpty && mode == .drawing {
+            drawLine(fromPoint: currentTouchPath.last!, toPoint: candidatePoint)
         }
         
-        currentDrawing.append(candidatePoint)
+        currentTouchPath.append(candidatePoint)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // No drawing in scrolling mode or outside the image.
-        if mode == .scrolling || currentDrawing.isEmpty {
+        // If there were no valid touches, don't create an action.
+        if currentTouchPath.isEmpty {
             return
         }
         
         var action: Action!
         if mode == .drawing {
             // If only one point, nothing has been drawn yet.
-            if currentDrawing.count == 1 {
-                drawLine(fromPoint: currentDrawing.last!, toPoint: currentDrawing.last!)
+            if currentTouchPath.count == 1 {
+                drawLine(fromPoint: currentTouchPath.last!, toPoint: currentTouchPath.last!)
             }
             
-            action = Action(type: .drawing, points: currentDrawing)
+            action = Action(type: .drawing, points: currentTouchPath)
         } else {
-            action = Action(type: .exclusion, points: [currentDrawing.last!])
+            action = Action(type: .exclusion, points: [currentTouchPath.last!])
             doAction(action)
         }
         
         // Move the current action to the undo buffer.
         undoBuffer.append(action)
         
-        currentDrawing = []
+        currentTouchPath = []
         // Clear the redo buffer.
         redoBuffer = []
         
@@ -422,9 +413,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Helpers
     
-    // We want to limit drawing interactions to points that match up to the base image.
+    // We want to limit touch interactions to points that match up to the base image.
     // Otherwise, since connected components and flood filling are calculated within the base image, those operations will seem broken.
-    private func isDrawingPointInBaseImage(_ point: CGPoint) -> Bool {
+    private func isTouchedPointInBaseImage(_ point: CGPoint) -> Bool {
         let projectedPoint = userDrawingToBaseImage.project(point: point)
         return baseImageRect.contains(projectedPoint)
     }
