@@ -619,16 +619,16 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="776"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="372" height="840"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
-                                                <rect key="frame" x="113" y="30" width="147" height="21"/>
+                                                <rect key="frame" x="114" y="30" width="147" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
-                                                <rect key="frame" x="46" y="53" width="281" height="30"/>
+                                                <rect key="frame" x="47.5" y="53" width="281" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="40x-gW-9WX"/>
                                                 </constraints>
@@ -642,13 +642,13 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dataset Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-lk-Cd3" userLabel="Dataset Name Label">
-                                                <rect key="frame" x="8" y="188" width="356" height="21"/>
+                                                <rect key="frame" x="8" y="188" width="359" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="adf-uG-4TS" userLabel="Next Sample Number Text Box">
-                                                <rect key="frame" x="144" y="403" width="83" height="30"/>
+                                                <rect key="frame" x="146" y="403" width="83" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="83" id="I1j-Ih-IPe"/>
                                                 </constraints>
@@ -660,13 +660,13 @@
                                                 </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-Gd-7rk" userLabel="Image Save Location Label">
-                                                <rect key="frame" x="8" y="110" width="356" height="21"/>
+                                                <rect key="frame" x="8" y="110" width="359" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JrM-pU-kJA" userLabel="Dataset Name Text Box">
-                                                <rect key="frame" x="49" y="209" width="275" height="30"/>
+                                                <rect key="frame" x="50.5" y="209" width="275.5" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="275" id="IQg-pr-ueZ"/>
                                                 </constraints>
@@ -678,7 +678,7 @@
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b7d-8V-V4U" userLabel="Scale Mark Length Text Box">
-                                                <rect key="frame" x="144" y="322" width="83" height="30"/>
+                                                <rect key="frame" x="146" y="322" width="83" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="XsS-AE-zea"/>
                                                     <constraint firstAttribute="width" constant="83" id="dmK-Nv-0d5"/>
@@ -691,7 +691,7 @@
                                                 </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Scale Length" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOl-m9-gNp" userLabel="Scale Mark Length Label">
-                                                <rect key="frame" x="121" y="299" width="130" height="21"/>
+                                                <rect key="frame" x="123" y="299" width="130" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="ONm-yr-Dt8"/>
                                                 </constraints>
@@ -700,7 +700,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ID5-9Q-Zb9" userLabel="Scale Mark Unit Label">
-                                                <rect key="frame" x="227" y="322" width="33" height="30"/>
+                                                <rect key="frame" x="229" y="322" width="24" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="849-OD-gfG"/>
                                                 </constraints>
@@ -709,14 +709,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Use Barcodes Toggle">
-                                                <rect key="frame" x="162" y="484" width="51" height="31"/>
+                                                <rect key="frame" x="163" y="484" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="VYj-39-eDu"/>
                                                     <action selector="useBarcodesChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="CTT-L6-Y2a"/>
                                                 </connections>
                                             </switch>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan Barcodes?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wep-GW-bl2">
-                                                <rect key="frame" x="127" y="461" width="124" height="21"/>
+                                                <rect key="frame" x="128" y="461" width="124" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20.5" id="5KZ-Vy-4k0"/>
                                                 </constraints>
@@ -725,19 +725,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Nr-u4-Yuh" userLabel="Save GPS Toggle">
-                                                <rect key="frame" x="165" y="566" width="51" height="31"/>
+                                                <rect key="frame" x="166" y="566" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                                 </connections>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*May slow saving" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaJ-zx-PBS" userLabel="Save GPS Note Label">
-                                                <rect key="frame" x="133" y="600" width="105" height="16"/>
+                                                <rect key="frame" x="135" y="600" width="105" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3F-9h-21N">
-                                                <rect key="frame" x="105" y="241" width="162" height="30"/>
+                                                <rect key="frame" x="107" y="241" width="162" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Icd-XA-WKG"/>
                                                 </constraints>
@@ -748,13 +748,13 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Black background?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-ux-tfh">
-                                                <rect key="frame" x="0.0" y="639" width="372" height="21"/>
+                                                <rect key="frame" x="0.0" y="639" width="375" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqO-AI-fbL">
-                                                <rect key="frame" x="122" y="737" width="128" height="30"/>
+                                                <rect key="frame" x="124" y="737" width="128" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="1cg-4r-LU0"/>
                                                 </constraints>
@@ -764,19 +764,19 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*For use with light plant tissue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-jb-4aB">
-                                                <rect key="frame" x="8" y="697" width="356" height="16"/>
+                                                <rect key="frame" x="8" y="697" width="359" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Sample Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyF-9a-8bS" userLabel="Next Sample Number Label">
-                                                <rect key="frame" x="104" y="380" width="164" height="21"/>
+                                                <rect key="frame" x="106" y="380" width="164" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="A8e-Un-uuG" userLabel="Image Save Location Control">
-                                                <rect key="frame" x="46" y="133" width="281" height="29"/>
+                                                <rect key="frame" x="47.5" y="133" width="281" height="29"/>
                                                 <segments>
                                                     <segment title="None"/>
                                                     <segment title="Files App"/>
@@ -787,13 +787,13 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save GPS Location?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDu-AL-rj6" userLabel="Save GPS Label">
-                                                <rect key="frame" x="8" y="542" width="356" height="21"/>
+                                                <rect key="frame" x="8" y="542" width="359" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69" userLabel="Black Background Toggle">
-                                                <rect key="frame" x="162" y="664" width="51" height="31"/>
+                                                <rect key="frame" x="163" y="664" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="blackBackgroundChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="it7-SD-fTc"/>
                                                 </connections>
@@ -830,7 +830,6 @@
                                             <constraint firstItem="KqO-AI-fbL" firstAttribute="top" secondItem="LYp-jb-4aB" secondAttribute="bottom" constant="24" id="ZKm-gf-O82"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="top" secondItem="8gj-2h-2Ic" secondAttribute="bottom" constant="28" id="Zat-x9-s72"/>
                                             <constraint firstItem="8gj-2h-2Ic" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="aZY-J6-AnS"/>
-                                            <constraint firstAttribute="trailing" secondItem="ID5-9Q-Zb9" secondAttribute="trailing" constant="112" id="bFi-gV-3a8"/>
                                             <constraint firstItem="4hE-lk-Cd3" firstAttribute="top" secondItem="A8e-Un-uuG" secondAttribute="bottom" constant="27" id="bk2-Za-Xn6"/>
                                             <constraint firstItem="zOl-m9-gNp" firstAttribute="top" secondItem="P3F-9h-21N" secondAttribute="bottom" constant="28" id="cq6-Zv-Ori"/>
                                             <constraint firstItem="zyF-9a-8bS" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="eQu-oq-TAp"/>
@@ -839,7 +838,6 @@
                                             <constraint firstItem="JrM-pU-kJA" firstAttribute="top" secondItem="4hE-lk-Cd3" secondAttribute="bottom" id="fuR-DP-tjr"/>
                                             <constraint firstItem="6Nr-u4-Yuh" firstAttribute="top" secondItem="PDu-AL-rj6" secondAttribute="bottom" constant="3" id="gr6-ox-Hit"/>
                                             <constraint firstItem="S9r-LJ-W69" firstAttribute="top" secondItem="nnO-ux-tfh" secondAttribute="bottom" constant="4" id="hfw-Ka-HaI"/>
-                                            <constraint firstAttribute="width" constant="372" id="hh3-JA-F6T"/>
                                             <constraint firstItem="ID5-9Q-Zb9" firstAttribute="leading" secondItem="b7d-8V-V4U" secondAttribute="trailing" id="jZx-fn-501"/>
                                             <constraint firstItem="JrM-pU-kJA" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="kaU-rQ-MtA"/>
                                             <constraint firstItem="b7d-8V-V4U" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="mco-le-bEj"/>
@@ -856,6 +854,7 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="kHP-PA-Tth" firstAttribute="width" secondItem="Atb-RN-ny0" secondAttribute="width" id="I4D-vy-qkm"/>
                                     <constraint firstItem="kHP-PA-Tth" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" id="Jeb-Q4-FzT"/>
                                     <constraint firstAttribute="bottom" secondItem="kHP-PA-Tth" secondAttribute="bottom" constant="-64" id="Ntn-Sc-1bu"/>
                                     <constraint firstItem="kHP-PA-Tth" firstAttribute="top" secondItem="Atb-RN-ny0" secondAttribute="top" id="RFd-5w-dpG"/>
@@ -877,6 +876,7 @@
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="q2Z-fV-jwP" secondAttribute="leading" id="GbX-jw-Sa5"/>
                             <constraint firstItem="bzd-wJ-GYf" firstAttribute="trailing" secondItem="kMV-EV-6eU" secondAttribute="trailing" id="IqR-r8-9SL"/>
                             <constraint firstItem="kMV-EV-6eU" firstAttribute="leading" secondItem="bzd-wJ-GYf" secondAttribute="leading" id="JUO-rn-Loc"/>
+                            <constraint firstItem="Atb-RN-ny0" firstAttribute="trailing" secondItem="bzd-wJ-GYf" secondAttribute="trailing" id="Ne5-BX-g0k"/>
                             <constraint firstItem="q2Z-fV-jwP" firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="P5c-9M-oFv"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="top" secondItem="bzd-wJ-GYf" secondAttribute="top" id="SYu-Sr-PaB"/>
                             <constraint firstItem="q2Z-fV-jwP" firstAttribute="top" secondItem="Pet-gA-Fqc" secondAttribute="top" id="T6X-vw-cPp"/>
