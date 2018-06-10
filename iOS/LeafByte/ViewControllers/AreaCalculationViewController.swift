@@ -28,11 +28,24 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var userDrawingToBaseImage: Projection!
     var baseImageRect: CGRect!
     
-    // Track the previous, current, and "future" drawings to enable undoing and redoing.
-    // Each drawing is a list of points to be connected by lines.
-    var undoBuffer = [[CGPoint]]()
+    enum ActionType {
+        case drawing
+        case exclusion
+    }
+    
+    struct Action {
+        let type: ActionType
+        // Each drawing is a list of points to be connected by lines.
+        // Each exclusion is a single point.
+        let points: [CGPoint]
+    }
+    
+    // Track the previous, and "future" actions to enable undoing and redoing.
+    var undoBuffer = [Action]()
+    var redoBuffer = [Action]()
+    
+    // Track the current drawing, which is a list of points to be connected by lines.
     var currentDrawing = [CGPoint]()
-    var redoBuffer = [[CGPoint]]()
     
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     // It seems like this view should only appear once anyways, except that the flicker when the image picker closes counts as an appearance.
@@ -94,7 +107,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Wipe the screen and redraw all drawings except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
-        undoBuffer.forEach { drawing in drawCompleteDrawing(drawing) }
+        undoBuffer.forEach { drawing in doAction(drawing) }
         
         // Update the buttons.
         calculateButton.isEnabled = true
@@ -108,7 +121,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         undoBuffer.append(drawingToRedo)
         
         // Simpler than undo, we can simply draw this one drawing.
-        drawCompleteDrawing(drawingToRedo)
+        doAction(drawingToRedo)
         
         // Update the buttons.
         calculateButton.isEnabled = true
@@ -258,8 +271,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
-        if segue.identifier == "imageChosen"
-        {
+        if segue.identifier == "imageChosen" {
             guard let destination = segue.destination as? ThresholdingViewController else {
                 fatalError("Expected the next view to be the thresholding view but is \(segue.destination)")
             }
@@ -270,8 +282,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             destination.inTutorial = false
         }
         // If the segue is toBarcodeScanning, we're transitioning forward in the main flow, but with barcode scanning.
-        else if segue.identifier == "toBarcodeScanning"
-        {
+        else if segue.identifier == "toBarcodeScanning" {
             if #available(iOS 10.0, *) {
                 guard let destination = segue.destination as? BarcodeScanningViewController else {
                     fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
@@ -359,7 +370,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         }
         
         // Move the current drawing to the undo buffer.
-        undoBuffer.append(currentDrawing)
+        undoBuffer.append(Action(type: .drawing, points: currentDrawing))
         currentDrawing = []
         // Clear the redo buffer.
         redoBuffer = []
@@ -406,6 +417,16 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     private func isDrawingPointInBaseImage(_ point: CGPoint) -> Bool {
         let projectedPoint = userDrawingToBaseImage.project(point: point)
         return baseImageRect.contains(projectedPoint)
+    }
+    
+    // Carry out an action of any type.
+    private func doAction(_ action: Action) {
+        switch action.type {
+        case .drawing:
+            drawCompleteDrawing(action.points)
+        case .exclusion:
+            print("unimplemented")
+        }
     }
     
     // Draw a complete drawing, made up of a sequence of points.
