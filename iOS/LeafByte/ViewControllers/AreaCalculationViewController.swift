@@ -189,6 +189,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
     }
     
+    @IBAction func excludeConsumedArea(_ sender: Any) {
+        
+    }
+    
     // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
