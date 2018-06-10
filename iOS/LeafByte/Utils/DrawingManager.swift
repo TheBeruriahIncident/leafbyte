@@ -86,6 +86,7 @@ final class DrawingManager {
     
     func drawX(at point: CGPoint, size: CGFloat) {
         let projectedPoint = projection.project(point: point)
+        context.setLineCap(.round)
         
         context.move(to: projectedPoint.applying(CGAffineTransform(translationX: -size, y: -size)))
         context.addLine(to: projectedPoint.applying(CGAffineTransform(translationX: size, y: size)))
