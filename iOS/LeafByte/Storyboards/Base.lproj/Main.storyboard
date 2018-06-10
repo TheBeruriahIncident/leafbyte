@@ -913,7 +913,6 @@
                         <outlet property="imageSaveLocation" destination="A8e-Un-uuG" id="EUs-fQ-d9G"/>
                         <outlet property="measurementSaveLocation" destination="8gj-2h-2Ic" id="4DQ-kM-4Zr"/>
                         <outlet property="nextSampleNumber" destination="adf-uG-4TS" id="tm2-ct-esg"/>
-                        <outlet property="nextSampleNumberLabel" destination="zyF-9a-8bS" id="iMe-Kn-CTA"/>
                         <outlet property="previousDatasetButton" destination="P3F-9h-21N" id="tXa-qd-XvR"/>
                         <outlet property="previousDatasetPicker" destination="kMV-EV-6eU" id="2U0-db-434"/>
                         <outlet property="saveGps" destination="6Nr-u4-Yuh" id="Jy1-3a-JvC"/>

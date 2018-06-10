@@ -33,7 +33,6 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var previousDatasetPicker: UIPickerView!
     
     @IBOutlet weak var datasetNameLabel: UILabel!
-    @IBOutlet weak var nextSampleNumberLabel: UILabel!
     @IBOutlet weak var useBarcodeLabel: UILabel!
     @IBOutlet weak var saveGpsLabel: UILabel!
     @IBOutlet weak var saveGpsNoteLabel: UILabel!
@@ -336,8 +335,6 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         let anySavingEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
         datasetName.isEnabled = anySavingEnabled
         datasetNameLabel.isEnabled = anySavingEnabled
-        nextSampleNumber.isEnabled = anySavingEnabled
-        nextSampleNumberLabel.isEnabled = anySavingEnabled
         
         let anyGoogleDriveSavingEnabled = settings.measurementSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
         signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
