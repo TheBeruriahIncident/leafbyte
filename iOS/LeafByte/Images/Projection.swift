@@ -53,20 +53,28 @@ final class Projection {
         return (roundToInt(projectedX), roundToInt(projectedY))
     }
     
-    func project(point: CGPoint) -> CGPoint {
-        let (projectedX, projectedY) = project(x: point.x, y: point.y)
+    func project(point: CGPoint, constrain: Bool = true) -> CGPoint {
+        let (projectedX, projectedY) = project(x: point.x, y: point.y, constrain: constrain)
         return CGPoint(x: projectedX, y: projectedY)
     }
     
-    func project(x: CGFloat, y: CGFloat) -> (CGFloat, CGFloat) {
-        let (projectedX, projectedY) = project(x: Double(x), y: Double(y))
+    func project(x: CGFloat, y: CGFloat, constrain: Bool = true) -> (CGFloat, CGFloat) {
+        let (projectedX, projectedY) = project(x: Double(x), y: Double(y), constrain: constrain)
         return (CGFloat(projectedX), CGFloat(projectedY))
     }
     
-    func project(x: Double, y: Double) -> (Double, Double) {
-        // Project and constrain inside the bounds.
-        let projectedX = min(max(x * scale + xOffset, 0), Double(bounds.width) - 1)
-        let projectedY = min(max(y * scale + yOffset, 0), Double(bounds.height) - 1)
-        return (projectedX, projectedY)
+    func project(x: Double, y: Double, constrain: Bool = true) -> (Double, Double) {
+        // First do the projection.
+        let projectedX = x * scale + xOffset
+        let projectedY = y * scale + yOffset
+        
+        if !constrain {
+            return (projectedX, projectedY)
+        }
+        
+        // Then constrain inside the bounds.
+        let constrainedX = min(max(projectedX, 0), Double(bounds.width) - 1)
+        let constrainedY = min(max(projectedY, 0), Double(bounds.height) - 1)
+        return (constrainedX, constrainedY)
     }
 }

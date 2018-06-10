@@ -428,7 +428,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // We want to limit touch interactions to points that match up to the base image.
     // Otherwise, since connected components and flood filling are calculated within the base image, those operations will seem broken.
     private func isTouchedPointInBaseImage(_ point: CGPoint) -> Bool {
-        let projectedPoint = userDrawingToBaseImage.project(point: point)
+        let projectedPoint = userDrawingToBaseImage.project(point: point, constrain: false)
         return baseImageRect.contains(projectedPoint)
     }
     
