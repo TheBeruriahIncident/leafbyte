@@ -377,7 +377,15 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             
             action = Action(type: .drawing, points: currentTouchPath)
         } else {
-            action = Action(type: .exclusion, points: [currentTouchPath.last!])
+            let touchedPoint = currentTouchPath.last!
+            // If the touched point is on the leaf or scale, an exclusion makes no sense, so ignore it.
+            // That way a user can tap a bunch trying to get at the excluded area that's within a leaf.
+            let touchedPointOnLeaf = userDrawingToBaseImage.project(point: touchedPoint)
+            if IndexableImage(cgImage).getPixel(x: roundToInt(touchedPointOnLeaf.x), y: roundToInt(touchedPointOnLeaf.y)).isVisible() {
+                return
+            }
+            
+            action = Action(type: .exclusion, points: [ touchedPoint ])
             doAction(action)
         }
         
