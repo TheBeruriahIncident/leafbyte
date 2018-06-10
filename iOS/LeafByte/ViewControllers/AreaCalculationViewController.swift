@@ -326,6 +326,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // If a user taps outside of the keyboard, close the keyboard.
         dismissKeyboard()
         
+        if mode == .scrolling {
+            return
+        }
+        
         let candidatePoint = (touches.first?.location(in: userDrawingView))!
         // "Drawing" outside the image doesn't count.
         if !isTouchedPointInBaseImage(candidatePoint) {
@@ -336,6 +340,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if mode == .scrolling {
+            return
+        }
+        
         let candidatePoint = touches.first!.location(in: userDrawingView)
         // Touching outside the image doesn't count.
         if !isTouchedPointInBaseImage(candidatePoint) {
@@ -351,6 +359,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if mode == .scrolling {
+            return
+        }
+        
         // If there were no valid touches, don't create an action.
         if currentTouchPath.isEmpty {
             return
