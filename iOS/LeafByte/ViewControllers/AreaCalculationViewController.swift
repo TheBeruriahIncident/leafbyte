@@ -107,6 +107,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Wipe the screen and redraw all drawings except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
+        initializeImage(view: scaleMarkingView, size: uiImage.size)
+        drawMarkers()
         undoBuffer.forEach { drawing in doAction(drawing) }
         
         // Update the buttons.
@@ -465,7 +467,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         drawingManager.context.setStrokeColor(DrawingManager.red.cgColor)
         drawingManager.context.setLineWidth(2)
         drawingManager.drawX(at: point, size: 10)
-        drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
+        drawingManager.finish(imageView: scaleMarkingView, addToPreviousImage: true)
     }
     
     private func setScrollingMode(_ mode: Mode) {
