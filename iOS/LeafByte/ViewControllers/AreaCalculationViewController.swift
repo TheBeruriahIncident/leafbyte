@@ -325,7 +325,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         dismissKeyboard()
         
         // No drawing in scrolling mode.
-        if mode == .scrolling {
+        if mode != .scrolling {
             return
         }
         
@@ -339,7 +339,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // No drawing in scrolling mode.
         if mode == .scrolling {
             return
         }
@@ -351,7 +350,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         }
         
         // If there was a previous point, connect the dots.
-        if !currentDrawing.isEmpty {
+        if !currentDrawing.isEmpty && mode == .drawing {
             drawLine(fromPoint: currentDrawing.last!, toPoint: candidatePoint)
         }
         
@@ -364,13 +363,22 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             return
         }
         
-        // If only one point, nothing has been drawn yet.
-        if currentDrawing.count == 1 {
-            drawLine(fromPoint: currentDrawing.last!, toPoint: currentDrawing.last!)
+        var action: Action!
+        if mode == .drawing {
+            // If only one point, nothing has been drawn yet.
+            if currentDrawing.count == 1 {
+                drawLine(fromPoint: currentDrawing.last!, toPoint: currentDrawing.last!)
+            }
+            
+            action = Action(type: .drawing, points: currentDrawing)
+        } else {
+            action = Action(type: .exclusion, points: [currentDrawing.last!])
+            doAction(action)
         }
         
-        // Move the current drawing to the undo buffer.
-        undoBuffer.append(Action(type: .drawing, points: currentDrawing))
+        // Move the current action to the undo buffer.
+        undoBuffer.append(action)
+        
         currentDrawing = []
         // Clear the redo buffer.
         redoBuffer = []
@@ -425,7 +433,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         case .drawing:
             drawCompleteDrawing(action.points)
         case .exclusion:
-            print("unimplemented")
+            drawX(at: action.points.last!)
         }
     }
     
@@ -447,6 +455,16 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
         drawingManager.context.setLineWidth(2)
         drawingManager.drawLine(from: fromPoint, to: toPoint)
+        drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
+    }
+    
+    private func drawX(at point: CGPoint) {
+        redoButton.isEnabled = false
+        
+        let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
+        drawingManager.context.setStrokeColor(DrawingManager.red.cgColor)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.drawX(at: point, size: 10)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     

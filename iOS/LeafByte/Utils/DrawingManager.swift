@@ -13,6 +13,7 @@ import UIKit
 final class DrawingManager {
     static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
     static let darkGreen = UIColor(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
+    static let red = UIColor(red: 1.0, green: 0.09677419355, blue: 0.3806451613, alpha: 1.0)
     
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
@@ -81,6 +82,18 @@ final class DrawingManager {
         starPath.close()
         
         starPath.fill()
+    }
+    
+    func drawX(at point: CGPoint, size: CGFloat) {
+        let projectedPoint = projection.project(point: point)
+        
+        context.move(to: projectedPoint.applying(CGAffineTransform(translationX: -size, y: -size)))
+        context.addLine(to: projectedPoint.applying(CGAffineTransform(translationX: size, y: size)))
+        
+        context.move(to: projectedPoint.applying(CGAffineTransform(translationX: -size, y: size)))
+        context.addLine(to: projectedPoint.applying(CGAffineTransform(translationX: size, y: -size)))
+        
+        context.strokePath()
     }
     
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
