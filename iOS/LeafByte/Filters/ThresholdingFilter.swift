@@ -18,32 +18,41 @@ final class ThresholdingFilter: CIFilter {
     private var inputImageOriginalColorSpace: CIImage!
     private var inputImageSaturated: CIImage!
     
-    // This string represents a routine in the Core Image kernel language that transforms the image one pixel at a time ( https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageUnitTutorial/WritingKernels/WritingKernels.html ).
-    private let thresholdingKernel =  CIColorKernel(source:
-        "kernel vec4 thresholdKernel(sampler originalImage, sampler saturatedImage, float threshold) {" +
-        // Since this kernel is applied to each pixel individually, extract the pixels in question.
-        "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
-        "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
-        // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
-        "  const vec3 rgbToLuma = vec3(0.299, 0.587, 0.114);" +
-        "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
-        // 0 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it invisible.
-        "const vec4 invisiblePixel = vec4(0.0);" +
-        // If the pixel is not intense enough, return invisible; otherwise, return a pixel of the actual (saturated) image.
-        "  return luma < threshold ? vec4(saturatedPixel.rgb, 1) : invisiblePixel;" +
-        "}")!
+    private var useBlackBackground: Bool!
     
-    func setInputImage(_ inputImage: CGImage) {
+    func setInputs(image: CGImage, useBlackBackground: Bool) {
         // Explicitly prevent Core Image from changing the color space, in order to get predictable thresholding. https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
-        inputImageOriginalColorSpace = CIImage(cgImage: inputImage, options: [kCIImageColorSpace: NSNull()])
-        inputImageSaturated = CIImage(cgImage: inputImage)
+        inputImageOriginalColorSpace = CIImage(cgImage: image, options: [kCIImageColorSpace: NSNull()])
+        inputImageSaturated = CIImage(cgImage: image)
+        self.useBlackBackground = useBlackBackground
     }
     
     // MARK: CIFilter overrides
     
     override var outputImage: CIImage! {
         let arguments : [Any] = [inputImageOriginalColorSpace, inputImageSaturated, threshold]
-        return thresholdingKernel.apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)
+        return getThresholdingKernel().apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)
+    }
+    
+    private func getThresholdingKernel() -> CIColorKernel {
+        // Normally a leaf is more intense than the background, but with a black background, it's less intense.
+        let comparisonOperator = useBlackBackground ? ">" : "<"
+        
+        // This string represents a routine in the Core Image kernel language that transforms the image one pixel at a time ( https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageUnitTutorial/WritingKernels/WritingKernels.html ).
+        let kernelCode = "kernel vec4 thresholdKernel(sampler originalImage, sampler saturatedImage, float threshold) {" +
+            // Since this kernel is applied to each pixel individually, extract the pixels in question.
+            "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
+            "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
+            // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
+            "  const vec3 rgbToLuma = vec3(0.299, 0.587, 0.114);" +
+            "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
+            // 0 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it invisible.
+            "const vec4 invisiblePixel = vec4(0.0);" +
+            // If the pixel is more/less intense (based on the background color), return invisible; otherwise, return a pixel of the actual (saturated) image.
+            "  return luma " + comparisonOperator + " threshold ? vec4(saturatedPixel.rgb, 1) : invisiblePixel;" +
+            "}"
+        
+        return CIColorKernel(source: kernelCode)!
     }
 }
 

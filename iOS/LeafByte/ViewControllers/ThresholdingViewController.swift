@@ -74,7 +74,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
         
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
         
-        filter.setInputImage(image)
+        filter.setInputs(image: image, useBlackBackground: settings.useBlackBackground)
         
         baseImageView.contentMode = .scaleAspectFit
         histogramImageView.contentMode = .scaleToFill
