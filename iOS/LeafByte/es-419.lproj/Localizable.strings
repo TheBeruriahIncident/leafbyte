@@ -44,6 +44,7 @@
 "Loading" = "Cargando";
 " Analyzed with LeafByte https://github.com/akroy/leafbyte" = " Analizado con LeafByte https://github.com/akroy/leafbyte";
 "Draw" = "Dibujar";
+"Exclude Consumed Area" = "Excluir área consumida";
 "No leaf found" = "No se encontró ninguna hoja";
 "Could not save to Google Drive." = "No se pudo guardar en Google Drive.";
 "Switch to " = "Ahorrar a ";

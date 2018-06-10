@@ -38,8 +38,14 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // It seems like this view should only appear once anyways, except that the flicker when the image picker closes counts as an appearance.
     var viewDidAppearHasRun = false
     
-    // The current mode can be scrolling or drawing.
-    var inScrollingMode = true
+    // The current mode can be scrolling, drawing, or marking excluded consumed area.
+    var mode = Mode.scrolling
+    
+    enum Mode {
+        case scrolling
+        case drawing
+        case markingExcludedConsumedArea
+    }
     
     // Track the actual results.
     var formattedPercentConsumed: String!
@@ -65,7 +71,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBOutlet weak var userDrawingView: UIImageView!
     @IBOutlet weak var grid: UIImageView!
     
-    @IBOutlet weak var modeToggleButton: UIButton!
+    @IBOutlet weak var drawingToggleButton: UIButton!
+    @IBOutlet weak var excludeConsumedAreaToggleButton: UIButton!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var calculateButton: UIButton!
@@ -77,8 +84,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Actions
     
-    @IBAction func toggleScrollingMode(_ sender: Any) {
-        setScrollingMode(!inScrollingMode)
+    @IBAction func toggleDrawingMode(_ sender: Any) {
+        setScrollingMode(mode == .drawing ? .scrolling : .drawing)
     }
     
     @IBAction func undo(_ sender: Any) {
@@ -190,7 +197,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     @IBAction func excludeConsumedArea(_ sender: Any) {
-        
+        setScrollingMode(mode == .markingExcludedConsumedArea ? .scrolling : .markingExcludedConsumedArea)
     }
     
     // MARK: - UIViewController overrides
@@ -217,7 +224,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
         
-        setScrollingMode(true)
+        setScrollingMode(.scrolling)
         
         // Setup to get a callback when return is pressed on a keyboard.
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
@@ -307,7 +314,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         dismissKeyboard()
         
         // No drawing in scrolling mode.
-        if inScrollingMode {
+        if mode == .scrolling {
             return
         }
         
@@ -322,7 +329,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         // No drawing in scrolling mode.
-        if inScrollingMode {
+        if mode == .scrolling {
             return
         }
         
@@ -342,7 +349,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // No drawing in scrolling mode or outside the image.
-        if inScrollingMode || currentDrawing.isEmpty {
+        if mode == .scrolling || currentDrawing.isEmpty {
             return
         }
         
@@ -357,13 +364,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Clear the redo buffer.
         redoBuffer = []
         
-        // Update the buttons, allow recalculation now that there's a possibility of a different result.
+        // Update the buttons, and allow recalculation now that there's a possibility of a different result.
         calculateButton.isEnabled = true
         undoButton.isEnabled = true
         redoButton.isEnabled = false
         
         // Switch back to scrolling after each line drawn.
-        setScrollingMode(true)
+        setScrollingMode(.scrolling)
     }
     
     // MARK: - UIImagePickerControllerDelegate overrides
@@ -422,17 +429,38 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
-    private func setScrollingMode(_ inScrollingMode: Bool) {
-        self.inScrollingMode = inScrollingMode
+    private func setScrollingMode(_ mode: Mode) {
+        self.mode = mode
         
-        gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
-        grid.isHidden = inScrollingMode
+        gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
+        grid.isHidden = mode == .scrolling
         
-        if inScrollingMode {
-            modeToggleButton.setTitle(NSLocalizedString("Draw", comment: "Enters the mode to draw leaf edges"), for: .normal)
-        } else {
-            modeToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to draw leaf edges"), for: .normal)
+        if mode == .scrolling {
+            enableDrawing()
+            enableExcluding()
+        } else if mode == .drawing {
+            disableDrawing()
+            enableExcluding()
+        } else if mode == .markingExcludedConsumedArea {
+            enableDrawing()
+            disableExcluding()
         }
+    }
+    
+    private func enableDrawing() {
+        drawingToggleButton.setTitle(NSLocalizedString("Draw", comment: "Enters the mode to draw leaf edges"), for: .normal)
+    }
+    
+    private func disableDrawing() {
+        drawingToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to draw leaf edges"), for: .normal)
+    }
+    
+    private func enableExcluding() {
+        excludeConsumedAreaToggleButton.setTitle(NSLocalizedString("Exclude Consumed Area", comment: "Enters the mode to mark areas to exclude from calculation"), for: .normal)
+    }
+    
+    private func disableExcluding() {
+        excludeConsumedAreaToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to mark areas to exclude from calculation"), for: .normal)
     }
     
     private func calculateArea() {
@@ -613,7 +641,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func dismissKeyboard() {
         // Reenable gesture recognition if we disabled it for the keyboard.
-        gestureRecognizingView.isUserInteractionEnabled = inScrollingMode
+        gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
         
         self.view.endEditing(true)
     }
