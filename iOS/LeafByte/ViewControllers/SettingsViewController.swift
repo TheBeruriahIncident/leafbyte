@@ -131,7 +131,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         var newNextSampleNumber: Int!
-        if sender.text!.isEmpty {
+        if sender.text!.isEmpty || Int(sender.text!) == nil {
             newNextSampleNumber = Settings.defaultNextSampleNumber
             
             // If we fallback, update the box too.
@@ -168,7 +168,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         var newScaleMarkLength: Double!
-        if sender.text!.isEmpty {
+        if sender.text!.isEmpty || Double(sender.text!) == nil {
             newScaleMarkLength = Settings.defaultScaleMarkLength
             
             // If we fallback, update the box too.

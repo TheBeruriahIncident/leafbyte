@@ -106,7 +106,7 @@ func presentSampleNumberAlert(self viewController: UIViewController, sampleNumbe
     let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { (_) in
         let newSampleNumber = alert.textFields![0].text!
         
-        if !newSampleNumber.isEmpty {
+        if !newSampleNumber.isEmpty && Int(newSampleNumber) != nil {
             settings.datasetNameToNextSampleNumber[settings.datasetName] = Int(newSampleNumber)
             settings.serialize()
             setSampleNumberButtonText(sampleNumberButton, settings: settings)
