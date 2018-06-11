@@ -35,7 +35,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
         }, onFailure: onFailure)
     }
     
-    if settings.saveGpsData {
+    if settings.saveGpsData && settings.measurementSaveLocation != .none {
         GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
     } else {
         onLocation(nil)
