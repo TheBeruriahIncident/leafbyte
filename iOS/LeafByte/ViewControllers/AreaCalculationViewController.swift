@@ -255,7 +255,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             
             if pointOnLeafHasBeenChanged == true {
                 // The user has chosen a new point to mark the leaf, so refresh our calculations.
-                initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeaf)
+                initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointsToIdentify: [ PointToIdentify(pointOnLeaf!) ])
             }
             
             useConnectedComponentsResults(connectedComponentsInfo: initialConnectedComponentsInfo, image: combinedImage)
@@ -526,7 +526,17 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
         combinedImage.addImage(userDrawing)
         
-        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointToIdentify: pointOnLeafHasBeenChanged ? pointOnLeaf : nil)
+        // Connected components will identify the label of the leaf (if not using the default point) and any excluded areas.
+        var pointsToIdentify = [PointToIdentify]()
+        if pointOnLeafHasBeenChanged {
+            pointsToIdentify.append(PointToIdentify(pointOnLeaf!))
+        }
+        let exclusions = undoBuffer.filter { $0.type == .exclusion }
+                .map { userDrawingToBaseImage.project(point: $0.points[0]) }
+                .map { PointToIdentify($0) }
+        pointsToIdentify.append(contentsOf: exclusions)
+        
+        let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointsToIdentify: pointsToIdentify)
         
         useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: combinedImage)
     }
@@ -534,9 +544,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
         var leafLabelAndSize: (key: Int, value: Size)?
-        if connectedComponentsInfo.labelOfPointToIdentify != nil {
+        if pointOnLeafHasBeenChanged {
             // A specific point on the leaf has been marked.
-            leafLabelAndSize = labelsAndSizes.first(where: { $0.key == connectedComponentsInfo.labelOfPointToIdentify! })
+            leafLabelAndSize = labelsAndSizes.first(where: { $0.key == connectedComponentsInfo.labelsOfPointsToIdentify[PointToIdentify(pointOnLeaf!)]! })
         } else {
             // Assume the largest occupied component is the leaf.
             leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
@@ -561,11 +571,15 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Assume the biggest is the background, and everything else is potentially a hole.
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
         
+        // Filter out any areas marked for exclusion.
+        let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize!.key }
+        let emptyLabelsToTreatAsConsumed = emptyLabelsWithoutBackground.filter { !labelsToExclude.contains($0.key) }
+        
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
         
         var consumedAreaInPixels = leafLabelAndSize!.value.drawingPart
-        for emptyLabelAndSize in emptyLabelsWithoutBackground {
+        for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {
             // This component is a hole if it neighbors the leaf (since we already filtered out the background).
             if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.intersection(leafLabels).isEmpty {
                 // Add to the consumed size.

@@ -111,19 +111,42 @@ struct Size {
     }
 }
 
+// This exists because Swift doesn't let you use structs like (Int, Int) as keys in a dictionary.
+struct PointToIdentify: Hashable {
+    let x: Int
+    let y: Int
+    
+    init(_ point: (Int, Int)) {
+        self.init(x: point.0, y: point.1)
+    }
+    
+    init(_ point: CGPoint) {
+        self.init(x: roundToInt(point.x), y: roundToInt(point.y))
+    }
+    
+    init(x: Int, y: Int) {
+        self.x = x
+        self.y = y
+    }
+    
+    var hashValue: Int {
+        return hash(x, y)
+    }
+}
+
 struct ConnectedComponentsInfo {
     let labelToMemberPoint: [Int: (Int, Int)]
     let emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>]
     let labelToSize: [Int: Size]
     let equivalenceClasses: UnionFind
-    let labelOfPointToIdentify: Int?
+    let labelsOfPointsToIdentify: [PointToIdentify: Int]
     
-    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind, labelOfPointToIdentify: Int? = nil) {
+    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind, labelsOfPointsToIdentify: [PointToIdentify: Int]) {
         self.labelToMemberPoint = labelToMemberPoint
         self.emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels
         self.labelToSize = labelToSize
         self.equivalenceClasses = equivalenceClasses
-        self.labelOfPointToIdentify = labelOfPointToIdentify
+        self.labelsOfPointsToIdentify = labelsOfPointsToIdentify
     }
 }
 
@@ -132,11 +155,11 @@ struct ConnectedComponentsInfo {
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
 // It is assumed that the input layered image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
 // If pointToIdentify is passed in, the label of that point will be returned.
-func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (Int, Int)? = nil) -> ConnectedComponentsInfo {
+func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [PointToIdentify] = []) -> ConnectedComponentsInfo {
     let width = image.width
     let height = image.height
     
-    // Initialize the structures we'll eventually be returning.
+    // Initialize most structures we'll eventually be returning.
     // Maps a label to a point in that component, allowing us to reconstruct the component later.
     var labelToMemberPoint = [Int: (Int, Int)]()
     // Tells what occupied components surround any empty component.
@@ -161,8 +184,22 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (In
     var previousYIsOccupied: [Bool]!
     var previousYLabels: [Int]!
     
-    // If pointToIdentify is set, the associated label will be saved.
-    var labelOfPointToIdentify: Int?
+    // The labels of any points to identify will be saved.
+    // This is indexed in this direction to simplify the process of consolidating equivalent labels later.
+    var labelsToPointsToIdentify = [Int: [PointToIdentify]]()
+    
+    // Index the pointsToIdentify by their y coordinate to associated x coordinates, to make it easier to identify which rows contain points to identify.
+    var pointsToIdentifyYsToXs = [Int: [Int]]()
+    for pointToIdentify in pointsToIdentify {
+        if pointsToIdentifyYsToXs[pointToIdentify.y] == nil {
+            pointsToIdentifyYsToXs[pointToIdentify.y] = [ pointToIdentify.x ]
+        } else {
+            // Due to strange behavior in Swift 4 (this will change in Swift 5), we can't directly append to a list in a dictionary ( https://stackoverflow.com/a/24535563/1092672 ).
+            var pointsToIdentifyXsForY = pointsToIdentifyYsToXs[pointToIdentify.y]!
+            pointsToIdentifyXsForY.append(pointToIdentify.x)
+            pointsToIdentifyYsToXs[pointToIdentify.y] = pointsToIdentifyXsForY
+        }
+    }
     
     for y in 0...height - 1 {
         var currentYIsOccupied = [Bool]()
@@ -261,15 +298,28 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (In
             currentYLabels.append(label)
         }
         
-        // If pointToIdentify is set, save the associated label.
-        if pointToIdentify != nil && pointToIdentify!.1 == y {
-            labelOfPointToIdentify = currentYLabels[pointToIdentify!.0]
+        // Check if this y row has any associated points to identify.
+        let pointsToIdentifyXs = pointsToIdentifyYsToXs[y]
+        if pointsToIdentifyXs != nil {
+            for pointToIdentifyX in pointsToIdentifyXs! {
+                // For each associated point to identify, record the association between the point and label.
+                let label = currentYLabels[pointToIdentifyX]
+                let point = PointToIdentify(x: pointToIdentifyX, y: y)
+                if labelsToPointsToIdentify[label] == nil {
+                    labelsToPointsToIdentify[label] = [ point ]
+                } else {
+                    // Due to strange behavior in Swift 4 (this will change in Swift 5), we can't directly append to a list in a dictionary ( https://stackoverflow.com/a/24535563/1092672 ).
+                    var pointsForLabel = labelsToPointsToIdentify[label]!
+                    pointsForLabel.append(point)
+                    labelsToPointsToIdentify[label] = pointsForLabel
+                }
+            }
         }
         
         previousYIsOccupied = currentYIsOccupied
         previousYLabels = currentYLabels
     }
-   
+    
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
     let outsideOfImageClass = equivalenceClasses.getClassOf(outsideOfImageLabel)!
@@ -285,18 +335,24 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (In
         equivalenceClasses.classToElements[outsideOfImageClass] = nil
     }
     
-    // Update the label of the pointToIdentify as labels are consolidated.
-    var finalLabelOfPointToIdentify: Int?
+    // Update the labels of the points to identify as labels are consolidated.
+    var labelsOfPointsToIdentify = [PointToIdentify: Int]()
     
     // "Normalize" by combining equivalent labels.
     for equivalenceClassElements in equivalenceClasses.classToElements.values {
         let first = equivalenceClassElements.first
         
-        // The labelOfPointToIdentify would now be obsolete, so save off the new canonical label.
-        if labelOfPointToIdentify != nil && equivalenceClassElements.contains(labelOfPointToIdentify!) {
-            finalLabelOfPointToIdentify = first
+        // Do an initial loop-through including the first element of the class.
+        equivalenceClassElements.forEach { label in
+            // The label of the point to identify would now be obsolete, so save off the new canonical label.
+            if labelsToPointsToIdentify[label] != nil {
+                for point in labelsToPointsToIdentify[label]! {
+                    labelsOfPointsToIdentify[point] = first
+                }
+            }
         }
         
+        // Do a second loop-through without the first element of the class.
         equivalenceClassElements.filter { $0 != first! }.forEach { label in
             // Normalize labelToSize.
             labelToSize[first!]! += labelToSize[label]!
@@ -313,5 +369,5 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointToIdentify: (In
         emptyLabelToNeighboringOccupiedLabels: emptyLabelToNeighboringOccupiedLabels,
         labelToSize: labelToSize,
         equivalenceClasses: equivalenceClasses,
-        labelOfPointToIdentify: finalLabelOfPointToIdentify)
+        labelsOfPointsToIdentify: labelsOfPointsToIdentify)
 }

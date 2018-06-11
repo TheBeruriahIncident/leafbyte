@@ -20,3 +20,7 @@ func roundToInt(_ number: Float, rule: FloatingPointRoundingRule = .toNearestOrE
 func roundToInt(_ number: CGFloat, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
     return roundToInt(Float(number), rule: rule)
 }
+
+func hash(_ a: AnyHashable, _ b: AnyHashable) -> Int {
+    return a.hashValue &* 31 &+ b.hashValue
+}
