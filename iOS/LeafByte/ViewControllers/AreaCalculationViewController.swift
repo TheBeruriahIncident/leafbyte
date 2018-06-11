@@ -520,7 +520,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func enableExcluding() {
-        excludeConsumedAreaToggleButton.setTitle(NSLocalizedString("Exclude Consumed Area", comment: "Enters the mode to mark areas to exclude from calculation"), for: .normal)
+        excludeConsumedAreaToggleButton.setTitle(NSLocalizedString("Exclude Area", comment: "Enters the mode to mark areas to exclude from calculation"), for: .normal)
     }
     
     private func disableExcluding() {
