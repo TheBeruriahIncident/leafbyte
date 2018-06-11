@@ -91,7 +91,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBOutlet weak var excludeConsumedAreaToggleButton: UIButton!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var redoButton: UIButton!
-    @IBOutlet weak var calculateButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberButton: UIButton!
@@ -115,9 +114,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         undoBuffer.forEach { drawing in doAction(drawing) }
         
         // Update the buttons.
-        calculateButton.isEnabled = true
         undoButton.isEnabled = !undoBuffer.isEmpty
         redoButton.isEnabled = true
+        
+        self.calculateArea()
     }
     
     @IBAction func redo(_ sender: Any) {
@@ -129,20 +129,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         doAction(actionToRedo)
         
         // Update the buttons.
-        calculateButton.isEnabled = true
         undoButton.isEnabled = true
         redoButton.isEnabled = !redoBuffer.isEmpty
-    }
-    
-    @IBAction func calculate(_ sender: Any) {
-        // Don't allow recalculation until there's a possibility of a different result.
-        calculateButton.isEnabled = false
         
-        resultsText.text = NSLocalizedString("Loading", comment: "Shown while the results are being calculated")
-        // The label won't update until this action returns, so put this calculation on the queue, and it'll be executed right after this function ends.
-        DispatchQueue.main.async {
-            self.calculateArea()
-        }
+        self.calculateArea()
     }
     
     @IBAction func goHome(_ sender: Any) {
@@ -150,12 +140,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     @IBAction func share(_ sender: Any) {
-        // If anything has changed, recalculate to prevent accidentally sharing bad data.
-        if calculateButton.isEnabled {
-            calculateButton.isEnabled = false
-            calculateArea()
-        }
-        
         let imageToShare = getCombinedImage()
         let dataToShare = [ imageToShare, resultsText.text! + NSLocalizedString(" Analyzed with LeafByte https://github.com/akroy/leafbyte", comment: "Shown after the results when sharing the results, e.g. on social media. Note the leading space that separates from the results") ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
@@ -178,15 +162,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBAction func nextImage(_ sender: Any) {
         // Disable to prevent double serializing.
         completeButton.isEnabled = false
-        
-        // If anything has changed, recalculate to prevent accidentally recording bad data.
-        if calculateButton.isEnabled {
-            calculateButton.isEnabled = false
-            calculateArea()
-            
-            // Pause for .25s so this isn't a weird flicker.
-            usleep(250000)
-        }
         
         let afterSerialization = {
             self.imagePicker.sourceType = self.sourceType
@@ -253,7 +228,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         if !viewDidAppearHasRun {
-            calculateButton.isEnabled = false
             let baseImage = IndexableImage(cgImage)
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
             combinedImage.addImage(baseImage)
@@ -408,10 +382,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Clear the redo buffer.
         redoBuffer = []
         
-        // Update the buttons, and allow recalculation now that there's a possibility of a different result.
-        calculateButton.isEnabled = true
+        // Update the buttons.
         undoButton.isEnabled = true
         redoButton.isEnabled = false
+        
+        self.calculateArea()
         
         // Switch back to scrolling after each line drawn.
         setScrollingMode(.scrolling)
@@ -458,7 +433,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         case .drawing:
             drawCompleteDrawing(action.points)
         case .exclusion:
-            drawX(at: action.points.last!)
+            // Originally this draw an X where things were excluded, but that was determined to just be noise.
+            break
         }
     }
     
@@ -481,16 +457,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         drawingManager.context.setLineWidth(2)
         drawingManager.drawLine(from: fromPoint, to: toPoint)
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
-    }
-    
-    private func drawX(at point: CGPoint) {
-        redoButton.isEnabled = false
-        
-        let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
-        drawingManager.context.setStrokeColor(DrawingManager.red.cgColor)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.drawX(at: point, size: 10)
-        drawingManager.finish(imageView: scaleMarkingView, addToPreviousImage: true)
     }
     
     private func setScrollingMode(_ mode: Mode) {
