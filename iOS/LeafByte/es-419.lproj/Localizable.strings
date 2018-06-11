@@ -50,7 +50,7 @@
 "Switch to " = "Ahorrar a ";
 "Retry" = "Rever";
 "Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2 \nPercent Consumed= %@%%" = "Área total de la hoja= %@ cm2\nÁrea consumida de la hoja= %@ cm2 \nPorcentaje consumido= %@%%";
-"Percent Consumed= %d%%" = "Porcentaje consumido= %@%%";
+"Percent Consumed= %@%%" = "Porcentaje consumido= %@%%";
 
 /* SettingsViewController */
 "Google sign-in is required for saving to Google Drive" = "Se requiere iniciar sesión en Google para guardar en Google Drive";

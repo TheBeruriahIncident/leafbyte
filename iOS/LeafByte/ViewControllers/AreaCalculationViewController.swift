@@ -621,7 +621,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         } else {
             formattedLeafAreaIncludingConsumedAreaInCm2 = nil
             formattedConsumedAreaInCm2 = nil
-            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %d%%", comment: "Results with only relative data"), formattedPercentConsumed!)
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %@%%", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
     }
     
