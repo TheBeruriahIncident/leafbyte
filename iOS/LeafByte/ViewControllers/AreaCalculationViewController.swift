@@ -28,6 +28,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var userDrawingToBaseImage: Projection!
     var baseImageRect: CGRect!
     
+    // Projection from the drawing space back to the filled holes image, so we can check if an exclusion makes sense.
+    var userDrawingToFilledHoles: Projection!
+    
     enum ActionType {
         case drawing
         case exclusion
@@ -237,6 +240,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
+        userDrawingToFilledHoles = Projection(fromView: baseImageView, toImageInView: leafHolesView.image!)
+        
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
         
         setScrollingMode(.scrolling)
@@ -378,6 +383,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             action = Action(type: .drawing, points: currentTouchPath)
         } else {
             let touchedPoint = currentTouchPath.last!
+            
+            // If the touched point is not on a filled area, it's likely a mistake, so ignore it.
+            let touchedPointInHoles = userDrawingToFilledHoles.project(point: touchedPoint)
+            if IndexableImage(uiToCgImage(leafHolesView.image!)).getPixel(x: roundToInt(touchedPointInHoles.x), y: roundToInt(touchedPointInHoles.y)).isInvisible() {
+                return
+            }
+            
             // If the touched point is on the leaf or scale, an exclusion makes no sense, so ignore it.
             // That way a user can tap a bunch trying to get at the excluded area that's within a leaf.
             let touchedPointOnLeaf = userDrawingToBaseImage.project(point: touchedPoint)
