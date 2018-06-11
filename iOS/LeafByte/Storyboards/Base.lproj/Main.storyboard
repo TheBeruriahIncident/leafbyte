@@ -470,7 +470,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMU-FQ-tF0" userLabel="Results Text">
-                                <rect key="frame" x="0.0" y="559" width="359" height="60"/>
+                                <rect key="frame" x="12" y="559" width="359" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="nJw-9I-BKV"/>
                                 </constraints>
@@ -511,11 +511,11 @@
                                     <action selector="nextImage:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="rdX-D3-N69"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-KQ-szf">
-                                <rect key="frame" x="173" y="619" width="101" height="29"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-KQ-szf">
+                                <rect key="frame" x="164" y="619" width="101" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="Gw4-TA-Y1V"/>
-                                    <constraint firstAttribute="width" constant="101" id="OVa-y1-cXc"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="101" id="OVa-y1-cXc"/>
                                 </constraints>
                                 <state key="normal" title="Exclude Area"/>
                                 <connections>
@@ -528,10 +528,11 @@
                             <constraint firstItem="Igz-Jt-RJ9" firstAttribute="centerY" secondItem="FLK-Tc-phh" secondAttribute="centerY" id="1Mu-JX-LRP"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="trailing" secondItem="Dk9-tD-hbE" secondAttribute="trailing" id="B7y-dZ-lSQ"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="tVl-5H-cS7" secondAttribute="top" constant="51" id="BWC-gO-UjE"/>
+                            <constraint firstItem="PUe-KQ-szf" firstAttribute="leading" secondItem="Xwt-8a-K9l" secondAttribute="trailing" constant="9" id="Eyx-V7-ygj"/>
                             <constraint firstItem="Xwt-8a-K9l" firstAttribute="leading" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="-1" id="FB8-10-VRZ"/>
                             <constraint firstItem="seQ-tA-Ei2" firstAttribute="bottom" secondItem="XUO-j6-TH2" secondAttribute="bottom" id="H6f-K7-3CL"/>
                             <constraint firstItem="FLK-Tc-phh" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="20" id="Hgi-Ao-Lur"/>
-                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="seQ-tA-Ei2" secondAttribute="trailing" constant="-16" id="MJK-ff-1WY"/>
+                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="seQ-tA-Ei2" secondAttribute="trailing" constant="-4" id="MJK-ff-1WY"/>
                             <constraint firstItem="seQ-tA-Ei2" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="37" id="N6h-cC-5ME"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" secondItem="Dk9-tD-hbE" secondAttribute="leading" id="NBu-xz-GRO"/>
                             <constraint firstAttribute="bottom" secondItem="rvf-tt-efy" secondAttribute="bottom" constant="19" id="O7C-bR-BbQ"/>
@@ -553,10 +554,11 @@
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="top" secondItem="seQ-tA-Ei2" secondAttribute="bottom" constant="3" id="ic8-d0-sBY"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="leading" secondItem="tVl-5H-cS7" secondAttribute="leading" id="jhX-1A-BdO"/>
                             <constraint firstAttribute="bottom" secondItem="XUO-j6-TH2" secondAttribute="bottom" constant="111" id="kNy-4O-aAG"/>
+                            <constraint firstItem="Id9-ad-Z94" firstAttribute="leading" secondItem="PUe-KQ-szf" secondAttribute="trailing" constant="10" id="sXh-lf-eEE"/>
                             <constraint firstItem="Otk-oa-PcB" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="40" id="tG8-M6-HjF"/>
-                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="wgi-tn-3fx" secondAttribute="trailing" constant="-16" id="uIv-zR-HDK"/>
+                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="wgi-tn-3fx" secondAttribute="trailing" constant="-4" id="uIv-zR-HDK"/>
                             <constraint firstItem="Igz-Jt-RJ9" firstAttribute="leading" secondItem="FLK-Tc-phh" secondAttribute="trailing" id="w3T-sw-6Ec"/>
-                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" id="z90-ce-yV8"/>
+                            <constraint firstItem="JMU-FQ-tF0" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="12" id="z90-ce-yV8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
                     </view>
