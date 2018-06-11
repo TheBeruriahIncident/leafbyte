@@ -1117,7 +1117,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mb-ZC-YBF" userLabel="Scale Status Text">
-                                <rect key="frame" x="119" y="566" width="265" height="50"/>
+                                <rect key="frame" x="133" y="566" width="251" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="lAT-gQ-Cj4"/>
                                 </constraints>
@@ -1131,9 +1131,9 @@
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="leading" secondItem="h7r-i1-MtO" secondAttribute="leading" id="3br-YE-g4V"/>
                             <constraint firstAttribute="bottom" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="100" id="5x1-c8-bGC"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="A67-1Z-vF9"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="6Mb-ZC-YBF" secondAttribute="leading" constant="-4" id="B8o-lb-5gu"/>
+                            <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="6Mb-ZC-YBF" secondAttribute="leading" constant="-18" id="B8o-lb-5gu"/>
                             <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="17" id="E2K-uv-wWR"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="trailing" constant="-40" id="EB3-PB-D8l"/>
+                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="trailing" constant="-26" id="EB3-PB-D8l"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" constant="9" id="Gfs-IP-yy6"/>
