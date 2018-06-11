@@ -397,11 +397,6 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4l-IF-yMI" userLabel="Calculate Button">
-                                <rect key="frame" x="109" y="564" width="61" height="29"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Calculate"/>
-                            </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2" userLabel="Gesture Recognizing View">
                                 <rect key="frame" x="0.0" y="51" width="375" height="505"/>
                                 <subviews>
@@ -516,7 +511,7 @@
                                     <action selector="nextImage:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="rdX-D3-N69"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-KQ-szf">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-KQ-szf">
                                 <rect key="frame" x="173" y="619" width="101" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="Gw4-TA-Y1V"/>
@@ -531,7 +526,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Igz-Jt-RJ9" firstAttribute="centerY" secondItem="FLK-Tc-phh" secondAttribute="centerY" id="1Mu-JX-LRP"/>
-                            <constraint firstItem="PUe-KQ-szf" firstAttribute="leading" secondItem="M4l-IF-yMI" secondAttribute="trailing" constant="3" id="89f-O9-xxt"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="trailing" secondItem="Dk9-tD-hbE" secondAttribute="trailing" id="B7y-dZ-lSQ"/>
                             <constraint firstItem="XUO-j6-TH2" firstAttribute="top" secondItem="tVl-5H-cS7" secondAttribute="top" constant="51" id="BWC-gO-UjE"/>
                             <constraint firstItem="Xwt-8a-K9l" firstAttribute="leading" secondItem="zKJ-Ch-T7e" secondAttribute="trailing" constant="-1" id="FB8-10-VRZ"/>
@@ -562,8 +556,6 @@
                             <constraint firstItem="Otk-oa-PcB" firstAttribute="top" secondItem="Dk9-tD-hbE" secondAttribute="bottom" constant="40" id="tG8-M6-HjF"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="trailing" secondItem="wgi-tn-3fx" secondAttribute="trailing" constant="-16" id="uIv-zR-HDK"/>
                             <constraint firstItem="Igz-Jt-RJ9" firstAttribute="leading" secondItem="FLK-Tc-phh" secondAttribute="trailing" id="w3T-sw-6Ec"/>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="top" secondItem="JMU-FQ-tF0" secondAttribute="bottom" constant="-55" id="wUX-ny-wdV"/>
-                            <constraint firstItem="M4l-IF-yMI" firstAttribute="centerX" secondItem="Xwt-8a-K9l" secondAttribute="centerX" id="woR-14-x6g"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" id="z90-ce-yV8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wgi-tn-3fx"/>
