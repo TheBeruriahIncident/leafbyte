@@ -1,7 +1,6 @@
-ZOE HANDLING: make it pretty, responsive to different devices/orientations
 ZOE HANDLING: fix xcode warnings in UI
 AFTER PRETTY: finalize wording, update storyboard item names
 AFTER ALL ELSE: final pass cleaning up, update variables
 AFTER WORDING FINAL: internationalization
 AFTER FLOW FINALIZED: add ETE through tutorial
-AFTER IOS NAILED DOWN: clean up readme, android, website, github builds and badges
+AFTER IOS NAILED DOWN: clean up readme, android, website
