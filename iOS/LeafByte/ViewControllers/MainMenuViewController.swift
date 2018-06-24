@@ -264,6 +264,17 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         
         savingSummary.numberOfLines = 0
         savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
+        
+        // It can be very bad if you unintentionally aren't saving data, so put some text in red.
+        if measurementSaveLocation == .none {
+            let stringToColor = "not being saved"
+            let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
+            
+            let attributedString = NSMutableAttributedString.init(string: savingSummary.text!)
+            attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.red , range: rangeToColor)
+            
+            savingSummary.attributedText = attributedString
+        }
     }
     
     private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
