@@ -60,33 +60,41 @@ final class DrawingManager {
     func drawLeaf(atPoint point: CGPoint) {
         let projectedPoint = projection.project(point: point)
         
+        let size = CGFloat(70) * 0.8
+        
         context.setFillColor(DrawingManager.red.cgColor)
         let leafOutline1 = UIBezierPath()
+        let leafBase = CGPoint(x: projectedPoint.x, y: projectedPoint.y)
+        let leafPoint = CGPoint(x: projectedPoint.x + size, y: projectedPoint.y - size)
+        
+        let deformation = size * 2 / 7
+        
+        let control1 = CGPoint(x: projectedPoint.x + size * 2 / 7, y: projectedPoint.y - size * 2 / 7)
+        let control2 = CGPoint(x: projectedPoint.x + size * 4 / 7, y: projectedPoint.y - size * 4 / 7)
+        
         let leafBase1 = CGPoint(x: projectedPoint.x - 2, y: projectedPoint.y + 2)
-        let leafPoint1 = CGPoint(x: projectedPoint.x + 72, y: projectedPoint.y - 72)
+        let leafPoint1 = CGPoint(x: projectedPoint.x + 2 + size, y: projectedPoint.y - 2 - size)
         
         leafOutline1.move(to: leafBase1)
-        leafOutline1.addCurve(to: leafPoint1, controlPoint1: CGPoint(x: projectedPoint.x - 2, y: projectedPoint.y - 42), controlPoint2: CGPoint(x: projectedPoint.x + 18, y: projectedPoint.y - 62))
-        leafOutline1.addCurve(to: leafBase1, controlPoint1: CGPoint(x: projectedPoint.x + 62, y: projectedPoint.y - 18), controlPoint2: CGPoint(x: projectedPoint.x + 42, y: projectedPoint.y + 2))
+        leafOutline1.addCurve(to: leafPoint1, controlPoint1: CGPoint(x: control1.x - deformation - 2, y: control1.y - deformation - 2), controlPoint2: CGPoint(x: control2.x - deformation - 2, y: control2.y - deformation - 2))
+        leafOutline1.addCurve(to: leafBase1, controlPoint1: CGPoint(x: control2.x + deformation + 2, y: control2.y + deformation + 2), controlPoint2: CGPoint(x: control1.x + deformation + 2, y: control1.y + deformation + 2))
         leafOutline1.close()
         leafOutline1.fill()
         
         context.setFillColor(DrawingManager.lightRed.cgColor)
         let leafOutline = UIBezierPath()
-        let leafBase = CGPoint(x: projectedPoint.x, y: projectedPoint.y)
-        let leafPoint = CGPoint(x: projectedPoint.x + 70, y: projectedPoint.y - 70)
         
         leafOutline.move(to: leafBase)
-        leafOutline.addCurve(to: leafPoint, controlPoint1: CGPoint(x: projectedPoint.x, y: projectedPoint.y - 40), controlPoint2: CGPoint(x: projectedPoint.x + 20, y: projectedPoint.y - 60))
-        leafOutline.addCurve(to: leafBase, controlPoint1: CGPoint(x: projectedPoint.x + 60, y: projectedPoint.y - 20), controlPoint2: CGPoint(x: projectedPoint.x + 40, y: projectedPoint.y))
+        leafOutline.addCurve(to: leafPoint, controlPoint1: CGPoint(x: control1.x - deformation, y: control1.y - deformation), controlPoint2: CGPoint(x: control2.x - deformation, y: control2.y - deformation))
+        leafOutline.addCurve(to: leafBase, controlPoint1: CGPoint(x: control2.x + deformation, y: control2.y + deformation), controlPoint2: CGPoint(x: control1.x + deformation, y: control1.y + deformation))
         leafOutline.close()
         leafOutline.fill()
         
         context.setStrokeColor(DrawingManager.red.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
-        context.move(to: CGPoint(x: projectedPoint.x - 20, y: projectedPoint.y + 20))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 40, y: projectedPoint.y - 40))
+        context.move(to: CGPoint(x: projectedPoint.x - deformation, y: projectedPoint.y + deformation))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * deformation, y: projectedPoint.y - 2 * deformation))
         context.strokePath()
     }
     
