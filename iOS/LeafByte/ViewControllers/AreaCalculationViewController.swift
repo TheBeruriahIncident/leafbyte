@@ -657,13 +657,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         if scaleMarkPixelLength != nil {
             drawingManager.context.setLineWidth(2)
-            drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
             drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         
-        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
-        drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
-        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+        // Not drawing the leaf marker, because it can cover up herbivory.
         
         drawingManager.finish(imageView: scaleMarkingView)
     }

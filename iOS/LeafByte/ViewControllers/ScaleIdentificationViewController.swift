@@ -320,16 +320,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Draw a line where we think the scale mark is.
         if scaleMarkPixelLength != nil {
             drawingManager.context.setLineWidth(2)
-            drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
             drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         
         // Draw an outlined star where we think the leaf is.
         if pointOnLeaf != nil {
-            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
-            
-            drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
-            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+            drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1))
         }
         
         drawingManager.finish(imageView: scaleMarkingView)

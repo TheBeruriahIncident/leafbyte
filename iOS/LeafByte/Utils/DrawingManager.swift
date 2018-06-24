@@ -13,7 +13,8 @@ import UIKit
 final class DrawingManager {
     static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
     static let darkGreen = UIColor(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
-    static let red = UIColor(red: 1.0, green: 0.09677419355, blue: 0.3806451613, alpha: 1.0)
+    static let lightRed = UIColor(red: 1.0, green: 0.7529411765, blue: 0.7960784314, alpha: 1.0)
+    static let darkRed = UIColor(red: 1.0, green: 0, blue: 0, alpha: 1.0)
     
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
@@ -56,32 +57,39 @@ final class DrawingManager {
         context.strokePath()
     }
     
-    func drawStar(atPoint point: CGPoint, withSize size: CGFloat) {
+    func drawLeaf(atPoint point: CGPoint) {
         let projectedPoint = projection.project(point: point)
         
-        let angleBetweenStarPoints = 2 / 5 * CGFloat.pi
+        let size = CGFloat(70) * 0.8
         
-        var starPointAngles = [ -CGFloat.pi / 2 ]
-        for i in 0...3 {
-            starPointAngles.append(starPointAngles[i] + angleBetweenStarPoints)
-        }
+        context.setFillColor(DrawingManager.darkRed.cgColor)
+        drawLeafOutline(leafBase: projectedPoint, withSize: size, withOffset: 2)
         
-        var starPoints = [CGPoint]()
-        for i in 0...4 {
-            let starPointAngle = starPointAngles[i]
-            starPoints.append(CGPoint(x: projectedPoint.x + size * cos(starPointAngle), y: projectedPoint.y + size * sin(starPointAngle)))
-        }
+        context.setFillColor(DrawingManager.lightRed.cgColor)
+        drawLeafOutline(leafBase: projectedPoint, withSize: size)
         
-        let starPath = UIBezierPath()
-        starPath.move(to: starPoints[2])
-        starPath.addLine(to: starPoints[0])
-        starPath.addLine(to: starPoints[3])
-        starPath.addLine(to: starPoints[1])
-        starPath.addLine(to: starPoints[4])
-        starPath.addLine(to: starPoints[2])
-        starPath.close()
+        context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        context.setLineWidth(1.25)
+        context.setLineCap(.round)
         
-        starPath.fill()
+        let stemLength = size * 2 / 7
+        context.move(to: CGPoint(x: projectedPoint.x - stemLength, y: projectedPoint.y + stemLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * stemLength, y: projectedPoint.y - 2 * stemLength))
+        context.strokePath()
+    }
+    
+    private func drawLeafOutline(leafBase: CGPoint, withSize size: CGFloat, withOffset offset: CGFloat = 0) {
+        let leafTip = CGPoint(x: leafBase.x + size, y: leafBase.y - size)
+        let controlPoint1 = CGPoint(x: leafBase.x + size * 2 / 7, y: leafBase.y - size * 2 / 7)
+        let controlPoint2 = CGPoint(x: leafBase.x + size * 4 / 7, y: leafBase.y - size * 4 / 7)
+        let deformation = size * 2 / 7
+        
+        let leafOutline = UIBezierPath()
+        leafOutline.move(to: CGPoint(x: leafBase.x - offset, y: leafBase.y + offset))
+        leafOutline.addCurve(to: CGPoint(x: leafTip.x + offset, y: leafTip.y - offset), controlPoint1: CGPoint(x: controlPoint1.x - deformation - offset, y: controlPoint1.y - deformation - offset), controlPoint2: CGPoint(x: controlPoint2.x - deformation - offset, y: controlPoint2.y - deformation - offset))
+        leafOutline.addCurve(to: CGPoint(x: leafBase.x - offset, y: leafBase.y + offset), controlPoint1: CGPoint(x: controlPoint2.x + deformation + offset, y: controlPoint2.y + deformation + offset), controlPoint2: CGPoint(x: controlPoint1.x + deformation + offset, y: controlPoint1.y + deformation + offset))
+        leafOutline.close()
+        leafOutline.fill()
     }
     
     func drawX(at point: CGPoint, size: CGFloat) {
