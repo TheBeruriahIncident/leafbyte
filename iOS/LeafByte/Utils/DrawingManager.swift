@@ -13,6 +13,7 @@ import UIKit
 final class DrawingManager {
     static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
     static let darkGreen = UIColor(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
+    static let lightRed = UIColor(red: 1.0, green: 0.7529411765, blue: 0.7960784314, alpha: 1.0)
     static let red = UIColor(red: 1.0, green: 0.09677419355, blue: 0.3806451613, alpha: 1.0)
     
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
@@ -59,17 +60,34 @@ final class DrawingManager {
     func drawLeaf(atPoint point: CGPoint) {
         let projectedPoint = projection.project(point: point)
         
-        context.setFillColor(DrawingManager.lightGreen.cgColor)
+        context.setFillColor(DrawingManager.red.cgColor)
+        let leafOutline1 = UIBezierPath()
+        let leafBase1 = CGPoint(x: projectedPoint.x - 2, y: projectedPoint.y + 2)
+        let leafPoint1 = CGPoint(x: projectedPoint.x + 72, y: projectedPoint.y - 72)
         
-        let starPath = UIBezierPath()
-        let start = CGPoint(x: 50, y: 120)
-        let otherPoint = CGPoint(x: 120, y: 50)
-        starPath.move(to: start)
-        starPath.addCurve(to: otherPoint, controlPoint1: CGPoint(x: 50, y: 80), controlPoint2: CGPoint(x: 70, y: 60))
-        starPath.addCurve(to: start, controlPoint1: CGPoint(x: 110, y: 100), controlPoint2: CGPoint(x: 90, y: 120))
-        starPath.close()
+        leafOutline1.move(to: leafBase1)
+        leafOutline1.addCurve(to: leafPoint1, controlPoint1: CGPoint(x: projectedPoint.x - 2, y: projectedPoint.y - 42), controlPoint2: CGPoint(x: projectedPoint.x + 18, y: projectedPoint.y - 62))
+        leafOutline1.addCurve(to: leafBase1, controlPoint1: CGPoint(x: projectedPoint.x + 62, y: projectedPoint.y - 18), controlPoint2: CGPoint(x: projectedPoint.x + 42, y: projectedPoint.y + 2))
+        leafOutline1.close()
+        leafOutline1.fill()
         
-        starPath.fill()
+        context.setFillColor(DrawingManager.lightRed.cgColor)
+        let leafOutline = UIBezierPath()
+        let leafBase = CGPoint(x: projectedPoint.x, y: projectedPoint.y)
+        let leafPoint = CGPoint(x: projectedPoint.x + 70, y: projectedPoint.y - 70)
+        
+        leafOutline.move(to: leafBase)
+        leafOutline.addCurve(to: leafPoint, controlPoint1: CGPoint(x: projectedPoint.x, y: projectedPoint.y - 40), controlPoint2: CGPoint(x: projectedPoint.x + 20, y: projectedPoint.y - 60))
+        leafOutline.addCurve(to: leafBase, controlPoint1: CGPoint(x: projectedPoint.x + 60, y: projectedPoint.y - 20), controlPoint2: CGPoint(x: projectedPoint.x + 40, y: projectedPoint.y))
+        leafOutline.close()
+        leafOutline.fill()
+        
+        context.setStrokeColor(DrawingManager.red.cgColor)
+        context.setLineWidth(1.25)
+        context.setLineCap(.round)
+        context.move(to: CGPoint(x: projectedPoint.x - 20, y: projectedPoint.y + 20))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 40, y: projectedPoint.y - 40))
+        context.strokePath()
     }
     
     func drawX(at point: CGPoint, size: CGFloat) {

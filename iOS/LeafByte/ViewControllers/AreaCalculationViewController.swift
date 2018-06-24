@@ -661,7 +661,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         
-        drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1))
+        // Not drawing the leaf marker, because it can cover up herbivory.
         
         drawingManager.finish(imageView: scaleMarkingView)
     }
