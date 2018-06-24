@@ -56,29 +56,17 @@ final class DrawingManager {
         context.strokePath()
     }
     
-    func drawStar(atPoint point: CGPoint, withSize size: CGFloat) {
+    func drawLeaf(atPoint point: CGPoint) {
         let projectedPoint = projection.project(point: point)
         
-        let angleBetweenStarPoints = 2 / 5 * CGFloat.pi
-        
-        var starPointAngles = [ -CGFloat.pi / 2 ]
-        for i in 0...3 {
-            starPointAngles.append(starPointAngles[i] + angleBetweenStarPoints)
-        }
-        
-        var starPoints = [CGPoint]()
-        for i in 0...4 {
-            let starPointAngle = starPointAngles[i]
-            starPoints.append(CGPoint(x: projectedPoint.x + size * cos(starPointAngle), y: projectedPoint.y + size * sin(starPointAngle)))
-        }
+        context.setFillColor(DrawingManager.lightGreen.cgColor)
         
         let starPath = UIBezierPath()
-        starPath.move(to: starPoints[2])
-        starPath.addLine(to: starPoints[0])
-        starPath.addLine(to: starPoints[3])
-        starPath.addLine(to: starPoints[1])
-        starPath.addLine(to: starPoints[4])
-        starPath.addLine(to: starPoints[2])
+        let start = CGPoint(x: 50, y: 120)
+        let otherPoint = CGPoint(x: 120, y: 50)
+        starPath.move(to: start)
+        starPath.addCurve(to: otherPoint, controlPoint1: CGPoint(x: 50, y: 80), controlPoint2: CGPoint(x: 70, y: 60))
+        starPath.addCurve(to: start, controlPoint1: CGPoint(x: 110, y: 100), controlPoint2: CGPoint(x: 90, y: 120))
         starPath.close()
         
         starPath.fill()

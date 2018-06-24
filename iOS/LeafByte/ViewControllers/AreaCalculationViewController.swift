@@ -661,9 +661,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         
-        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
-        drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
-        drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+        drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1))
         
         drawingManager.finish(imageView: scaleMarkingView)
     }

@@ -326,10 +326,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         // Draw an outlined star where we think the leaf is.
         if pointOnLeaf != nil {
-            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 13)
-            
-            drawingManager.context.setFillColor(DrawingManager.lightGreen.cgColor)
-            drawingManager.drawStar(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), withSize: 10)
+            drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1))
         }
         
         drawingManager.finish(imageView: scaleMarkingView)
