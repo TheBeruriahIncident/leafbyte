@@ -190,7 +190,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
-        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 200)
+        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10000)
         if visiblePixel == nil {
             if mode == .identifyingLeaf {
                 setLeafNotFound()
