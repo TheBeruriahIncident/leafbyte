@@ -63,39 +63,33 @@ final class DrawingManager {
         let size = CGFloat(70) * 0.8
         
         context.setFillColor(DrawingManager.darkRed.cgColor)
-        let leafOutline1 = UIBezierPath()
-        let leafBase = CGPoint(x: projectedPoint.x, y: projectedPoint.y)
-        let leafPoint = CGPoint(x: projectedPoint.x + size, y: projectedPoint.y - size)
-        
-        let deformation = size * 2 / 7
-        
-        let control1 = CGPoint(x: projectedPoint.x + size * 2 / 7, y: projectedPoint.y - size * 2 / 7)
-        let control2 = CGPoint(x: projectedPoint.x + size * 4 / 7, y: projectedPoint.y - size * 4 / 7)
-        
-        let leafBase1 = CGPoint(x: projectedPoint.x - 2, y: projectedPoint.y + 2)
-        let leafPoint1 = CGPoint(x: projectedPoint.x + 2 + size, y: projectedPoint.y - 2 - size)
-        
-        leafOutline1.move(to: leafBase1)
-        leafOutline1.addCurve(to: leafPoint1, controlPoint1: CGPoint(x: control1.x - deformation - 2, y: control1.y - deformation - 2), controlPoint2: CGPoint(x: control2.x - deformation - 2, y: control2.y - deformation - 2))
-        leafOutline1.addCurve(to: leafBase1, controlPoint1: CGPoint(x: control2.x + deformation + 2, y: control2.y + deformation + 2), controlPoint2: CGPoint(x: control1.x + deformation + 2, y: control1.y + deformation + 2))
-        leafOutline1.close()
-        leafOutline1.fill()
+        drawLeafOutline(leafBase: projectedPoint, withSize: size, withOffset: 2)
         
         context.setFillColor(DrawingManager.lightRed.cgColor)
-        let leafOutline = UIBezierPath()
-        
-        leafOutline.move(to: leafBase)
-        leafOutline.addCurve(to: leafPoint, controlPoint1: CGPoint(x: control1.x - deformation, y: control1.y - deformation), controlPoint2: CGPoint(x: control2.x - deformation, y: control2.y - deformation))
-        leafOutline.addCurve(to: leafBase, controlPoint1: CGPoint(x: control2.x + deformation, y: control2.y + deformation), controlPoint2: CGPoint(x: control1.x + deformation, y: control1.y + deformation))
-        leafOutline.close()
-        leafOutline.fill()
+        drawLeafOutline(leafBase: projectedPoint, withSize: size)
         
         context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
-        context.move(to: CGPoint(x: projectedPoint.x - deformation, y: projectedPoint.y + deformation))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * deformation, y: projectedPoint.y - 2 * deformation))
+        
+        let stemLength = size * 2 / 7
+        context.move(to: CGPoint(x: projectedPoint.x - stemLength, y: projectedPoint.y + stemLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * stemLength, y: projectedPoint.y - 2 * stemLength))
         context.strokePath()
+    }
+    
+    private func drawLeafOutline(leafBase: CGPoint, withSize size: CGFloat, withOffset offset: CGFloat = 0) {
+        let leafTip = CGPoint(x: leafBase.x + size, y: leafBase.y - size)
+        let controlPoint1 = CGPoint(x: leafBase.x + size * 2 / 7, y: leafBase.y - size * 2 / 7)
+        let controlPoint2 = CGPoint(x: leafBase.x + size * 4 / 7, y: leafBase.y - size * 4 / 7)
+        let deformation = size * 2 / 7
+        
+        let leafOutline = UIBezierPath()
+        leafOutline.move(to: CGPoint(x: leafBase.x - offset, y: leafBase.y + offset))
+        leafOutline.addCurve(to: CGPoint(x: leafTip.x + offset, y: leafTip.y - offset), controlPoint1: CGPoint(x: controlPoint1.x - deformation - offset, y: controlPoint1.y - deformation - offset), controlPoint2: CGPoint(x: controlPoint2.x - deformation - offset, y: controlPoint2.y - deformation - offset))
+        leafOutline.addCurve(to: CGPoint(x: leafBase.x - offset, y: leafBase.y + offset), controlPoint1: CGPoint(x: controlPoint2.x + deformation + offset, y: controlPoint2.y + deformation + offset), controlPoint2: CGPoint(x: controlPoint1.x + deformation + offset, y: controlPoint1.y + deformation + offset))
+        leafOutline.close()
+        leafOutline.fill()
     }
     
     func drawX(at point: CGPoint, size: CGFloat) {
