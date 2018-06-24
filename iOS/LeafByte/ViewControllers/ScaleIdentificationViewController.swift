@@ -320,7 +320,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Draw a line where we think the scale mark is.
         if scaleMarkPixelLength != nil {
             drawingManager.context.setLineWidth(2)
-            drawingManager.context.setStrokeColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
             drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
         }
         

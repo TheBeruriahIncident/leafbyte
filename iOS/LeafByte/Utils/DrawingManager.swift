@@ -14,7 +14,7 @@ final class DrawingManager {
     static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
     static let darkGreen = UIColor(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
     static let lightRed = UIColor(red: 1.0, green: 0.7529411765, blue: 0.7960784314, alpha: 1.0)
-    static let red = UIColor(red: 1.0, green: 0.09677419355, blue: 0.3806451613, alpha: 1.0)
+    static let darkRed = UIColor(red: 1.0, green: 0, blue: 0, alpha: 1.0)
     
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
@@ -62,7 +62,7 @@ final class DrawingManager {
         
         let size = CGFloat(70) * 0.8
         
-        context.setFillColor(DrawingManager.red.cgColor)
+        context.setFillColor(DrawingManager.darkRed.cgColor)
         let leafOutline1 = UIBezierPath()
         let leafBase = CGPoint(x: projectedPoint.x, y: projectedPoint.y)
         let leafPoint = CGPoint(x: projectedPoint.x + size, y: projectedPoint.y - size)
@@ -90,7 +90,7 @@ final class DrawingManager {
         leafOutline.close()
         leafOutline.fill()
         
-        context.setStrokeColor(DrawingManager.red.cgColor)
+        context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
         context.move(to: CGPoint(x: projectedPoint.x - deformation, y: projectedPoint.y + deformation))
