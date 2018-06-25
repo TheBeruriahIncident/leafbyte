@@ -43,9 +43,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let points: [CGPoint]
     }
     
-    // Track the previous, and "future" actions to enable undoing and redoing.
+    // Track the previous actions to enable undoing. Previously we also enabled redoing, but it wasn't useful and just served as clutter.
     var undoBuffer = [Action]()
-    var redoBuffer = [Action]()
     
     // Track the current touch path. If in drawing mode, this list of points will be connected by lines.
     var currentTouchPath = [CGPoint]()
@@ -90,7 +89,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBOutlet weak var drawingToggleButton: UIButton!
     @IBOutlet weak var excludeConsumedAreaToggleButton: UIButton!
     @IBOutlet weak var undoButton: UIButton!
-    @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberButton: UIButton!
@@ -104,8 +102,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     @IBAction func undo(_ sender: Any) {
-        // Move the action from the undo buffer to the redo buffer.
-        redoBuffer.append(undoBuffer.popLast()!)
+        // Remove the last action from the buffer.
+        undoBuffer.removeLast()
         
         // Wipe the screen and redo all action except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
@@ -115,22 +113,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Update the buttons.
         undoButton.isEnabled = !undoBuffer.isEmpty
-        redoButton.isEnabled = true
-        
-        self.calculateArea()
-    }
-    
-    @IBAction func redo(_ sender: Any) {
-        // Move the action from the redo buffer to the undo buffer.
-        let actionToRedo = redoBuffer.popLast()!
-        undoBuffer.append(actionToRedo)
-        
-        // Simpler than undo, we can simply repo this one action.
-        doAction(actionToRedo)
-        
-        // Update the buttons.
-        undoButton.isEnabled = true
-        redoButton.isEnabled = !redoBuffer.isEmpty
         
         self.calculateArea()
     }
@@ -379,12 +361,9 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         undoBuffer.append(action)
         
         currentTouchPath = []
-        // Clear the redo buffer.
-        redoBuffer = []
         
-        // Update the buttons.
+        // Update the undo button.
         undoButton.isEnabled = true
-        redoButton.isEnabled = false
         
         self.calculateArea()
         
@@ -450,8 +429,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
-        redoButton.isEnabled = false
-        
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
         drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
         drawingManager.context.setLineWidth(2)
