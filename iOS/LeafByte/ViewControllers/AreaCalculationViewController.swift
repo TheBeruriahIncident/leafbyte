@@ -150,16 +150,20 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             
             if self.sourceType == .camera {
                 requestCameraAccess(self: self, onSuccess: {
-                    if self.settings.useBarcode {
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                    DispatchQueue.main.async {
+                        if self.settings.useBarcode {
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                            }
+                        } else {
+                            self.present(self.imagePicker, animated: true, completion: nil)
                         }
-                    } else {
-                        self.present(self.imagePicker, animated: true, completion: nil)
                     }
                 })
             } else {
-                self.present(self.imagePicker, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
             }
         }
         
@@ -591,39 +595,45 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = {
-            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
-                self.completeButton.isEnabled = true
-            })
-            
-            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-            var localStorageName: String
-            if #available(iOS 11.0, *) {
-                localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
-            } else {
-                localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
-            }
-            
-            let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
-                if self.settings.measurementSaveLocation == .googleDrive {
-                    self.settings.measurementSaveLocation = .local
-                }
-                if self.settings.imageSaveLocation == .googleDrive {
-                    self.settings.imageSaveLocation = .local
-                }
-                self.settings.serialize()
+            DispatchQueue.main.async {
+                let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
+                    DispatchQueue.main.async {
+                        self.completeButton.isEnabled = true
+                    }
+                })
                 
-                self.handleSerialization(onSuccess: onSuccess)
-            })
-            let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
-                self.handleSerialization(onSuccess: onSuccess)
-            })
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(switchToLocalAction)
-            alertController.addAction(retryAction)
-            
-            self.present(alertController, animated: true, completion: nil)
+                // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+                var localStorageName: String
+                if #available(iOS 11.0, *) {
+                    localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
+                } else {
+                    localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
+                }
+                
+                let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
+                    DispatchQueue.main.async {
+                        if self.settings.measurementSaveLocation == .googleDrive {
+                            self.settings.measurementSaveLocation = .local
+                        }
+                        if self.settings.imageSaveLocation == .googleDrive {
+                            self.settings.imageSaveLocation = .local
+                        }
+                        self.settings.serialize()
+                        
+                        self.handleSerialization(onSuccess: onSuccess)
+                    }
+                })
+                let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
+                    self.handleSerialization(onSuccess: onSuccess)
+                })
+                
+                alertController.addAction(cancelAction)
+                alertController.addAction(switchToLocalAction)
+                alertController.addAction(retryAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)

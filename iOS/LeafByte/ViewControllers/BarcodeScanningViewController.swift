@@ -124,7 +124,11 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
                 // Pause for 1s to preview what was scanned.
                 usleep(1000000)
                 
-                requestCameraAccess(self: self, onSuccess: { self.present(self.imagePicker, animated: true, completion: nil) })
+                requestCameraAccess(self: self, onSuccess: {
+                    DispatchQueue.main.async {
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
+                })
             }
         }
     }

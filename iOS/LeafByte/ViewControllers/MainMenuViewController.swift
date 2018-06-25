@@ -66,10 +66,12 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         
         requestCameraAccess(self: self, onSuccess: {
-            if self.settings.useBarcode {
-                self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
-            } else {
-                self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
+            DispatchQueue.main.async {
+                if self.settings.useBarcode {
+                    self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                } else {
+                    self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
+                }
             }
         }, onFailure: { self.segueEnabled = true })
     }
@@ -210,8 +212,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 }
                 self.settings.serialize()
                 
-                presentAlert(self: self, title: nil, message: NSLocalizedString("Cannot save to Google Drive without Google sign-in", comment: "Shown if Google sign-in does not complete successfully"))
-                self.setSavingSummary()
+                DispatchQueue.main.async {
+                    presentAlert(self: self, title: nil, message: NSLocalizedString("Cannot save to Google Drive without Google sign-in", comment: "Shown if Google sign-in does not complete successfully"))
+                    self.setSavingSummary()
+                }
             })
     }
     

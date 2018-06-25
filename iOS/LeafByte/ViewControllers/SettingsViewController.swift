@@ -93,9 +93,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                     persistChange()
                 },
                 onError: { _ in
-                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
-                    self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.imageSaveLocation)
-                    self.presentFailedGoogleSignInAlert()
+                    DispatchQueue.main.async {
+                        // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                        self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.imageSaveLocation)
+                        self.presentFailedGoogleSignInAlert()
+                    }
                 })
         } else {
             persistChange()
@@ -119,9 +121,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                     persistChange()
                 },
                 onError: { _ in
-                    // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
-                    self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
-                    self.presentFailedGoogleSignInAlert()
+                    DispatchQueue.main.async {
+                        // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
+                        self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
+                        self.presentFailedGoogleSignInAlert()
+                    }
             })
         } else {
             persistChange()
