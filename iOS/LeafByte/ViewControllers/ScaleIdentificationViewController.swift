@@ -182,20 +182,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             return foo
         }
         
-        let perspectiveTransform = CIFilter(name: "CIPerspectiveCorrection")!
-        //print(forefixing)
-        perspectiveTransform.setValue(CIVector(cgPoint: foos[0]),
-                                      forKey: "inputBottomLeft")
-        perspectiveTransform.setValue(CIVector(cgPoint: foos[1]),
-                                      forKey: "inputBottomRight")
-        perspectiveTransform.setValue(CIVector(cgPoint: foos[2]),
-                                      forKey: "inputTopRight")
-        perspectiveTransform.setValue(CIVector(cgPoint: foos[3]),
-                                      forKey: "inputTopLeft")
-        perspectiveTransform.setValue(cgToCIImage(cgImage),
-                                      forKey: kCIInputImageKey)
-        
-        return perspectiveTransform.outputImage!
+        return createImageFromQuadrilateral(in: cgToCIImage(cgImage), bottomLeft: foos[0], bottomRight: foos[1], topLeft: foos[3], topRight: foos[2])
     }
     
     private func fix() -> CGImage {

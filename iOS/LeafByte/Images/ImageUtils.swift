@@ -157,6 +157,17 @@ func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     return combinedImage
 }
 
+func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {
+    let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")!
+    perspectiveCorrection.setValue(image, forKey: kCIInputImageKey)
+    perspectiveCorrection.setValue(CIVector(cgPoint: bottomLeft), forKey: "inputBottomLeft")
+    perspectiveCorrection.setValue(CIVector(cgPoint: bottomRight), forKey: "inputBottomRight")
+    perspectiveCorrection.setValue(CIVector(cgPoint: topLeft), forKey: "inputTopLeft")
+    perspectiveCorrection.setValue(CIVector(cgPoint: topRight), forKey: "inputTopRight")
+    
+    return perspectiveCorrection.outputImage!
+}
+
 // Find the point farthest away from a point within a connected component.
 // In other words, find the farthest away point reachable along non-white points.
 // Note that farthest away refers to the number of non-white points traversed rather than traditional distance.
