@@ -142,7 +142,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.pointOnLeafHasBeenChanged = pointOnLeafHasBeenChanged
             
             if scaleMarked {
-                destination.cgImage = fix()
+                destination.cgImage = getFixedImage()
                 destination.uiImage = cgToUiImage(destination.cgImage)
                 destination.scaleMarkPixelLength = (cgImage.width + cgImage.height) / 2
                 destination.initialConnectedComponentsInfo = nil
@@ -159,14 +159,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
     }
     
-    private func stretchToDots() -> CIImage {
+    private func getFixedImage() -> CGImage {
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
-        
-        return createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
-    }
-    
-    private func fix() -> CGImage {
-        let middle = stretchToDots()
+        let middle = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
         let size = min(1200, roundToInt(min(middle.extent.width, middle.extent.height), rule: FloatingPointRoundingRule.down))
         return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(middle), x: size, y: size)
     }
