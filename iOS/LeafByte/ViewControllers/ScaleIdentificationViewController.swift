@@ -25,7 +25,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     // The current mode can be scrolling or identifying either the scale or leaf.
     var mode = Mode.scrolling
-
+    
     enum Mode {
         case scrolling
         case identifyingScale
@@ -36,11 +36,10 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var pointOnLeaf: (Int, Int)?
     var pointOnLeafHasBeenChanged = false
     
-    // This is the number of pixels across the scale mark in the image.
-    // It's calculated in this view (if possible) and passed forward.
-    var scaleMarkPixelLength: Int?
-    var scaleMarkEnd1: CGPoint?
-    var scaleMarkEnd2: CGPoint?
+    var scaleMarked = false
+    var scaleMarks = Array(repeating: CGPoint.zero, count: 4)
+    
+    var nextScaleMarkToMark = 0
     
     var connectedComponentsInfo: ConnectedComponentsInfo!
     
@@ -79,9 +78,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     @IBAction func clearScale(_ sender: Any) {
-        scaleMarkPixelLength = nil
-        scaleMarkEnd1 = nil
-        scaleMarkEnd2 = nil
+        scaleMarked = false
         drawMarkers()
         scaleStatusText.text = NSLocalizedString("No scale", comment: "Shown if the user clears the scale")
         
@@ -132,30 +129,104 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is scaleIdentificationComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
-        if segue.identifier == "scaleIdentificationComplete"
-        {
+        if segue.identifier == "scaleIdentificationComplete" {
             guard let destination = segue.destination as? AreaCalculationViewController else {
                 fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
             }
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.cgImage = cgImage
-            destination.uiImage = uiImage
-            destination.scaleMarkPixelLength = scaleMarkPixelLength
-            destination.scaleMarkEnd1 = scaleMarkEnd1
-            destination.scaleMarkEnd2 = scaleMarkEnd2
             destination.inTutorial = inTutorial
             destination.barcode = barcode
-            destination.initialConnectedComponentsInfo = connectedComponentsInfo
             destination.pointOnLeaf = pointOnLeaf
             destination.pointOnLeafHasBeenChanged = pointOnLeafHasBeenChanged
+            
+            if scaleMarked {
+                destination.cgImage = fix()
+                destination.uiImage = cgToUiImage(destination.cgImage)
+                destination.scaleMarkPixelLength = (cgImage.width + cgImage.height) / 2
+                destination.initialConnectedComponentsInfo = nil
+            } else {
+                destination.initialConnectedComponentsInfo = connectedComponentsInfo
+                destination.cgImage = cgImage
+                destination.uiImage = uiImage
+                destination.scaleMarkPixelLength = nil
+            }
             
             setBackButton(self: self, next: destination)
         } else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
     }
+    
+    private func stretchToDots() -> CIImage {
+        let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
+        
+        let centerSum = adjustedCenters.reduce(CGPoint.zero, { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) })
+        let centerOfCenters = CGPoint(x: centerSum.x / 4, y: centerSum.y / 4)
+        let centersAndAngles = adjustedCenters.map { center -> (CGPoint, CGFloat) in
+            let difference = (center.x - centerOfCenters.x, center.y - centerOfCenters.y)
+            let angle = atan2(difference.0, difference.1)//) + Double.pi * 3 / 2
+            //let clampedAngle = angle > Double.pi * 2 ? angle - Double.pi * 2 : angle
+            return (center, angle)
+        }
+        
+        let sorted = centersAndAngles.sorted(by: { $0.1 > $1.1 })
+        let mapped1 = sorted.map {$0.0}
+        
+        let foos = mapped1.map { inputPoint -> CGPoint in
+            let xScale = CGFloat(1)//CGFloat(originalImage.width) / CGFloat(cgImage.width)
+            let yScale = xScale//CGFloat(originalImage.height) / CGFloat(cgImage.height)
+            
+            let foo = CGPoint(x: xScale * inputPoint.x, y: yScale * inputPoint.y)
+            return foo
+        }
+        
+        let perspectiveTransform = CIFilter(name: "CIPerspectiveCorrection")!
+        //print(forefixing)
+        perspectiveTransform.setValue(CIVector(cgPoint: foos[0]),
+                                      forKey: "inputBottomLeft")
+        perspectiveTransform.setValue(CIVector(cgPoint: foos[1]),
+                                      forKey: "inputBottomRight")
+        perspectiveTransform.setValue(CIVector(cgPoint: foos[2]),
+                                      forKey: "inputTopRight")
+        perspectiveTransform.setValue(CIVector(cgPoint: foos[3]),
+                                      forKey: "inputTopLeft")
+        perspectiveTransform.setValue(cgToCIImage(cgImage),
+                                      forKey: kCIInputImageKey)
+        
+        return perspectiveTransform.outputImage!
+    }
+    
+    private func fix() -> CGImage {
+        let middle = stretchToDots()
+        let size = min(1200, roundToInt(min(middle.extent.width, middle.extent.height), rule: FloatingPointRoundingRule.down))
+        return resizeImage2(middle, x: size, y: size)
+    }
+    
+    func resizeImage2(_ image: CIImage, x: Int, y: Int) -> CGImage {
+        let cgImage = ciToCgImage(image)
+        // Create the context to draw into.
+        let context = CGContext(
+            data: nil,
+            width: x,
+            height: y,
+            bitsPerComponent: cgImage.bitsPerComponent,
+            bytesPerRow: 0,
+            space: cgImage.colorSpace!,
+            bitmapInfo: cgImage.bitmapInfo.rawValue)!
+        
+        context.interpolationQuality = .high
+        
+        context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size:
+            CGSize(width: x, height: y)))
+        
+        return context.makeImage()!
+    }
+    
+
+    
+    
     
     // MARK: - UIPopoverPresentationControllerDelegate overrides
     
@@ -202,17 +273,28 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
         
         if mode == .identifyingLeaf {
-            pointOnLeaf = (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y))
-            leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
-            completeButton.isEnabled = true
+            setLeafFound(pointOnLeaf1: (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y)))
             drawMarkers()
+            
+            setScrollingMode(.scrolling)
         } else if mode == .identifyingScale {
             // Since a non-white section in the image was touched, it may be a scale mark.
-            measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1)
+            let markFound = measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1, markNumber: nextScaleMarkToMark)
+            if (markFound) {
+                nextScaleMarkToMark += 1
+                
+                if nextScaleMarkToMark == 4 {
+                    nextScaleMarkToMark = 1
+                    scaleMarked = true
+                    
+                    setScrollingMode(.scrolling)
+                }
+            } else {
+                nextScaleMarkToMark = 0
+                
+                setScrollingMode(.scrolling)
+            }
         }
-        
-        // Switch back to scrolling after each scale mark identified.
-        setScrollingMode(.scrolling)
     }
     
     // MARK: - Helpers
@@ -247,7 +329,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func enableScaleIdentification() {
-        if scaleMarkPixelLength == nil {
+        if !scaleMarked {
             scaleIdentificationToggleButton.setTitle(NSLocalizedString("Touch scale", comment: "Enters the mode to identify the scale"), for: .normal)
         } else {
             scaleIdentificationToggleButton.setTitle(NSLocalizedString("Change scale", comment: "Enters the mode to change the scale identification"), for: .normal)
@@ -265,12 +347,12 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         connectedComponentsInfo = labelConnectedComponents(image: image)
         
-        // We're going to find the second biggest occupied component; we assume the biggest is the leaf and the second biggest is the scale mark.
+        // We're going to find the second through fifth biggest occupied components; we assume the biggest is the leaf and the rest are the scale marks.
         // As such, filter down to just occupied components.
         let occupiedLabelsAndSizes: [Int: Size] = connectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
         
-        // If we have less than two, we don't have a scale mark.
-        if occupiedLabelsAndSizes.count < 2 {
+        // If we have less than 5, we don't have scale marks.
+        if occupiedLabelsAndSizes.count < 5 {
             setLeafNotFound()
             setScaleNotFound()
             return
@@ -280,19 +362,27 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         // The leaf is the biggest label.
         let leafLabel = sortedOccupiedLabelsAndSizes[0].key
-        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabel]!
-        leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
+        setLeafFound(pointOnLeaf1: connectedComponentsInfo.labelToMemberPoint[leafLabel]!)
         
-        // The scale mark is the second biggest label.
-        let scaleMarkLabel = sortedOccupiedLabelsAndSizes[1].key
+        // The scale marks are the next biggest labels.
+        for markNumber in 0...3 {
+            let scaleMarkLabel = sortedOccupiedLabelsAndSizes[markNumber + 1].key
+            
+            // Get a point in the scale mark.
+            let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
+            
+            let markFound = measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5, markNumber: markNumber)
+            if (!markFound) {
+                setScaleNotFound()
+                return
+            }
+        }
         
-        // Get a point in the scale mark.
-        let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
-        
-        measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5)
+        scaleMarked = true
+        setScaleFound()
     }
     
-    private func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int) {
+    private func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int, markNumber: Int) -> Bool {
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
@@ -300,29 +390,27 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
         
         let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
-        // If the scale mark is too short, it's probably just noise in the image.
+        // If the scale mark is too small, it's probably just noise in the image.
         if candidateScaleMarkPixelLength < minimumLength {
             setScaleNotFound()
-            return
+            return false
         }
         
-        scaleMarkPixelLength = candidateScaleMarkPixelLength
-        scaleMarkEnd1 = farthestPoint1
-        scaleMarkEnd2 = farthestPoint2
-        scaleStatusText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
+        let scaleMark = CGPoint(x: (farthestPoint1.x + farthestPoint2.x) / 2, y: (farthestPoint1.y + farthestPoint2.y) / 2)
+        scaleMarks[markNumber] = scaleMark
         
         drawMarkers()
+        
+        return true
     }
     
     private func drawMarkers() {
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
         
-        // Draw a line where we think the scale mark is.
-        if scaleMarkPixelLength != nil {
-            drawingManager.context.setLineWidth(2)
-            drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
-            drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
-        }
+        // Draw Xs at each point
+        scaleMarks.forEach({drawingManager.drawX(at: $0, size: 5)})
         
         // Draw an outlined star where we think the leaf is.
         if pointOnLeaf != nil {
@@ -332,6 +420,12 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.finish(imageView: scaleMarkingView)
     }
     
+    private func setLeafFound(pointOnLeaf1: (Int, Int)) {
+        pointOnLeaf = pointOnLeaf1
+        leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
+        completeButton.isEnabled = true
+    }
+    
     private func setLeafNotFound() {
         completeButton.isEnabled = false
         leafStatusText.text = NSLocalizedString("Leaf not found", comment: "Shown when a leaf is not found")
@@ -339,11 +433,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawMarkers()
     }
     
+    private func setScaleFound() {
+        scaleStatusText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
+    }
+    
     private func setScaleNotFound() {
         scaleStatusText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
-        scaleMarkPixelLength = nil
-        scaleMarkEnd1 = nil
-        scaleMarkEnd2 = nil
+        scaleMarked = false
         drawMarkers()
     }
 }

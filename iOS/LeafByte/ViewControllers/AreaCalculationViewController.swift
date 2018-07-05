@@ -18,8 +18,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     var cgImage: CGImage!
     var uiImage: UIImage!
     var scaleMarkPixelLength: Int?
-    var scaleMarkEnd1: CGPoint?
-    var scaleMarkEnd2: CGPoint?
     var inTutorial: Bool!
     var barcode: String?
     var initialConnectedComponentsInfo: ConnectedComponentsInfo!
@@ -108,7 +106,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Wipe the screen and redo all action except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
         initializeImage(view: scaleMarkingView, size: uiImage.size)
-        drawMarkers()
         undoBuffer.forEach { drawing in doAction(drawing) }
         
         // Update the buttons.
@@ -196,7 +193,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         initializeImage(view: leafHolesView, size: uiImage.size)
         initializeImage(view: scaleMarkingView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
-        drawMarkers()
         
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
@@ -218,7 +214,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
             combinedImage.addImage(baseImage)
             
-            if pointOnLeafHasBeenChanged == true {
+            if pointOnLeafHasBeenChanged == true || initialConnectedComponentsInfo == nil {
                 // The user has chosen a new point to mark the leaf, so refresh our calculations.
                 initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointsToIdentify: [ PointToIdentify(pointOnLeaf!) ])
             }
@@ -637,20 +633,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         }
         
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
-    }
-    
-    private func drawMarkers() {
-        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
-        
-        if scaleMarkPixelLength != nil {
-            drawingManager.context.setLineWidth(2)
-            drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
-            drawingManager.drawLine(from: scaleMarkEnd1!, to: scaleMarkEnd2!)
-        }
-        
-        // Not drawing the leaf marker, because it can cover up herbivory.
-        
-        drawingManager.finish(imageView: scaleMarkingView)
     }
     
     private func initializeGrid() {
