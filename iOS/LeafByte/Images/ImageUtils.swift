@@ -15,6 +15,22 @@ func initializeImage(view: UIImageView, size: CGSize) {
     UIGraphicsEndImageContext()
 }
 
+func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: Int) -> CGImage {
+    // Create the context to draw into.
+    let context = CGContext(
+        data: nil,
+        width: x,
+        height: y,
+        bitsPerComponent: image.bitsPerComponent,
+        bytesPerRow: 0,
+        space: image.colorSpace!,
+        bitmapInfo: image.bitmapInfo.rawValue)!
+    context.interpolationQuality = .high
+    
+    context.draw(image, in: CGRect(origin: CGPoint.zero, size: CGSize(width: x, height: y)))
+    return context.makeImage()!
+}
+
 func resizeImage(_ image: UIImage) -> CGImage {
     return resizeImage(image, within: CGSize(width: 1200, height: 1200))
 }

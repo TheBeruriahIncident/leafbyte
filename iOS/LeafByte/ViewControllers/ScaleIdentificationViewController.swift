@@ -201,31 +201,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func fix() -> CGImage {
         let middle = stretchToDots()
         let size = min(1200, roundToInt(min(middle.extent.width, middle.extent.height), rule: FloatingPointRoundingRule.down))
-        return resizeImage2(middle, x: size, y: size)
+        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(middle), x: size, y: size)
     }
-    
-    func resizeImage2(_ image: CIImage, x: Int, y: Int) -> CGImage {
-        let cgImage = ciToCgImage(image)
-        // Create the context to draw into.
-        let context = CGContext(
-            data: nil,
-            width: x,
-            height: y,
-            bitsPerComponent: cgImage.bitsPerComponent,
-            bytesPerRow: 0,
-            space: cgImage.colorSpace!,
-            bitmapInfo: cgImage.bitmapInfo.rawValue)!
-        
-        context.interpolationQuality = .high
-        
-        context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size:
-            CGSize(width: x, height: y)))
-        
-        return context.makeImage()!
-    }
-    
-
-    
     
     
     // MARK: - UIPopoverPresentationControllerDelegate overrides
