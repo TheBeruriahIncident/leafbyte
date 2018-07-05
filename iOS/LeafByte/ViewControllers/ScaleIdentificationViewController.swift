@@ -162,27 +162,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func stretchToDots() -> CIImage {
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
         
-        let centerSum = adjustedCenters.reduce(CGPoint.zero, { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) })
-        let centerOfCenters = CGPoint(x: centerSum.x / 4, y: centerSum.y / 4)
-        let centersAndAngles = adjustedCenters.map { center -> (CGPoint, CGFloat) in
-            let difference = (center.x - centerOfCenters.x, center.y - centerOfCenters.y)
-            let angle = atan2(difference.0, difference.1)//) + Double.pi * 3 / 2
-            //let clampedAngle = angle > Double.pi * 2 ? angle - Double.pi * 2 : angle
-            return (center, angle)
-        }
-        
-        let sorted = centersAndAngles.sorted(by: { $0.1 > $1.1 })
-        let mapped1 = sorted.map {$0.0}
-        
-        let foos = mapped1.map { inputPoint -> CGPoint in
-            let xScale = CGFloat(1)//CGFloat(originalImage.width) / CGFloat(cgImage.width)
-            let yScale = xScale//CGFloat(originalImage.height) / CGFloat(cgImage.height)
-            
-            let foo = CGPoint(x: xScale * inputPoint.x, y: yScale * inputPoint.y)
-            return foo
-        }
-        
-        return createImageFromQuadrilateral(in: cgToCIImage(cgImage), bottomLeft: foos[0], bottomRight: foos[1], topLeft: foos[3], topRight: foos[2])
+        return createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
     }
     
     private func fix() -> CGImage {

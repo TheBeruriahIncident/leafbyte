@@ -157,7 +157,25 @@ func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     return combinedImage
 }
 
-func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {
+func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIImage {
+    // Find the center as the average of the corners.
+    let centerSum = corners.reduce(CGPoint.zero, { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) })
+    let center = CGPoint(x: centerSum.x / 4, y: centerSum.y / 4)
+    
+    // Determine the angle from corner to the center.
+    let cornersAndAngles = corners.map { corner -> (CGPoint, CGFloat) in
+        let distanceFromCenter = (corner.x - center.x, corner.y - center.y)
+        let angle = atan2(distanceFromCenter.0, distanceFromCenter.1)
+        return (corner, angle)
+    }
+    
+    // Sort the corners into order around the center so that we know which corner is which.
+    let sortedCorners = cornersAndAngles.sorted(by: { $0.1 > $1.1 }).map { $0.0 }
+    
+    return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[0], bottomRight: sortedCorners[1], topLeft: sortedCorners[3], topRight: sortedCorners[2])
+}
+
+private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {
     let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")!
     perspectiveCorrection.setValue(image, forKey: kCIInputImageKey)
     perspectiveCorrection.setValue(CIVector(cgPoint: bottomLeft), forKey: "inputBottomLeft")
