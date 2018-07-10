@@ -210,10 +210,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         if visiblePixel == nil {
             if mode == .identifyingLeaf {
                 setLeafNotFound()
-            } else if mode == .identifyingScale {
-                setScaleNotFound()
+                setScrollingMode(.scrolling)
             }
-            setScrollingMode(.scrolling)
+            
             return
         }
         
@@ -336,7 +335,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
         // If the scale mark is too small, it's probably just noise in the image.
         if candidateScaleMarkPixelLength < minimumLength {
-            setScaleNotFound()
             return false
         }
         
