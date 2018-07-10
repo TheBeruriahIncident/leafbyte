@@ -165,14 +165,15 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
     // Determine the angle from corner to the center.
     let cornersAndAngles = corners.map { corner -> (CGPoint, CGFloat) in
         let distanceFromCenter = (corner.x - center.x, corner.y - center.y)
-        let angle = atan2(distanceFromCenter.0, distanceFromCenter.1)
+        let angle = atan2(distanceFromCenter.1, distanceFromCenter.0)
         return (corner, angle)
     }
     
     // Sort the corners into order around the center so that we know which corner is which.
     let sortedCorners = cornersAndAngles.sorted(by: { $0.1 > $1.1 }).map { $0.0 }
+    print(sortedCorners)
     
-    return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[0], bottomRight: sortedCorners[1], topLeft: sortedCorners[3], topRight: sortedCorners[2])
+    return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
 }
 
 private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {

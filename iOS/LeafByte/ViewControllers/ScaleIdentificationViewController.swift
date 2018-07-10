@@ -165,6 +165,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func getFixedImage() -> CGImage {
+        // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
         let middle = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
         let size = min(1200, roundToInt(min(middle.extent.width, middle.extent.height), rule: FloatingPointRoundingRule.down))
