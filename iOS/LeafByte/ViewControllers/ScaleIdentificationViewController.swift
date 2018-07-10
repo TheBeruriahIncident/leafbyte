@@ -339,6 +339,16 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
         
         let scaleMark = CGPoint(x: (farthestPoint1.x + farthestPoint2.x) / 2, y: (farthestPoint1.y + farthestPoint2.y) / 2)
+        
+        // If this is a duplicate mark, skip it.
+        if markNumber > 0 {
+            for index in 0...(markNumber - 1) {
+                if scaleMarks[index] == scaleMark {
+                    return false
+                }
+            }
+        }
+        
         scaleMarks[markNumber] = scaleMark
         
         return true
