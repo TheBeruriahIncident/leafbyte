@@ -149,7 +149,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             if numberOfValidScaleMarks == 4 {
                 destination.cgImage = getFixedImage()
                 destination.uiImage = cgToUiImage(destination.cgImage)
-                destination.scaleMarkPixelLength = (cgImage.width + cgImage.height) / 2
+                destination.scaleMarkPixelLength = (destination.cgImage.width + destination.cgImage.height) / 2
                 destination.initialConnectedComponentsInfo = nil
             } else {
                 destination.initialConnectedComponentsInfo = connectedComponentsInfo
