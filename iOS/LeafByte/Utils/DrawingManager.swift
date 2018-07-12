@@ -62,19 +62,40 @@ final class DrawingManager {
         
         let size = CGFloat(70) * 0.8
         
+        context.setLineCap(.round)
+        
+        let dotSize1 = size / 13
+        context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        context.setLineWidth(dotSize1 + 1)
+        context.addEllipse(in: CGRect(origin: CGPoint(x: projectedPoint.x - dotSize1, y: projectedPoint.y - dotSize1), size: CGSize(width: dotSize1 * 2, height: dotSize1 * 2)))
+        context.strokePath()
+                
+        let stemLength = size * 2 / 7
+        let startOfLeaf = CGPoint(x: projectedPoint.x + stemLength, y: projectedPoint.y - stemLength)
+        
+        context.setStrokeColor(UIColor.black.cgColor)
+        context.setLineWidth(1.5)
+        context.setLineCap(.square)
+        
+        context.move(to: CGPoint(x: projectedPoint.x + 1, y: projectedPoint.y - 1))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * stemLength, y: projectedPoint.y - 3 * stemLength))
+        context.strokePath()
+        
+        
         context.setFillColor(DrawingManager.darkRed.cgColor)
-        drawLeafOutline(leafBase: projectedPoint, withSize: size, withOffset: 2)
+        drawLeafOutline(leafBase: startOfLeaf, withSize: size, withOffset: 2)
         
         context.setFillColor(DrawingManager.lightRed.cgColor)
-        drawLeafOutline(leafBase: projectedPoint, withSize: size)
+        drawLeafOutline(leafBase: startOfLeaf, withSize: size)
+        
+        
         
         context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
         
-        let stemLength = size * 2 / 7
-        context.move(to: CGPoint(x: projectedPoint.x - stemLength, y: projectedPoint.y + stemLength))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * stemLength, y: projectedPoint.y - 2 * stemLength))
+        context.move(to: projectedPoint)
+        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * stemLength, y: projectedPoint.y - 3 * stemLength))
         context.strokePath()
     }
     
