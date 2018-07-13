@@ -57,45 +57,42 @@ final class DrawingManager {
         context.strokePath()
     }
     
-    func drawLeaf(atPoint point: CGPoint) {
+    func drawLeaf(atPoint point: CGPoint, size: CGFloat) {
+        // This leaf is drawn with respect to the point where the petiole begins.
         let projectedPoint = projection.project(point: point)
         
-        let size = CGFloat(70) * 0.8
-        
+        // Draw dot at the specied point to make it clearer what's being marked.
+        let dotSize = size / 13
         context.setLineCap(.round)
-        
-        let dotSize1 = size / 13
         context.setStrokeColor(DrawingManager.darkRed.cgColor)
-        context.setLineWidth(dotSize1 + 1)
-        context.addEllipse(in: CGRect(origin: CGPoint(x: projectedPoint.x - dotSize1, y: projectedPoint.y - dotSize1), size: CGSize(width: dotSize1 * 2, height: dotSize1 * 2)))
+        context.setLineWidth(dotSize + 1)
+        context.addEllipse(in: CGRect(origin: CGPoint(x: projectedPoint.x - dotSize, y: projectedPoint.y - dotSize), size: CGSize(width: dotSize * 2, height: dotSize * 2)))
         context.strokePath()
-                
-        let stemLength = size * 2 / 7
-        let startOfLeaf = CGPoint(x: projectedPoint.x + stemLength, y: projectedPoint.y - stemLength)
         
+        // Draw black outline for the petiole.
+        let petioleLength = size * 2 / 7
         context.setStrokeColor(UIColor.black.cgColor)
         context.setLineWidth(1.5)
         context.setLineCap(.square)
-        
         context.move(to: CGPoint(x: projectedPoint.x + 1, y: projectedPoint.y - 1))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * stemLength, y: projectedPoint.y - 3 * stemLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * petioleLength, y: projectedPoint.y - 3 * petioleLength))
         context.strokePath()
         
-        
+        // Draw dark outline for the leaf.
+        let startOfLeaf = CGPoint(x: projectedPoint.x + petioleLength, y: projectedPoint.y - petioleLength)
         context.setFillColor(DrawingManager.darkRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size, withOffset: 2)
         
+        // Draw light "filling" of the leaf.
         context.setFillColor(DrawingManager.lightRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size)
         
-        
-        
+        // Draw petiole and midrib.
         context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
-        
         context.move(to: projectedPoint)
-        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * stemLength, y: projectedPoint.y - 3 * stemLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * petioleLength, y: projectedPoint.y - 3 * petioleLength))
         context.strokePath()
     }
     
