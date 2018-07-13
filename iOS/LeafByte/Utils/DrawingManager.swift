@@ -75,7 +75,7 @@ final class DrawingManager {
         context.setLineWidth(1.5)
         context.setLineCap(.square)
         context.move(to: CGPoint(x: projectedPoint.x + 1, y: projectedPoint.y - 1))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 3 * petioleLength, y: projectedPoint.y - 3 * petioleLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * petioleLength, y: projectedPoint.y - 2 * petioleLength))
         context.strokePath()
         
         // Draw dark outline for the leaf.
