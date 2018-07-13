@@ -72,13 +72,18 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     @IBAction func toggleScaleIdentification(_ sender: Any) {
-        if mode == .identifyingScale {
-            numberOfValidScaleMarks = 0
-        }
-        
         setScrollingMode(mode == .identifyingScale ? .scrolling : .identifyingScale)
         
-        setScaleNotFound()
+        if mode == .scrolling {
+            if numberOfValidScaleMarks < 4 {
+                numberOfValidScaleMarks = 0
+            } else {
+                setScaleFound()
+            }
+        } else {
+            setScaleNotFound()
+        }
+        
         drawMarkers()
     }
     
@@ -217,24 +222,31 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
         
         if mode == .identifyingLeaf {
-            setLeafFound(pointOnLeaf1: (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y)))
+            setLeafFound(newPointOnLeaf: (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y)))
             drawMarkers()
             
             setScrollingMode(.scrolling)
         } else if mode == .identifyingScale {
+            var markNumber: Int!
             if numberOfValidScaleMarks == 4 {
-                numberOfValidScaleMarks = 0
+                markNumber = 0
+            } else {
+                markNumber = numberOfValidScaleMarks
             }
             
             // Since a non-white section in the image was touched, it may be a scale mark.
-            let markFound = measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1, markNumber: numberOfValidScaleMarks)
+            let markFound = measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1, markNumber: markNumber)
             if (markFound) {
+                if numberOfValidScaleMarks == 4 {
+                    numberOfValidScaleMarks = 0
+                }
+                
                 numberOfValidScaleMarks += 1
-                drawMarkers()
                 
                 if numberOfValidScaleMarks == 4 {
                     setScrollingMode(.scrolling)
                 }
+                drawMarkers()
             }
         }
     }
@@ -297,6 +309,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         if occupiedLabelsAndSizes.count < 5 {
             setLeafNotFound()
             setScaleNotFound()
+            numberOfValidScaleMarks = 0
             return
         }
         
@@ -304,7 +317,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         // The leaf is the biggest label.
         let leafLabel = sortedOccupiedLabelsAndSizes[0].key
-        setLeafFound(pointOnLeaf1: connectedComponentsInfo.labelToMemberPoint[leafLabel]!)
+        setLeafFound(newPointOnLeaf: connectedComponentsInfo.labelToMemberPoint[leafLabel]!)
         
         // The scale marks are the next biggest labels.
         for markNumber in 0...3 {
@@ -316,6 +329,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             let markFound = measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5, markNumber: markNumber)
             if (!markFound) {
                 setScaleNotFound()
+                numberOfValidScaleMarks = 0
                 return
             }
         }
@@ -360,7 +374,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
         
         // Draw Xs at each valid point.
-        if numberOfValidScaleMarks > 0 {
+        if numberOfValidScaleMarks > 0 && !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
             for index in 1...numberOfValidScaleMarks {
                 drawingManager.drawX(at: scaleMarks[index - 1], size: 5)
             }
@@ -374,8 +388,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.finish(imageView: scaleMarkingView)
     }
     
-    private func setLeafFound(pointOnLeaf1: (Int, Int)) {
-        pointOnLeaf = pointOnLeaf1
+    private func setLeafFound(newPointOnLeaf: (Int, Int)) {
+        pointOnLeaf = newPointOnLeaf
         leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
         completeButton.isEnabled = true
     }
@@ -393,7 +407,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     private func setScaleNotFound() {
         scaleStatusText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
-        numberOfValidScaleMarks = 0
         drawMarkers()
     }
 }
