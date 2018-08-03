@@ -20,4 +20,20 @@ extension CGPoint: Hashable {
     public func distance(to other: CGPoint) -> CGFloat {
         return pow(pow(self.x - other.x, 2) + pow(self.y - other.y, 2), 0.5)
     }
+    
+    static public func +(left: CGPoint, right: CGPoint) -> CGPoint {
+        return CGPoint(x: left.x + right.x, y: left.y + right.y)
+    }
+    
+    static public func -(left: CGPoint, right: CGPoint) -> CGPoint {
+        return CGPoint(x: left.x - right.x, y: left.y - right.y)
+    }
+    
+    static public func /(left: CGPoint, right: CGFloat) -> CGPoint {
+        return CGPoint(x: left.x / right, y: left.y / right)
+    }
+    
+    static public func *(left: CGFloat, right: CGPoint) -> CGPoint {
+        return CGPoint(x: left * right.x, y: left * right.y)
+    }
 }

@@ -171,17 +171,19 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
     
     // Sort the corners into order around the center so that we know which corner is which.
     let sortedCorners = cornersAndAngles.sorted(by: { $0.1 > $1.1 }).map { $0.0 }
+    let orientedQuadrilateral = OrientedQuadrilateral(bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
     
-    return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
+    let expandedOrientedQuadrilateral = expand(orientedQuadrilateral: orientedQuadrilateral, withinBounds: image.extent)
+    return createImageFromQuadrilateral(in: image, quadrilateral: expandedOrientedQuadrilateral)
 }
 
-private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {
+private func createImageFromQuadrilateral(in image: CIImage, quadrilateral: OrientedQuadrilateral) -> CIImage {
     let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")!
     perspectiveCorrection.setValue(image, forKey: kCIInputImageKey)
-    perspectiveCorrection.setValue(CIVector(cgPoint: bottomLeft), forKey: "inputBottomLeft")
-    perspectiveCorrection.setValue(CIVector(cgPoint: bottomRight), forKey: "inputBottomRight")
-    perspectiveCorrection.setValue(CIVector(cgPoint: topLeft), forKey: "inputTopLeft")
-    perspectiveCorrection.setValue(CIVector(cgPoint: topRight), forKey: "inputTopRight")
+    perspectiveCorrection.setValue(CIVector(cgPoint: quadrilateral.bottomLeft), forKey: "inputBottomLeft")
+    perspectiveCorrection.setValue(CIVector(cgPoint: quadrilateral.bottomRight), forKey: "inputBottomRight")
+    perspectiveCorrection.setValue(CIVector(cgPoint: quadrilateral.topLeft), forKey: "inputTopLeft")
+    perspectiveCorrection.setValue(CIVector(cgPoint: quadrilateral.topRight), forKey: "inputTopRight")
     
     return perspectiveCorrection.outputImage!
 }
