@@ -31,7 +31,7 @@ final class Homography {
         let x4p:Double=1
         let y4p:Double=1
         
-        let A: [Double] = [
+        let Adouble: [Double] = [
             -x1, -y1, -1, 0, 0, 0, x1*x1p, y1*x1p, x1p,
             0, 0, 0, -x1, -y1, -1, x1*y1p, y1*y1p, y1p,
             -x2, -y2, -1, 0, 0, 0, x2*x2p, y2*x2p, x2p,
@@ -42,13 +42,13 @@ final class Homography {
             0, 0, 0, -x4, -y4, -1, x4*y4p, y4*y4p, y4p,
             0,0,0,0,0,0,0,0,1
         ]
-        print(A)
-        let matA = la_matrix_from_double_buffer(A, 9, 9, 9, la_hint_t(LA_NO_HINT), la_attribute_t(LA_DEFAULT_ATTRIBUTES))
+        print(Adouble)
+        let matA = la_matrix_from_double_buffer(Adouble, 9, 9, 9, la_hint_t(LA_NO_HINT), la_attribute_t(LA_DEFAULT_ATTRIBUTES))
         
-        let b: [Double] = [
+        let bdouble: [Double] = [
             0,0,0,0,0,0,0,0,1
         ]
-        let vecB = la_matrix_from_double_buffer(b, 9, 1, 1, la_hint_t(LA_NO_HINT), la_attribute_t(LA_DEFAULT_ATTRIBUTES))
+        let vecB = la_matrix_from_double_buffer(bdouble, 9, 1, 1, la_hint_t(LA_NO_HINT), la_attribute_t(LA_DEFAULT_ATTRIBUTES))
         
         let vecCj = la_solve(matA, vecB)
         var cj: [Double] = Array(repeating: 0.0, count: 9)
@@ -59,6 +59,91 @@ final class Homography {
         } else {
             return nil
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        var rowIndices: [Int32] = [
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8,
+            0,1,2,3,4,5,6,7,8
+        ]
+        
+        var values = [
+            -x1,0,-x2,0,-x3,0,-x4,0,0,
+            -y1,0,-y2,0,-y3,0,-y4,0,0,
+            -1,-x1,-1,-x2,-1,-x3,-1,-x4,0,
+            0,-y1,0,-y2,0,-y3,0,-y4,0,
+            0,-1,0,-1,0,-1,0,-1,0,
+            x1*x1p,x1*x1p,x2*x2p,x2*x2p,x3*x3p,x3*x3p,x4*x4p,x4*x4p,0,
+            y1*y1p,y1*y1p,y2*y2p,y2*y2p,y3*y3p,y3*y3p,y4*y4p,y4*y4p,0,
+            x1p,y1p,x2p,y2p,x3p,y3p,x4p,y4p,0,
+            0,0,0,0,0,0,0,0,1
+        ]
+        
+        var columnStarts = [0,9,18,27,36,45,54,63,72]
+        
+        var attributes = SparseAttributes_t()
+        attributes.kind = SparseOrdinary
+        
+        let structure = SparseMatrixStructure(rowCount: 9,
+                                              columnCount: 9,
+                                              columnStarts: &columnStarts,
+                                              rowIndices: &rowIndices,
+                                              attributes: attributes,
+                                              blockSize: 1)
+        let A = SparseMatrix_Double(structure: structure,
+                                    data: &values)
+        
+        var bValues = [0.0,0,0,0,0,0,0,0,1]
+        let b = DenseVector_Double(count: Int32(bValues.count),
+                                   data: &bValues)
+        
+        var xValues = [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+        let x = DenseVector_Double(count: Int32(xValues.count),
+                                   data: &xValues)
+        
+        print("solving")
+        if #available(iOS 11, *) {
+            let status = SparseSolve(SparseLSMR(), A, b, x, SparsePreconditionerDiagScaling);
+            
+            if status != SparseIterativeConverged {
+                Swift.print("Failed to converge. Returned with error \(status)")
+            }
+            else {
+                stride(from: 0, to: x.count, by: 1).forEach {i in
+                    Swift.print(x.data[Int(i)])
+                }}
+            print("yo")
+        }
+        
+//        if #available(iOS 11, *) {
+//            print("factor")
+//            let LLT = SparseFactor(SparseFactorizationCholesky, A)
+//            SparseSolve(LLT, b, x)
+//            print("strider")
+//            stride(from: 0, to: x.count, by: 1).forEach {i in
+//                Swift.print(x.data[Int(i)])
+//            }
+//            print(x)
+//        } else {
+//            // Fallback on earlier versions
+//        }
+        
+        
+        
+        
     }
     
     init?(fromUnitSquareTo quadrilateral: OrientedQuadrilateral) {
