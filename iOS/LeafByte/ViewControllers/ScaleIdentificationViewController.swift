@@ -23,7 +23,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
     
-    // The current mode can be scrolling or identifying either the scale.
+    // The current mode can be scrolling or identifying the scale.
     var mode = Mode.scrolling
     
     enum Mode {
@@ -157,9 +157,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func getFixedImage() -> CGImage {
         // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
-        let middle = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
-        let size = min(1200, roundToInt(min(middle.extent.width, middle.extent.height), rule: FloatingPointRoundingRule.down))
-        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(middle), x: size, y: size)
+        let imageInsideScaleMarks = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
+        let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
+        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(imageInsideScaleMarks), x: sizeToAdjustTo, y: sizeToAdjustTo)
     }
     
     
@@ -259,7 +259,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // As such, filter down to just occupied components.
         let occupiedLabelsAndSizes: [Int: Size] = connectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
         
-        // If we have less than 5, we don't have scale marks.
+        // If we have less than 5 components, we don't have scale marks.
         if occupiedLabelsAndSizes.count < 5 {
             setScaleNotFound()
             numberOfValidScaleMarks = 0
