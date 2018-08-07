@@ -70,9 +70,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
     
-    // A point on the leaf at which to mark the leaf and whether the user has changed that point.
+    // A point on the leaf at which to mark the leaf.
     var pointOnLeaf: (Int, Int)?
-    var pointOnLeafHasBeenChanged = false
     
     // MARK: - Outlets
     
@@ -213,10 +212,10 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             let baseImage = IndexableImage(cgImage)
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
             combinedImage.addImage(baseImage)
-            
-            if pointOnLeafHasBeenChanged == true || initialConnectedComponentsInfo == nil {
-                // The user has chosen a new point to mark the leaf, so refresh our calculations.
-                initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointsToIdentify: [ PointToIdentify(pointOnLeaf!) ])
+
+            // If there is no scale, and thus the image wasn't changed, we may already have these calculations done.
+            if initialConnectedComponentsInfo == nil {
+                initialConnectedComponentsInfo = labelConnectedComponents(image: combinedImage)
             }
             
             useConnectedComponentsResults(connectedComponentsInfo: initialConnectedComponentsInfo, image: combinedImage)
@@ -483,9 +482,6 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Connected components will identify the label of the leaf (if not using the default point) and any excluded areas.
         var pointsToIdentify = [PointToIdentify]()
-        if pointOnLeafHasBeenChanged {
-            pointsToIdentify.append(PointToIdentify(pointOnLeaf!))
-        }
         let exclusions = undoBuffer.filter { $0.type == .exclusion }
                 .map { userDrawingToBaseImage.project(point: $0.points[0]) }
                 .map { PointToIdentify($0) }
@@ -498,20 +494,17 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
-        var leafLabelAndSize: (key: Int, value: Size)?
-        if pointOnLeafHasBeenChanged {
-            // A specific point on the leaf has been marked.
-            leafLabelAndSize = labelsAndSizes.first(where: { $0.key == connectedComponentsInfo.labelsOfPointsToIdentify[PointToIdentify(pointOnLeaf!)]! })
-        } else {
-            // Assume the largest occupied component is the leaf.
-            leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
-        }
+        // Assume the largest occupied component is the leaf.
+        let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
         
         if leafLabelAndSize == nil {
             // This is a blank image, and trying to calculate area will crash.
             setNoLeafFound()
             return
         }
+        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabelAndSize!.key]
+        drawMarkers()
+        
         let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
         let leafAreaInPixels = leafLabelAndSize!.value.standardPart
         
@@ -633,6 +626,16 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         }
         
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+    }
+    
+    private func drawMarkers() {
+        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
+        
+        if pointOnLeaf != nil {
+            drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), size: 56)
+        }
+        
+        drawingManager.finish(imageView: scaleMarkingView)
     }
     
     private func initializeGrid() {

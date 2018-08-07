@@ -197,6 +197,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         settings.serialize()
         
         GIDSignIn.sharedInstance().signOut()
+        updateEnabledness()
     }
     
     // MARK: - UIViewController overrides
