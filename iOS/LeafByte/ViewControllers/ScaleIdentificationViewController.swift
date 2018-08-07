@@ -23,18 +23,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
     
-    // The current mode can be scrolling or identifying either the scale or leaf.
+    // The current mode can be scrolling or identifying either the scale.
     var mode = Mode.scrolling
     
     enum Mode {
         case scrolling
         case identifyingScale
-        case identifyingLeaf
     }
-    
-    // Track a point on the leaf at which to mark the leaf and whether the user has changed that point.
-    var pointOnLeaf: (Int, Int)?
-    var pointOnLeafHasBeenChanged = false
     
     var numberOfValidScaleMarks = 0
     var scaleMarks = Array(repeating: CGPoint.zero, count: 4)
@@ -52,23 +47,17 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     
-    @IBOutlet weak var leafIdentificationToggleButton: UIButton!
     @IBOutlet weak var scaleIdentificationToggleButton: UIButton!
     @IBOutlet weak var clearScaleButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     
     @IBOutlet weak var sampleNumberButton: UIButton!
     @IBOutlet weak var scaleStatusText: UILabel!
-    @IBOutlet weak var leafStatusText: UILabel!
     
     // MARK: - Actions
     
     @IBAction func goHome(_ sender: Any) {
         dismissNavigationController(self: self)
-    }
-    
-    @IBAction func toggleLeafIdentification(_ sender: Any) {
-        setScrollingMode(mode == .identifyingLeaf ? .scrolling : .identifyingLeaf)
     }
     
     @IBAction func toggleScaleIdentification(_ sender: Any) {
@@ -123,10 +112,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             findScaleMark()
             setScrollingMode(Mode.scrolling)
             
-            leafIdentificationToggleButton.isEnabled = true
             scaleIdentificationToggleButton.isEnabled = true
             clearScaleButton.isEnabled = true
-            completeButton.isEnabled = pointOnLeaf != nil
             
             if inTutorial {
                 self.performSegue(withIdentifier: "helpPopover", sender: nil)
@@ -148,8 +135,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.sourceType = sourceType
             destination.inTutorial = inTutorial
             destination.barcode = barcode
-            destination.pointOnLeaf = pointOnLeaf
-            destination.pointOnLeafHasBeenChanged = pointOnLeafHasBeenChanged
             
             if numberOfValidScaleMarks == 4 {
                 destination.cgImage = getFixedImage()
@@ -205,28 +190,14 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             return
         }
         
-        if mode == .identifyingLeaf {
-            pointOnLeafHasBeenChanged = true
-        }
-        
         let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
         let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10000)
         if visiblePixel == nil {
-            if mode == .identifyingLeaf {
-                setLeafNotFound()
-                setScrollingMode(.scrolling)
-            }
-            
             return
         }
         
-        if mode == .identifyingLeaf {
-            setLeafFound(newPointOnLeaf: (roundToInt(visiblePixel!.x), roundToInt(visiblePixel!.y)))
-            drawMarkers()
-            
-            setScrollingMode(.scrolling)
-        } else if mode == .identifyingScale {
+        if mode == .identifyingScale {
             var markNumber: Int!
             if numberOfValidScaleMarks == 4 {
                 markNumber = 0
@@ -259,27 +230,10 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
 
         if mode == .scrolling {
-            enableLeafIdentification()
-            enableScaleIdentification()
-        } else if mode == .identifyingLeaf {
-            disableLeafIdentification()
             enableScaleIdentification()
         } else if mode == .identifyingScale {
-            enableLeafIdentification()
             disableScaleIdentification()
         }
-    }
-    
-    private func enableLeafIdentification() {
-        if pointOnLeaf == nil {
-            leafIdentificationToggleButton.setTitle(NSLocalizedString("Touch leaf", comment: "Enters the mode to identify the leaf"), for: .normal)
-        } else {
-            leafIdentificationToggleButton.setTitle(NSLocalizedString("Change leaf", comment: "Enters the mode to change the leaf identification"), for: .normal)
-        }
-    }
-    
-    private func disableLeafIdentification() {
-        leafIdentificationToggleButton.setTitle(NSLocalizedString("Cancel", comment: "Exits the mode to identify the leaf"), for: .normal)
     }
     
     private func enableScaleIdentification() {
@@ -307,7 +261,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         // If we have less than 5, we don't have scale marks.
         if occupiedLabelsAndSizes.count < 5 {
-            setLeafNotFound()
             setScaleNotFound()
             numberOfValidScaleMarks = 0
             return
@@ -315,11 +268,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         let sortedOccupiedLabelsAndSizes = occupiedLabelsAndSizes.sorted { $0.1.standardPart > $1.1.standardPart }
         
-        // The leaf is the biggest label.
-        let leafLabel = sortedOccupiedLabelsAndSizes[0].key
-        setLeafFound(newPointOnLeaf: connectedComponentsInfo.labelToMemberPoint[leafLabel]!)
-        
-        // The scale marks are the next biggest labels.
+        // The leaf is the biggest label and the scale marks are the next biggest labels.
         for markNumber in 0...3 {
             let scaleMarkLabel = sortedOccupiedLabelsAndSizes[markNumber + 1].key
             
@@ -380,25 +329,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             }
         }
         
-        // Draw an outlined star where we think the leaf is.
-        if pointOnLeaf != nil {
-            drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), size: 56)
-        }
-        
         drawingManager.finish(imageView: scaleMarkingView)
-    }
-    
-    private func setLeafFound(newPointOnLeaf: (Int, Int)) {
-        pointOnLeaf = newPointOnLeaf
-        leafStatusText.text = NSLocalizedString("Leaf found", comment: "Shown when a leaf is found")
-        completeButton.isEnabled = true
-    }
-    
-    private func setLeafNotFound() {
-        completeButton.isEnabled = false
-        leafStatusText.text = NSLocalizedString("Leaf not found", comment: "Shown when a leaf is not found")
-        pointOnLeaf = nil
-        drawMarkers()
     }
     
     private func setScaleFound() {

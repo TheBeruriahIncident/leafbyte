@@ -1061,7 +1061,7 @@
                                     <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="uUa-Zh-Ieg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odx-Xc-7pu" userLabel="Complete Button">
                                 <rect key="frame" x="324" y="619" width="30" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Next"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1070,26 +1070,6 @@
                                     <segue destination="ueh-Tb-xxm" kind="show" identifier="scaleIdentificationComplete" id="ni1-Va-100"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0t-VW-fbi" userLabel="Leaf Identification Button">
-                                <rect key="frame" x="12" y="619" width="94" height="29"/>
-                                <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="94" id="XrN-bt-8qb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <connections>
-                                    <action selector="toggleLeafIdentification:" destination="e5s-F7-9rn" eventType="touchUpInside" id="y3c-TC-3Ue"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIf-ZL-LyU" userLabel="Leaf Status Text">
-                                <rect key="frame" x="17" y="566" width="142" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="j3K-wF-Bgh"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0YM-1m-Hod" userLabel="Scale Identification Button">
                                 <rect key="frame" x="103" y="619" width="94" height="29"/>
                                 <accessibility key="accessibilityConfiguration" label="Mode Toggle"/>
@@ -1117,8 +1097,6 @@
                             <constraint firstAttribute="bottom" secondItem="aFd-8f-9XM" secondAttribute="bottom" constant="100" id="5x1-c8-bGC"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="A67-1Z-vF9"/>
                             <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="6Mb-ZC-YBF" secondAttribute="leading" constant="-17" id="B8o-lb-5gu"/>
-                            <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="12" id="E2K-uv-wWR"/>
-                            <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="trailing" constant="-39" id="EB3-PB-D8l"/>
                             <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" constant="-4" id="Gfs-IP-yy6"/>
@@ -1129,15 +1107,12 @@
                             <constraint firstItem="7fQ-lo-BNS" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" constant="69.5" id="LLl-HJ-d77"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="wTv-BJ-FVQ" secondAttribute="top" constant="44" id="Mld-mj-rbu"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="17" id="NZW-87-LeS"/>
-                            <constraint firstAttribute="bottom" secondItem="p0t-VW-fbi" secondAttribute="bottom" constant="19" id="TFb-FP-2vQ"/>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="Odx-Xc-7pu" secondAttribute="trailing" constant="21" id="UuN-Pn-U6D"/>
                             <constraint firstAttribute="bottom" secondItem="0YM-1m-Hod" secondAttribute="bottom" constant="19" id="Wou-UT-2IR"/>
                             <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="3" id="lPo-zq-0ZE"/>
-                            <constraint firstItem="0YM-1m-Hod" firstAttribute="top" secondItem="YIf-ZL-LyU" secondAttribute="bottom" constant="3" id="rFl-bG-m9f"/>
                             <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2WT-re-HH5" secondAttribute="trailing" constant="20" symbolic="YES" id="wSo-Od-zwK"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="top" constant="15" id="wjY-Uk-rO4"/>
-                            <constraint firstItem="p0t-VW-fbi" firstAttribute="leading" secondItem="YIf-ZL-LyU" secondAttribute="leading" constant="-5" id="yPJ-fh-99L"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
@@ -1160,8 +1135,6 @@
                         <outlet property="clearScaleButton" destination="7fQ-lo-BNS" id="2xG-kJ-wet"/>
                         <outlet property="completeButton" destination="Odx-Xc-7pu" id="f2b-fT-yWa"/>
                         <outlet property="gestureRecognizingView" destination="aFd-8f-9XM" id="ZNy-2l-H1H"/>
-                        <outlet property="leafIdentificationToggleButton" destination="p0t-VW-fbi" id="xdW-LV-wXI"/>
-                        <outlet property="leafStatusText" destination="YIf-ZL-LyU" id="v6s-vV-IhA"/>
                         <outlet property="sampleNumberButton" destination="2WT-re-HH5" id="rQK-EW-16o"/>
                         <outlet property="scaleIdentificationToggleButton" destination="0YM-1m-Hod" id="F7Q-sW-hfX"/>
                         <outlet property="scaleMarkingView" destination="Xu9-FW-Xu6" id="95g-1v-i7M"/>

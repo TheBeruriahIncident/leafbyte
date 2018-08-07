@@ -58,6 +58,8 @@ final class DrawingManager {
     }
     
     func drawLeaf(atPoint point: CGPoint, size: CGFloat) {
+        context.setAlpha(0.5)
+        
         // This leaf is drawn with respect to the point where the petiole begins.
         let projectedPoint = projection.project(point: point)
         
@@ -75,7 +77,7 @@ final class DrawingManager {
         context.setLineWidth(1.5)
         context.setLineCap(.square)
         context.move(to: CGPoint(x: projectedPoint.x + 1, y: projectedPoint.y - 1))
-        context.addLine(to: CGPoint(x: projectedPoint.x + 2 * petioleLength, y: projectedPoint.y - 2 * petioleLength))
+        context.addLine(to: CGPoint(x: projectedPoint.x + 0.95 * petioleLength, y: projectedPoint.y - 0.95 * petioleLength))
         context.strokePath()
         
         // Draw dark outline for the leaf.
@@ -94,6 +96,8 @@ final class DrawingManager {
         context.move(to: projectedPoint)
         context.addLine(to: CGPoint(x: projectedPoint.x + 3 * petioleLength, y: projectedPoint.y - 3 * petioleLength))
         context.strokePath()
+        
+        context.setAlpha(1)
     }
     
     private func drawLeafOutline(leafBase: CGPoint, withSize size: CGFloat, withOffset offset: CGFloat = 0) {
