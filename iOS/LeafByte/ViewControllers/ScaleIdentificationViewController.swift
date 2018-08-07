@@ -47,6 +47,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     // MARK: - Outlets
     
+    @IBOutlet weak var topView: UIView!
     @IBOutlet weak var gestureRecognizingView: UIScrollView!
     @IBOutlet weak var scrollableView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
@@ -98,6 +99,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topView.layer.borderWidth = 1
 
         setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
 
