@@ -1116,7 +1116,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yEU-EW-1AP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Object Identification" id="khl-eo-np4" userLabel="Navigation Content">
+                    <navigationItem key="navigationItem" title="Scale Identification" id="khl-eo-np4" userLabel="Navigation Content">
                         <barButtonItem key="leftBarButtonItem" title="?" id="5nA-2H-mzx" userLabel="Help Button">
                             <connections>
                                 <segue destination="oJr-2p-Elg" kind="popoverPresentation" identifier="helpPopover" popoverAnchorBarButtonItem="5nA-2H-mzx" id="qQn-7H-fvo">
