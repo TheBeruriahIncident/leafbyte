@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -244,7 +243,7 @@
                                     <constraint firstItem="Sfh-f1-P2L" firstAttribute="top" secondItem="fcW-8Z-FmF" secondAttribute="top" id="uqT-1z-vNl"/>
                                 </constraints>
                             </scrollView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
+                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
                                 <rect key="frame" x="0.0" y="-8" width="375" height="44"/>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
@@ -259,13 +258,13 @@
                                     <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="3Cx-CF-rTQ"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Nq-htd" userLabel="Histogram Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Nq-htd" userLabel="Histogram Image">
                                 <rect key="frame" x="78" y="557" width="219" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="5SB-25-TdJ"/>
                                 </constraints>
                             </imageView>
-                            <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
+                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
                                 <rect key="frame" x="64" y="582" width="246" height="31"/>
                                 <accessibility key="accessibilityConfiguration" label="Threshold"/>
                                 <connections>
@@ -302,11 +301,9 @@
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="GMo-CS-ghn"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" id="KQw-L6-1Oj"/>
                             <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="kay-pt-SHA" secondAttribute="bottom" constant="20" id="MEu-xz-IqO"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="Ppf-VP-3BD"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="bottom" secondItem="5RZ-7f-3CS" secondAttribute="bottom" id="RPh-iA-Eaa"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="leading" secondItem="LlW-OF-SZu" secondAttribute="leadingMargin" constant="1" id="YoG-Ts-SzH"/>
                             <constraint firstAttribute="bottom" secondItem="C16-Ki-FNI" secondAttribute="bottom" constant="55" id="e4J-Ir-n0K"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="fnj-2a-2bk"/>
                             <constraint firstAttribute="trailing" secondItem="5RZ-7f-3CS" secondAttribute="trailing" constant="21" id="hDL-K7-hen"/>
                             <constraint firstItem="kay-pt-SHA" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="lcq-qV-e0L"/>
                             <constraint firstItem="kay-pt-SHA" firstAttribute="centerX" secondItem="C16-Ki-FNI" secondAttribute="centerX" id="tBP-an-AHT"/>
@@ -400,8 +397,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
-                                <rect key="frame" x="0.0" y="-31" width="375" height="44"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2" userLabel="Gesture Recognizing View">
                                 <rect key="frame" x="0.0" y="44" width="375" height="516"/>
