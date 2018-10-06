@@ -103,7 +103,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
     }
     
     let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(date) \(time)).png"
-    let pngImage = UIImagePNGRepresentation(image)!
+    let pngImage = image.pngData()!
     
     switch settings.imageSaveLocation {
     case .local:

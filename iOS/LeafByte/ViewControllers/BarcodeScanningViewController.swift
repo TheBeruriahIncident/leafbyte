@@ -135,7 +135,7 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
     
     // MARK: - UIImagePickerControllerDelegate overrides
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
     

@@ -16,9 +16,9 @@ func dismissNavigationController(self viewController: UIViewController) {
     }
 }
 
-func finishWithImagePicker(self viewController: UIViewController, info: [String : Any], selectImage: (CGImage) -> Void) {
+func finishWithImagePicker(self viewController: UIViewController, info: [UIImagePickerController.InfoKey : Any], selectImage: (CGImage) -> Void) {
     // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
-    guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+    guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
         fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
     }
     

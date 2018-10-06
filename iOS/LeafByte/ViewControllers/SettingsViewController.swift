@@ -350,11 +350,11 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
@@ -378,7 +378,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     
     private func getKeyboardHeight(notification: NSNotification) -> CGFloat {
         let info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
         return keyboardSize.height
     }
 }

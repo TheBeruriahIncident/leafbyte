@@ -21,7 +21,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var viewDidAppearHasRun = false
     
     // Both of these are set while picking an image and are passed forward to the next view.
-    var sourceType: UIImagePickerControllerSourceType?
+    var sourceType: UIImagePickerController.SourceType?
     var selectedImage: CGImage?
     
     // To prevent double tapping from double seguing, we disable segue after the first tap until coming back to this view.
@@ -70,7 +70,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 if self.settings.useBarcode {
                     self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                 } else {
-                    self.presentImagePicker(sourceType: UIImagePickerControllerSourceType.camera)
+                    self.presentImagePicker(sourceType: UIImagePickerController.SourceType.camera)
                 }
             }
         }, onFailure: { self.segueEnabled = true })
@@ -82,7 +82,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         segueEnabled = false
         
-        presentImagePicker(sourceType: UIImagePickerControllerSourceType.photoLibrary)
+        presentImagePicker(sourceType: UIImagePickerController.SourceType.photoLibrary)
     }
     
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
@@ -178,7 +178,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - UIImagePickerControllerDelegate overrides
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
     
@@ -189,7 +189,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     
     // MARK: - Helpers
     
-    private func presentImagePicker(sourceType: UIImagePickerControllerSourceType) {
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
         self.sourceType = sourceType
         imagePicker.sourceType = sourceType
         present(imagePicker, animated: true, completion: nil)
@@ -275,7 +275,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
             
             let attributedString = NSMutableAttributedString.init(string: savingSummary.text!)
-            attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.red , range: rangeToColor)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: rangeToColor)
             
             savingSummary.attributedText = attributedString
         }

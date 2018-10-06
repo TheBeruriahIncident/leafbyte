@@ -14,7 +14,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // These are passed from the previous view.
     var settings: Settings!
-    var sourceType: UIImagePickerControllerSourceType!
+    var sourceType: UIImagePickerController.SourceType!
     var cgImage: CGImage!
     var uiImage: UIImage!
     var scaleMarkPixelLength: Int?
@@ -124,11 +124,11 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Exclude activity types that don't make sense here.
         activityViewController.excludedActivityTypes = [
-            UIActivityType.addToReadingList,
-            UIActivityType.assignToContact,
-            UIActivityType.openInIBooks,
-            UIActivityType.postToVimeo,
-            UIActivityType.print,
+            UIActivity.ActivityType.addToReadingList,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.openInIBooks,
+            UIActivity.ActivityType.postToVimeo,
+            UIActivity.ActivityType.print,
         ]
         
         // Make this work on iPads ( https://stackoverflow.com/questions/25644054/uiactivityviewcontroller-crashing-on-ios8-ipads ).
@@ -372,7 +372,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UIImagePickerControllerDelegate overrides
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
     

@@ -14,7 +14,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     // These are passed from the previous view.
     var settings: Settings!
-    var sourceType: UIImagePickerControllerSourceType!
+    var sourceType: UIImagePickerController.SourceType!
     var cgImage: CGImage!
     var uiImage: UIImage!
     var inTutorial: Bool!

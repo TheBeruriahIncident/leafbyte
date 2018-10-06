@@ -22,7 +22,7 @@ final class ThresholdingFilter: CIFilter {
     
     func setInputImage(image: CGImage, useBlackBackground: Bool) {
         // Explicitly prevent Core Image from changing the color space, in order to get predictable thresholding. https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
-        inputImageOriginalColorSpace = CIImage(cgImage: image, options: [kCIImageColorSpace: NSNull()])
+        inputImageOriginalColorSpace = CIImage(cgImage: image, options: [CIImageOption.colorSpace: NSNull()])
         inputImageSaturated = CIImage(cgImage: image)
         self.useBlackBackground = useBlackBackground
     }
@@ -55,4 +55,3 @@ final class ThresholdingFilter: CIFilter {
         return CIColorKernel(source: kernelCode)!
     }
 }
-

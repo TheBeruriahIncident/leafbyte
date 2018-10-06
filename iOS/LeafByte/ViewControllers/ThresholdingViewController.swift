@@ -17,7 +17,7 @@ final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, 
     
     // These are passed from the previous view.
     var settings: Settings!
-    var sourceType: UIImagePickerControllerSourceType!
+    var sourceType: UIImagePickerController.SourceType!
     var image: CGImage!
     var inTutorial: Bool!
     var barcode: String?

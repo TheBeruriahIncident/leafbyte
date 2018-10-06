@@ -114,7 +114,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
 }
 
 // A UIImage can have various orientations that must be corrected for. This was adapted from http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ .
-private func getTransformToCorrectUIImage(withOrientation orientation: UIImageOrientation, intoWidth width: CGFloat, andHeight height: CGFloat) -> CGAffineTransform {
+private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.Orientation, intoWidth width: CGFloat, andHeight height: CGFloat) -> CGAffineTransform {
     var transform = CGAffineTransform.identity
     
     // Account for direction by rotating (the translations move the rotated image back "into frame").
