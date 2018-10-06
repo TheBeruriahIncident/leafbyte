@@ -81,7 +81,7 @@
                                     <action selector="goToSettings" destination="BYZ-38-t0r" eventType="touchUpInside" id="2pz-k5-7ye"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="P44-8i-7fW">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="P44-8i-7fW" userLabel="Title Stack View">
                                 <rect key="frame" x="0.0" y="263" width="375" height="81.5"/>
                                 <subviews>
                                     <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="LeafByte Title">
@@ -104,7 +104,7 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe" userLabel="Photo Library Label">
                                 <rect key="frame" x="39" y="549" width="132.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -129,7 +129,7 @@
                                     <action selector="pickImageFromPhotoLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vpd-GI-yRy"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="Leaf Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="LeafByte Logo">
                                 <rect key="frame" x="143.5" y="124" width="128" height="139"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fV7-74-OmP" secondAttribute="height" multiplier="128:139" id="CFh-VO-3N6"/>
@@ -153,7 +153,6 @@
                         <constraints>
                             <constraint firstItem="neI-sd-kIs" firstAttribute="bottom" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="1xG-Y3-O8A"/>
                             <constraint firstItem="P44-8i-7fW" firstAttribute="top" secondItem="fV7-74-OmP" secondAttribute="bottom" id="85A-og-bzs"/>
-                            <constraint firstItem="y7J-0u-w5M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="9gG-4X-yQT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="neI-sd-kIs" secondAttribute="trailing" constant="56" id="ABX-oW-ehZ"/>
                             <constraint firstItem="cPB-VP-BSe" firstAttribute="top" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="KQF-em-rkj"/>
                             <constraint firstItem="2BA-tP-TZU" firstAttribute="top" secondItem="cPB-VP-BSe" secondAttribute="bottom" constant="30" id="LPC-nH-SQz"/>
@@ -162,6 +161,7 @@
                             <constraint firstItem="P44-8i-7fW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-30" id="TAv-od-jhG"/>
                             <constraint firstItem="fV7-74-OmP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="WA0-We-d5T"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2BA-tP-TZU" secondAttribute="trailing" constant="20" id="XDu-Z6-deG"/>
+                            <constraint firstItem="y7J-0u-w5M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bh7-Ol-hI2" secondAttribute="trailing" constant="8" symbolic="YES" id="YOu-N3-kbT"/>
                             <constraint firstItem="hMs-gX-Mwe" firstAttribute="centerX" secondItem="neI-sd-kIs" secondAttribute="centerX" id="Yj8-vu-BXa"/>
                             <constraint firstItem="P44-8i-7fW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="axc-BE-axk"/>
                             <constraint firstItem="cPB-VP-BSe" firstAttribute="top" secondItem="7Fv-Ge-wCb" secondAttribute="bottom" id="b82-eM-AAa"/>
@@ -1303,7 +1303,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ni1-Va-100"/>
+        <segue reference="Iaq-x1-uxo"/>
         <segue reference="gAP-T7-MBM"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
