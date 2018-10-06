@@ -16,7 +16,7 @@ final class LeafByteTests: XCTestCase {
         var thresholdedImage: CIImage!
         self.measure {
             let filter = ThresholdingFilter()
-            filter.setInputImage(image)
+            filter.setInputImage(image: image, useBlackBackground: false)
             thresholdedImage = filter.outputImage
         }
         
@@ -45,7 +45,7 @@ final class LeafByteTests: XCTestCase {
         let originalImage = resizeImage(loadImage(named: "leafWithScale"))
         
         let filter = ThresholdingFilter()
-        filter.setInputImage(originalImage)
+        filter.setInputImage(image: originalImage, useBlackBackground: false)
         let thresholdedImage = filter.outputImage!
         
         let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
