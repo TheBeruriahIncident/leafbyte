@@ -13,7 +13,7 @@ extension CGPoint: Hashable {
     public var hashValue: Int {
         // This is a classic hash ( https://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier ).
         // Note the &s to get wraparound behavior ( https://en.wikipedia.org/wiki/Integer_overflow ).
-        return hash(self.x, self.y)
+        return LeafByte.hash(self.x, self.y)
     }
     
     // Calculate the distance between two points ( https://en.wikipedia.org/wiki/Euclidean_distance ).

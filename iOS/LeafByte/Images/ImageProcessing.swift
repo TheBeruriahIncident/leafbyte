@@ -130,7 +130,7 @@ struct PointToIdentify: Hashable {
     }
     
     var hashValue: Int {
-        return hash(x, y)
+        return LeafByte.hash(x, y)
     }
 }
 
