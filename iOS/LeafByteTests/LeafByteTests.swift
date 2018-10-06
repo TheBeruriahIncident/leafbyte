@@ -70,6 +70,7 @@ final class LeafByteTests: XCTestCase {
         settings.imageSaveLocation = .googleDrive
         settings.datasetName = "The Tale of Genji"
         settings.saveGpsData = true
+        settings.useBlackBackground = true
         
         let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
         settings.serialize(at: url)

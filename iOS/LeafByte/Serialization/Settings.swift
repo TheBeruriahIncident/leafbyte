@@ -86,7 +86,7 @@ final class Settings: NSObject, NSCoding {
             self.useBarcode = decoder.decodeBool(forKey: PropertyKey.useBarcode)
         }
         if decoder.containsValue(forKey: PropertyKey.useBlackBackground) {
-            self.useBarcode = decoder.decodeBool(forKey: PropertyKey.useBlackBackground)
+            self.useBlackBackground = decoder.decodeBool(forKey: PropertyKey.useBlackBackground)
         }
         if let userIdToTopLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.userIdToTopLevelGoogleFolderId) as? [String: String] {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
