@@ -210,13 +210,13 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="80" width="375" height="477"/>
+                                <rect key="frame" x="0.0" y="36" width="375" height="521"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7I-Wp-QLc" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="477"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="521"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="477"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="521"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -240,11 +240,11 @@
                                     <constraint firstItem="Sfh-f1-P2L" firstAttribute="top" secondItem="fcW-8Z-FmF" secondAttribute="top" id="uqT-1z-vNl"/>
                                 </constraints>
                             </scrollView>
-                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
-                                <rect key="frame" x="0.0" y="36" width="375" height="44"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
+                                <rect key="frame" x="0.0" y="-8" width="375" height="44"/>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="100" width="73" height="33"/>
+                                <rect key="frame" x="12" y="56" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -255,14 +255,14 @@
                                     <action selector="editSampleNumber:" destination="bUK-Ir-gu8" eventType="touchUpInside" id="3Cx-CF-rTQ"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Nq-htd" userLabel="Histogram Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Nq-htd" userLabel="Histogram Image">
                                 <rect key="frame" x="78" y="557" width="219" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="5SB-25-TdJ"/>
                                 </constraints>
                             </imageView>
-                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
-                                <rect key="frame" x="64" y="582" width="246" height="31"/>
+                            <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C16-Ki-FNI" userLabel="Threshold Slider">
+                                <rect key="frame" x="64" y="582" width="247" height="31"/>
                                 <accessibility key="accessibilityConfiguration" label="Threshold"/>
                                 <connections>
                                     <action selector="sliderMoved:" destination="bUK-Ir-gu8" eventType="valueChanged" id="6pr-81-5i3"/>
@@ -298,6 +298,8 @@
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="GMo-CS-ghn"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" id="KQw-L6-1Oj"/>
                             <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="kay-pt-SHA" secondAttribute="bottom" constant="20" id="MEu-xz-IqO"/>
+                            <constraint firstItem="kay-pt-SHA" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="NY7-yG-MwL"/>
+                            <constraint firstItem="kay-pt-SHA" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="R7r-LH-na8"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="bottom" secondItem="5RZ-7f-3CS" secondAttribute="bottom" id="RPh-iA-Eaa"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="leading" secondItem="LlW-OF-SZu" secondAttribute="leadingMargin" constant="1" id="YoG-Ts-SzH"/>
                             <constraint firstAttribute="bottom" secondItem="C16-Ki-FNI" secondAttribute="bottom" constant="55" id="e4J-Ir-n0K"/>
@@ -397,10 +399,10 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-tD-hbE">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             </navigationBar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2" userLabel="Gesture Recognizing View">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2" userLabel="Gesture Recognizing View">
                                 <rect key="frame" x="0.0" y="44" width="375" height="516"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-Yh-WUw" userLabel="Scrollable View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-Yh-WUw" userLabel="Scrollable View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="516"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vz2-Bn-w9W" userLabel="User Drawing">
@@ -426,6 +428,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="y5V-Yh-WUw" secondAttribute="bottom" id="1OS-3i-2jc"/>
                                     <constraint firstItem="y5V-Yh-WUw" firstAttribute="top" secondItem="XUO-j6-TH2" secondAttribute="top" id="A5y-Nd-t34"/>
+                                    <constraint firstItem="y5V-Yh-WUw" firstAttribute="centerY" secondItem="XUO-j6-TH2" secondAttribute="centerY" id="Op8-bn-l6P"/>
                                     <constraint firstAttribute="trailing" secondItem="y5V-Yh-WUw" secondAttribute="trailing" id="eJl-mC-Jkn"/>
                                     <constraint firstItem="y5V-Yh-WUw" firstAttribute="centerX" secondItem="XUO-j6-TH2" secondAttribute="centerX" id="ihN-lU-nD4"/>
                                     <constraint firstItem="y5V-Yh-WUw" firstAttribute="leading" secondItem="XUO-j6-TH2" secondAttribute="leading" id="oOX-Er-f6f"/>
@@ -1300,7 +1303,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="03T-NI-k5w"/>
-        <segue reference="nEl-BG-wrS"/>
+        <segue reference="gAP-T7-MBM"/>
+        <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>
