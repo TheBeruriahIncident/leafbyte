@@ -729,6 +729,7 @@
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByte/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -748,6 +749,7 @@
 				DEBUG_ACTIVITY_MODE = "";
 				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByte/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thebluefolderproject.LeafByte;
 				PRODUCT_NAME = "$(TARGET_NAME)";
