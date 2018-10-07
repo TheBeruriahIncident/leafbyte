@@ -53,7 +53,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="06u-Gg-YYQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iXG-Zq-i5j" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="925.60000000000002" y="-604.04797601199402"/>
+            <point key="canvasLocation" x="977" y="-662"/>
         </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -350,7 +350,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZL4-RO-deo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="0Yy-Wp-gv7" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1252" y="927.88605697151434"/>
+            <point key="canvasLocation" x="977" y="928"/>
         </scene>
         <!--Thresholding Help View Controller-->
         <scene sceneID="KtJ-ek-1IP">
@@ -386,7 +386,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrm-ec-C4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="659" y="1674"/>
+            <point key="canvasLocation" x="629" y="1627"/>
         </scene>
         <!--Area Calculation View Controller-->
         <scene sceneID="RBc-bI-pyN">
@@ -603,7 +603,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQF-yK-yCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2727" y="916"/>
+            <point key="canvasLocation" x="2777" y="928"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Nbb-yx-jpU">
@@ -921,7 +921,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KC5-I7-Tcv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="vL6-8S-A2W" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2165.5999999999999" y="-954.42278860569718"/>
+            <point key="canvasLocation" x="1865" y="38"/>
         </scene>
         <!--Tutorial View Controller-->
         <scene sceneID="h7v-9f-R7V">
@@ -969,7 +969,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bvA-H1-l0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="8w8-3J-pKY" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-572" y="937.78110944527748"/>
+            <point key="canvasLocation" x="-740" y="928"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2k5-cm-ARB">
@@ -988,7 +988,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJx-NE-sxM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="456.80000000000001" y="948.57571214392806"/>
+            <point key="canvasLocation" x="116" y="928"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rPh-PA-6Sw">
@@ -1006,7 +1006,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PQP-NZ-vIf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="926" y="117"/>
+            <point key="canvasLocation" x="978" y="116"/>
         </scene>
         <!--Scale Identification View Controller-->
         <scene sceneID="GQa-ue-LZN">
@@ -1149,7 +1149,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mka-gV-IFE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1864.8" y="927.88605697151434"/>
+            <point key="canvasLocation" x="1865" y="928"/>
         </scene>
         <!--Scale Identification Help View Controller-->
         <scene sceneID="H7e-Ph-8OO">
@@ -1193,7 +1193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebj-2Y-9T5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1955.2" y="1708.2458770614694"/>
+            <point key="canvasLocation" x="1864" y="1628"/>
         </scene>
         <!--Area Calculation Help View Controller-->
         <scene sceneID="SXK-7H-soF">
@@ -1229,7 +1229,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mA4-9i-fhx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2820.8000000000002" y="1617.3913043478262"/>
+            <point key="canvasLocation" x="2776" y="1629"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xEb-V8-96W">
@@ -1265,7 +1265,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GS8-iD-rwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="116" y="-604"/>
+            <point key="canvasLocation" x="116" y="-663"/>
         </scene>
         <!--Fuzziness Help View Controller-->
         <scene sceneID="fZL-Dt-T82">
@@ -1292,7 +1292,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zni-Cg-ESA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1242" y="1673"/>
+            <point key="canvasLocation" x="1235" y="1627"/>
         </scene>
     </scenes>
     <resources>
@@ -1304,7 +1304,6 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Iaq-x1-uxo"/>
         <segue reference="gAP-T7-MBM"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
