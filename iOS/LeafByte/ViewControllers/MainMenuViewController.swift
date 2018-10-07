@@ -53,6 +53,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         performSegue(withIdentifier: "toTutorial", sender: self)
     }
     
+    @IBAction func openWebsite(_ sender: Any) {
+        UIApplication.shared.openURL(URL(string: "https://zoegp.science/leafbyte")!)
+    }
+    
     @IBAction func pickImageFromCamera(_ sender: Any) {
         if !segueEnabled {
             return

@@ -89,7 +89,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="P44-8i-7fW" userLabel="Title Stack View">
-                                <rect key="frame" x="0.0" y="263" width="375" height="81.5"/>
+                                <rect key="frame" x="0.0" y="248" width="375" height="111.5"/>
                                 <subviews>
                                     <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMm-Do-q8c" userLabel="LeafByte Title">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
@@ -109,6 +109,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVM-rg-EvA" userLabel="Website">
+                                        <rect key="frame" x="0.0" y="81.5" width="375" height="30"/>
+                                        <state key="normal" title="zoegp.science/leafbyte"/>
+                                        <connections>
+                                            <action selector="openWebsite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5Mv-yw-bVs"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe" userLabel="Photo Library Label">
@@ -137,7 +144,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="LeafByte Logo">
-                                <rect key="frame" x="143.5" y="124" width="128" height="139"/>
+                                <rect key="frame" x="143.5" y="109" width="128" height="139"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fV7-74-OmP" secondAttribute="height" multiplier="128:139" id="CFh-VO-3N6"/>
                                 </constraints>
