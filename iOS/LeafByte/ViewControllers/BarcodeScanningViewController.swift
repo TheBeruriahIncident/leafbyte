@@ -94,7 +94,7 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen" {
-            guard let destination = segue.destination as? ThresholdingViewController else {
+            guard let destination = segue.destination as? BackgroundRemovalViewController else {
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: segue.destination))")
             }
             

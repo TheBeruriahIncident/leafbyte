@@ -9,7 +9,7 @@
 import Accelerate
 import UIKit
 
-final class ThresholdingViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
+final class BackgroundRemovalViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
     let HISTOGRAM_MAX = 100
     let FUZZINESS_THRESHOLD = 400
     

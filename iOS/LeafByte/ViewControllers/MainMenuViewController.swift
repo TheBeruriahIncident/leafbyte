@@ -121,7 +121,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             guard let navigationController = segue.destination as? UINavigationController else {
                 fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
-            guard let destination = navigationController.topViewController as? ThresholdingViewController else {
+            guard let destination = navigationController.topViewController as? BackgroundRemovalViewController else {
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: navigationController.topViewController))")
             }
             

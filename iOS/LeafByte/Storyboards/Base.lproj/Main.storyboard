@@ -199,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="116" y="116"/>
         </scene>
-        <!--Thresholding View Controller-->
+        <!--Background Removal View Controller-->
         <scene sceneID="UmV-zk-Nlx">
             <objects>
-                <viewController title="Thresholding View Controller" id="bUK-Ir-gu8" customClass="ThresholdingViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Background Removal View Controller" id="bUK-Ir-gu8" customClass="BackgroundRemovalViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LlW-OF-SZu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -248,7 +248,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="74" width="73" height="33"/>
+                                <rect key="frame" x="12" y="84" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -300,7 +300,7 @@
                             <constraint firstItem="U3R-Nq-htd" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" constant="78" id="B3S-KT-RRN"/>
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="GMo-CS-ghn"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" id="KQw-L6-1Oj"/>
-                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" constant="10" id="MEu-xz-IqO"/>
+                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" constant="20" id="MEu-xz-IqO"/>
                             <constraint firstItem="8Uc-b0-2VM" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="NY7-yG-MwL"/>
                             <constraint firstItem="8Uc-b0-2VM" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="R7r-LH-na8"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="bottom" secondItem="5RZ-7f-3CS" secondAttribute="bottom" id="RPh-iA-Eaa"/>

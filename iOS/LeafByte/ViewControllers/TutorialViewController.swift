@@ -32,7 +32,7 @@ final class TutorialViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is continueTutorial, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "continueTutorial" {
-            guard let destination = segue.destination as? ThresholdingViewController else {
+            guard let destination = segue.destination as? BackgroundRemovalViewController else {
                 fatalError("Expected the next view to be the thresholding view but is \(segue.destination)")
             }
             

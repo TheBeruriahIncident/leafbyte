@@ -31,7 +31,7 @@
 		469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E3B022013DB4E009C7337 /* FileUtils.swift */; };
 		46A6D883209EAD110013891E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46A6D885209EAD110013891E /* Localizable.strings */; };
 		46A969D2202BED9300B98898 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A969D1202BED9300B98898 /* TutorialViewController.swift */; };
-		46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */; };
+		46C424BA1FEF5AAE00301F59 /* BackgroundRemovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424B91FEF5AAE00301F59 /* BackgroundRemovalViewController.swift */; };
 		46C424BC1FEF688500301F59 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BB1FEF688500301F59 /* SegueFromRight.swift */; };
 		46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C424BD1FEF6A3E00301F59 /* UnwindSegueFromRight.swift */; };
 		46DB8A821FFE8AE200EF59BE /* leafWithScale.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46DB8A811FFE8AE200EF59BE /* leafWithScale.jpg */; };
@@ -100,7 +100,7 @@
 		46A6D884209EAD110013891E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		46A6D886209EAD220013891E /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		46A969D1202BED9300B98898 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
-		46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdingViewController.swift; sourceTree = "<group>"; };
+		46C424B91FEF5AAE00301F59 /* BackgroundRemovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRemovalViewController.swift; sourceTree = "<group>"; };
 		46C424BB1FEF688500301F59 /* SegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		46C424BD1FEF6A3E00301F59 /* UnwindSegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwindSegueFromRight.swift; sourceTree = "<group>"; };
 		46DB8A811FFE8AE200EF59BE /* leafWithScale.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = leafWithScale.jpg; sourceTree = "<group>"; };
@@ -245,11 +245,11 @@
 			isa = PBXGroup;
 			children = (
 				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
+				46C424B91FEF5AAE00301F59 /* BackgroundRemovalViewController.swift */,
 				46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
 				464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */,
 				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
-				46C424B91FEF5AAE00301F59 /* ThresholdingViewController.swift */,
 				46A969D1202BED9300B98898 /* TutorialViewController.swift */,
 			);
 			path = ViewControllers;
@@ -529,7 +529,7 @@
 				4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */,
 				46DB8A8C1FFEF88200EF59BE /* ImageProcessing.swift in Sources */,
 				46C424BC1FEF688500301F59 /* SegueFromRight.swift in Sources */,
-				46C424BA1FEF5AAE00301F59 /* ThresholdingViewController.swift in Sources */,
+				46C424BA1FEF5AAE00301F59 /* BackgroundRemovalViewController.swift in Sources */,
 				46A969D2202BED9300B98898 /* TutorialViewController.swift in Sources */,
 				46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */,
 				46F1064120012F06000B4B83 /* Extensions.swift in Sources */,
