@@ -217,13 +217,13 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="64" width="375" height="493"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="537"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7I-Wp-QLc" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="537"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="537"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -248,7 +248,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="84" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -300,7 +300,7 @@
                             <constraint firstItem="U3R-Nq-htd" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" constant="78" id="B3S-KT-RRN"/>
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="GMo-CS-ghn"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" id="KQw-L6-1Oj"/>
-                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" constant="20" id="MEu-xz-IqO"/>
+                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" constant="10" id="MEu-xz-IqO"/>
                             <constraint firstItem="8Uc-b0-2VM" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="NY7-yG-MwL"/>
                             <constraint firstItem="8Uc-b0-2VM" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="R7r-LH-na8"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="bottom" secondItem="5RZ-7f-3CS" secondAttribute="bottom" id="RPh-iA-Eaa"/>
@@ -441,7 +441,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="516"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Otk-oa-PcB" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="64" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -501,8 +501,8 @@
                                     <action selector="undo:" destination="ueh-Tb-xxm" eventType="touchUpInside" id="0ST-4d-rfB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLK-Tc-phh">
-                                <rect key="frame" x="12" y="97" width="52" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLK-Tc-phh" userLabel="Notes Label">
+                                <rect key="frame" x="12" y="63" width="52" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -510,7 +510,7 @@
                                 <size key="shadowOffset" width="1" height="-1"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Igz-Jt-RJ9">
-                                <rect key="frame" x="63" y="92.5" width="227" height="30"/>
+                                <rect key="frame" x="63" y="58.5" width="227" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="227" id="YFh-V8-rSV"/>
                                 </constraints>
@@ -538,7 +538,7 @@
                             <constraint firstItem="Id9-ad-Z94" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tVl-5H-cS7" secondAttribute="leading" constant="20" symbolic="YES" id="Vgb-DS-fnf"/>
                             <constraint firstAttribute="trailing" secondItem="XUO-j6-TH2" secondAttribute="trailing" id="WhW-yi-DkC"/>
                             <constraint firstItem="JMU-FQ-tF0" firstAttribute="top" secondItem="XUO-j6-TH2" secondAttribute="bottom" constant="1" id="XIV-rg-jLi"/>
-                            <constraint firstItem="Otk-oa-PcB" firstAttribute="top" secondItem="XUO-j6-TH2" secondAttribute="top" constant="20" id="ZZo-tb-nSe"/>
+                            <constraint firstItem="Otk-oa-PcB" firstAttribute="top" secondItem="wgi-tn-3fx" secondAttribute="top" constant="10" id="ZZo-tb-nSe"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Otk-oa-PcB" secondAttribute="trailing" constant="20" symbolic="YES" id="bWD-ma-dUS"/>
                             <constraint firstItem="wgi-tn-3fx" firstAttribute="trailing" secondItem="Id9-ad-Z94" secondAttribute="trailing" constant="21" id="bmg-Vi-dRg"/>
                             <constraint firstItem="zKJ-Ch-T7e" firstAttribute="leading" secondItem="wgi-tn-3fx" secondAttribute="leading" constant="12" id="cRV-sT-oEG"/>
@@ -1054,7 +1054,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="74" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -1295,7 +1295,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Mj2-iv-vfZ"/>
-        <segue reference="nEl-BG-wrS"/>
+        <segue reference="gAP-T7-MBM"/>
+        <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>
