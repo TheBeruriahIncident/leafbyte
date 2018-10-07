@@ -620,9 +620,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2Z-fV-jwP">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atb-RN-ny0">
                                 <rect key="frame" x="0.0" y="64" width="375" height="776"/>
                                 <subviews>
@@ -882,13 +879,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="q2Z-fV-jwP" secondAttribute="leading" id="GbX-jw-Sa5"/>
                             <constraint firstItem="bzd-wJ-GYf" firstAttribute="trailing" secondItem="kMV-EV-6eU" secondAttribute="trailing" id="IqR-r8-9SL"/>
                             <constraint firstItem="kMV-EV-6eU" firstAttribute="leading" secondItem="bzd-wJ-GYf" secondAttribute="leading" id="JUO-rn-Loc"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="trailing" secondItem="bzd-wJ-GYf" secondAttribute="trailing" id="Ne5-BX-g0k"/>
-                            <constraint firstItem="q2Z-fV-jwP" firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="P5c-9M-oFv"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="top" secondItem="bzd-wJ-GYf" secondAttribute="top" id="SYu-Sr-PaB"/>
-                            <constraint firstItem="q2Z-fV-jwP" firstAttribute="top" secondItem="Pet-gA-Fqc" secondAttribute="top" id="T6X-vw-cPp"/>
                             <constraint firstAttribute="trailing" secondItem="Atb-RN-ny0" secondAttribute="trailing" id="U8b-a6-Nbt"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="leading" secondItem="bzd-wJ-GYf" secondAttribute="leading" id="Yhn-rG-CwX"/>
                             <constraint firstItem="Atb-RN-ny0" firstAttribute="trailing" secondItem="bzd-wJ-GYf" secondAttribute="trailing" id="flN-y2-m7Q"/>
