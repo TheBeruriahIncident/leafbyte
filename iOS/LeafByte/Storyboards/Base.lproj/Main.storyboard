@@ -217,13 +217,13 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="44" width="375" height="513"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="493"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7I-Wp-QLc" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="20" width="375" height="473"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="-20" width="375" height="493"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -247,11 +247,8 @@
                                     <constraint firstItem="Sfh-f1-P2L" firstAttribute="top" secondItem="fcW-8Z-FmF" secondAttribute="top" id="uqT-1z-vNl"/>
                                 </constraints>
                             </scrollView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kay-pt-SHA">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="64" width="73" height="33"/>
+                                <rect key="frame" x="12" y="74" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -295,8 +292,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fcW-8Z-FmF" firstAttribute="top" secondItem="kay-pt-SHA" secondAttribute="bottom" id="0xP-iV-5Uy"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="top" secondItem="LlW-OF-SZu" secondAttribute="top" symbolic="YES" id="47J-YG-h8o"/>
+                            <constraint firstItem="fcW-8Z-FmF" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" id="0xP-iV-5Uy"/>
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" constant="66" id="6gn-Mo-x4v"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="trailing" secondItem="8Uc-b0-2VM" secondAttribute="trailing" id="7sC-CZ-NHl"/>
                             <constraint firstItem="X9Q-JC-Czl" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" constant="12" id="9Er-IL-6VD"/>
@@ -304,15 +300,15 @@
                             <constraint firstItem="U3R-Nq-htd" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" constant="78" id="B3S-KT-RRN"/>
                             <constraint firstItem="C16-Ki-FNI" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="GMo-CS-ghn"/>
                             <constraint firstItem="fcW-8Z-FmF" firstAttribute="leading" secondItem="8Uc-b0-2VM" secondAttribute="leading" id="KQw-L6-1Oj"/>
-                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="kay-pt-SHA" secondAttribute="bottom" constant="20" id="MEu-xz-IqO"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="NY7-yG-MwL"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="R7r-LH-na8"/>
+                            <constraint firstItem="X9Q-JC-Czl" firstAttribute="top" secondItem="8Uc-b0-2VM" secondAttribute="top" constant="10" id="MEu-xz-IqO"/>
+                            <constraint firstItem="8Uc-b0-2VM" firstAttribute="leading" secondItem="fcW-8Z-FmF" secondAttribute="leading" id="NY7-yG-MwL"/>
+                            <constraint firstItem="8Uc-b0-2VM" firstAttribute="trailing" secondItem="fcW-8Z-FmF" secondAttribute="trailing" id="R7r-LH-na8"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="bottom" secondItem="5RZ-7f-3CS" secondAttribute="bottom" id="RPh-iA-Eaa"/>
                             <constraint firstItem="0jp-qd-ypR" firstAttribute="leading" secondItem="LlW-OF-SZu" secondAttribute="leadingMargin" constant="1" id="YoG-Ts-SzH"/>
                             <constraint firstAttribute="bottom" secondItem="C16-Ki-FNI" secondAttribute="bottom" constant="55" id="e4J-Ir-n0K"/>
                             <constraint firstAttribute="trailing" secondItem="5RZ-7f-3CS" secondAttribute="trailing" constant="21" id="hDL-K7-hen"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="lcq-qV-e0L"/>
-                            <constraint firstItem="kay-pt-SHA" firstAttribute="centerX" secondItem="C16-Ki-FNI" secondAttribute="centerX" id="tBP-an-AHT"/>
+                            <constraint firstItem="8Uc-b0-2VM" firstAttribute="centerX" secondItem="U3R-Nq-htd" secondAttribute="centerX" id="lcq-qV-e0L"/>
+                            <constraint firstItem="8Uc-b0-2VM" firstAttribute="centerX" secondItem="C16-Ki-FNI" secondAttribute="centerX" id="tBP-an-AHT"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="X9Q-JC-Czl" secondAttribute="trailing" constant="20" symbolic="YES" id="taR-eG-ubI"/>
                             <constraint firstAttribute="bottom" secondItem="fcW-8Z-FmF" secondAttribute="bottom" constant="110" id="vDs-Aq-ZYG"/>
                             <constraint firstItem="5RZ-7f-3CS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0jp-qd-ypR" secondAttribute="trailing" constant="8" symbolic="YES" id="wmQ-eq-FZn"/>
