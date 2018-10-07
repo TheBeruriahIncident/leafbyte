@@ -41,8 +41,8 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToNextSampleNumber = [defaultDatasetName: defaultNextSampleNumber]
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUserIdToGoogleSpreadsheetId = [String: [String: String]]()
-    var imageSaveLocation = SaveLocation.none
-    var measurementSaveLocation = SaveLocation.none
+    var imageSaveLocation = SaveLocation.local
+    var measurementSaveLocation = SaveLocation.local
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var useBarcode = false
