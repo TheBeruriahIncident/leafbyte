@@ -622,13 +622,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Measurement Save Location Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Data Save Location Label">
                                                 <rect key="frame" x="114" y="30" width="147" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Measurement Save Location Control">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8gj-2h-2Ic" userLabel="Data Save Location Control">
                                                 <rect key="frame" x="47" y="53" width="281" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="40x-gW-9WX"/>
@@ -704,6 +704,7 @@
                                                 <rect key="frame" x="229" y="322" width="24" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="849-OD-gfG"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="X1Q-ES-s6E"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -859,7 +860,6 @@
                                     <constraint firstItem="kHP-PA-Tth" firstAttribute="leading" secondItem="Atb-RN-ny0" secondAttribute="leading" id="Jeb-Q4-FzT"/>
                                     <constraint firstAttribute="bottom" secondItem="kHP-PA-Tth" secondAttribute="bottom" constant="-64" id="Ntn-Sc-1bu"/>
                                     <constraint firstItem="kHP-PA-Tth" firstAttribute="top" secondItem="Atb-RN-ny0" secondAttribute="top" id="RFd-5w-dpG"/>
-                                    <constraint firstItem="kHP-PA-Tth" firstAttribute="top" secondItem="Atb-RN-ny0" secondAttribute="top" id="UcM-iI-QRS"/>
                                     <constraint firstAttribute="trailing" secondItem="kHP-PA-Tth" secondAttribute="trailing" id="pLV-Zk-CN7"/>
                                 </constraints>
                             </scrollView>
