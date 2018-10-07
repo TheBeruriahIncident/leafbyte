@@ -1013,9 +1013,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7r-i1-MtO">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fQ-lo-BNS" userLabel="Clear Scale Button">
                                 <rect key="frame" x="158.5" y="619" width="58" height="29"/>
                                 <constraints>
@@ -1057,7 +1054,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="64" width="73" height="33"/>
+                                <rect key="frame" x="12" y="74" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -1093,11 +1090,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" secondItem="Odx-Xc-7pu" secondAttribute="trailing" constant="21" id="1Fw-K4-oIy"/>
-                            <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" constant="20" id="6iz-mj-4LZ"/>
+                            <constraint firstItem="2WT-re-HH5" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="top" constant="10" id="6iz-mj-4LZ"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="centerX" secondItem="wTv-BJ-FVQ" secondAttribute="centerX" id="7mU-5N-vQj"/>
                             <constraint firstItem="yEU-EW-1AP" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6Mb-ZC-YBF" secondAttribute="trailing" id="Ddx-cj-Ksa"/>
-                            <constraint firstItem="h7r-i1-MtO" firstAttribute="leading" secondItem="wTv-BJ-FVQ" secondAttribute="leading" id="EpS-sP-wJv"/>
-                            <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="h7r-i1-MtO" secondAttribute="bottom" id="Epj-uZ-blM"/>
+                            <constraint firstItem="aFd-8f-9XM" firstAttribute="top" secondItem="yEU-EW-1AP" secondAttribute="top" id="Epj-uZ-blM"/>
                             <constraint firstAttribute="bottom" secondItem="Odx-Xc-7pu" secondAttribute="bottom" constant="19" id="GRx-2r-w69"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yEU-EW-1AP" secondAttribute="leading" id="IZ0-6m-Q41"/>
                             <constraint firstAttribute="bottom" secondItem="7fQ-lo-BNS" secondAttribute="bottom" constant="19" id="Jrx-oN-9n6"/>
@@ -1106,11 +1102,9 @@
                             <constraint firstAttribute="bottom" secondItem="0YM-1m-Hod" secondAttribute="bottom" constant="19" id="Wou-UT-2IR"/>
                             <constraint firstItem="Odx-Xc-7pu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wTv-BJ-FVQ" secondAttribute="leading" constant="20" symbolic="YES" id="XzA-q3-28K"/>
                             <constraint firstItem="6Mb-ZC-YBF" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" id="fe5-9w-lNj"/>
-                            <constraint firstItem="h7r-i1-MtO" firstAttribute="top" secondItem="wTv-BJ-FVQ" secondAttribute="top" id="h5F-QV-8Vi"/>
                             <constraint firstItem="7fQ-lo-BNS" firstAttribute="top" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="3" id="lPo-zq-0ZE"/>
                             <constraint firstItem="2WT-re-HH5" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="12" id="mby-JI-lbT"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2WT-re-HH5" secondAttribute="trailing" constant="20" symbolic="YES" id="rPt-1F-b7L"/>
-                            <constraint firstAttribute="trailing" secondItem="h7r-i1-MtO" secondAttribute="trailing" id="s0x-Sm-itT"/>
                             <constraint firstItem="0YM-1m-Hod" firstAttribute="leading" secondItem="yEU-EW-1AP" secondAttribute="leading" constant="16" id="tRl-3a-STs"/>
                             <constraint firstAttribute="trailing" secondItem="aFd-8f-9XM" secondAttribute="trailing" id="tjz-PI-PVE"/>
                             <constraint firstItem="aFd-8f-9XM" firstAttribute="bottom" secondItem="6Mb-ZC-YBF" secondAttribute="bottom" constant="-49" id="w8m-vX-EhP" userLabel="bottom = Gesture Recognizing View.bottom + 110"/>
