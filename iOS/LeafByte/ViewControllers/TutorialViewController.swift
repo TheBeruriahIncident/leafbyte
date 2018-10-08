@@ -14,6 +14,10 @@ final class TutorialViewController: UIViewController {
     // These are passed from the main menu view.
     var settings: Settings!
     
+    // MARK: - Outlets
+    
+    @IBOutlet weak var tutorialSection6: UITextView!
+    
     // MARK: - Actions
 
     @IBAction func goHome(_ sender: Any) {
@@ -24,6 +28,9 @@ final class TutorialViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let linkedString = NSMutableAttributedString(attributedString: tutorialSection6.attributedText).addLink(text: "the website", url: "https://zoegp.science/leafbyte")
+        tutorialSection6.attributedText = linkedString
         
         smoothTransitions(self: self)
     }

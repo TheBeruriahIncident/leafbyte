@@ -224,13 +224,13 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fcW-8Z-FmF" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="64" width="375" height="493"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="537"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7I-Wp-QLc" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="537"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-f1-P2L" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="537"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -255,7 +255,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9Q-JC-Czl" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="74" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -407,22 +407,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUO-j6-TH2" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="64" width="375" height="452"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="496"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-Yh-WUw" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="452"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vz2-Bn-w9W" userLabel="User Drawing">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="452"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nfp-9O-9PC" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="452"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EYm-Xs-kTB" userLabel="Leaf Holes">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="452"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZhN-ja-Acn" userLabel="Markings">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="452"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="496"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -456,10 +456,10 @@
                                 </constraints>
                             </scrollView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="seQ-tA-Ei2">
-                                <rect key="frame" x="0.0" y="64" width="375" height="452"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="496"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Otk-oa-PcB" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="74" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -520,7 +520,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLK-Tc-phh" userLabel="Notes Label">
-                                <rect key="frame" x="12" y="107" width="52" height="21"/>
+                                <rect key="frame" x="12" y="63" width="52" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -528,7 +528,7 @@
                                 <size key="shadowOffset" width="1" height="-1"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Igz-Jt-RJ9">
-                                <rect key="frame" x="63" y="102.5" width="227" height="30"/>
+                                <rect key="frame" x="63" y="58.5" width="227" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="227" id="YFh-V8-rSV"/>
                                 </constraints>
@@ -937,56 +937,106 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LeafByte lets you quickly and accurately measure leaf area and herbivory." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idG-FB-9Wd">
-                                <rect key="frame" x="16" y="76" width="343" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We use images of leaves like this one:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BxQ-eA-kdz">
-                                <rect key="frame" x="16" y="138" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1E-qx-xCa">
-                                <rect key="frame" x="16" y="343" width="343" height="93"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Note that the leaf is within four dots that form a square of known size (the "scale"). This lets us correct for the angle the image was taken at and determine absolute sizes.*</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You can take a photo or use an image you already have. For the tutorial, we'll just use this image." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bjl-6p-u5u">
-                                <rect key="frame" x="16" y="453" width="343" height="73"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="*See [https://zoegp.science/leafbyte] for a printout with a scale and other details and tips." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iy9-X0-odq">
-                                <rect key="frame" x="16" y="542" width="259" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x28-4n-nZt" userLabel="Complete Button">
-                                <rect key="frame" x="305" y="562" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Next"/>
-                                <connections>
-                                    <segue destination="bUK-Ir-gu8" kind="show" identifier="continueTutorial" id="n9g-fF-EuL"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Example Image" translatesAutoresizingMaskIntoConstraints="NO" id="qeI-uO-Fnf">
-                                <rect key="frame" x="83" y="176" width="174" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KIA-8I-nbj">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xK-x6-P4B" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="570"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte lets you quickly and accurately measure leaf area and herbivory." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idG-FB-9Wd" userLabel="Tutorial Section 1">
+                                                <rect key="frame" x="5" y="20" width="365" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We use images of leaves like this one:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BxQ-eA-kdz" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="5" y="77" width="365" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Example Image" translatesAutoresizingMaskIntoConstraints="NO" id="qeI-uO-Fnf" userLabel="Tutorial Section 3">
+                                                <rect key="frame" x="5" y="113.5" width="365" height="150"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="150" id="SC9-p2-E7n"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1E-qx-xCa" userLabel="Tutorial Section 4">
+                                                <rect key="frame" x="5" y="279.5" width="365" height="81.5"/>
+                                                <string key="text">Note that the leaf is within four dots that form a square of known size (the "scale"). This lets us correct for the angle the image was taken at and determine absolute sizes.*</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can take a photo or use an image you already have. For the tutorial, we'll just use this image." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bjl-6p-u5u" userLabel="Tutorial Section 5">
+                                                <rect key="frame" x="5" y="377" width="365" height="61"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="*See the website for a printout with a scale and other details and tips." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PcP-cl-rgK" userLabel="Tutorial Section 6">
+                                                <rect key="frame" x="0.0" y="498" width="375" height="62"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="62" id="gDp-QW-4fc"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x28-4n-nZt" userLabel="Complete Button">
+                                                <rect key="frame" x="318" y="448" width="32" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="R11-Xf-YQa"/>
+                                                </constraints>
+                                                <state key="normal" title="Next"/>
+                                                <connections>
+                                                    <segue destination="bUK-Ir-gu8" kind="show" identifier="continueTutorial" id="n9g-fF-EuL"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Bjl-6p-u5u" secondAttribute="trailing" constant="5" id="3gg-wf-Ea7"/>
+                                            <constraint firstItem="PcP-cl-rgK" firstAttribute="top" secondItem="Bjl-6p-u5u" secondAttribute="bottom" constant="60" id="4Hy-Ur-LFa"/>
+                                            <constraint firstAttribute="trailing" secondItem="PcP-cl-rgK" secondAttribute="trailing" id="6rH-xA-2GJ"/>
+                                            <constraint firstItem="Bjl-6p-u5u" firstAttribute="top" secondItem="y1E-qx-xCa" secondAttribute="bottom" constant="16" id="A2l-x1-dbk"/>
+                                            <constraint firstItem="BxQ-eA-kdz" firstAttribute="top" secondItem="idG-FB-9Wd" secondAttribute="bottom" constant="16" id="KJF-1n-Fnn"/>
+                                            <constraint firstItem="x28-4n-nZt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="20" symbolic="YES" id="NLJ-wM-QKR"/>
+                                            <constraint firstItem="idG-FB-9Wd" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="5" id="Nzc-OC-aRQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="idG-FB-9Wd" secondAttribute="trailing" constant="5" id="PN0-lG-ZKM"/>
+                                            <constraint firstAttribute="trailing" secondItem="qeI-uO-Fnf" secondAttribute="trailing" constant="5" id="Qri-ml-Rm3"/>
+                                            <constraint firstItem="qeI-uO-Fnf" firstAttribute="top" secondItem="BxQ-eA-kdz" secondAttribute="bottom" constant="16" id="S8W-Rr-NyD"/>
+                                            <constraint firstItem="PcP-cl-rgK" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" id="dBo-3S-N5f"/>
+                                            <constraint firstItem="y1E-qx-xCa" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="5" id="dRD-0j-Ac2"/>
+                                            <constraint firstAttribute="trailing" secondItem="BxQ-eA-kdz" secondAttribute="trailing" constant="5" id="dwJ-aH-j2h"/>
+                                            <constraint firstItem="y1E-qx-xCa" firstAttribute="top" secondItem="qeI-uO-Fnf" secondAttribute="bottom" constant="16" id="iId-RD-hDN"/>
+                                            <constraint firstItem="x28-4n-nZt" firstAttribute="top" secondItem="Bjl-6p-u5u" secondAttribute="bottom" constant="10" id="lYm-Y9-X3u"/>
+                                            <constraint firstAttribute="trailing" secondItem="x28-4n-nZt" secondAttribute="trailing" constant="25" id="lt2-nL-Yex"/>
+                                            <constraint firstItem="Bjl-6p-u5u" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="5" id="o59-hl-Nm5"/>
+                                            <constraint firstItem="qeI-uO-Fnf" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="5" id="qje-Fx-RQF"/>
+                                            <constraint firstItem="BxQ-eA-kdz" firstAttribute="leading" secondItem="3xK-x6-P4B" secondAttribute="leading" constant="5" id="r3l-Ja-ca4"/>
+                                            <constraint firstAttribute="bottom" secondItem="PcP-cl-rgK" secondAttribute="bottom" constant="10" id="t4w-cV-Mh2"/>
+                                            <constraint firstAttribute="trailing" secondItem="y1E-qx-xCa" secondAttribute="trailing" constant="5" id="uJ9-aK-aav"/>
+                                            <constraint firstItem="idG-FB-9Wd" firstAttribute="top" secondItem="3xK-x6-P4B" secondAttribute="top" constant="20" id="uwp-D5-aCo"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="3xK-x6-P4B" firstAttribute="width" secondItem="KIA-8I-nbj" secondAttribute="width" id="R0a-RT-Gzp"/>
+                                    <constraint firstItem="3xK-x6-P4B" firstAttribute="leading" secondItem="KIA-8I-nbj" secondAttribute="leading" id="dj1-hO-lqM"/>
+                                    <constraint firstItem="3xK-x6-P4B" firstAttribute="top" secondItem="KIA-8I-nbj" secondAttribute="top" id="rfC-Rc-Ech"/>
+                                    <constraint firstAttribute="bottom" secondItem="3xK-x6-P4B" secondAttribute="bottom" id="tx9-C9-9vf"/>
+                                    <constraint firstAttribute="trailing" secondItem="3xK-x6-P4B" secondAttribute="trailing" id="y9K-8m-KCe"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wRd-5d-Siz" firstAttribute="trailing" secondItem="KIA-8I-nbj" secondAttribute="trailing" id="7bf-E3-vat"/>
+                            <constraint firstItem="wRd-5d-Siz" firstAttribute="bottom" secondItem="KIA-8I-nbj" secondAttribute="bottom" id="IsG-9G-nKW"/>
+                            <constraint firstItem="KIA-8I-nbj" firstAttribute="leading" secondItem="wRd-5d-Siz" secondAttribute="leading" id="QBO-cL-J4t"/>
+                            <constraint firstItem="KIA-8I-nbj" firstAttribute="top" secondItem="wRd-5d-Siz" secondAttribute="top" id="a3b-oc-NTt"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="wRd-5d-Siz"/>
                     </view>
                     <toolbarItems/>
@@ -1003,6 +1053,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tutorialSection6" destination="PcP-cl-rgK" id="XYe-dd-la0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bvA-H1-l0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="8w8-3J-pKY" userLabel="Exit" sceneMemberID="exit"/>
@@ -1066,16 +1119,16 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFd-8f-9XM" userLabel="Gesture Recognizing View">
-                                <rect key="frame" x="0.0" y="64" width="375" height="459"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="503"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-5a-U1t" userLabel="Scrollable View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wST-nu-Esm" userLabel="Base Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xu9-FW-Xu6" userLabel="Scale Marking">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1110,7 +1163,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WT-re-HH5" userLabel="Sample Number Button">
-                                <rect key="frame" x="12" y="74" width="73" height="33"/>
+                                <rect key="frame" x="12" y="30" width="73" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <size key="titleShadowOffset" width="1" height="-1"/>
                                 <state key="normal" title="Sample X">
@@ -1366,7 +1419,7 @@
         <image name="Undo" width="32" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="n9g-fF-EuL"/>
+        <segue reference="Mj2-iv-vfZ"/>
         <segue reference="euu-36-foe"/>
     </inferredMetricsTieBreakers>
 </document>
