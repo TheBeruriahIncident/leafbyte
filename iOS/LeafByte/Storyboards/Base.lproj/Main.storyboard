@@ -362,10 +362,10 @@
             </objects>
             <point key="canvasLocation" x="977" y="928"/>
         </scene>
-        <!--Thresholding Help View Controller-->
+        <!--Background Removal Help View Controller-->
         <scene sceneID="KtJ-ek-1IP">
             <objects>
-                <viewController id="bVw-Fm-rhy" userLabel="Thresholding Help View Controller" sceneMemberID="viewController">
+                <viewController id="bVw-Fm-rhy" userLabel="Background Removal Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vkR-CT-iZw">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
