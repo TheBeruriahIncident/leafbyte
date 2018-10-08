@@ -1290,24 +1290,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tzq-Rm-Wfp">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tzq-Rm-Wfp">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRY-Yb-NO3" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="292" height="163"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jRY-Yb-NO3" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="216.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47" userLabel="Tutorial Section 1">
-                                                <rect key="frame" x="13" y="13" width="288" height="101.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="288" id="Lat-T6-Xa5"/>
-                                                </constraints>
+                                                <rect key="frame" x="13" y="13" width="274" height="122"/>
                                                 <string key="text">LeafByte tries to automatically identify the four dots of the scale.* If the wrong shapes are chosen, you can tap Change Scale and tap all four dots to correctly identify the scale.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="*It assumes that the largest largest shape in the image is the leaf, and the next four largest are the scale dots." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOo-eh-LpA" userLabel="Tutorial Section 2">
-                                                <rect key="frame" x="13" y="133" width="271" height="52"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*It assumes that the largest largest shape in the image is the leaf, and the next four largest are the scale dots." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOo-eh-LpA" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="13" y="153" width="274" height="50.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
