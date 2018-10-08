@@ -1287,11 +1287,11 @@
             <objects>
                 <viewController id="oJr-2p-Elg" userLabel="Scale Identification Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DYp-jC-BAx">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="220"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tzq-Rm-Wfp">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="220"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jRY-Yb-NO3" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="216.5"/>
@@ -1340,9 +1340,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="E1c-5i-snk"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="200"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="220"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="200"/>
+                    <size key="freeformSize" width="300" height="220"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebj-2Y-9T5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
