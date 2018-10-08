@@ -367,36 +367,67 @@
             <objects>
                 <viewController id="bVw-Fm-rhy" userLabel="Thresholding Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vkR-CT-iZw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3uy-K5-z41">
-                                <rect key="frame" x="16" y="20" width="279" height="127"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different parts of the image to try to do this automatically, but you can move the slider to tweak.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP">
-                                <rect key="frame" x="21" y="169" width="279" height="208"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="faf-WO-Ggj">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QRN-ON-fuS" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="288"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="13" y="153" width="274" height="122"/>
+                                                <string key="text">(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3uy-K5-z41" userLabel="Tutorial Section 1">
+                                                <rect key="frame" x="13" y="13" width="274" height="122"/>
+                                                <string key="text">First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different parts of the image to try to do this automatically, but you can move the slider to tweak.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="5k2-Es-xYP" firstAttribute="top" secondItem="3uy-K5-z41" secondAttribute="bottom" constant="18" id="4Rc-b4-fD6"/>
+                                            <constraint firstItem="3uy-K5-z41" firstAttribute="leading" secondItem="QRN-ON-fuS" secondAttribute="leading" constant="13" id="7XZ-sx-kNX"/>
+                                            <constraint firstAttribute="bottom" secondItem="5k2-Es-xYP" secondAttribute="bottom" constant="13" id="RGm-08-sqi"/>
+                                            <constraint firstItem="3uy-K5-z41" firstAttribute="top" secondItem="QRN-ON-fuS" secondAttribute="top" constant="13" id="Riq-3X-nmV"/>
+                                            <constraint firstItem="5k2-Es-xYP" firstAttribute="leading" secondItem="QRN-ON-fuS" secondAttribute="leading" constant="13" id="Sze-sW-B4a"/>
+                                            <constraint firstAttribute="trailing" secondItem="5k2-Es-xYP" secondAttribute="trailing" constant="13" id="f34-eO-6eg"/>
+                                            <constraint firstAttribute="trailing" secondItem="3uy-K5-z41" secondAttribute="trailing" constant="13" id="hDe-oe-aLH"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="QRN-ON-fuS" firstAttribute="top" secondItem="faf-WO-Ggj" secondAttribute="top" id="8ZX-8G-ZYd"/>
+                                    <constraint firstItem="QRN-ON-fuS" firstAttribute="width" secondItem="faf-WO-Ggj" secondAttribute="width" id="MhI-XV-kIT"/>
+                                    <constraint firstAttribute="bottom" secondItem="QRN-ON-fuS" secondAttribute="bottom" id="XXM-fv-PUw"/>
+                                    <constraint firstItem="QRN-ON-fuS" firstAttribute="leading" secondItem="faf-WO-Ggj" secondAttribute="leading" id="alG-JT-UgE"/>
+                                    <constraint firstAttribute="trailing" secondItem="QRN-ON-fuS" secondAttribute="trailing" id="r7x-oC-reL"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xnA-VR-1qA" firstAttribute="bottom" secondItem="faf-WO-Ggj" secondAttribute="bottom" id="LEc-tM-PGv"/>
+                            <constraint firstItem="xnA-VR-1qA" firstAttribute="trailing" secondItem="faf-WO-Ggj" secondAttribute="trailing" id="MaK-fv-FlN"/>
+                            <constraint firstItem="faf-WO-Ggj" firstAttribute="top" secondItem="xnA-VR-1qA" secondAttribute="top" id="OIu-l4-Qoq"/>
+                            <constraint firstItem="faf-WO-Ggj" firstAttribute="leading" secondItem="xnA-VR-1qA" secondAttribute="leading" id="PUn-8V-KUK"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="xnA-VR-1qA"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="300"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="500"/>
+                    <size key="freeformSize" width="300" height="300"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrm-ec-C4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="629" y="1627"/>
+            <point key="canvasLocation" x="628.79999999999995" y="1626.3868065967017"/>
         </scene>
         <!--Area Calculation View Controller-->
         <scene sceneID="RBc-bI-pyN">
@@ -1255,8 +1286,8 @@
         <scene sceneID="H7e-Ph-8OO">
             <objects>
                 <viewController id="oJr-2p-Elg" userLabel="Scale Identification Help View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="DYp-jC-BAx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="DYp-jC-BAx">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJo-qK-h47">
@@ -1286,9 +1317,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="E1c-5i-snk"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="300"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="500"/>
+                    <size key="freeformSize" width="300" height="300"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebj-2Y-9T5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1299,7 +1330,7 @@
             <objects>
                 <viewController id="gAc-Aq-5u4" userLabel="Area Calculation Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bbE-Y3-Btg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-W8-Way">
@@ -1329,9 +1360,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="fXY-Qz-jK8"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="300"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="500"/>
+                    <size key="freeformSize" width="300" height="300"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mA4-9i-fhx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1378,35 +1409,66 @@
             <objects>
                 <viewController id="UYa-D0-4JW" userLabel="Fuzziness Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KVK-uv-tbz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="210"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfU-Kl-doO">
-                                <rect key="frame" x="16" y="20" width="279" height="127"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">This warning means that slight movements in the slider will have exaggerated effect on the image, which may lead to inaccurate measurements.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fuzzy pictures are generally caused by bad lighting, motion, or a poor quality camera." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq">
-                                <rect key="frame" x="20" y="186" width="279" height="127"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SSB-89-oez">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="210"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctI-y2-dqB" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="206.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fuzzy pictures are generally caused by bad lighting, motion, or a poor quality camera." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="13" y="132.5" width="274" height="61"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfU-Kl-doO" userLabel="Tutorial Section 1">
+                                                <rect key="frame" x="13" y="13" width="274" height="101.5"/>
+                                                <string key="text">This warning means that slight movements in the slider will have exaggerated effect on the image, which may lead to inaccurate measurements.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="nfU-Kl-doO" firstAttribute="leading" secondItem="ctI-y2-dqB" secondAttribute="leading" constant="13" id="8nG-ep-btO"/>
+                                            <constraint firstAttribute="trailing" secondItem="nfU-Kl-doO" secondAttribute="trailing" constant="13" id="KfP-ek-bx0"/>
+                                            <constraint firstAttribute="bottom" secondItem="gtX-xI-Emq" secondAttribute="bottom" constant="13" id="MFa-gW-egI"/>
+                                            <constraint firstAttribute="trailing" secondItem="gtX-xI-Emq" secondAttribute="trailing" constant="13" id="Y92-4h-Icr"/>
+                                            <constraint firstItem="gtX-xI-Emq" firstAttribute="top" secondItem="nfU-Kl-doO" secondAttribute="bottom" constant="18" id="Zkn-G1-WI5"/>
+                                            <constraint firstItem="nfU-Kl-doO" firstAttribute="top" secondItem="ctI-y2-dqB" secondAttribute="top" constant="13" id="kuO-iX-Xp5"/>
+                                            <constraint firstItem="gtX-xI-Emq" firstAttribute="leading" secondItem="ctI-y2-dqB" secondAttribute="leading" constant="13" id="oeK-jT-NkL"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ctI-y2-dqB" firstAttribute="width" secondItem="SSB-89-oez" secondAttribute="width" id="0TM-WU-D1c"/>
+                                    <constraint firstItem="ctI-y2-dqB" firstAttribute="top" secondItem="SSB-89-oez" secondAttribute="top" id="EPI-va-zkq"/>
+                                    <constraint firstItem="ctI-y2-dqB" firstAttribute="leading" secondItem="SSB-89-oez" secondAttribute="leading" id="MoJ-Gi-QYA"/>
+                                    <constraint firstAttribute="trailing" secondItem="ctI-y2-dqB" secondAttribute="trailing" id="ldO-lv-ilK"/>
+                                    <constraint firstAttribute="bottom" secondItem="ctI-y2-dqB" secondAttribute="bottom" id="uRf-Nj-2fW"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SSB-89-oez" firstAttribute="bottom" secondItem="7Zb-eo-vXw" secondAttribute="bottom" id="CLU-tj-lOC"/>
+                            <constraint firstItem="SSB-89-oez" firstAttribute="leading" secondItem="7Zb-eo-vXw" secondAttribute="leading" id="Rvc-e4-yFF"/>
+                            <constraint firstItem="SSB-89-oez" firstAttribute="top" secondItem="7Zb-eo-vXw" secondAttribute="top" id="gGe-V1-OMe"/>
+                            <constraint firstItem="SSB-89-oez" firstAttribute="trailing" secondItem="7Zb-eo-vXw" secondAttribute="trailing" id="igu-CV-ZK9"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="7Zb-eo-vXw"/>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="500"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="210"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="500"/>
+                    <size key="freeformSize" width="300" height="210"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zni-Cg-ESA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1235" y="1627"/>
+            <point key="canvasLocation" x="1233.5999999999999" y="1626.3868065967017"/>
         </scene>
     </scenes>
     <resources>
