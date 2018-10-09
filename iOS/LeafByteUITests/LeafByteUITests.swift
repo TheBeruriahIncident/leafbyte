@@ -19,34 +19,34 @@ class LeafByteUITests: XCTestCase {
     }
     
     func testBasicFlow() {
-        // Main Menu
+        // Main Menu, tap Settings
         let app = XCUIApplication()
         app.buttons["Settings"].tap()
         
-        // Settings
-        let scrollViewsQuery = app.scrollViews
-        scrollViewsQuery.children(matching: .segmentedControl).element(boundBy: 0).buttons["Files App"].tap()
-        scrollViewsQuery.children(matching: .segmentedControl).element(boundBy: 1).buttons["Files App"].tap()
+        // Settings, tap None for both types of saving, tap Back
+        let elementsQuery = app.scrollViews.otherElements
+        elementsQuery.children(matching: .segmentedControl).element(boundBy: 0).buttons["None"].tap()
+        elementsQuery.children(matching: .segmentedControl).element(boundBy: 1).buttons["None"].tap()
         app.navigationBars["Settings"].buttons["Back"].tap()
         
-        // Main Menu
+        // Main Menu, tap Tutorial
         app.buttons["Tutorial"].tap()
         
-        // Tutorial
+        // Tutorial, tap Next
+        elementsQuery.buttons["Next"].tap()
+        
+        // Background Removal, dismiss popover and tap next
+        let popoverdismissregionElement = app/*@START_MENU_TOKEN@*/.otherElements["PopoverDismissRegion"]/*[[".otherElements[\"dismiss popup\"]",".otherElements[\"PopoverDismissRegion\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        popoverdismissregionElement.tap()
         let nextButton = app.buttons["Next"]
         nextButton.tap()
         
-        // Background Removal
-        let popoverdismissregionElement = app/*@START_MENU_TOKEN@*/.otherElements["PopoverDismissRegion"]/*[[".otherElements[\"dismiss popup\"]",".otherElements[\"PopoverDismissRegion\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        // Scale Identification, dismiss popover and tap next
         popoverdismissregionElement.tap()
         nextButton.tap()
         
-        // Scale Identification
+        // Background Removal, dismiss popover and tap the results text (which must have specific values)
         popoverdismissregionElement.tap()
-        nextButton.tap()
-        
-        // Results
-        popoverdismissregionElement.tap()
-        XCTAssert(app.staticTexts["Total Leaf Area= 521.427 cm2\nConsumed Leaf Area= 14.364 cm2 \nPercent Consumed= 2.755%"].exists)
+        app.staticTexts["Total Leaf Area= 10.011 cm2\nConsumed Leaf Area= 0.143 cm2\nPercent Consumed= 1.423%"].tap()
     }
 }
