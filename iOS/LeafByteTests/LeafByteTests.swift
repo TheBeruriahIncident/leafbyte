@@ -66,11 +66,17 @@ final class LeafByteTests: XCTestCase {
     
     func testSettingsSerialization() {
         let settings = Settings()
-        settings.measurementSaveLocation = .googleDrive
-        settings.imageSaveLocation = .googleDrive
         settings.datasetName = "The Tale of Genji"
+        settings.datasetNameToEpochTimeOfLastUse = ["Le Morte a'Arthur": 1485, "The Tale of Genji": 1021]
+        settings.datasetNameToNextSampleNumber = ["Le Morte a'Arthur": 10, "The Tale of Genji": 45]
+        settings.datasetNameToUserIdToGoogleSpreadsheetId = ["Le Morte a'Arthur": ["adamc": "a"], "The Tale of Genji": ["zoegp": "b", "adamc": "c"]]
+        settings.imageSaveLocation = .googleDrive
+        settings.measurementSaveLocation = .googleDrive
         settings.saveGpsData = true
+        settings.scaleMarkLength = 32
+        settings.useBarcode = true
         settings.useBlackBackground = true
+        settings.userIdToTopLevelGoogleFolderId = ["adamc": "d", "zoegp": "e"]
         
         let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
         settings.serialize(at: url)
