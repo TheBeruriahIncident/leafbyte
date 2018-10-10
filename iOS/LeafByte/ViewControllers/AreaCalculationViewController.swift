@@ -205,6 +205,57 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         // Setup to get a callback when return is pressed on a keyboard.
         // Note that current iOS is buggy and doesn't show the return button for number keyboards even when enabled; this aims to handle that case once it works.
         notesField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    @objc func deviceRotated(){
+        print("deviceRotated")
+        print(gestureRecognizingView.contentSize)
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
+        print(gestureRecognizingView.contentSize)
+        
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+            // Resize other things
+        }
+        if UIDevice.current.orientation.isPortrait {
+            print("Portrait")
+            // Resize other things
+        }
+    }
+    
+    
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotate(from: fromInterfaceOrientation)
+        print("didRotate")
+        print(gestureRecognizingView.contentSize)
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
+        print(gestureRecognizingView.contentSize)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("viewDidLayoutSubviews")
+        print(gestureRecognizingView.contentSize)
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
+        print(gestureRecognizingView.contentSize)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("viewWillTransition")
+        print(gestureRecognizingView.contentSize)
+        print(gestureRecognizingView.zoomScale)
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
+        print(gestureRecognizingView.contentSize)
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        print("scrollViewDidEndZooming")
+        print(gestureRecognizingView.contentSize)
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
+        print(gestureRecognizingView.contentSize)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -283,6 +334,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // Note that these callbacks don't run when in scroll mode, because gestureRecognizingView isn't enabled for user interaction.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
+        
         // If a user taps outside of the keyboard, close the keyboard.
         dismissKeyboard()
         
