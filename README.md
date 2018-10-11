@@ -1,3 +1,3 @@
 # LeafByte
 
-LeafByte is an in-development iOS/Android app to allow scientists to measure herbivory.
+LeafByte is a mobile app to allow scientists to measure herbivory. The iOS app is complete (available soon on the App Store). The Android app is still in development.
