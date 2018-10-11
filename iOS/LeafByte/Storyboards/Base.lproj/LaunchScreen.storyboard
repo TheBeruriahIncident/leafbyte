@@ -52,14 +52,15 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJQ-XB-bjD" userLabel="Leaf Image">
                                 <rect key="frame" x="143.5" y="109" width="128" height="139"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="up8-F1-du7"/>
+                                    <constraint firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="bMo-MS-Sec"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="rMJ-TU-Ce2" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4Ag-2t-xyo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rMJ-TU-Ce2" secondAttribute="trailing" id="B8V-jb-34Q"/>
-                            <constraint firstItem="fJQ-XB-bjD" firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="Bgc-W2-rqN"/>
+                            <constraint firstItem="fJQ-XB-bjD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="M2C-wO-gRe"/>
                             <constraint firstItem="fJQ-XB-bjD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" constant="20" id="Tfb-5I-9Rz"/>
                             <constraint firstItem="rMJ-TU-Ce2" firstAttribute="top" secondItem="fJQ-XB-bjD" secondAttribute="bottom" id="azW-ny-c2B"/>
                             <constraint firstItem="rMJ-TU-Ce2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="m9d-Qm-SGX"/>
