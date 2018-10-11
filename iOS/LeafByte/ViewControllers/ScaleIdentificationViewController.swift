@@ -106,6 +106,12 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
         
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -157,14 +163,17 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
     }
     
-    private func getFixedImage() -> CGImage {
-        // The coordinate space is flipped for CI.
-        let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
-        let imageInsideScaleMarks = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
-        let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
-        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(imageInsideScaleMarks), x: sizeToAdjustTo, y: sizeToAdjustTo)
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        fixContentSize()
     }
     
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        fixContentSize()
+    }
     
     // MARK: - UIPopoverPresentationControllerDelegate overrides
     
@@ -176,6 +185,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return scrollableView
+    }
+    
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        fixContentSize(scale: scale)
     }
 
     // MARK: - UIResponder overrides
@@ -335,6 +349,14 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.finish(imageView: scaleMarkingView)
     }
     
+    private func getFixedImage() -> CGImage {
+        // The coordinate space is flipped for CI.
+        let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
+        let imageInsideScaleMarks = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
+        let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
+        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(imageInsideScaleMarks), x: sizeToAdjustTo, y: sizeToAdjustTo)
+    }
+    
     private func setScaleFound() {
         scaleStatusText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
     }
@@ -342,5 +364,22 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func setScaleNotFound() {
         scaleStatusText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
         drawMarkers()
+    }
+    
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    @objc func deviceRotated(){
+        fixContentSize()
+    }
+    
+    // If we don't have a scale already, infer it from how zoomed we are.
+    private func fixContentSize() {
+        fixContentSize(scale: gestureRecognizingView.zoomScale)
+    }
+    
+    // The layout engine is buggy and deals very poorly with scroll views after the screen is rotated and won't let you access the whole view, because the content size will be wrong.
+    // It gets even worse if you zoom while rotated.
+    // We need to fix the content size of the scroll view to be the size of the image, scaled by how much we're zoomed.
+    private func fixContentSize(scale: CGFloat) {
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
     }
 }

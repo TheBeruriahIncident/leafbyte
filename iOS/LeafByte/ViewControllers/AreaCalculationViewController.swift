@@ -209,53 +209,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
-    @objc func deviceRotated(){
-        print("deviceRotated")
-        print(gestureRecognizingView.contentSize)
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
-        print(gestureRecognizingView.contentSize)
-        
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-            // Resize other things
-        }
-        if UIDevice.current.orientation.isPortrait {
-            print("Portrait")
-            // Resize other things
-        }
-    }
-    
-    
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotate(from: fromInterfaceOrientation)
-        print("didRotate")
-        print(gestureRecognizingView.contentSize)
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
-        print(gestureRecognizingView.contentSize)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
-        print(gestureRecognizingView.contentSize)
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
-        print(gestureRecognizingView.contentSize)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        print("viewWillTransition")
-        print(gestureRecognizingView.contentSize)
-        print(gestureRecognizingView.zoomScale)
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
-        print(gestureRecognizingView.contentSize)
-    }
-    
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        print("scrollViewDidEndZooming")
-        print(gestureRecognizingView.contentSize)
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
-        print(gestureRecognizingView.contentSize)
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -318,6 +273,18 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         UIView.setAnimationsEnabled(true)
     }
     
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        fixContentSize()
+    }
+    
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        fixContentSize()
+    }
+    
     // MARK: - UIPopoverPresentationControllerDelegate overrides
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -330,12 +297,15 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         return scrollableView
     }
     
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        fixContentSize(scale: scale)
+    }
+    
     // MARK: - UIResponder overrides
     
     // Note that these callbacks don't run when in scroll mode, because gestureRecognizingView isn't enabled for user interaction.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * gestureRecognizingView.zoomScale, height: baseImageView.frame.height * gestureRecognizingView.zoomScale)
-        
         // If a user taps outside of the keyboard, close the keyboard.
         dismissKeyboard()
         
@@ -711,5 +681,22 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
         
         self.view.endEditing(true)
+    }
+    
+    // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
+    @objc func deviceRotated(){
+        fixContentSize()
+    }
+    
+    // If we don't have a scale already, infer it from how zoomed we are.
+    private func fixContentSize() {
+        fixContentSize(scale: gestureRecognizingView.zoomScale)
+    }
+    
+    // The layout engine is buggy and deals very poorly with scroll views after the screen is rotated and won't let you access the whole view, because the content size will be wrong.
+    // It gets even worse if you zoom while rotated.
+    // We need to fix the content size of the scroll view to be the size of the image, scaled by how much we're zoomed.
+    private func fixContentSize(scale: CGFloat) {
+        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
     }
 }
