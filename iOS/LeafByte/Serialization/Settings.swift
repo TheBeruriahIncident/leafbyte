@@ -13,6 +13,7 @@ final class Settings: NSObject, NSCoding {
     static let defaultDatasetName = "Herbivory Measurement"
     static let defaultNextSampleNumber = 1
     static let defaultScaleMarkLength = 10.0
+    static let defaultUnit = "cm"
     
     enum SaveLocation: String {
         case none = "none"
@@ -24,8 +25,9 @@ final class Settings: NSObject, NSCoding {
         static let datasetName = "datasetName"
         static let datasetNameToEpochTimeOfLastUse = "datasetNameToEpochTimeOfLastUse"
         static let datasetNameToNextSampleNumber = "datasetNameToNextSampleNumber"
+        static let datasetNameToUnit = "datasetNameToUnit"
         static let datasetNameToUserIdToGoogleFolderId = "datasetNameToUserIdToGoogleFolderId"
-        static let datasetNameToUserIdToGoogleSpreadsheetId = "datasetNameToUserIdToGoogleSpreadsheetId"
+        static let datasetNameToUnitToUserIdToGoogleSpreadsheetId = "datasetNameToUnitToUserIdToGoogleSpreadsheetId"
         static let imageSaveLocation = "imageSaveLocation"
         static let measurementSaveLocation = "measurementSaveLocation"
         static let saveGpsData = "saveGpsData"
@@ -39,8 +41,9 @@ final class Settings: NSObject, NSCoding {
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
     var datasetNameToEpochTimeOfLastUse = [String: Int]()
     var datasetNameToNextSampleNumber = [defaultDatasetName: defaultNextSampleNumber]
+    var datasetNameToUnit = [String: String]()
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
-    var datasetNameToUserIdToGoogleSpreadsheetId = [String: [String: String]]()
+    var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
     var imageSaveLocation = SaveLocation.local
     var measurementSaveLocation = SaveLocation.local
     var saveGpsData = false
@@ -64,11 +67,14 @@ final class Settings: NSObject, NSCoding {
         if let datasetNameToNextSampleNumber = decoder.decodeObject(forKey: PropertyKey.datasetNameToNextSampleNumber) as? [String: Int] {
             self.datasetNameToNextSampleNumber = datasetNameToNextSampleNumber
         }
+        if let datasetNameToUnit = decoder.decodeObject(forKey: PropertyKey.datasetNameToUnit) as? [String: String] {
+            self.datasetNameToUnit = datasetNameToUnit
+        }
         if let datasetNameToUserIdToGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId) as? [String: [String: String]] {
             self.datasetNameToUserIdToGoogleFolderId = datasetNameToUserIdToGoogleFolderId
         }
-        if let datasetNameToUserIdToGoogleSpreadsheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToUserIdToGoogleSpreadsheetId) as? [String: [String: String]] {
-            self.datasetNameToUserIdToGoogleSpreadsheetId = datasetNameToUserIdToGoogleSpreadsheetId
+        if let datasetNameToUnitToUserIdToGoogleSpreadsheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId) as? [String: [String: [String: String]]] {
+            self.datasetNameToUnitToUserIdToGoogleSpreadsheetId = datasetNameToUnitToUserIdToGoogleSpreadsheetId
         }
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
@@ -98,8 +104,9 @@ final class Settings: NSObject, NSCoding {
         coder.encode(datasetName, forKey: PropertyKey.datasetName)
         coder.encode(datasetNameToEpochTimeOfLastUse, forKey: PropertyKey.datasetNameToEpochTimeOfLastUse)
         coder.encode(datasetNameToNextSampleNumber, forKey: PropertyKey.datasetNameToNextSampleNumber)
+        coder.encode(datasetNameToUnit, forKey: PropertyKey.datasetNameToUnit)
         coder.encode(datasetNameToUserIdToGoogleFolderId, forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId)
-        coder.encode(datasetNameToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUserIdToGoogleSpreadsheetId)
+        coder.encode(datasetNameToUnitToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
         coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
@@ -119,8 +126,9 @@ final class Settings: NSObject, NSCoding {
         return datasetName == other.datasetName
             && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
             && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
+            && datasetNameToUnit == datasetNameToUnit
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleFolderId).isEqual(to: other.datasetNameToUserIdToGoogleFolderId)
-            && NSDictionary(dictionary: datasetNameToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUserIdToGoogleSpreadsheetId)
+            && NSDictionary(dictionary: datasetNameToUnitToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
             && imageSaveLocation == other.imageSaveLocation
             && measurementSaveLocation == other.measurementSaveLocation
             && saveGpsData == other.saveGpsData
@@ -142,11 +150,15 @@ final class Settings: NSObject, NSCoding {
     }
     
     func getGoogleSpreadsheetId(userId: String) -> String? {
-        return datasetNameToUserIdToGoogleSpreadsheetId[datasetName]?[userId]
+        return datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]?[getUnit()]?[userId]
     }
     
     func getTopLevelGoogleFolderId(userId: String) -> String? {
         return userIdToTopLevelGoogleFolderId[userId]
+    }
+    
+    func getUnit() -> String {
+        return datasetNameToUnit[datasetName] ?? Settings.defaultUnit
     }
     
     func getNextSampleNumber() -> Int {
@@ -186,11 +198,15 @@ final class Settings: NSObject, NSCoding {
     }
     
     func setGoogleSpreadsheetId(userId: String, googleSpreadsheetId: String?) {
-        if datasetNameToUserIdToGoogleSpreadsheetId[datasetName] == nil {
-            datasetNameToUserIdToGoogleSpreadsheetId[datasetName] = [String: String]()
+        if datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName] == nil {
+            datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName] = [String: [String: String]]()
         }
         
-        datasetNameToUserIdToGoogleSpreadsheetId[datasetName]![userId] = googleSpreadsheetId
+        if datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] == nil {
+            datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] = [String: String]()
+        }
+        
+        datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()]![userId] = googleSpreadsheetId
     }
     
     func setTopLevelGoogleFolderId(userId: String, topLevelGoogleFolderId: String?) {

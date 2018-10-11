@@ -948,6 +948,7 @@
                         <outlet property="saveGpsLabel" destination="PDu-AL-rj6" id="6W3-fH-uIo"/>
                         <outlet property="saveGpsNoteLabel" destination="SaJ-zx-PBS" id="Ll4-wO-fgv"/>
                         <outlet property="scaleMarkLength" destination="b7d-8V-V4U" id="sUv-0b-6sV"/>
+                        <outlet property="scaleMarkUnitButton" destination="ReC-JH-DuD" id="zLa-nx-v5I"/>
                         <outlet property="scrollView" destination="Atb-RN-ny0" id="4lg-05-Okg"/>
                         <outlet property="signOutOfGoogleButton" destination="KqO-AI-fbL" id="RDV-X8-wwc"/>
                         <outlet property="unitPicker" destination="1B7-Pc-Fre" id="x0J-oN-aiU"/>

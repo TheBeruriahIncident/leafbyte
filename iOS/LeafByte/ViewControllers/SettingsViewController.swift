@@ -39,6 +39,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var saveGpsLabel: UILabel!
     @IBOutlet weak var saveGpsNoteLabel: UILabel!
     
+    @IBOutlet weak var scaleMarkUnitButton: UIButton!
     @IBOutlet weak var previousDatasetButton: UIButton!
     @IBOutlet weak var signOutOfGoogleButton: UIButton!
     
@@ -58,8 +59,9 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
         
         settings.datasetName = newDatasetName
-        // Switch to the next sample number associated with this dataset.
+        // Switch to the next sample number and unit associated with this dataset.
         nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
+        scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
         settings.serialize()
         
         // Update the box, in case this was a fallback or via the picker.
@@ -81,8 +83,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func chooseUnit(_ sender: Any) {
         unitPicker.reloadAllComponents()
         
-        // TODO
-        let currentSelection = unitPickerData.index(of: "cm")
+        let currentSelection = unitPickerData.index(of: settings.getUnit())
         if currentSelection != nil {
             unitPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
         }
@@ -223,6 +224,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
         measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
         nextSampleNumber.text = String(settings.getNextSampleNumber())
+        scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
         saveGps.setOn(settings.saveGpsData, animated: false)
         useBarcode.setOn(settings.useBarcode, animated: false)
         blackBackground.setOn(settings.useBlackBackground, animated: false)
@@ -326,7 +328,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         if pickerView.tag == 1 {
             datasetNameChanged(previousDatasetPickerData[row])
         } else {
-            // TODO
+            settings.datasetNameToUnit[settings.datasetName] = unitPickerData[row]
+            settings.serialize()
+            
+            scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
         }
     }
     

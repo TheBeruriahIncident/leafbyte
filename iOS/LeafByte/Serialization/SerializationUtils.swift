@@ -10,9 +10,6 @@ import CoreLocation
 import Foundation
 import UIKit
 
-let header = [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (cm2)", "Consumed Leaf Area (cm2)", "Percent Consumed", "Notes" ]
-let csvHeader = stringRowToCsvRow(header)
-
 // This is the top-level serialize function.
 func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     // Get date and time in a way amenable to sorting.
@@ -59,7 +56,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     case .local:
         let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(settings.datasetName).csv")
         // If the file doesn't exist, create with the header.
-        initializeFileIfNonexistant(url, withData: csvHeader)
+        initializeFileIfNonexistant(url, withData: getCsvHeader(settings: settings))
         
         // Add the data to the file.
         let csvRow = stringRowToCsvRow(row)
@@ -194,7 +191,7 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
     } else {
         getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
             createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
-                appendToSheet(spreadsheetId: spreadsheetId, row: header, accessToken: accessToken, onSuccess: {
+                appendToSheet(spreadsheetId: spreadsheetId, row: getHeader(settings: settings), accessToken: accessToken, onSuccess: {
                     settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
                     settings.serialize()
                     
@@ -215,6 +212,13 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
             })
         }, onFailure: onFailure)
     }
+}
+
+private func getHeader(settings: Settings) -> [String] {
+    return [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes" ]
+}
+private func getCsvHeader(settings: Settings) -> Data {
+    return stringRowToCsvRow(getHeader(settings: settings))
 }
 
 private func formatDouble(withFiveDecimalPoints double: Double) -> String {
