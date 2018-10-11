@@ -646,7 +646,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="776"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="885"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Data Save Location Label">
                                                 <rect key="frame" x="114" y="30" width="147" height="21"/>
@@ -828,6 +828,12 @@
                                                     <action selector="chooseUnit:" destination="ayx-Do-FJf" eventType="touchUpInside" id="r10-XR-efi"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="version 0.1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-yv-Xsk" userLabel="Version Label">
+                                                <rect key="frame" x="140" y="788.5" width="95" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -840,7 +846,7 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ReC-JH-DuD" secondAttribute="trailing" id="7oy-Vu-SCi"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" constant="2.5" id="AIw-xZ-1bL"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="PDu-AL-rj6" secondAttribute="trailing" id="BCO-F6-e73"/>
-                                            <constraint firstAttribute="height" constant="840" id="FdZ-y9-8w5"/>
+                                            <constraint firstAttribute="height" constant="885" id="FdZ-y9-8w5"/>
                                             <constraint firstItem="S9r-LJ-W69" firstAttribute="centerX" secondItem="nnO-ux-tfh" secondAttribute="centerX" id="Fgs-cK-K5a"/>
                                             <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="b7d-8V-V4U" secondAttribute="bottom" constant="28" id="Fik-7n-oMA"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="top" secondItem="adf-uG-4TS" secondAttribute="bottom" constant="28" id="GKc-tF-VDF"/>
@@ -857,6 +863,7 @@
                                             <constraint firstItem="LYp-jb-4aB" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="WHd-E4-aUb"/>
                                             <constraint firstItem="adf-uG-4TS" firstAttribute="top" secondItem="zyF-9a-8bS" secondAttribute="bottom" constant="2" id="Wlx-MC-pSN"/>
                                             <constraint firstItem="P3F-9h-21N" firstAttribute="top" secondItem="JrM-pU-kJA" secondAttribute="bottom" constant="2" id="X6P-ju-6cS"/>
+                                            <constraint firstItem="cPD-yv-Xsk" firstAttribute="top" secondItem="KqO-AI-fbL" secondAttribute="bottom" constant="22" id="Ymb-hQ-3PO"/>
                                             <constraint firstItem="KqO-AI-fbL" firstAttribute="top" secondItem="LYp-jb-4aB" secondAttribute="bottom" constant="24" id="ZKm-gf-O82"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="top" secondItem="8gj-2h-2Ic" secondAttribute="bottom" constant="28" id="Zat-x9-s72"/>
                                             <constraint firstItem="8gj-2h-2Ic" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="aZY-J6-AnS"/>
@@ -878,6 +885,7 @@
                                             <constraint firstItem="LYp-jb-4aB" firstAttribute="top" secondItem="S9r-LJ-W69" secondAttribute="bottom" constant="2" id="u4k-eo-jdk"/>
                                             <constraint firstItem="b7d-8V-V4U" firstAttribute="top" secondItem="zOl-m9-gNp" secondAttribute="bottom" constant="2" id="uJ0-eq-xa8"/>
                                             <constraint firstItem="SaJ-zx-PBS" firstAttribute="top" secondItem="6Nr-u4-Yuh" secondAttribute="bottom" constant="3" id="w6D-TE-22e"/>
+                                            <constraint firstItem="cPD-yv-Xsk" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="xDE-NQ-Mzt"/>
                                             <constraint firstItem="4hE-lk-Cd3" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="xOp-zh-d9d"/>
                                             <constraint firstItem="adf-uG-4TS" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="xsn-ia-i54"/>
                                             <constraint firstItem="ReC-JH-DuD" firstAttribute="bottom" secondItem="b7d-8V-V4U" secondAttribute="bottom" constant="-3" id="yv2-fs-ldf"/>
