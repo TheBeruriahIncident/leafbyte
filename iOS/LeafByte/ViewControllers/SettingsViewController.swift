@@ -17,6 +17,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     var activeField: UITextField?
     
     var previousDatasetPickerData = [String]()
+    var unitPickerData = ["mm", "cm", "m", "in", "ft"]
     
     // MARK: - Outlets
     
@@ -31,6 +32,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBOutlet weak var blackBackground: UISwitch!
     @IBOutlet weak var scaleMarkLength: UITextField!
     @IBOutlet weak var previousDatasetPicker: UIPickerView!
+    @IBOutlet weak var unitPicker: UIPickerView!
     
     @IBOutlet weak var datasetNameLabel: UILabel!
     @IBOutlet weak var useBarcodeLabel: UILabel!
@@ -74,6 +76,18 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
         
         previousDatasetPicker.isHidden = false
+    }
+    
+    @IBAction func chooseUnit(_ sender: Any) {
+        unitPicker.reloadAllComponents()
+        
+        // TODO
+        let currentSelection = unitPickerData.index(of: "cm")
+        if currentSelection != nil {
+            unitPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
+        }
+        
+        unitPicker.isHidden = false
     }
     
     @IBAction func imageSaveLocationChanged(_ sender: UISegmentedControl) {
@@ -243,6 +257,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPicker.delegate = self
         previousDatasetPicker.isHidden = true
         
+        unitPicker.dataSource = self
+        unitPicker.delegate = self
+        unitPicker.isHidden = true
+        
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
         
         if #available(iOS 10.0, *) {
@@ -289,15 +307,27 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return previousDatasetPickerData.count;
+        if pickerView.tag == 1 {
+            return previousDatasetPickerData.count;
+        } else {
+            return unitPickerData.count;
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return previousDatasetPickerData[row]
+        if pickerView.tag == 1 {
+            return previousDatasetPickerData[row]
+        } else {
+            return unitPickerData[row]
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        datasetNameChanged(previousDatasetPickerData[row])
+        if pickerView.tag == 1 {
+            datasetNameChanged(previousDatasetPickerData[row])
+        } else {
+            // TODO
+        }
     }
     
     // MARK: - Helpers
@@ -305,6 +335,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     // @objc to allow calling as a Selector.
     @objc private func dismissInput() {
         previousDatasetPicker.isHidden = true
+        unitPicker.isHidden = true
         self.view.endEditing(true)
     }
     
