@@ -112,8 +112,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                 },
                 onError: { _ in
                     DispatchQueue.main.async {
-                        // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
-                        self.imageSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.imageSaveLocation)
+                        self.signOutOfGoogle()
                         self.presentFailedGoogleSignInAlert()
                     }
                 })
@@ -140,8 +139,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                 },
                 onError: { _ in
                     DispatchQueue.main.async {
-                        // Set the selected index back to the previous selected index; don't allow changing to Google Drive if you can't log-in.
-                        self.measurementSaveLocation.selectedSegmentIndex = self.saveLocationToIndex(self.settings.measurementSaveLocation)
+                        self.signOutOfGoogle()
                         self.presentFailedGoogleSignInAlert()
                     }
             })
@@ -204,18 +202,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     @IBAction func signOutOfGoogle(_ sender: Any) {
-        if settings.measurementSaveLocation == .googleDrive {
-            settings.measurementSaveLocation = .local
-            measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
-        }
-        if settings.imageSaveLocation == .googleDrive {
-            settings.imageSaveLocation = .local
-            imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(.none)
-        }
-        settings.serialize()
-        
-        GIDSignIn.sharedInstance().signOut()
-        updateEnabledness()
+        signOutOfGoogle()
     }
     
     // MARK: - UIViewController overrides
@@ -345,6 +332,22 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPicker.isHidden = true
         unitPicker.isHidden = true
         self.view.endEditing(true)
+    }
+    
+    private func signOutOfGoogle() {
+        if settings.measurementSaveLocation == .googleDrive {
+            settings.measurementSaveLocation = .local
+        }
+        if settings.imageSaveLocation == .googleDrive {
+            settings.imageSaveLocation = .local
+        }
+        settings.serialize()
+        
+        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
+        imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
+        
+        GIDSignIn.sharedInstance().signOut()
+        updateEnabledness()
     }
     
     private func indexToSaveLocation(_ index: Int) -> Settings.SaveLocation {
