@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 // This is the top-level serialize function.
-func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
@@ -21,7 +21,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     let formattedTime = formatter.string(from: date)
     
     let onLocation = { (location: CLLocation?) in
-        serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInCm2: leafAreaInCm2, consumedAreaInCm2: consumedAreaInCm2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, onSuccess: {
+        serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInUnits2: leafAreaInUnits2, consumedAreaInUnits2: consumedAreaInUnits2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, onSuccess: {
             serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
                 settings.incrementNextSampleNumber()
                 settings.noteDatasetUsed()
@@ -40,7 +40,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
 }
 
 // This serializes just the measurement.
-private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInCm2: String?, consumedAreaInCm2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
     if settings.measurementSaveLocation == .none {
         onSuccess()
         return
@@ -50,7 +50,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     let longitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.longitude) : ""
     
     // Form a row useful for any spreadsheet-like format.
-    let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInCm2 ?? "", consumedAreaInCm2 ?? "", percentConsumed, notes ]
+    let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInUnits2 ?? "", consumedAreaInUnits2 ?? "", percentConsumed, notes ]
     
     switch settings.measurementSaveLocation {
     case .local:

@@ -62,8 +62,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // Track the actual results.
     var formattedPercentConsumed: String!
-    var formattedLeafAreaIncludingConsumedAreaInCm2: String?
-    var formattedConsumedAreaInCm2: String?
+    var formattedLeafAreaIncludingConsumedAreaInUnits2: String?
+    var formattedConsumedAreaInUnits2: String?
     
     let imagePicker = UIImagePickerController()
     
@@ -569,28 +569,29 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         let percentConsumed = Double(consumedAreaInPixels) / Double(leafAreaIncludingConsumedAreaInPixels) * 100
         formattedPercentConsumed = formatDouble(withThreeDecimalPoints: percentConsumed)
         if scaleMarkPixelLength != nil {
-            let leafAreaIncludingConsumedAreaInCm2 = convertPixelsToCm2(leafAreaIncludingConsumedAreaInPixels)
-            formattedLeafAreaIncludingConsumedAreaInCm2 = formatDouble(withThreeDecimalPoints: leafAreaIncludingConsumedAreaInCm2)
-            let consumedAreaInCm2 = convertPixelsToCm2(consumedAreaInPixels)
-            formattedConsumedAreaInCm2 = formatDouble(withThreeDecimalPoints: consumedAreaInCm2)
+            let leafAreaIncludingConsumedAreaInUnits2 = convertPixelsToUnits2(leafAreaIncludingConsumedAreaInPixels)
+            formattedLeafAreaIncludingConsumedAreaInUnits2 = formatDouble(withThreeDecimalPoints: leafAreaIncludingConsumedAreaInUnits2)
+            let consumedAreaInUnits2 = convertPixelsToUnits2(consumedAreaInPixels)
+            formattedConsumedAreaInUnits2 = formatDouble(withThreeDecimalPoints: consumedAreaInUnits2)
             
             // Set the number of lines or else lines past the first are dropped.
             resultsText.numberOfLines = 3
-            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ cm2\nConsumed Leaf Area= %@ cm2\nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInCm2!, formattedConsumedAreaInCm2!, formattedPercentConsumed!)
+            let unit = settings.getUnit()
+            resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ %@2\nConsumed Leaf Area= %@ %@2\nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInUnits2!, unit, formattedConsumedAreaInUnits2!, unit, formattedPercentConsumed!)
         } else {
-            formattedLeafAreaIncludingConsumedAreaInCm2 = nil
-            formattedConsumedAreaInCm2 = nil
+            formattedLeafAreaIncludingConsumedAreaInUnits2 = nil
+            formattedConsumedAreaInUnits2 = nil
             resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %@%%", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
     }
     
-    private func convertPixelsToCm2(_ pixels: Int) -> Double {
+    private func convertPixelsToUnits2(_ pixels: Int) -> Double {
         if scaleMarkPixelLength == nil {
             fatalError("Attempting to calculate absolute area without scale set.")
         }
         
-        let cmPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength!)
-        return pow(cmPerPixel, 2) * Double(pixels)
+        let unitsPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength!)
+        return pow(unitsPerPixel, 2) * Double(pixels)
     }
     
     private func formatDouble(withThreeDecimalPoints double: Double) -> String {
@@ -648,7 +649,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             }
         }
         
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInCm2: formattedLeafAreaIncludingConsumedAreaInCm2, consumedAreaInCm2: formattedConsumedAreaInCm2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func drawMarkers() {
