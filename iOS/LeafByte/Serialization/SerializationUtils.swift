@@ -54,7 +54,10 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     
     switch settings.measurementSaveLocation {
     case .local:
-        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(settings.datasetName).csv")
+        let localFilename = settings.getLocalFilename()
+        settings.serialize()
+        
+        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(localFilename).csv")
         // If the file doesn't exist, create with the header.
         initializeFileIfNonexistant(url, withData: getCsvHeader(settings: settings))
         

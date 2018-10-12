@@ -26,6 +26,7 @@ final class Settings: NSObject, NSCoding {
         static let datasetNameToEpochTimeOfLastUse = "datasetNameToEpochTimeOfLastUse"
         static let datasetNameToNextSampleNumber = "datasetNameToNextSampleNumber"
         static let datasetNameToUnit = "datasetNameToUnit"
+        static let datasetNameToUnitInFirstLocalFile = "datasetNameToUnitInFirstLocalFile"
         static let datasetNameToUserIdToGoogleFolderId = "datasetNameToUserIdToGoogleFolderId"
         static let datasetNameToUnitToUserIdToGoogleSpreadsheetId = "datasetNameToUnitToUserIdToGoogleSpreadsheetId"
         static let imageSaveLocation = "imageSaveLocation"
@@ -42,6 +43,8 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToEpochTimeOfLastUse = [String: Int]()
     var datasetNameToNextSampleNumber = [defaultDatasetName: defaultNextSampleNumber]
     var datasetNameToUnit = [String: String]()
+    // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
+    var datasetNameToUnitInFirstLocalFile = [String: String]()
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
     var imageSaveLocation = SaveLocation.local
@@ -69,6 +72,9 @@ final class Settings: NSObject, NSCoding {
         }
         if let datasetNameToUnit = decoder.decodeObject(forKey: PropertyKey.datasetNameToUnit) as? [String: String] {
             self.datasetNameToUnit = datasetNameToUnit
+        }
+        if let datasetNameToUnitInFirstLocalFile = decoder.decodeObject(forKey: PropertyKey.datasetNameToUnitInFirstLocalFile) as? [String: String] {
+            self.datasetNameToUnitInFirstLocalFile = datasetNameToUnitInFirstLocalFile
         }
         if let datasetNameToUserIdToGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId) as? [String: [String: String]] {
             self.datasetNameToUserIdToGoogleFolderId = datasetNameToUserIdToGoogleFolderId
@@ -105,6 +111,7 @@ final class Settings: NSObject, NSCoding {
         coder.encode(datasetNameToEpochTimeOfLastUse, forKey: PropertyKey.datasetNameToEpochTimeOfLastUse)
         coder.encode(datasetNameToNextSampleNumber, forKey: PropertyKey.datasetNameToNextSampleNumber)
         coder.encode(datasetNameToUnit, forKey: PropertyKey.datasetNameToUnit)
+        coder.encode(datasetNameToUnitInFirstLocalFile, forKey: PropertyKey.datasetNameToUnitInFirstLocalFile)
         coder.encode(datasetNameToUserIdToGoogleFolderId, forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId)
         coder.encode(datasetNameToUnitToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
@@ -127,6 +134,7 @@ final class Settings: NSObject, NSCoding {
             && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
             && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
             && datasetNameToUnit == datasetNameToUnit
+            && datasetNameToUnitInFirstLocalFile == datasetNameToUnitInFirstLocalFile
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleFolderId).isEqual(to: other.datasetNameToUserIdToGoogleFolderId)
             && NSDictionary(dictionary: datasetNameToUnitToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
             && imageSaveLocation == other.imageSaveLocation
@@ -159,6 +167,15 @@ final class Settings: NSObject, NSCoding {
     
     func getUnit() -> String {
         return datasetNameToUnit[datasetName] ?? Settings.defaultUnit
+    }
+    
+    func getLocalFilename() -> String {
+        if datasetNameToUnitInFirstLocalFile[datasetName] == nil || datasetNameToUnitInFirstLocalFile[datasetName] == getUnit() {
+            datasetNameToUnitInFirstLocalFile[datasetName] = getUnit()
+            return datasetName
+        }
+        
+        return datasetName + " [" + getUnit() + "]"
     }
     
     func getNextSampleNumber() -> Int {

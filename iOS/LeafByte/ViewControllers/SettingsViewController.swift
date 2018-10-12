@@ -50,12 +50,15 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     func datasetNameChanged(_ candidateNewName: String) {
-        // Fall back to the default if the box is empty.
+        let sanitizedCandidateNewName = candidateNewName
+                .replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
+        
+        // Fall back to the default if the box is empty or only brackets.
         var newDatasetName: String!
-        if candidateNewName.isEmpty {
+        if sanitizedCandidateNewName.isEmpty {
             newDatasetName = Settings.defaultDatasetName
         } else {
-            newDatasetName = candidateNewName
+            newDatasetName = sanitizedCandidateNewName
         }
         
         settings.datasetName = newDatasetName
