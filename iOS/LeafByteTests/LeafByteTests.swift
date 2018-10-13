@@ -82,7 +82,7 @@ final class LeafByteTests: XCTestCase {
                     "in":
                         ["adamc": "d"]]]
         settings.imageSaveLocation = .googleDrive
-        settings.measurementSaveLocation = .googleDrive
+        settings.dataSaveLocation = .googleDrive
         settings.saveGpsData = true
         settings.scaleMarkLength = 32
         settings.useBarcode = true

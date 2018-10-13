@@ -25,7 +25,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     
     @IBOutlet weak var datasetName: UITextField!
     @IBOutlet weak var imageSaveLocation: UISegmentedControl!
-    @IBOutlet weak var measurementSaveLocation: UISegmentedControl!
+    @IBOutlet weak var dataSaveLocation: UISegmentedControl!
     @IBOutlet weak var nextSampleNumber: UITextField!
     @IBOutlet weak var useBarcode: UISwitch!
     @IBOutlet weak var saveGps: UISwitch!
@@ -121,12 +121,12 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
     }
     
-    @IBAction func measurementSaveLocationChanged(_ sender: UISegmentedControl) {
+    @IBAction func dataSaveLocationChanged(_ sender: UISegmentedControl) {
         dismissInput()
         
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         let persistChange = {
-            self.settings.measurementSaveLocation = newSaveLocation
+            self.settings.dataSaveLocation = newSaveLocation
             self.settings.serialize()
             
             self.updateEnabledness()
@@ -212,7 +212,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         
         datasetName.text = settings.datasetName
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
-        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
+        dataSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.dataSaveLocation)
         nextSampleNumber.text = String(settings.getNextSampleNumber())
         scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
         saveGps.setOn(settings.saveGpsData, animated: false)
@@ -227,7 +227,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         } else {
             localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
         }
-        measurementSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
+        dataSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
         imageSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
         
         // Setup to get a callback when return is pressed on a keyboard.
@@ -335,15 +335,15 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
     
     private func signOutOfGoogle() {
-        if settings.measurementSaveLocation == .googleDrive {
-            settings.measurementSaveLocation = .local
+        if settings.dataSaveLocation == .googleDrive {
+            settings.dataSaveLocation = .local
         }
         if settings.imageSaveLocation == .googleDrive {
             settings.imageSaveLocation = .local
         }
         settings.serialize()
         
-        measurementSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.measurementSaveLocation)
+        dataSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.dataSaveLocation)
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
         
         GIDSignIn.sharedInstance().signOut()
@@ -374,16 +374,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     
     // Disable controls that would have no effect.
     private func updateEnabledness() {
-        let measurementSavingEnabled = settings.measurementSaveLocation != .none
-        saveGps.isEnabled = measurementSavingEnabled
-        saveGpsLabel.isEnabled = measurementSavingEnabled
-        saveGpsNoteLabel.isEnabled = measurementSavingEnabled
+        let dataSavingEnabled = settings.dataSaveLocation != .none
+        saveGps.isEnabled = dataSavingEnabled
+        saveGpsLabel.isEnabled = dataSavingEnabled
+        saveGpsNoteLabel.isEnabled = dataSavingEnabled
         
-        let anySavingEnabled = settings.measurementSaveLocation != .none || settings.imageSaveLocation != .none
+        let anySavingEnabled = settings.dataSaveLocation != .none || settings.imageSaveLocation != .none
         datasetName.isEnabled = anySavingEnabled
         datasetNameLabel.isEnabled = anySavingEnabled
         
-        let anyGoogleDriveSavingEnabled = settings.measurementSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
+        let anyGoogleDriveSavingEnabled = settings.dataSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
         signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
     }
     

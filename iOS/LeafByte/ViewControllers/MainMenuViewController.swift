@@ -201,15 +201,15 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {
-        if settings.measurementSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
+        if settings.dataSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
             return
         }
         
         GoogleSignInManager.initiateSignIn(
             onAccessTokenAndUserId: { _, _ in () },
             onError: { _ in
-                if self.settings.measurementSaveLocation == .googleDrive {
-                    self.settings.measurementSaveLocation = .local
+                if self.settings.dataSaveLocation == .googleDrive {
+                    self.settings.dataSaveLocation = .local
                 }
                 if self.settings.imageSaveLocation == .googleDrive {
                     self.settings.imageSaveLocation = .local
@@ -224,18 +224,18 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     }
     
     private func setSavingSummary() {
-        let measurementSaveLocation = settings.measurementSaveLocation
+        let dataSaveLocation = settings.dataSaveLocation
         let imageSaveLocation = settings.imageSaveLocation
         
         var savedMessage: String!
-        if measurementSaveLocation != .none || imageSaveLocation != .none {
+        if dataSaveLocation != .none || imageSaveLocation != .none {
             var savedMessageStart: String!
-            if measurementSaveLocation == imageSaveLocation {
-                savedMessageStart = String.localizedStringWithFormat(NSLocalizedString("Saving data and images to %@", comment: "Says that both data and images are being saved somewhere"), saveLocationToName(measurementSaveLocation))
+            if dataSaveLocation == imageSaveLocation {
+                savedMessageStart = String.localizedStringWithFormat(NSLocalizedString("Saving data and images to %@", comment: "Says that both data and images are being saved somewhere"), saveLocationToName(dataSaveLocation))
             } else {
-                let dataSavedMessage = measurementSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("data to %@", comment: "Says data are being saved somewhere"), saveLocationToName(measurementSaveLocation)) : ""
+                let dataSavedMessage = dataSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("data to %@", comment: "Says data are being saved somewhere"), saveLocationToName(dataSaveLocation)) : ""
                 let imageSavedMessage = imageSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("images to %@", comment: "Says images are being saved somewhere"), saveLocationToName(imageSaveLocation)) : ""
-                let savedMessageStartConnector = measurementSaveLocation != .none && imageSaveLocation != .none ? NSLocalizedString(" and ", comment: "Conjunction connecting where data and iamges are being saved") : ""
+                let savedMessageStartConnector = dataSaveLocation != .none && imageSaveLocation != .none ? NSLocalizedString(" and ", comment: "Conjunction connecting where data and iamges are being saved") : ""
                 
                 savedMessageStart = NSLocalizedString("Saving ", comment: "Beginning of message of where things are saved") + "\(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
             }
@@ -255,11 +255,11 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         
         var notSavedMessage: String!
-        if measurementSaveLocation == .none || imageSaveLocation == .none {
+        if dataSaveLocation == .none || imageSaveLocation == .none {
             var notSavedMessageElements: String!
-            if measurementSaveLocation == .none && imageSaveLocation == .none {
+            if dataSaveLocation == .none && imageSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
-            } else if measurementSaveLocation == .none {
+            } else if dataSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data", comment: "Name for what's being saved")
             } else {
                 notSavedMessageElements = NSLocalizedString("Images", comment: "Name for what's being saved")
@@ -274,7 +274,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
         
         // It can be very bad if you unintentionally aren't saving data, so put some text in red.
-        if measurementSaveLocation == .none {
+        if dataSaveLocation == .none {
             let stringToColor = "not being saved"
             let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
             

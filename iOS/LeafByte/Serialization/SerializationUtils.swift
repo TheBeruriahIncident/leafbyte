@@ -21,7 +21,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     let formattedTime = formatter.string(from: date)
     
     let onLocation = { (location: CLLocation?) in
-        serializeMeasurement(settings: settings, percentConsumed: percentConsumed, leafAreaInUnits2: leafAreaInUnits2, consumedAreaInUnits2: consumedAreaInUnits2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, onSuccess: {
+        serializeData(settings: settings, percentConsumed: percentConsumed, leafAreaInUnits2: leafAreaInUnits2, consumedAreaInUnits2: consumedAreaInUnits2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, onSuccess: {
             serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
                 settings.incrementNextSampleNumber()
                 settings.noteDatasetUsed()
@@ -32,16 +32,16 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
         }, onFailure: onFailure)
     }
     
-    if settings.saveGpsData && settings.measurementSaveLocation != .none {
+    if settings.saveGpsData && settings.dataSaveLocation != .none {
         GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
     } else {
         onLocation(nil)
     }
 }
 
-// This serializes just the measurement.
-private func serializeMeasurement(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
-    if settings.measurementSaveLocation == .none {
+// This serializes just the data.
+private func serializeData(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+    if settings.dataSaveLocation == .none {
         onSuccess()
         return
     }
@@ -52,7 +52,7 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
     // Form a row useful for any spreadsheet-like format.
     let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInUnits2 ?? "", consumedAreaInUnits2 ?? "", percentConsumed, notes ]
     
-    switch settings.measurementSaveLocation {
+    switch settings.dataSaveLocation {
     case .local:
         let localFilename = settings.getLocalFilename()
         settings.serialize()
@@ -69,15 +69,15 @@ private func serializeMeasurement(settings: Settings, percentConsumed: String, l
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
-            appendMeasurementToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure)
+            appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure)
         }, onError: { _ in () })
 
     default:
-        fatalError("\(settings.measurementSaveLocation) not handled in switch")
+        fatalError("\(settings.dataSaveLocation) not handled in switch")
     }
 }
 
-private func appendMeasurementToGoogleDrive(settings: Settings, row: [String], accessToken: String, userId: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
+private func appendDataToGoogleDrive(settings: Settings, row: [String], accessToken: String, userId: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     getGoogleSpreadsheetId(settings: settings, accessToken: accessToken, userId: userId, onSpreadsheetId: { spreadsheetId in
         appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
             if !failedBecauseNotFound || alreadyFailedOnce {
@@ -85,12 +85,12 @@ private func appendMeasurementToGoogleDrive(settings: Settings, row: [String], a
                 return
             }
             
-            // Handle the case where measurement couldn't be appended because the sheet was deleted.
+            // Handle the case where data couldn't be appended because the sheet was deleted.
             settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: nil)
             settings.serialize()
             
             // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
-            appendMeasurementToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
+            appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
         })
     }, onFailure: onFailure)
 }

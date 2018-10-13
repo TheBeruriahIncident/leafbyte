@@ -626,8 +626,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
                 
                 let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
                     DispatchQueue.main.async {
-                        if self.settings.measurementSaveLocation == .googleDrive {
-                            self.settings.measurementSaveLocation = .local
+                        if self.settings.dataSaveLocation == .googleDrive {
+                            self.settings.dataSaveLocation = .local
                         }
                         if self.settings.imageSaveLocation == .googleDrive {
                             self.settings.imageSaveLocation = .local

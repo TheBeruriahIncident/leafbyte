@@ -10,7 +10,7 @@ import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
 final class Settings: NSObject, NSCoding {
-    static let defaultDatasetName = "Herbivory Measurement"
+    static let defaultDatasetName = "Herbivory Data"
     static let defaultNextSampleNumber = 1
     static let defaultScaleMarkLength = 10.0
     static let defaultUnit = "cm"
@@ -22,6 +22,8 @@ final class Settings: NSObject, NSCoding {
     }
     
     struct PropertyKey {
+        // Keeping this string for back-compat.
+        static let dataSaveLocation = "measurementSaveLocation"
         static let datasetName = "datasetName"
         static let datasetNameToEpochTimeOfLastUse = "datasetNameToEpochTimeOfLastUse"
         static let datasetNameToNextSampleNumber = "datasetNameToNextSampleNumber"
@@ -30,7 +32,6 @@ final class Settings: NSObject, NSCoding {
         static let datasetNameToUserIdToGoogleFolderId = "datasetNameToUserIdToGoogleFolderId"
         static let datasetNameToUnitToUserIdToGoogleSpreadsheetId = "datasetNameToUnitToUserIdToGoogleSpreadsheetId"
         static let imageSaveLocation = "imageSaveLocation"
-        static let measurementSaveLocation = "measurementSaveLocation"
         static let saveGpsData = "saveGpsData"
         static let scaleMarkLength = "scaleMarkLength"
         static let useBarcode = "useBarcode"
@@ -38,6 +39,7 @@ final class Settings: NSObject, NSCoding {
         static let userIdToTopLevelGoogleFolderId = "userIdToTopLevelGoogleFolderId"
     }
     
+    var dataSaveLocation = SaveLocation.local
     var datasetName = Settings.defaultDatasetName
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
     var datasetNameToEpochTimeOfLastUse = [String: Int]()
@@ -48,7 +50,6 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
     var imageSaveLocation = SaveLocation.local
-    var measurementSaveLocation = SaveLocation.local
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var useBarcode = false
@@ -61,6 +62,9 @@ final class Settings: NSObject, NSCoding {
     
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
+        if let dataSaveLocation = decoder.decodeObject(forKey: PropertyKey.dataSaveLocation) as? String {
+            self.dataSaveLocation = SaveLocation(rawValue: dataSaveLocation)!
+        }
         if let datasetName = decoder.decodeObject(forKey: PropertyKey.datasetName) as? String {
             self.datasetName = datasetName
         }
@@ -85,9 +89,6 @@ final class Settings: NSObject, NSCoding {
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
         }
-        if let measurementSaveLocation = decoder.decodeObject(forKey: PropertyKey.measurementSaveLocation) as? String {
-            self.measurementSaveLocation = SaveLocation(rawValue: measurementSaveLocation)!
-        }
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
         }
@@ -107,6 +108,7 @@ final class Settings: NSObject, NSCoding {
     
     // This defines how to serialize (how to save a Settings to disk).
     func encode(with coder: NSCoder) {
+        coder.encode(dataSaveLocation.rawValue, forKey: PropertyKey.dataSaveLocation)
         coder.encode(datasetName, forKey: PropertyKey.datasetName)
         coder.encode(datasetNameToEpochTimeOfLastUse, forKey: PropertyKey.datasetNameToEpochTimeOfLastUse)
         coder.encode(datasetNameToNextSampleNumber, forKey: PropertyKey.datasetNameToNextSampleNumber)
@@ -115,7 +117,6 @@ final class Settings: NSObject, NSCoding {
         coder.encode(datasetNameToUserIdToGoogleFolderId, forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId)
         coder.encode(datasetNameToUnitToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
-        coder.encode(measurementSaveLocation.rawValue, forKey: PropertyKey.measurementSaveLocation)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
         coder.encode(useBarcode, forKey: PropertyKey.useBarcode)
@@ -130,7 +131,8 @@ final class Settings: NSObject, NSCoding {
             return false
         }
         
-        return datasetName == other.datasetName
+        return dataSaveLocation == other.dataSaveLocation
+            && datasetName == other.datasetName
             && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
             && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
             && datasetNameToUnit == datasetNameToUnit
@@ -138,7 +140,6 @@ final class Settings: NSObject, NSCoding {
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleFolderId).isEqual(to: other.datasetNameToUserIdToGoogleFolderId)
             && NSDictionary(dictionary: datasetNameToUnitToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
             && imageSaveLocation == other.imageSaveLocation
-            && measurementSaveLocation == other.measurementSaveLocation
             && saveGpsData == other.saveGpsData
             && scaleMarkLength == other.scaleMarkLength
             && useBarcode == other.useBarcode
