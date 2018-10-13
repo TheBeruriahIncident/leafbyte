@@ -66,10 +66,10 @@ func setBackButton(self previousViewController: UIViewController, next nextViewC
     nextViewController.navigationItem.leftItemsSupplementBackButton = true
 }
 
-func setupGestureRecognizingView(gestureRecognizingView: UIScrollView, self viewController: UIScrollViewDelegate) {
-    gestureRecognizingView.delegate = viewController
-    gestureRecognizingView.minimumZoomScale = 0.9;
-    gestureRecognizingView.maximumZoomScale = 10.0
+func setupScrollView(scrollView: UIScrollView, self viewController: UIScrollViewDelegate) {
+    scrollView.delegate = viewController
+    scrollView.minimumZoomScale = 0.9;
+    scrollView.maximumZoomScale = 10.0
 }
 
 func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {

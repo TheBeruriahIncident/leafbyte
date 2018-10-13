@@ -43,8 +43,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // MARK: - Outlets
     
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var gestureRecognizingView: UIScrollView!
-    @IBOutlet weak var scrollableView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
     
@@ -96,7 +96,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         
         topView.layer.borderWidth = 1
 
-        setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
+        setupScrollView(scrollView: scrollView, self: self)
 
         baseImageView.contentMode = .scaleAspectFit
         baseImageView.image = uiImage
@@ -184,7 +184,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // MARK: - UIScrollViewDelegate overrides
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollableView
+        return scrollContentView
     }
     
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
@@ -244,7 +244,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func setScrollingMode(_ mode: Mode) {
         self.mode = mode
 
-        gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
+        scrollView.isUserInteractionEnabled = mode == .scrolling
 
         if mode == .scrolling {
             enableScaleIdentification()
@@ -373,13 +373,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     // If we don't have a scale already, infer it from how zoomed we are.
     private func fixContentSize() {
-        fixContentSize(scale: gestureRecognizingView.zoomScale)
+        fixContentSize(scale: scrollView.zoomScale)
     }
     
     // The layout engine is buggy and deals very poorly with scroll views after the screen is rotated and won't let you access the whole view, because the content size will be wrong.
     // It gets even worse if you zoom while rotated.
     // We need to fix the content size of the scroll view to be the size of the image, scaled by how much we're zoomed.
     private func fixContentSize(scale: CGFloat) {
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
+        scrollView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
     }
 }

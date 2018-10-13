@@ -75,8 +75,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Outlets
     
-    @IBOutlet weak var gestureRecognizingView: UIScrollView!
-    @IBOutlet weak var scrollableView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var leafHolesView: UIImageView!
     @IBOutlet weak var scaleMarkingView: UIImageView!
@@ -180,7 +180,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
+        setupScrollView(scrollView: scrollView, self: self)
         setupImagePicker(imagePicker: imagePicker, self: self)
         
         baseImageView.contentMode = .scaleAspectFit
@@ -294,7 +294,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     // MARK: - UIScrollViewDelegate overrides
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollableView
+        return scrollContentView
     }
     
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
@@ -304,7 +304,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - UIResponder overrides
     
-    // Note that these callbacks don't run when in scroll mode, because gestureRecognizingView isn't enabled for user interaction.
+    // Note that these callbacks don't run when in scroll mode, because scrollView isn't enabled for user interaction.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // If a user taps outside of the keyboard, close the keyboard.
         dismissKeyboard()
@@ -410,7 +410,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // Disable the gesture recognition so that we can catch touches outside of the keyboard to cancel the keyboard.
-        gestureRecognizingView.isUserInteractionEnabled = false
+        scrollView.isUserInteractionEnabled = false
     }
     
     // Called when return is pressed on the keyboard.
@@ -461,7 +461,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     private func setScrollingMode(_ mode: Mode) {
         self.mode = mode
         
-        gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
+        scrollView.isUserInteractionEnabled = mode == .scrolling
         grid.isHidden = mode == .scrolling
         
         if mode == .scrolling {
@@ -679,7 +679,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func dismissKeyboard() {
         // Reenable gesture recognition if we disabled it for the keyboard.
-        gestureRecognizingView.isUserInteractionEnabled = mode == .scrolling
+        scrollView.isUserInteractionEnabled = mode == .scrolling
         
         self.view.endEditing(true)
     }
@@ -691,13 +691,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     // If we don't have a scale already, infer it from how zoomed we are.
     private func fixContentSize() {
-        fixContentSize(scale: gestureRecognizingView.zoomScale)
+        fixContentSize(scale: scrollView.zoomScale)
     }
     
     // The layout engine is buggy and deals very poorly with scroll views after the screen is rotated and won't let you access the whole view, because the content size will be wrong.
     // It gets even worse if you zoom while rotated.
     // We need to fix the content size of the scroll view to be the size of the image, scaled by how much we're zoomed.
     private func fixContentSize(scale: CGFloat) {
-        gestureRecognizingView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
+        scrollView.contentSize = CGSize(width: baseImageView.frame.width * scale, height: baseImageView.frame.height * scale)
     }
 }

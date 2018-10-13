@@ -31,8 +31,8 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     
     // MARK: - Outlets
     
-    @IBOutlet weak var gestureRecognizingView: UIScrollView!
-    @IBOutlet weak var scrollableView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var histogramImageView: UIImageView!
     @IBOutlet weak var thresholdSlider: UISlider!
@@ -72,7 +72,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
         
         smoothTransitions(self: self)
         
-        setupGestureRecognizingView(gestureRecognizingView: gestureRecognizingView, self: self)
+        setupScrollView(scrollView: scrollView, self: self)
         
         filter.setInputImage(image: image, useBlackBackground: settings.useBlackBackground)
         
@@ -148,7 +148,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // MARK: - UIScrollViewDelegate overrides
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollableView
+        return scrollContentView
     }
     
     // MARK: - Helpers
