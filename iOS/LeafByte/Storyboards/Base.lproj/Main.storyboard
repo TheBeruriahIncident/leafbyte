@@ -369,7 +369,7 @@
             <objects>
                 <viewController id="bVw-Fm-rhy" userLabel="Background Removal Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vkR-CT-iZw">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="faf-WO-Ggj">
@@ -641,7 +641,7 @@
             <objects>
                 <viewController title="Settings View Controller" id="ayx-Do-FJf" customClass="SettingsViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pet-gA-Fqc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atb-RN-ny0">
@@ -1111,7 +1111,6 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y2h-Qz-s2l">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1129,7 +1128,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="87W-xz-Klv" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DXd-7a-xpe">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1290,7 +1288,7 @@
             <objects>
                 <viewController id="oJr-2p-Elg" userLabel="Scale Identification Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DYp-jC-BAx">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="220"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tzq-Rm-Wfp">
@@ -1356,7 +1354,7 @@
             <objects>
                 <viewController id="gAc-Aq-5u4" userLabel="Area Calculation Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bbE-Y3-Btg">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AIb-fV-0Ur">
@@ -1433,7 +1431,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Eyd-i1-QQB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="UTg-88-wqt">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1451,7 +1448,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OA0-cn-27N" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="h5d-z1-AoR">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1468,7 +1464,7 @@
             <objects>
                 <viewController id="UYa-D0-4JW" userLabel="Fuzziness Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KVK-uv-tbz">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="210"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SSB-89-oez">
