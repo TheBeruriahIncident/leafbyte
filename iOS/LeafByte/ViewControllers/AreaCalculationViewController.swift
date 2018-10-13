@@ -434,7 +434,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         case .drawing:
             drawCompleteDrawing(action.points)
         case .exclusion:
-            // Originally this draw an X where things were excluded, but that was determined to just be noise.
+            // Originally this drew an X where things were excluded, but that was determined to just be noise.
             break
         }
     }
@@ -494,7 +494,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func calculateArea() {
         // The BooleanIndexableImage will be a view across both sources of pixels.
-        // First we add the base iamge of the leaf.
+        // First we add the base image of the leaf.
         let baseImage = IndexableImage(cgImage)
         let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)
         combinedImage.addImage(baseImage)
