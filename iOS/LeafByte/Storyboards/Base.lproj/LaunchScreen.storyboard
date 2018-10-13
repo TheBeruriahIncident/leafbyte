@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rMJ-TU-Ce2">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rMJ-TU-Ce2" userLabel="Title Stack View">
                                 <rect key="frame" x="0.0" y="248" width="375" height="111.5"/>
                                 <subviews>
                                     <label opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LeafByte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgP-Zn-tNz" userLabel="LeafByte Title">
@@ -49,7 +49,7 @@
                                     <constraint firstAttribute="trailing" secondItem="zgP-Zn-tNz" secondAttribute="trailing" id="yL7-JC-BUY"/>
                                 </constraints>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJQ-XB-bjD" userLabel="Leaf Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJQ-XB-bjD" userLabel="LeafByte Logo">
                                 <rect key="frame" x="143.5" y="109" width="128" height="139"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fJQ-XB-bjD" secondAttribute="height" multiplier="128:139" id="bMo-MS-Sec"/>
