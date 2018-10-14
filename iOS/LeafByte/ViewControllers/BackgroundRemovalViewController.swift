@@ -27,6 +27,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
     
+    var cgImageThresholded: CGImage?
     var ciImageThresholded: CIImage?
     
     // MARK: - Outlets
@@ -128,7 +129,8 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
             
             destination.settings = settings
             destination.sourceType = sourceType
-            destination.cgImage = ciToCgImage(ciImageThresholded!)
+            destination.cgImage = cgImageThresholded
+            destination.ciImage = ciImageThresholded
             destination.uiImage = baseImageView.image
             destination.inTutorial = inTutorial
             destination.barcode = barcode
@@ -156,7 +158,8 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     private func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
         ciImageThresholded = filter.outputImage
-        baseImageView.image = ciToUiImage(ciImageThresholded!)
+        cgImageThresholded = ciToCgImage(ciImageThresholded!)
+        baseImageView.image = cgToUiImage(cgImageThresholded!)
     }
     
     private func drawHistogram(lumaHistogram: [Int]) {

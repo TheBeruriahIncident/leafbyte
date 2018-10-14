@@ -16,6 +16,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var settings: Settings!
     var sourceType: UIImagePickerController.SourceType!
     var cgImage: CGImage!
+    var ciImage: CIImage!
     var uiImage: UIImage!
     var inTutorial: Bool!
     var barcode: String?
@@ -352,7 +353,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func getFixedImage() -> CGImage {
         // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
-        let imageInsideScaleMarks = createImageFromQuadrilateral(in: cgToCIImage(cgImage), corners: adjustedCenters)
+        let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)
         let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
         return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(imageInsideScaleMarks), x: sizeToAdjustTo, y: sizeToAdjustTo)
     }
