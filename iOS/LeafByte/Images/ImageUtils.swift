@@ -373,7 +373,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         }
         
         // Draw the horizontal line from the leftmost clear point to the rightmost clear point.
-        drawingManager.drawLine(from: CGPoint(x: leftmostX, y: y), to: CGPoint(x: rightmostX, y: y))
+        drawingManager.drawLine(from: CGPoint(x: leftmostX - 1, y: y), to: CGPoint(x: rightmostX + 1, y: y))
         
         // Mark the range as filled in so we don't come back to it.
         if filledRanges[y] != nil {

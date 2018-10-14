@@ -548,6 +548,8 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
+        drawingManager.context.setLineWidth(2)
+        drawingManager.context.setLineCap(.square)
         
         var consumedAreaInPixels = leafLabelAndSize!.value.drawingPart
         for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {

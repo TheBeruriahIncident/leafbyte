@@ -24,9 +24,11 @@ func cgToUiImage(_ cgImage: CGImage) -> UIImage {
 // Convert a Core Image image to a Core Graphics image.
 let context: CIContext = CIContext(options: nil)
 func ciToCgImage(_ ciImage: CIImage) -> CGImage {
-    if #available(iOS 10.0, *), ciImage.cgImage != nil {
-        return ciImage.cgImage!
-    }
+    // It's appealing to lead with something like:
+    // if #available(iOS 10.0, *), ciImage.cgImage != nil {
+    //     return ciImage.cgImage!
+    // }
+    // But it turns out that this gives you a downsampled version.
     
     return context.createCGImage(ciImage, from: ciImage.extent)!
 }
@@ -41,9 +43,11 @@ func ciToUiImage(_ ciImage: CIImage) -> UIImage {
 
 // Convert a UI image to a Core Graphics image.
 func uiToCgImage(_ uiImage: UIImage) -> CGImage {
-    if uiImage.cgImage != nil {
-        return uiImage.cgImage!
-    }
+    // It's appealing to lead with something like:
+    // if uiImage.cgImage != nil {
+    //     return uiImage.cgImage!
+    // }
+    // But it turns out that this gives you a downsampled version.
     
     return ciToCgImage(uiToCiImage(uiImage))
 }
