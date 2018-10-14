@@ -14,18 +14,18 @@ class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputOb
     // MARK: - Fields
     
     let supportedBarcodeTypes = [
-        // 2D
+        // 1D
         AVMetadataObject.ObjectType.code128,
-        AVMetadataObject.ObjectType.ean8,
-        AVMetadataObject.ObjectType.ean13,
-        AVMetadataObject.ObjectType.upce,
         AVMetadataObject.ObjectType.code39,
         AVMetadataObject.ObjectType.code39Mod43,
         AVMetadataObject.ObjectType.code93,
+        AVMetadataObject.ObjectType.ean13,
+        AVMetadataObject.ObjectType.ean8,
         AVMetadataObject.ObjectType.interleaved2of5,
         AVMetadataObject.ObjectType.itf14,
+        AVMetadataObject.ObjectType.upce,
         
-        // 3D
+        // 2D
         AVMetadataObject.ObjectType.aztec,
         AVMetadataObject.ObjectType.dataMatrix,
         AVMetadataObject.ObjectType.pdf417,
