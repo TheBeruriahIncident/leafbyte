@@ -539,8 +539,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             return
         }
         
-        // Assume the biggest is the background, and everything else is potentially a hole.
-        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.dropFirst()
+        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != BACKGROUND_LABEL }
         
         // Filter out any areas marked for exclusion.
         let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize!.key }

@@ -150,6 +150,8 @@ struct ConnectedComponentsInfo {
     }
 }
 
+let BACKGROUND_LABEL = -1
+
 // Find all the connected components in an image, that is the contiguous areas that are the same ( https://en.wikipedia.org/wiki/Connected-component_labeling ).
 // "Occupied" refers to "true" values in the image, and "empty" refers to "false" values in the image.
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
@@ -175,10 +177,9 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     var nextEmptyLabel = -2
     
     // Use -1 as a special label for the area outside the image.
-    let outsideOfImageLabel = -1
-    equivalenceClasses.createSubsetWith(outsideOfImageLabel)
-    emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = []
-    labelToSize[outsideOfImageLabel] = Size()
+    equivalenceClasses.createSubsetWith(BACKGROUND_LABEL)
+    emptyLabelToNeighboringOccupiedLabels[BACKGROUND_LABEL] = []
+    labelToSize[BACKGROUND_LABEL] = Size()
     
     // As an optimization (speeds this loop up by 40%), save off the isOccupied and label values for the previous y layer for the next loop through.
     var previousYIsOccupied: [Bool]!
@@ -291,7 +292,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
 
             // Any empty pixels on the edge of the image are part of the "outside of the image" component.
             if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
-                equivalenceClasses.combineClassesContaining(label, and: outsideOfImageLabel)
+                equivalenceClasses.combineClassesContaining(label, and: BACKGROUND_LABEL)
             }
             
             previousXLabel = label
@@ -322,16 +323,16 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
-    let outsideOfImageClass = equivalenceClasses.getClassOf(outsideOfImageLabel)!
-    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first(where: { $0 != outsideOfImageLabel })
+    let outsideOfImageClass = equivalenceClasses.getClassOf(BACKGROUND_LABEL)!
+    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first(where: { $0 != BACKGROUND_LABEL })
     if outsideOfImageClassElement != nil {
-        labelToMemberPoint[outsideOfImageLabel] = labelToMemberPoint[outsideOfImageClassElement!]
+        labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement!]
     } else {
         // -1 is in a class of it's own.
         // This means it's useless, so remove it.
-        labelToMemberPoint[outsideOfImageLabel] = nil
-        emptyLabelToNeighboringOccupiedLabels[outsideOfImageLabel] = nil
-        labelToSize[outsideOfImageLabel] = nil
+        labelToMemberPoint[BACKGROUND_LABEL] = nil
+        emptyLabelToNeighboringOccupiedLabels[BACKGROUND_LABEL] = nil
+        labelToSize[BACKGROUND_LABEL] = nil
         equivalenceClasses.classToElements[outsideOfImageClass] = nil
     }
     
@@ -340,26 +341,27 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     
     // "Normalize" by combining equivalent labels.
     for equivalenceClassElements in equivalenceClasses.classToElements.values {
-        let first = equivalenceClassElements.first
+        // Because we take the max, the background class will use -1.
+        let representative = equivalenceClassElements.max()!
         
         // Do an initial loop-through including the first element of the class.
         equivalenceClassElements.forEach { label in
             // The label of the point to identify would now be obsolete, so save off the new canonical label.
             if labelsToPointsToIdentify[label] != nil {
                 for point in labelsToPointsToIdentify[label]! {
-                    labelsOfPointsToIdentify[point] = first
+                    labelsOfPointsToIdentify[point] = representative
                 }
             }
         }
         
-        // Do a second loop-through without the first element of the class.
-        equivalenceClassElements.filter { $0 != first! }.forEach { label in
+        // Do a second loop-through without the representative element of the class.
+        equivalenceClassElements.filter { $0 != representative }.forEach { label in
             // Normalize labelToSize.
-            labelToSize[first!]! += labelToSize[label]!
+            labelToSize[representative]! += labelToSize[label]!
             labelToSize[label] = nil
             
             // Normalize emptyLabelToNeighboringOccupiedLabels.
-            emptyLabelToNeighboringOccupiedLabels[first!]!.formUnion(emptyLabelToNeighboringOccupiedLabels[label]!)
+            emptyLabelToNeighboringOccupiedLabels[representative]!.formUnion(emptyLabelToNeighboringOccupiedLabels[label]!)
             emptyLabelToNeighboringOccupiedLabels[label] = nil
         }
     }
