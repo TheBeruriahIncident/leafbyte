@@ -609,58 +609,65 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = { (serializationFailureCause: SerializationFailureCause) in
-            if serializationFailureCause == .gps {
-                DispatchQueue.main.async {
-                    presentAlert(self: self, title: NSLocalizedString("Could not get GPS location.", comment: "Title of the alert that GPS location access failed"), message: NSLocalizedString("To confirm that LeafByte has location access, go your phone's Settings -> LeafByte -> Location. If you do not wish to record GPS location, you can turn GPS location saving off in the LeafByte in-app settings.", comment: "Explanation of how to proceed after GPS location access failed"))
-                    DispatchQueue.main.async {
-                        self.completeButton.isEnabled = true
-                    }
-                }
-                return
-            }
-            
-            DispatchQueue.main.async {
-                let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
-                    DispatchQueue.main.async {
-                        self.completeButton.isEnabled = true
-                    }
-                })
-                
-                // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-                var localStorageName: String
-                if #available(iOS 11.0, *) {
-                    localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
-                } else {
-                    localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
-                }
-                
-                let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
-                    DispatchQueue.main.async {
-                        if self.settings.dataSaveLocation == .googleDrive {
-                            self.settings.dataSaveLocation = .local
-                        }
-                        if self.settings.imageSaveLocation == .googleDrive {
-                            self.settings.imageSaveLocation = .local
-                        }
-                        self.settings.serialize()
-                        
-                        self.handleSerialization(onSuccess: onSuccess)
-                    }
-                })
-                let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
-                    self.handleSerialization(onSuccess: onSuccess)
-                })
-                
-                alertController.addAction(cancelAction)
-                alertController.addAction(switchToLocalAction)
-                alertController.addAction(retryAction)
-                
-                self.present(alertController, animated: true, completion: nil)
+            if serializationFailureCause == .googleDrive {
+                self.handleGoogleDriveFailure(onSuccess: onSuccess)
+            } else {
+                self.handleGpsFailure()
             }
         }
         
         serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+    }
+    
+    private func handleGoogleDriveFailure(onSuccess: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
+                DispatchQueue.main.async {
+                    self.completeButton.isEnabled = true
+                }
+            })
+            
+            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
+            var localStorageName: String
+            if #available(iOS 11.0, *) {
+                localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
+            } else {
+                localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
+            }
+            
+            let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails to provide an alternative"), style: .default, handler: { _ in
+                DispatchQueue.main.async {
+                    if self.settings.dataSaveLocation == .googleDrive {
+                        self.settings.dataSaveLocation = .local
+                    }
+                    if self.settings.imageSaveLocation == .googleDrive {
+                        self.settings.imageSaveLocation = .local
+                    }
+                    self.settings.serialize()
+                    
+                    self.handleSerialization(onSuccess: onSuccess)
+                }
+            })
+            let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
+                self.handleSerialization(onSuccess: onSuccess)
+            })
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(switchToLocalAction)
+            alertController.addAction(retryAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    private func handleGpsFailure() {
+        DispatchQueue.main.async {
+            presentAlert(self: self, title: NSLocalizedString("Could not get GPS location.", comment: "Title of the alert that GPS location access failed"), message: NSLocalizedString("To confirm that LeafByte has location access, go your phone's Settings -> LeafByte -> Location. If you do not wish to record GPS location, you can turn GPS location saving off in the LeafByte in-app settings.", comment: "Explanation of how to proceed after GPS location access failed"))
+            DispatchQueue.main.async {
+                self.completeButton.isEnabled = true
+            }
+        }
     }
     
     private func drawMarkers() {
