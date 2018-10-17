@@ -10,8 +10,13 @@ import CoreLocation
 import Foundation
 import UIKit
 
+enum SerializationFailureCause {
+    case googleDrive
+    case gps
+}
+
 // This is the top-level serialize function.
-func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
@@ -33,14 +38,14 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     }
     
     if settings.saveGpsData && settings.dataSaveLocation != .none {
-        GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onLocation(nil)})
+        GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onFailure(.gps) })
     } else {
         onLocation(nil)
     }
 }
 
 // This serializes just the data.
-private func serializeData(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+private func serializeData(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     if settings.dataSaveLocation == .none {
         onSuccess()
         return
@@ -69,7 +74,7 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
-            appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: onFailure)
+            appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
         }, onError: { _ in () })
 
     default:
@@ -96,7 +101,7 @@ private func appendDataToGoogleDrive(settings: Settings, row: [String], accessTo
 }
 
 // This serializes just the image.
-private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
+private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     if settings.imageSaveLocation == .none {
         onSuccess()
         return
@@ -114,8 +119,8 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
-            uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: onFailure)
-        }, onError: { _ in onFailure() })
+            uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
+        }, onError: { _ in onFailure(.googleDrive) })
     
     default:
         fatalError("\(settings.imageSaveLocation) not handled in switch")

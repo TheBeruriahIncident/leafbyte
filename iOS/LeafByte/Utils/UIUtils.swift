@@ -51,7 +51,7 @@ func requestCameraAccess(self viewController: UIViewController, onSuccess: @esca
             onSuccess()
         } else {
             onFailure()
-            presentAlert(self: viewController, title: NSLocalizedString("Camera access denied", comment: "Title of the alert that camera access is denied"), message: NSLocalizedString("To allow taking photos for analysis, go to Settings -> Privacy -> Camera and set LeafByte to ON.", comment: "Explanation of how to give camera access"))
+            presentAlert(self: viewController, title: NSLocalizedString("Camera access denied", comment: "Title of the alert that camera access is denied"), message: NSLocalizedString("To allow taking photos for analysis, go to your phone's Settings -> LeafByte and set Camera to ON.", comment: "Explanation of how to give camera access"))
         }
     }
 }

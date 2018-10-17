@@ -608,7 +608,17 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
-        let onFailure = {
+        let onFailure = { (serializationFailureCause: SerializationFailureCause) in
+            if serializationFailureCause == .gps {
+                DispatchQueue.main.async {
+                    presentAlert(self: self, title: NSLocalizedString("Could not get GPS location.", comment: "Title of the alert that GPS location access failed"), message: NSLocalizedString("To confirm that LeafByte has location access, go your phone's Settings -> LeafByte -> Location. If you do not wish to record GPS location, you can turn GPS location saving off in the LeafByte in-app settings.", comment: "Explanation of how to proceed after GPS location access failed"))
+                    DispatchQueue.main.async {
+                        self.completeButton.isEnabled = true
+                    }
+                }
+                return
+            }
+            
             DispatchQueue.main.async {
                 let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
                 let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
