@@ -38,11 +38,11 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To take photos for analysis</string>
+	<string>To allow the user to take photos for analysis</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To record location</string>
+	<string>To record location in datasets when chosen by the user</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To use photos for analysis</string>
+	<string>To analyze photos chosen by the user</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
