@@ -1541,7 +1541,7 @@
     </scenes>
     <resources>
         <image name="Camera" width="98" height="94"/>
-        <image name="Example Image" width="3024" height="2713"/>
+        <image name="Example Image" width="4422" height="3648"/>
         <image name="Gallery" width="98" height="98"/>
         <image name="Home" width="40" height="35"/>
         <image name="Leaf" width="128" height="139"/>
