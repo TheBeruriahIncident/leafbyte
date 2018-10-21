@@ -790,7 +790,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length of one side of the scale square from dot center to dot center" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GNf-0c-JDv" userLabel="Scale Mark Length Note Label">
-                                                <rect key="frame" x="0.0" y="355" width="375" height="31.5"/>
+                                                <rect key="frame" x="50" y="355" width="275" height="31.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="275" id="c3r-UE-3dW"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -848,6 +851,7 @@
                                             <constraint firstItem="4hE-lk-Cd3" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="0Sl-Ih-ICk"/>
                                             <constraint firstAttribute="trailing" secondItem="nnO-ux-tfh" secondAttribute="trailing" id="1UV-z7-wZQ"/>
                                             <constraint firstItem="z79-vT-qHF" firstAttribute="top" secondItem="kHP-PA-Tth" secondAttribute="top" constant="30" id="2H1-Tf-hHS"/>
+                                            <constraint firstItem="GNf-0c-JDv" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="2QR-SA-oP9"/>
                                             <constraint firstItem="V1C-Gd-7rk" firstAttribute="trailing" secondItem="kHP-PA-Tth" secondAttribute="trailingMargin" id="2yA-Ze-fh9"/>
                                             <constraint firstItem="ReC-JH-DuD" firstAttribute="centerY" secondItem="b7d-8V-V4U" secondAttribute="centerY" id="3C3-Yo-dLz"/>
                                             <constraint firstItem="b7d-8V-V4U" firstAttribute="centerX" secondItem="SaJ-zx-PBS" secondAttribute="centerX" id="4vM-4A-Dss"/>
@@ -861,7 +865,6 @@
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="top" secondItem="adf-uG-4TS" secondAttribute="bottom" constant="28" id="GKc-tF-VDF"/>
                                             <constraint firstItem="KqO-AI-fbL" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="K0W-r2-utX"/>
                                             <constraint firstItem="6Nr-u4-Yuh" firstAttribute="centerX" secondItem="Wep-GW-bl2" secondAttribute="centerX" id="L18-rd-4mC"/>
-                                            <constraint firstAttribute="trailing" secondItem="GNf-0c-JDv" secondAttribute="trailing" id="LTA-hq-fgN"/>
                                             <constraint firstItem="nnO-ux-tfh" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="LxG-F5-hJ5"/>
                                             <constraint firstItem="A8e-Un-uuG" firstAttribute="top" secondItem="V1C-Gd-7rk" secondAttribute="bottom" constant="2" id="MU3-7D-ni0"/>
                                             <constraint firstItem="P3F-9h-21N" firstAttribute="centerX" secondItem="JrM-pU-kJA" secondAttribute="centerX" id="OrB-MD-u0k"/>
@@ -899,7 +902,6 @@
                                             <constraint firstItem="cPD-yv-Xsk" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="xDE-NQ-Mzt"/>
                                             <constraint firstItem="4hE-lk-Cd3" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="xOp-zh-d9d"/>
                                             <constraint firstItem="adf-uG-4TS" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="xsn-ia-i54"/>
-                                            <constraint firstItem="GNf-0c-JDv" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leading" id="yne-ZJ-xgX"/>
                                         </constraints>
                                     </view>
                                 </subviews>
