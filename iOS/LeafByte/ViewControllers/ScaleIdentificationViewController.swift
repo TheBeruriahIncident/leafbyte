@@ -81,7 +81,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     @IBAction func clearScale(_ sender: Any) {
         numberOfValidScaleMarks = 0
         drawMarkers()
-        scaleStatusText.text = NSLocalizedString("No scale", comment: "Shown if the user clears the scale")
+        scaleStatusText.text = NSLocalizedString("No Scale", comment: "Shown if the user clears the scale")
         
         setScrollingMode(Mode.scrolling)
     }
@@ -256,9 +256,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     
     private func enableScaleIdentification() {
         if numberOfValidScaleMarks < 4 {
-            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Touch scale", comment: "Enters the mode to identify the scale"), for: .normal)
+            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Touch Scale", comment: "Enters the mode to identify the scale"), for: .normal)
         } else {
-            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Change scale", comment: "Enters the mode to change the scale identification"), for: .normal)
+            scaleIdentificationToggleButton.setTitle(NSLocalizedString("Change Scale", comment: "Enters the mode to change the scale identification"), for: .normal)
         }
     }
     
@@ -359,11 +359,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
     
     private func setScaleFound() {
-        scaleStatusText.text = NSLocalizedString("Scale found", comment: "Shown when a scale mark is found")
+        scaleStatusText.text = NSLocalizedString("Scale Found", comment: "Shown when a scale mark is found")
     }
     
     private func setScaleNotFound() {
-        scaleStatusText.text = NSLocalizedString("Scale not found", comment: "Shown when a scale mark is not found")
+        scaleStatusText.text = NSLocalizedString("Scale Not Found", comment: "Shown when a scale mark is not found")
         drawMarkers()
     }
     
