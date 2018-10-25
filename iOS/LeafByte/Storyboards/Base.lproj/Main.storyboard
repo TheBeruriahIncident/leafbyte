@@ -431,10 +431,10 @@
             </objects>
             <point key="canvasLocation" x="628.79999999999995" y="1626.3868065967017"/>
         </scene>
-        <!--Area Calculation View Controller-->
+        <!--Results View Controller-->
         <scene sceneID="RBc-bI-pyN">
             <objects>
-                <viewController title="Area Calculation View Controller" id="ueh-Tb-xxm" customClass="AreaCalculationViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Results View Controller" id="ueh-Tb-xxm" customClass="ResultsViewController" customModule="LeafByte" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tVl-5H-cS7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1362,10 +1362,10 @@
             </objects>
             <point key="canvasLocation" x="1864" y="1571.5142428785609"/>
         </scene>
-        <!--Area Calculation Help View Controller-->
+        <!--Results Help View Controller-->
         <scene sceneID="SXK-7H-soF">
             <objects>
-                <viewController id="gAc-Aq-5u4" userLabel="Area Calculation Help View Controller" sceneMemberID="viewController">
+                <viewController id="gAc-Aq-5u4" userLabel="Results Help View Controller" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bbE-Y3-Btg">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

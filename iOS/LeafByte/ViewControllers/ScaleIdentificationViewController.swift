@@ -137,7 +137,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is scaleIdentificationComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "scaleIdentificationComplete" {
-            guard let destination = segue.destination as? AreaCalculationViewController else {
+            guard let destination = segue.destination as? ResultsViewController else {
                 fatalError("Expected the next view to be the area calculation view but is \(segue.destination)")
             }
             

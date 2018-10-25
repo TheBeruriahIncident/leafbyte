@@ -20,7 +20,7 @@
 		4621EE501FEB70AD004C3011 /* LeafByteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE4F1FEB70AD004C3011 /* LeafByteTests.swift */; };
 		4621EE5B1FEB70AD004C3011 /* LeafByteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */; };
 		4630795420181A95005C548F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4630795320181A95005C548F /* Utils.swift */; };
-		463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */; };
+		463A28321FEF6D5B008EB1FC /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A28311FEF6D5B008EB1FC /* ResultsViewController.swift */; };
 		464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */; };
 		4651F0262011896800365F93 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651F0252011896800365F93 /* Settings.swift */; };
 		4652850A201EE176004E8864 /* GpsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46528509201EE176004E8864 /* GpsManager.swift */; };
@@ -86,7 +86,7 @@
 		4621EE5A1FEB70AD004C3011 /* LeafByteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafByteUITests.swift; sourceTree = "<group>"; };
 		4621EE5C1FEB70AD004C3011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4630795320181A95005C548F /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculationViewController.swift; sourceTree = "<group>"; };
+		463A28311FEF6D5B008EB1FC /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleIdentificationViewController.swift; sourceTree = "<group>"; };
 		4651F0252011896800365F93 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		46528509201EE176004E8864 /* GpsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GpsManager.swift; sourceTree = "<group>"; };
@@ -241,10 +241,10 @@
 		4656C6D01FF869F600AC6821 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				463A28311FEF6D5B008EB1FC /* AreaCalculationViewController.swift */,
 				46C424B91FEF5AAE00301F59 /* BackgroundRemovalViewController.swift */,
 				46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */,
 				4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */,
+				463A28311FEF6D5B008EB1FC /* ResultsViewController.swift */,
 				464BB28E20071CA1009FC3C1 /* ScaleIdentificationViewController.swift */,
 				468C075A1FFDD9840015B815 /* SettingsViewController.swift */,
 				46A969D1202BED9300B98898 /* TutorialViewController.swift */,
@@ -518,7 +518,7 @@
 				464BB28F20071CA1009FC3C1 /* ScaleIdentificationViewController.swift in Sources */,
 				469E3B002012EC8A009C7337 /* SerializationUtils.swift in Sources */,
 				4652850A201EE176004E8864 /* GpsManager.swift in Sources */,
-				463A28321FEF6D5B008EB1FC /* AreaCalculationViewController.swift in Sources */,
+				463A28321FEF6D5B008EB1FC /* ResultsViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
 				469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */,
 				46F1063B20007D1A000B4B83 /* UnionFind.swift in Sources */,

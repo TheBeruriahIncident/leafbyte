@@ -1,5 +1,5 @@
 //
-//  AreaCalculationViewController.swift
+//  ResultsViewController.swift
 //  LeafByte
 //
 //  Created by Adam Campbell on 12/24/17.
@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-final class AreaCalculationViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
+final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
     // MARK: - Fields
     
     // These are passed from the previous view.
