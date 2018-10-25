@@ -129,6 +129,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
             
             destination.settings = settings
             destination.sourceType = sourceType
+            destination.originalImage = image
             destination.cgImage = cgImageThresholded
             destination.ciImage = ciImageThresholded
             destination.uiImage = baseImageView.image

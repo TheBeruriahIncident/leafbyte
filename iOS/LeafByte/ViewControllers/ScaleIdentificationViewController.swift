@@ -15,6 +15,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // These are passed from the previous view.
     var settings: Settings!
     var sourceType: UIImagePickerController.SourceType!
+    var originalImage: CGImage!
     var cgImage: CGImage!
     var ciImage: CIImage!
     var uiImage: UIImage!
@@ -145,6 +146,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.sourceType = sourceType
             destination.inTutorial = inTutorial
             destination.barcode = barcode
+            destination.originalImage = originalImage
             
             if numberOfValidScaleMarks == 4 {
                 destination.cgImage = getFixedImage()
