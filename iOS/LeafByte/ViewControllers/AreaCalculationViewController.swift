@@ -600,7 +600,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func getCombinedImage() -> UIImage {
-        return combineImages([ baseImageView, leafHolesView, scaleMarkingView, userDrawingView ])
+        return combineImages([ leafHolesView, userDrawingView, baseImageView, scaleMarkingView ])
     }
     
     private func setNoLeafFound() {
@@ -616,7 +616,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
             }
         }
         
-        serialize(settings: settings, image: getCombinedImage(), percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: baseImageView.image!, percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func handleGoogleDriveFailure(onSuccess: @escaping () -> Void) {
