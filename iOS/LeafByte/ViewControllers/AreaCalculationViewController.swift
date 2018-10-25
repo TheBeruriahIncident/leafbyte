@@ -79,7 +79,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var baseImageView: UIImageView!
     @IBOutlet weak var leafHolesView: UIImageView!
-    @IBOutlet weak var scaleMarkingView: UIImageView!
+    @IBOutlet weak var markingsView: UIImageView!
     @IBOutlet weak var userDrawingView: UIImageView!
     @IBOutlet weak var grid: UIImageView!
     
@@ -104,7 +104,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         // Wipe the screen and redo all action except the one we just "undid".
         initializeImage(view: userDrawingView, size: uiImage.size)
-        initializeImage(view: scaleMarkingView, size: uiImage.size)
+        initializeImage(view: markingsView, size: uiImage.size)
         undoBuffer.forEach { drawing in doAction(drawing) }
         
         // Update the buttons.
@@ -185,12 +185,12 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
         
         baseImageView.contentMode = .scaleAspectFit
         leafHolesView.contentMode = .scaleAspectFit
-        scaleMarkingView.contentMode = .scaleAspectFit
+        markingsView.contentMode = .scaleAspectFit
         userDrawingView.contentMode = .scaleAspectFit
         
         baseImageView.image = uiImage
         initializeImage(view: leafHolesView, size: uiImage.size)
-        initializeImage(view: scaleMarkingView, size: uiImage.size)
+        initializeImage(view: markingsView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
         
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
@@ -600,7 +600,7 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func getCombinedImage() -> UIImage {
-        return combineImages([ leafHolesView, userDrawingView, baseImageView, scaleMarkingView ])
+        return combineImages([ leafHolesView, userDrawingView, baseImageView, markingsView ])
     }
     
     private func setNoLeafFound() {
@@ -671,13 +671,13 @@ final class AreaCalculationViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func drawMarkers() {
-        let drawingManager = DrawingManager(withCanvasSize: scaleMarkingView.image!.size)
+        let drawingManager = DrawingManager(withCanvasSize: markingsView.image!.size)
         
         if pointOnLeaf != nil {
             drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), size: 56)
         }
         
-        drawingManager.finish(imageView: scaleMarkingView)
+        drawingManager.finish(imageView: markingsView)
     }
     
     private func initializeGrid() {

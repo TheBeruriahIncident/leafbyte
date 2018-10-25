@@ -620,10 +620,10 @@
                         <outlet property="excludeConsumedAreaToggleButton" destination="PUe-KQ-szf" id="QqE-qc-6GU"/>
                         <outlet property="grid" destination="seQ-tA-Ei2" id="s3Q-Uj-NU5"/>
                         <outlet property="leafHolesView" destination="EYm-Xs-kTB" id="BDb-eN-feS"/>
+                        <outlet property="markingsView" destination="ZhN-ja-Acn" id="GdI-0P-AKu"/>
                         <outlet property="notesField" destination="Igz-Jt-RJ9" id="lmw-OZ-tqU"/>
                         <outlet property="resultsText" destination="JMU-FQ-tF0" id="glq-CW-sZ8"/>
                         <outlet property="sampleNumberButton" destination="Otk-oa-PcB" id="XR3-Er-oVG"/>
-                        <outlet property="scaleMarkingView" destination="ZhN-ja-Acn" id="GdI-0P-AKu"/>
                         <outlet property="scrollContentView" destination="y5V-Yh-WUw" id="gYJ-ah-F53"/>
                         <outlet property="scrollView" destination="XUO-j6-TH2" id="qHj-7I-taA"/>
                         <outlet property="undoButton" destination="rvf-tt-efy" id="FLV-x7-1Jh"/>
