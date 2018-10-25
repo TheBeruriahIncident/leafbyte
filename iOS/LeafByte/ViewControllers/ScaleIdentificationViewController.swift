@@ -235,6 +235,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
                 numberOfValidScaleMarks += 1
                 
                 if numberOfValidScaleMarks == 4 {
+                    setScaleFound()
                     setScrollingMode(.scrolling)
                 }
                 drawMarkers()
