@@ -1,7 +1,5 @@
 # LeafByte on iOS
 
-The iOS app is essentially complete, and is in validation and testing.
-
 Xcode is the recommended development environment.
 Open iOS/LeafByte.xcworkspace in Xcode to begin work.
 
