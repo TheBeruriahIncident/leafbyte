@@ -1,3 +1,3 @@
 # LeafByte on Android
 
-Barely begun
+In development.
