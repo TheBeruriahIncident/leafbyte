@@ -47,6 +47,6 @@ class LeafByteUITests: XCTestCase {
         
         // Background Removal, dismiss popover and tap the results text (which must have specific values)
         popoverdismissregionElement.tap()
-        app.staticTexts["Total Leaf Area= 10.011 cm2\nConsumed Leaf Area= 0.143 cm2\nPercent Consumed= 1.423%"].tap()
+        app.staticTexts["Total Leaf Area= 9.035 cm2\nConsumed Leaf Area= 0.115 cm2\nPercent Consumed= 1.268%"].tap()
     }
 }

@@ -60,8 +60,8 @@ final class LeafByteTests: XCTestCase {
         let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key < 0 }).map({ $0.value.standardPart }).sorted()
         let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key > 0 }).map({ $0.value.standardPart }).sorted()
         
-        XCTAssertEqual([3362, 969958], whiteAreaSizes.suffix(2))
-        XCTAssertEqual([1169, 105448], nonWhiteAreaSizes.suffix(2))
+        XCTAssertEqual([3360, 970005], whiteAreaSizes.suffix(2))
+        XCTAssertEqual([1176, 105398], nonWhiteAreaSizes.suffix(2))
     }
     
     func testSettingsSerialization() {
