@@ -96,8 +96,6 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topView.layer.borderWidth = 1
-
         setupScrollView(scrollView: scrollView, self: self)
 
         baseImageView.contentMode = .scaleAspectFit
