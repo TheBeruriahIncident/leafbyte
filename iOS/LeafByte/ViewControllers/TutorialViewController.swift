@@ -29,7 +29,7 @@ final class TutorialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let linkedString = NSMutableAttributedString(attributedString: tutorialSection6.attributedText).addLink(text: "the website", url: "https://zoegp.science/leafbyte")
+        let linkedString = NSMutableAttributedString(attributedString: tutorialSection6.attributedText).addLink(text: "the website", url: "https://zoegp.science/leafbyte-faqs")
         tutorialSection6.attributedText = linkedString
         
         smoothTransitions(self: self)
