@@ -81,6 +81,9 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
         histogramImageView.contentMode = .scaleToFill
         
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
+        
+        // Disable swiping right to go back in the navigation controller (it gets in the way when zooming/drawing).
+        self.navigationController!.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
