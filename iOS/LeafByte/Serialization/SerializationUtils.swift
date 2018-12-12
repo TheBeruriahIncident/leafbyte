@@ -55,7 +55,7 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
     let longitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.longitude) : ""
     
     // Form a row useful for any spreadsheet-like format.
-    let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInUnits2 ?? "", consumedAreaInUnits2 ?? "", percentConsumed, notes ]
+    let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInUnits2 ?? "", consumedAreaInUnits2 ?? "", percentConsumed, notes, String(format: "%.3f", settings.scaleMarkLength) ]
     
     switch settings.dataSaveLocation {
     case .local:
@@ -223,7 +223,7 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
 }
 
 private func getHeader(settings: Settings) -> [String] {
-    return [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes" ]
+    return [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes", "Scale Length (" + settings.getUnit() + ")"]
 }
 private func getCsvHeader(settings: Settings) -> Data {
     return stringRowToCsvRow(getHeader(settings: settings))
