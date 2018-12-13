@@ -344,6 +344,13 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         // Because we take the max, the background class will use -1.
         let representative = equivalenceClassElements.max()!
         
+        // Make the member point be the top-most member point in the equivalence.
+        // That way the leaf marker is drawn in a place less likely to overlap the leaf.
+        let topMostMemberPoint = equivalenceClassElements
+            .map({ labelToMemberPoint[$0]! })
+            .sorted(by: { $0.1 < $1.1 })[0]
+        labelToMemberPoint[representative] = topMostMemberPoint
+        
         // Do an initial loop-through including the first element of the class.
         equivalenceClassElements.forEach { label in
             // The label of the point to identify would now be obsolete, so save off the new canonical label.
