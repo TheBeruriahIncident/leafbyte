@@ -442,20 +442,26 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     
     // Draw a complete drawing, made up of a sequence of points.
     private func drawCompleteDrawing(_ drawing: [CGPoint]) {
-        if drawing.count == 1 {
-            drawLine(fromPoint: drawing.first!, toPoint: drawing.first!)
-        } else {
-            for index in 0...drawing.count - 2 {
-                drawLine(fromPoint: drawing[index], toPoint: drawing[index + 1])
-            }
-        }
+        drawLine(points: drawing)
     }
     
     private func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
+        drawLine(points: [fromPoint, toPoint])
+    }
+    
+    private func drawLine(points: [CGPoint]) {
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
         drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
         drawingManager.context.setLineWidth(2)
-        drawingManager.drawLine(from: fromPoint, to: toPoint)
+        
+        if points.count == 1 {
+            drawingManager.drawLine(from: points.first!, to: points.first!)
+        } else {
+            for index in 0...points.count - 2 {
+                drawingManager.drawLine(from: points[index], to: points[index + 1])
+            }
+        }
+        
         drawingManager.finish(imageView: userDrawingView, addToPreviousImage: true)
     }
     
