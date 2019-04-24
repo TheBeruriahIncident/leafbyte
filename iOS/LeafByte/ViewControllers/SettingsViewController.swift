@@ -75,7 +75,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPickerData = settings.getPreviousDatasetNames()
         previousDatasetPicker.reloadAllComponents()
         
-        let currentSelection = previousDatasetPickerData.index(of: settings.datasetName)
+        let currentSelection = previousDatasetPickerData.firstIndex(of: settings.datasetName)
         if currentSelection != nil {
             previousDatasetPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
         }
@@ -86,7 +86,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func chooseUnit(_ sender: Any) {
         unitPicker.reloadAllComponents()
         
-        let currentSelection = unitPickerData.index(of: settings.getUnit())
+        let currentSelection = unitPickerData.firstIndex(of: settings.getUnit())
         if currentSelection != nil {
             unitPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
         }
