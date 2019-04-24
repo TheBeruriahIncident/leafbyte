@@ -11,8 +11,9 @@ import UIKit
 
 extension CGPoint: Hashable {
     // This allows CGPoints to be used in sets.
-    public var hashValue: Int {
-        return LeafByte.hash(self.x, self.y)
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.x)
+        hasher.combine(self.y)
     }
     
     // Calculate the distance between two points ( https://en.wikipedia.org/wiki/Euclidean_distance ).

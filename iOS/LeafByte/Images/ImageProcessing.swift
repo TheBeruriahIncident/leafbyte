@@ -129,8 +129,9 @@ struct PointToIdentify: Hashable {
         self.y = y
     }
     
-    var hashValue: Int {
-        return LeafByte.hash(x, y)
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
     }
 }
 
