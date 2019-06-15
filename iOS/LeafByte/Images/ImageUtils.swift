@@ -232,46 +232,154 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     return farthestPointSoFar
 }
 
-// Starting at a point, breadth-first searches around to find a non-white point, bounded in search size by maxPixelsToCheck.
+// Starting at a point, searches around to find a non-white point, very roughly bounded in search size by maxPixelsToCheck.
+// This function is written to be high performance.
+// As such, some of the logic is "unrolled" in ways that are uglier but faster.
+// Similarly, comparisons inside tight loops are minimized.
 func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
     let width = image.width
     let height = image.height
     
-    var explored = Set<CGPoint>()
-    var queue = [startingPoint]
-
-    while !queue.isEmpty && explored.count <= maxPixelsToCheck {
-        let point = queue.removeFirst()
-        if explored.contains(point) {
-            continue
+    // We're going to spiral out from the startingPoint looking for visible points. The pattern looks like:
+    //      10 11 12 13
+    //  ...  9  2  3 14
+    //   23  8  1  4 15
+    //   22  7  6  5 16
+    //   21 20 19 18 17
+    // Note the every two sides of the spiral, the side length increases by 1.
+    // E.g. you go up 1, right 1, down 2, left 2, up 3, right 3, down 4...
+    
+    // Roughly how many pixels have been checked so far
+    var pixelsChecked = 0
+    // The current length of a spiral side (increments every two sides)
+    var spiralSideLength = 1
+    
+    // The current position
+    var x = roundToInt(startingPoint.x)
+    var y = roundToInt(startingPoint.y)
+    
+    // Because we only do this check once per time around the spiral and because the pixels checked is approximate, the maxPixelsToCheck is approximate.
+    while pixelsChecked < maxPixelsToCheck {
+        // The left side of the spiral, moving north
+        if x >= 0 {
+            // If we're off the bottom of the image, skip up to the bottom
+            var loopStart = 1
+            if y < 0 {
+                loopStart = 1 - y
+                y = 0
+            }
+            
+            for i in loopStart...spiralSideLength {
+                if y >= height {
+                    // If we're off the top of the image, skip to the end of this side
+                    y += spiralSideLength - i + 1
+                    break
+                }
+                
+                if image.getPixel(x: x, y: y).isVisible() {
+                    return CGPoint(x: x, y: y)
+                }
+                
+                // Move up one spot
+                y += 1
+            }
+        } else {
+            // If we're off the left side of the image, skip checking this side
+            y += spiralSideLength
         }
         
-        // Stop if we've found non-white.
-        if image.getPixel(x: roundToInt(point.x), y: roundToInt(point.y)).isVisible() {
-            return point
+        // The top side of the spiral, moving right
+        if y < height {
+            // If we're off the left of the image, skip over to the left edge
+            var loopStart = 1
+            if x < 0 {
+                loopStart = 1 - x
+                x = 0
+            }
+            
+            for i in loopStart...spiralSideLength {
+                if x >= width {
+                    // If we're off the top of the image, skip to the end of this side
+                    x += spiralSideLength - i + 1
+                    break
+                }
+                
+                if image.getPixel(x: x, y: y).isVisible() {
+                    return CGPoint(x: x, y: y)
+                }
+                
+                // Move over one spot
+                x += 1
+            }
+        } else {
+            // If we're off the top side of the image, skip checking this side
+            x += spiralSideLength
         }
         
-        let x = roundToInt(point.x)
-        let y = roundToInt(point.y)
+        // We've done two sides, so increment the side length.
+        spiralSideLength += 1
         
-        let westPoint = CGPoint(x: x - 1, y: y)
-        if x > 0 && !explored.contains(westPoint) {
-            queue.append(westPoint)
-        }
-        let eastPoint = CGPoint(x: x + 1, y: y)
-        if x < width - 1 && !explored.contains(eastPoint) {
-            queue.append(eastPoint)
-        }
-        let southPoint = CGPoint(x: x, y: y - 1)
-        if y > 0 && !explored.contains(southPoint) {
-            queue.append(southPoint)
-        }
-        let northPoint = CGPoint(x: x, y: y + 1)
-        if y < height - 1 && !explored.contains(northPoint) {
-            queue.append(northPoint)
+        // The right side of the spiral, moving south
+        if x < width {
+            // If we're off the top of the image, skip down to the top
+            var loopStart = 1
+            if y >= height {
+                loopStart = y - height + 2
+                y = height - 1
+            }
+            
+            for i in loopStart...spiralSideLength {
+                if y < 0 {
+                    // If we're off the bottom of the image, skip to the end of this side
+                    y -= spiralSideLength - i + 1
+                    break
+                }
+                
+                if image.getPixel(x: x, y: y).isVisible() {
+                    return CGPoint(x: x, y: y)
+                }
+                
+                // Move down one spot
+                y -= 1
+            }
+        } else {
+            // If we're off the right side of the image, skip checking this side
+            y -= spiralSideLength
         }
         
-        explored.insert(point)
+        // The bottom side of the spiral, moving left
+        if y >= 0 {
+            // If we're off the right of the image, skip over to the right edge
+            var loopStart = 1
+            if x >= width {
+                loopStart = x - width + 2
+                x = width - 1
+            }
+            
+            for i in loopStart...spiralSideLength {
+                if x < 0 {
+                    // If we're off the left of the image, skip to the end of this side
+                    x -= spiralSideLength - i + 1
+                    break
+                }
+                
+                if image.getPixel(x: x, y: y).isVisible() {
+                    return CGPoint(x: x, y: y)
+                }
+                
+                // Move over one spot
+                x -= 1
+            }
+        } else {
+            // If we're off the bottom side of the image, skip checking this side
+            x -= spiralSideLength
+        }
+        
+        // We've done two sides, so increment the side length.
+        spiralSideLength += 1
+        
+        // Quickly approximate how many pixels were checked in this circuit.
+        pixelsChecked += spiralSideLength * 4
     }
     
     return nil
