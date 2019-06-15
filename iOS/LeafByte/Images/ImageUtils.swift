@@ -189,7 +189,8 @@ private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint
 // Find the point farthest away from a point within a connected component.
 // In other words, find the farthest away point reachable along non-white points.
 // Note that farthest away refers to the number of non-white points traversed rather than traditional distance.
-func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint {
+// Returns nil if the farthest point is too far away, to allow skipping large objects.
+func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint? {
     let width = image.width
     let height = image.height
     
@@ -227,6 +228,12 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         
         explored.insert(point)
         farthestPointSoFar = point
+        
+        // If we've explored too much, return nil.
+        // This keeps us from spending a long time dealing with large objects that are unlikely to be the scale anyways.
+        if explored.count > 50000 {
+            return nil
+        }
     }
     
     return farthestPointSoFar

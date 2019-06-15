@@ -311,8 +311,16 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        let farthestPoint1 = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
-        let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
+        let farthestPoint1 : CGPoint!  = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
+        // If either farthest point is too far away, we get nil.
+        // This allows us to discard objects that are too large and are unlikely to be the scale.
+        if farthestPoint1 == nil {
+            return false
+        }
+        let farthestPoint2 : CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
+        if farthestPoint2 == nil {
+            return false
+        }
         
         let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
         // If the scale mark is too small, it's probably just noise in the image.
