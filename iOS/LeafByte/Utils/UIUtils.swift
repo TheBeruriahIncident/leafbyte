@@ -69,7 +69,7 @@ func setBackButton(self previousViewController: UIViewController, next nextViewC
 func setupScrollView(scrollView: UIScrollView, self viewController: UIScrollViewDelegate) {
     scrollView.delegate = viewController
     scrollView.minimumZoomScale = 0.9;
-    scrollView.maximumZoomScale = 10.0
+    scrollView.maximumZoomScale = 50.0
 }
 
 func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
