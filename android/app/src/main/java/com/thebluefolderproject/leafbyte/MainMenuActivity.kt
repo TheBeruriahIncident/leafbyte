@@ -1,9 +1,14 @@
 package com.thebluefolderproject.leafbyte
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainMenuActivity : AppCompatActivity() {
@@ -14,12 +19,38 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     fun chooseImageFromGallery(@Suppress(UNUSED) view: View) {
-        val imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         MainMenuUtils.configureImagePickerIntent(imagePickerIntent)
 
         startActivityForResult(
             Intent.createChooser(imagePickerIntent, MainMenuUtils.IMAGE_PICKER_CHOOSER_TITLE),
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(resultCode) {
+            Activity.RESULT_OK -> {
+                if (data == null) {
+                    throw IllegalArgumentException("Intent data is null")
+                }
+
+                processActivityResultData(requestCode, data)
+            }
+            else -> throw IllegalArgumentException("Result code: $resultCode")
+        }
+    }
+
+    private fun processActivityResultData(requestCode: Int, data: Intent) {
+        when(requestCode) {
+            MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
+                val uri = MainMenuUtils.intentToUri(data)
+                val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, null)
+
+                val imageView = findViewById<ImageView>(R.id.imageView2)
+                imageView.setImageBitmap(bitmap)
+            }
+            else -> throw IllegalArgumentException("Request code: $requestCode")
+        }
     }
 }
 
@@ -41,5 +72,12 @@ object MainMenuUtils {
                 type = PRE_API_19_ACCEPTED_MIME_TYPE
             }
         }
+    }
+
+    fun intentToUri(data: Intent) : Uri {
+        if (data.data == null) {
+            throw IllegalStateException("Intent data is null")
+        }
+        return data.data!!
     }
 }
