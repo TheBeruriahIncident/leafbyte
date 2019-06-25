@@ -64,7 +64,7 @@ object MainMenuUtils {
 
     fun configureImagePickerIntent(intent: Intent) {
         with(intent) {
-            // API level 19 added the ability to
+            // API level 19 added the ability to request any of multiple MIME types
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 type = API_19_ACCEPTED_MIME_TYPE_RANGE
                 putExtra(Intent.EXTRA_MIME_TYPES, API_19_ACCEPTED_MIME_TYPES)
