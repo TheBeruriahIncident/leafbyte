@@ -7,13 +7,20 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.opencv.android.OpenCVLoader
+import java.lang.RuntimeException
 
 class MainMenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+
+        if (!OpenCVLoader.initDebug()) {
+            throw RuntimeException("Failed to initialize OpenCV")
+        }
     }
 
     fun chooseImageFromGallery(@Suppress(UNUSED) view: View) {
