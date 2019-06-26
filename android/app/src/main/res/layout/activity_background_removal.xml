@@ -7,4 +7,12 @@
         android:layout_height="match_parent"
         tools:context=".BackgroundRemovalActivity">
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="?attr/colorAccent"
+            android:id="@+id/imageView" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="244dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="270dp"
+            android:layout_marginRight="270dp" android:layout_marginBottom="400dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="141dp" android:layout_marginStart="141dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

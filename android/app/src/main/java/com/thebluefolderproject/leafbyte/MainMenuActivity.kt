@@ -2,13 +2,11 @@ package com.thebluefolderproject.leafbyte
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainMenuActivity : AppCompatActivity() {
@@ -44,10 +42,11 @@ class MainMenuActivity : AppCompatActivity() {
         when(requestCode) {
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
                 val uri = MainMenuUtils.intentToUri(data)
-                val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, null)
 
-                val imageView = findViewById<ImageView>(R.id.imageView2)
-                imageView.setImageBitmap(bitmap)
+                val backgroundRemovalIntent = Intent(this, BackgroundRemovalActivity::class.java).apply {
+                    putExtra(BackgroundRemovalUtils.IMAGE_URI_EXTRA_KEY, uri.toString())
+                }
+                startActivity(backgroundRemovalIntent)
             }
             else -> throw IllegalArgumentException("Request code: $requestCode")
         }
