@@ -10,6 +10,23 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.set
+import org.opencv.core.CvType
+import android.R.attr.bitmap
+import org.opencv.imgproc.Imgproc
+import org.opencv.core.Scalar
+import android.opengl.ETC1.getWidth
+import android.opengl.ETC1.getHeight
+import android.util.Log
+import org.opencv.android.Utils
+import org.opencv.core.Core
+import org.opencv.core.Mat
+import android.R.attr.bitmap
+import android.opengl.ETC1.getWidth
+import android.opengl.ETC1.getHeight
+
+
+
+
 
 class BackgroundRemovalActivity : AppCompatActivity() {
 
@@ -40,19 +57,37 @@ class BackgroundRemovalActivity : AppCompatActivity() {
     }
 
     fun threshold(bitmap: Bitmap, threshold: Int): Bitmap {
-        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        // first convert bitmap into OpenCV mat object
+        val imageMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(4.0)
+        )
+        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Utils.bitmapToMat(myBitmap, imageMat)
 
-        for (x in 0 until bitmap.width) {
-            for (y in 0 until bitmap.height) {
-                val pixel = bitmap.getPixel(x, y)
+        // now convert to gray
+        val grayMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(1.0)
+        )
+        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
 
-                val filter = Color.red(pixel) > threshold
+        // get the thresholded image
+        val thresholdMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(1.0)
+        )
+        Imgproc.threshold(grayMat, thresholdMat, 128.0, 255.0, Imgproc.THRESH_BINARY)
 
-                newBitmap.setPixel(x, y, if (filter) bitmap.getPixel(x, y) else 0)
-            }
-        }
+        // convert back to bitmap for displaying
+        val resultBitmap = Bitmap.createBitmap(
+            bitmap.width, bitmap.height,
+            Bitmap.Config.ARGB_8888
+        )
+        thresholdMat.convertTo(thresholdMat, CvType.CV_8UC1)
+        Utils.matToBitmap(thresholdMat, resultBitmap)
 
-        return newBitmap
+        return resultBitmap
     }
 }
 
