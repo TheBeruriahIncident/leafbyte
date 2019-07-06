@@ -77,7 +77,13 @@ class BackgroundRemovalActivity : AppCompatActivity() {
             bitmap.height, bitmap.width,
             CvType.CV_8U, Scalar(1.0)
         )
-        Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY)
+        Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY_INV)
+
+        val maskedImageMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(4.0)
+        )
+        imageMat.copyTo(maskedImageMat, thresholdMat)
 
         // convert back to bitmap for displaying
         val resultBitmap = Bitmap.createBitmap(
@@ -85,7 +91,7 @@ class BackgroundRemovalActivity : AppCompatActivity() {
             Bitmap.Config.ARGB_8888
         )
         thresholdMat.convertTo(thresholdMat, CvType.CV_8UC1)
-        Utils.matToBitmap(thresholdMat, resultBitmap)
+        Utils.matToBitmap(maskedImageMat, resultBitmap)
 
         return resultBitmap
     }
