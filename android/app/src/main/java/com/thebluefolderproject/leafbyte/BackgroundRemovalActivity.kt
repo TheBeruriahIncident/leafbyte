@@ -15,8 +15,7 @@ import java.util.*
 import org.opencv.core.Scalar
 import org.opencv.core.CvType
 import org.opencv.core.Mat
-
-
+import kotlin.math.roundToInt
 
 
 class BackgroundRemovalActivity : AppCompatActivity() {
@@ -29,9 +28,13 @@ class BackgroundRemovalActivity : AppCompatActivity() {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, null)
         val imageView = findViewById<ImageView>(R.id.imageView)
         val histogramView = findViewById<ImageView>(R.id.histogram)
-        imageView.setImageBitmap(threshold(bitmap!!, 100))
+
+        val otsu = otsu(bitmap!!)
+
+        imageView.setImageBitmap(threshold(bitmap!!, otsu))
 
         val seekBar = findViewById<SeekBar>(R.id.seekBar)
+        seekBar.progress = (otsu * 100 / 256).roundToInt()
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(p0: SeekBar?) {
 
@@ -42,7 +45,7 @@ class BackgroundRemovalActivity : AppCompatActivity() {
             }
 
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                imageView.setImageBitmap(threshold(bitmap!!, p1 * 2))
+                imageView.setImageBitmap(threshold(bitmap!!, (p1 * 256 / 100).toDouble()))
             }
 
         })
@@ -51,7 +54,31 @@ class BackgroundRemovalActivity : AppCompatActivity() {
         Log.e("ADAM", "$histogram")
     }
 
-    fun threshold(bitmap: Bitmap, threshold: Int): Bitmap {
+    fun otsu(bitmap: Bitmap): Double {
+        // first convert bitmap into OpenCV mat object
+        val imageMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(4.0)
+        )
+        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Utils.bitmapToMat(myBitmap, imageMat)
+
+        // now convert to gray
+        val grayMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(1.0)
+        )
+        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
+
+        // get the thresholded image
+        val thresholdMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(1.0)
+        )
+        return Imgproc.threshold(grayMat, thresholdMat, -1.0, 255.0, Imgproc.THRESH_OTSU)
+    }
+
+    fun threshold(bitmap: Bitmap, threshold: Double): Bitmap {
         // first convert bitmap into OpenCV mat object
         val imageMat = Mat(
             bitmap.height, bitmap.width,
