@@ -3,7 +3,6 @@ package com.thebluefolderproject.leafbyte;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -14,24 +13,9 @@ import android.widget.FrameLayout;
 /**
  * Zooming view.
  *
- * Taken from https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
+ * Adapted from https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
  */
 public class ZoomView extends FrameLayout {
-
-    /**
-     * Zooming view listener interface.
-     *
-     * @author karooolek
-     *
-     */
-    public interface ZoomViewListener {
-
-        void onZoomStarted(float zoom, float zoomx, float zoomy);
-
-        void onZooming(float zoom, float zoomx, float zoomy);
-
-        void onZoomEnded(float zoom, float zoomx, float zoomy);
-    }
 
     // zooming
     float zoom = 1.0f;
@@ -40,14 +24,6 @@ public class ZoomView extends FrameLayout {
     float zoomX, zoomY;
     float smoothZoomX, smoothZoomY;
     private boolean scrolling; // NOPMD by karooolek on 29.06.11 11:45
-
-    // minimap variables
-    private boolean showMinimap = false;
-    private int miniMapColor = Color.BLACK;
-    private int miniMapHeight = -1;
-    private String miniMapCaption;
-    private float miniMapCaptionSize = 10.0f;
-    private int miniMapCaptionColor = Color.WHITE;
 
     // touching variables
     private long lastTapTime;
@@ -63,9 +39,6 @@ public class ZoomView extends FrameLayout {
     private final Matrix m = new Matrix();
     private final Paint p = new Paint();
 
-    // listener
-    ZoomViewListener listener;
-
     private Bitmap ch;
 
     public ZoomView(final Context context) {
@@ -75,73 +48,6 @@ public class ZoomView extends FrameLayout {
     public ZoomView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-    }
-
-    public float getZoom() {
-        return zoom;
-    }
-
-    public float getMaxZoom() {
-        return maxZoom;
-    }
-
-    public void setMaxZoom(final float maxZoom) {
-        if (maxZoom < 1.0f) {
-            return;
-        }
-
-        this.maxZoom = maxZoom;
-    }
-
-    public void setMiniMapEnabled(final boolean showMiniMap) {
-        this.showMinimap = showMiniMap;
-    }
-
-    public boolean isMiniMapEnabled() {
-        return showMinimap;
-    }
-
-    public void setMiniMapHeight(final int miniMapHeight) {
-        if (miniMapHeight < 0) {
-            return;
-        }
-        this.miniMapHeight = miniMapHeight;
-    }
-
-    public int getMiniMapHeight() {
-        return miniMapHeight;
-    }
-
-    public void setMiniMapColor(final int color) {
-        miniMapColor = color;
-    }
-
-    public int getMiniMapColor() {
-        return miniMapColor;
-    }
-
-    public String getMiniMapCaption() {
-        return miniMapCaption;
-    }
-
-    public void setMiniMapCaption(final String miniMapCaption) {
-        this.miniMapCaption = miniMapCaption;
-    }
-
-    public float getMiniMapCaptionSize() {
-        return miniMapCaptionSize;
-    }
-
-    public void setMiniMapCaptionSize(final float size) {
-        miniMapCaptionSize = size;
-    }
-
-    public int getMiniMapCaptionColor() {
-        return miniMapCaptionColor;
-    }
-
-    public void setMiniMapCaptionColor(final int color) {
-        miniMapCaptionColor = color;
     }
 
     public void zoomTo(final float zoom, final float x, final float y) {
@@ -155,25 +61,6 @@ public class ZoomView extends FrameLayout {
         smoothZoom = clamp(1.0f, zoom, maxZoom);
         smoothZoomX = x;
         smoothZoomY = y;
-        if (listener != null) {
-            listener.onZoomStarted(smoothZoom, x, y);
-        }
-    }
-
-    public ZoomViewListener getListener() {
-        return listener;
-    }
-
-    public void setListner(final ZoomViewListener listener) {
-        this.listener = listener;
-    }
-
-    public float getZoomFocusX() {
-        return zoomX * zoom;
-    }
-
-    public float getZoomFocusY() {
-        return zoomY * zoom;
     }
 
     @Override
@@ -196,40 +83,11 @@ public class ZoomView extends FrameLayout {
     }
 
     private void processSingleTouchEvent(final MotionEvent ev) {
-
         final float x = ev.getX();
         final float y = ev.getY();
-
-        final float w = miniMapHeight * (float) getWidth() / getHeight();
-        final float h = miniMapHeight;
-        final boolean touchingMiniMap = x >= 10.0f && x <= 10.0f + w && y >= 10.0f && y <= 10.0f + h;
-
-        if (showMinimap && smoothZoom > 1.0f && touchingMiniMap) {
-            processSingleTouchOnMinimap(ev);
-        } else {
-            processSingleTouchOutsideMinimap(ev);
-        }
-    }
-
-    private void processSingleTouchOnMinimap(final MotionEvent ev) {
-        final float x = ev.getX();
-        final float y = ev.getY();
-
-        final float w = miniMapHeight * (float) getWidth() / getHeight();
-        final float h = miniMapHeight;
-        final float zx = (x - 10.0f) / w * getWidth();
-        final float zy = (y - 10.0f) / h * getHeight();
-        smoothZoomTo(smoothZoom, zx, zy);
-    }
-
-    private void processSingleTouchOutsideMinimap(final MotionEvent ev) {
-        final float x = ev.getX();
-        final float y = ev.getY();
-        float lx = x - touchStartX;
-        float ly = y - touchStartY;
-        final float l = (float) Math.hypot(lx, ly);
         float dx = x - touchLastX;
         float dy = y - touchLastY;
+        final float l = (float) Math.hypot(dx, dy);
         touchLastX = x;
         touchLastY = y;
 
@@ -239,10 +97,6 @@ public class ZoomView extends FrameLayout {
                 touchStartY = y;
                 touchLastX = x;
                 touchLastY = y;
-                dx = 0;
-                dy = 0;
-                lx = 0;
-                ly = 0;
                 scrolling = false;
                 break;
 
@@ -363,9 +217,6 @@ public class ZoomView extends FrameLayout {
 
         zoomX = lerp(bias(zoomX, smoothZoomX, 0.1f), smoothZoomX, 0.35f);
         zoomY = lerp(bias(zoomY, smoothZoomY, 0.1f), smoothZoomY, 0.35f);
-        if (zoom != smoothZoom && listener != null) {
-            listener.onZooming(zoom, zoomX, zoomY);
-        }
 
         final boolean animating = Math.abs(zoom - smoothZoom) > 0.0000001f
                 || Math.abs(zoomX - smoothZoomX) > 0.0000001f || Math.abs(zoomY - smoothZoomY) > 0.0000001f;
@@ -401,35 +252,6 @@ public class ZoomView extends FrameLayout {
             canvas.concat(m);
             v.draw(canvas);
             canvas.restore();
-        }
-
-        // draw minimap
-        if (showMinimap) {
-            if (miniMapHeight < 0) {
-                miniMapHeight = getHeight() / 4;
-            }
-
-            canvas.translate(10.0f, 10.0f);
-
-            p.setColor(0x80000000 | 0x00ffffff & miniMapColor);
-            final float w = miniMapHeight * (float) getWidth() / getHeight();
-            final float h = miniMapHeight;
-            canvas.drawRect(0.0f, 0.0f, w, h, p);
-
-            if (miniMapCaption != null && miniMapCaption.length() > 0) {
-                p.setTextSize(miniMapCaptionSize);
-                p.setColor(miniMapCaptionColor);
-                p.setAntiAlias(true);
-                canvas.drawText(miniMapCaption, 10.0f, 10.0f + miniMapCaptionSize, p);
-                p.setAntiAlias(false);
-            }
-
-            p.setColor(0x80000000 | 0x00ffffff & miniMapColor);
-            final float dx = w * zoomX / getWidth();
-            final float dy = h * zoomY / getHeight();
-            canvas.drawRect(dx - 0.5f * w / zoom, dy - 0.5f * h / zoom, dx + 0.5f * w / zoom, dy + 0.5f * h / zoom, p);
-
-            canvas.translate(-10.0f, -10.0f);
         }
 
         // redraw
