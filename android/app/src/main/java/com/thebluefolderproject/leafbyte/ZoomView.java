@@ -1,7 +1,6 @@
 package com.thebluefolderproject.leafbyte;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -36,10 +35,7 @@ public class ZoomView extends FrameLayout {
     private float lastdx2, lastdy2;
 
     // drawing
-    private final Matrix m = new Matrix();
-    private final Paint p = new Paint();
-
-    private Bitmap ch;
+    private final Matrix matrix = new Matrix();
 
     public ZoomView(final Context context) {
         super(context);
@@ -218,46 +214,28 @@ public class ZoomView extends FrameLayout {
         zoomX = lerp(bias(zoomX, smoothZoomX, 0.1f), smoothZoomX, 0.35f);
         zoomY = lerp(bias(zoomY, smoothZoomY, 0.1f), smoothZoomY, 0.35f);
 
-        final boolean animating = Math.abs(zoom - smoothZoom) > 0.0000001f
-                || Math.abs(zoomX - smoothZoomX) > 0.0000001f || Math.abs(zoomY - smoothZoomY) > 0.0000001f;
-
         // nothing to draw
         if (getChildCount() == 0) {
             return;
         }
 
         // prepare matrix
-        m.setTranslate(0.5f * getWidth(), 0.5f * getHeight());
-        m.preScale(zoom, zoom);
-        m.preTranslate(-clamp(0.5f * getWidth() / zoom, zoomX, getWidth() - 0.5f * getWidth() / zoom),
+        matrix.setTranslate(0.5f * getWidth(), 0.5f * getHeight());
+        matrix.preScale(zoom, zoom);
+        matrix.preTranslate(-clamp(0.5f * getWidth() / zoom, zoomX, getWidth() - 0.5f * getWidth() / zoom),
                 -clamp(0.5f * getHeight() / zoom, zoomY, getHeight() - 0.5f * getHeight() / zoom));
 
         // get view
-        final View v = getChildAt(0);
-        m.preTranslate(v.getLeft(), v.getTop());
+        final View childView = getChildAt(0);
+        matrix.preTranslate(childView.getLeft(), childView.getTop());
 
-        // get drawing cache if available
-        if (animating && ch == null && isAnimationCacheEnabled()) {
-            v.setDrawingCacheEnabled(true);
-            ch = v.getDrawingCache();
-        }
-
-        // draw using cache while animating
-        if (animating && isAnimationCacheEnabled() && ch != null) {
-            p.setColor(0xffffffff);
-            canvas.drawBitmap(ch, m, p);
-        } else { // zoomed or cache unavailable
-            ch = null;
-            canvas.save();
-            canvas.concat(m);
-            v.draw(canvas);
-            canvas.restore();
-        }
+        canvas.save();
+        canvas.concat(matrix);
+        childView.draw(canvas);
+        canvas.restore();
 
         // redraw
-        // if (animating) {
         getRootView().invalidate();
         invalidate();
-        // }
     }
 }
