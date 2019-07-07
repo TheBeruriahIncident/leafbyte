@@ -7,4 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".ResultsActivity">
 
+    <com.thebluefolderproject.leafbyte.ZoomView
+            android:layout_width="395dp"
+            android:layout_height="715dp" tools:layout_editor_absoluteY="8dp" tools:layout_editor_absoluteX="8dp"
+            android:id="@+id/zoom">
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView2"/>
+    </com.thebluefolderproject.leafbyte.ZoomView>
 </androidx.constraintlayout.widget.ConstraintLayout>

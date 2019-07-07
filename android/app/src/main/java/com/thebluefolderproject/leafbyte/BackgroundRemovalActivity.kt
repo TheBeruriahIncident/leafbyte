@@ -1,14 +1,15 @@
 package com.thebluefolderproject.leafbyte
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import org.opencv.imgproc.Imgproc
-import android.util.Log
 import org.opencv.android.Utils
 import org.opencv.core.*
 import java.util.*
@@ -51,7 +52,14 @@ class BackgroundRemovalActivity : AppCompatActivity() {
         })
 
         val histogram = calculateHistogram(bitmap, histogramView)
-        Log.e("ADAM", "$histogram")
+
+    }
+
+    fun next(@Suppress(UNUSED) view: View) {
+        val resultsIntent = Intent(this, ResultsActivity::class.java).apply {
+            putExtra(ResultsUtils.IMAGE_URI_EXTRA_KEY, intent.getStringExtra(BackgroundRemovalUtils.IMAGE_URI_EXTRA_KEY))
+        }
+        startActivity(resultsIntent)
     }
 
     fun otsu(bitmap: Bitmap): Double {
@@ -145,7 +153,6 @@ class BackgroundRemovalActivity : AppCompatActivity() {
         val graphHeight = 100
         val factor = graphHeight.toDouble() / maxValue
         val graphMat = Mat(graphHeight, 256, CvType.CV_8UC3, Scalar(0.0, 0.0, 0.0))
-        Log.e("Adam", "$maxValue")
 
 
         for(i in 0..255) {

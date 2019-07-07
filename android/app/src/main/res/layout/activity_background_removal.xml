@@ -30,4 +30,9 @@
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="663dp"
+            tools:layout_editor_absoluteX="310dp" android:id="@+id/button2" android:onClick="next"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
