@@ -3,8 +3,8 @@ package com.thebluefolderproject.leafbyte;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -196,8 +196,8 @@ public class ZoomView extends FrameLayout {
         return Math.max(min, Math.min(value, max));
     }
 
-    private float lerp(final float a, final float b, final float k) {
-        return a + (b - a) * k;
+    private float lerp(final float start, final float end, final float amountToInterpolate) {
+        return start + (end - start) * amountToInterpolate;
     }
 
     private float bias(final float a, final float b, final float k) {
