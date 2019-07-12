@@ -71,6 +71,8 @@ public class ZoomView extends FrameLayout {
             processDoubleTouchEvent(ev);
         }
 
+        super.dispatchTouchEvent(ev);
+
         // redraw
         getRootView().invalidate();
         invalidate();
@@ -141,8 +143,6 @@ public class ZoomView extends FrameLayout {
 
         ev.getX();
         ev.getY();
-
-        super.dispatchTouchEvent(ev);
     }
 
     private void processDoubleTouchEvent(final MotionEvent ev) {
@@ -189,7 +189,6 @@ public class ZoomView extends FrameLayout {
         }
 
         ev.setAction(MotionEvent.ACTION_CANCEL);
-        super.dispatchTouchEvent(ev);
     }
 
     private float clamp(final float min, final float value, final float max) {
