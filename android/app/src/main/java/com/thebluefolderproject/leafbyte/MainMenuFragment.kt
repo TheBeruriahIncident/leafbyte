@@ -59,6 +59,7 @@ class MainMenuFragment : Fragment() {
 
                 processActivityResultData(requestCode, data)
             }
+            Activity.RESULT_CANCELED -> {}
             else -> throw IllegalArgumentException("Result code: $resultCode")
         }
     }

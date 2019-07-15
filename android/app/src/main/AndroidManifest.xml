@@ -20,13 +20,6 @@
         </activity>
         <activity android:name=".BackgroundRemovalActivity">
         </activity>
-        <activity android:name=".MainMenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
