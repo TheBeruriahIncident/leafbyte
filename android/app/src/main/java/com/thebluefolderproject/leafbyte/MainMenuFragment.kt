@@ -1,12 +1,18 @@
 package com.thebluefolderproject.leafbyte
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,60 +30,52 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class MainMenuFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_menu, container, false)
+        val view = inflater.inflate(R.layout.fragment_main_menu, container, false)
+        view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }
+
+        return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun chooseImageFromGallery() {
+        val imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        MainMenuUtils.configureImagePickerIntent(imagePickerIntent)
+
+        startActivityForResult(
+            Intent.createChooser(imagePickerIntent, MainMenuUtils.IMAGE_PICKER_CHOOSER_TITLE),
+            MainMenuUtils.IMAGE_PICKER_REQUEST_CODE)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(resultCode) {
+            Activity.RESULT_OK -> {
+                if (data == null) {
+                    throw IllegalArgumentException("Intent data is null")
+                }
+
+                processActivityResultData(requestCode, data)
+            }
+            else -> throw IllegalArgumentException("Result code: $resultCode")
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    private fun processActivityResultData(requestCode: Int, data: Intent) {
+        when(requestCode) {
+            MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
+                Log.e("Adam", "YAY")
+//                val uri = MainMenuUtils.intentToUri(data)
+//
+//                val backgroundRemovalIntent = Intent(this, BackgroundRemovalActivity::class.java).apply {
+//                    putExtra(BackgroundRemovalUtils.IMAGE_URI_EXTRA_KEY, uri.toString())
+//                }
+//                startActivity(backgroundRemovalIntent)
+            }
+            else -> throw IllegalArgumentException("Request code: $requestCode")
+        }
     }
 
     companion object {
@@ -100,3 +98,32 @@ class MainMenuFragment : Fragment() {
             }
     }
 }
+
+object MainMenuUtils {
+    const val IMAGE_PICKER_CHOOSER_TITLE = "Select Image to Analyze"
+    const val IMAGE_PICKER_REQUEST_CODE = 1
+
+    private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
+    private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
+    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(PRE_API_19_ACCEPTED_MIME_TYPE, "image/png", "image/bmp")
+
+    fun configureImagePickerIntent(intent: Intent) {
+        with(intent) {
+            // API level 19 added the ability to request any of multiple MIME types
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                type = API_19_ACCEPTED_MIME_TYPE_RANGE
+                putExtra(Intent.EXTRA_MIME_TYPES, API_19_ACCEPTED_MIME_TYPES)
+            } else {
+                type = PRE_API_19_ACCEPTED_MIME_TYPE
+            }
+        }
+    }
+
+    fun intentToUri(data: Intent) : Uri {
+        if (data.data == null) {
+            throw IllegalStateException("Intent data is null")
+        }
+        return data.data!!
+    }
+}
+
