@@ -1,6 +1,7 @@
 package com.thebluefolderproject.leafbyte
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,23 +14,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [MainMenuFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [MainMenuFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class MainMenuFragment : Fragment() {
+    private var listener: OnFragmentInteractionListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,17 +28,56 @@ class MainMenuFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main_menu, container, false)
         view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }
+        view.findViewById<Button>(R.id.takePhotoButton).setOnClickListener { takeAPhoto() }
 
         return view
     }
 
-    fun chooseImageFromGallery() {
-        val imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        MainMenuUtils.configureImagePickerIntent(imagePickerIntent)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
 
-        startActivityForResult(
-            Intent.createChooser(imagePickerIntent, MainMenuUtils.IMAGE_PICKER_CHOOSER_TITLE),
-            MainMenuUtils.IMAGE_PICKER_REQUEST_CODE)
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    private fun chooseImageFromGallery() {
+        startActivity(
+            MainMenuUtils.createImagePickerIntent(),
+            MainMenuUtils.IMAGE_PICKER_REQUEST_CODE,
+            "choose an image")
+    }
+
+    private fun takeAPhoto() {
+        if (!activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            showAlert("No camera found", "Could not take a photo: no camera was found. Try selecting an existing image instead.")
+            return
+        }
+
+        showAlert("Camera not yet supported", "Working on it!")
+    }
+
+    fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
+        if (intent.resolveActivity(activity!!.packageManager) == null) {
+            showAlert("Could not $actionDescription", "Could not $actionDescription: no app was found supporting that action.")
+            return
+        }
+
+        startActivityForResult(intent, requestCode)
+    }
+
+    fun showAlert(title: String, message: String) {
+        AlertDialog.Builder(activity)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,47 +98,29 @@ class MainMenuFragment : Fragment() {
         when(requestCode) {
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
                 Log.e("Adam", "YAY")
-//                val uri = MainMenuUtils.intentToUri(data)
-//
-//                val backgroundRemovalIntent = Intent(this, BackgroundRemovalActivity::class.java).apply {
-//                    putExtra(BackgroundRemovalUtils.IMAGE_URI_EXTRA_KEY, uri.toString())
-//                }
-//                startActivity(backgroundRemovalIntent)
+                val imageUri = MainMenuUtils.intentToUri(data)
+
+                listener!!.onImageSelection(imageUri)
             }
             else -> throw IllegalArgumentException("Request code: $requestCode")
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainMenuFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MainMenuFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    interface OnFragmentInteractionListener {
+        fun onImageSelection(imageUri: Uri)
     }
 }
 
 object MainMenuUtils {
-    const val IMAGE_PICKER_CHOOSER_TITLE = "Select Image to Analyze"
     const val IMAGE_PICKER_REQUEST_CODE = 1
 
     private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
     private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
     private val API_19_ACCEPTED_MIME_TYPES = arrayOf(PRE_API_19_ACCEPTED_MIME_TYPE, "image/png", "image/bmp")
 
-    fun configureImagePickerIntent(intent: Intent) {
+    fun createImagePickerIntent() : Intent {
+        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+
         with(intent) {
             // API level 19 added the ability to request any of multiple MIME types
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -118,6 +130,8 @@ object MainMenuUtils {
                 type = PRE_API_19_ACCEPTED_MIME_TYPE
             }
         }
+
+        return intent
     }
 
     fun intentToUri(data: Intent) : Uri {
