@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/leafbyte_nav_graph"
+    app:startDestination="@id/mainMenuFragment">
+
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.thebluefolderproject.leafbyte.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu" >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_backgroundRemovalFragment"
+            app:destination="@id/backgroundRemovalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/backgroundRemovalFragment"
+        android:name="com.thebluefolderproject.leafbyte.BackgroundRemovalFragment"
+        android:label="fragment_background_removal"
+        tools:layout="@layout/fragment_background_removal" />
+</navigation>
