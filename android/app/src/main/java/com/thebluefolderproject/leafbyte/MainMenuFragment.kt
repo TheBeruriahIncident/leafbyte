@@ -49,7 +49,7 @@ class MainMenuFragment : Fragment() {
 
     private fun chooseImageFromGallery() {
         startActivity(
-            MainMenuUtils.createImagePickerIntent(),
+            MainMenuUtils.IMAGE_PICKER_INTENT,
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE,
             "choose an image")
     }
@@ -113,12 +113,7 @@ class MainMenuFragment : Fragment() {
 
 object MainMenuUtils {
     const val IMAGE_PICKER_REQUEST_CODE = 1
-
-    private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
-    private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
-    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(PRE_API_19_ACCEPTED_MIME_TYPE, "image/png", "image/bmp")
-
-    fun createImagePickerIntent() : Intent {
+    val IMAGE_PICKER_INTENT by lazy {
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         with(intent) {
@@ -131,8 +126,12 @@ object MainMenuUtils {
             }
         }
 
-        return intent
+        intent
     }
+
+    private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
+    private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
+    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(PRE_API_19_ACCEPTED_MIME_TYPE, "image/png", "image/bmp")
 
     fun intentToUri(data: Intent) : Uri {
         if (data.data == null) {
