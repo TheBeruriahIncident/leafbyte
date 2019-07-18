@@ -4,18 +4,21 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.content.DialogInterface
-import android.content.pm.PackageManager
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainMenuFragment : Fragment() {
@@ -54,13 +57,19 @@ class MainMenuFragment : Fragment() {
             "choose an image")
     }
 
+    var uri: Uri? = null
+
     private fun takeAPhoto() {
         if (!activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             showAlert("No camera found", "Could not take a photo: no camera was found. Try selecting an existing image instead.")
             return
         }
 
-        showAlert("Camera not yet supported", "Working on it!")
+        uri = MainMenuUtils.createImageUri(activity!!)
+        startActivity(
+                MainMenuUtils.createCameraIntent(uri!!),
+                MainMenuUtils.CAMERA_REQUEST_CODE,
+                "take a photo")
     }
 
     fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
@@ -97,10 +106,13 @@ class MainMenuFragment : Fragment() {
     private fun processActivityResultData(requestCode: Int, data: Intent) {
         when(requestCode) {
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
-                Log.e("Adam", "YAY")
                 val imageUri = MainMenuUtils.intentToUri(data)
 
                 listener!!.onImageSelection(imageUri)
+            }
+            MainMenuUtils.CAMERA_REQUEST_CODE -> {
+                // no meaningful response??
+                listener!!.onImageSelection(uri!!)
             }
             else -> throw IllegalArgumentException("Request code: $requestCode")
         }
@@ -113,6 +125,8 @@ class MainMenuFragment : Fragment() {
 
 object MainMenuUtils {
     const val IMAGE_PICKER_REQUEST_CODE = 1
+    const val CAMERA_REQUEST_CODE = 2
+
     val IMAGE_PICKER_INTENT by lazy {
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
@@ -138,6 +152,25 @@ object MainMenuUtils {
             throw IllegalStateException("Intent data is null")
         }
         return data.data!!
+    }
+
+    fun createCameraIntent(photoURI: Uri): Intent {
+        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        }
+    }
+
+    fun createImageUri(context: Context): Uri {
+        val imageFile = createImageFile(context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+        return FileProvider.getUriForFile(
+            context,
+            "com.thebluefolderproject.leafbyte.fileprovider",
+            imageFile)
+    }
+
+    private fun createImageFile(externalFilesDir: File): File {
+        val timestamp: String = SimpleDateFormat("yyyyMMdd HHmmss").format(Date())
+        return externalFilesDir.resolve(timestamp).apply { createNewFile() }
     }
 }
 
