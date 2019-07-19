@@ -14,24 +14,44 @@
         android:layout_marginRight="270dp" android:layout_marginBottom="400dp"
         app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="141dp" android:layout_marginStart="141dp"/>
+
     <SeekBar
+        android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp" app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
-        android:layout_width="320dp"
-        android:layout_height="191dp" tools:srcCompat="@tools:sample/backgrounds/scenic"
         android:id="@+id/histogram"
-        app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp" android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_width="320dp"
+        android:layout_height="191dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="27dp"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
     <Button
-        android:text="Next"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" tools:layout_editor_absoluteY="663dp"
-        tools:layout_editor_absoluteX="310dp" android:id="@+id/button2" android:onClick="next"/>
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="next"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
