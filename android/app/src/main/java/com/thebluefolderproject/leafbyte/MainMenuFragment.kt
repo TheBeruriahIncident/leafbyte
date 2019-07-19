@@ -20,6 +20,9 @@ import androidx.fragment.app.Fragment
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.appcompat.app.AppCompatActivity
+
+
 
 
 class MainMenuFragment : Fragment() {
@@ -29,6 +32,8 @@ class MainMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar!!.hide()
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main_menu, container, false)
         view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }

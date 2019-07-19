@@ -12,6 +12,10 @@ import android.content.ContentResolver
 
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
+    override fun goHome() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.mainMenuFragment)
+    }
+
     override fun startTutorial() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.tutorialFragment)
     }
@@ -30,6 +34,8 @@ class LeafByteActivity : AppCompatActivity(),
     }
 
     override fun onImageSelection(imageUri: Uri) {
+        // TODO: hide and show properly
+        supportActionBar!!.show()
         model.uri = imageUri
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
