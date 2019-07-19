@@ -1,14 +1,12 @@
 package com.thebluefolderproject.leafbyte
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,7 +45,7 @@ class TutorialFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_tutorial, container, false)
 
         val next = view.findViewById<Button>(R.id.tutorial_next)
-        next.setOnClickListener { listener!!.doTutorial() }
+        next.setOnClickListener { listener!!.doneTutorial() }
 
         return view
     }
@@ -79,7 +77,7 @@ class TutorialFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun doTutorial()
+        fun doneTutorial()
     }
 
     companion object {

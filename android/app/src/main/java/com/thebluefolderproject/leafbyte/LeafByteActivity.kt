@@ -3,10 +3,8 @@ package com.thebluefolderproject.leafbyte
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import org.opencv.android.OpenCVLoader
 import android.content.ContentResolver
 
@@ -14,6 +12,10 @@ import android.content.ContentResolver
 
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
+    override fun startTutorial() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.tutorialFragment)
+    }
+
     lateinit var model: WorkflowViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +34,9 @@ class LeafByteActivity : AppCompatActivity(),
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
-    override fun doTutorial() {
-        model.uri = resourceToUri(R.drawable.ExampleLeaf)
+    override fun doneTutorial() {
+        // TODO: resize here and elsewhere
+        model.uri = resourceToUri(R.drawable.example_leaf)
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
