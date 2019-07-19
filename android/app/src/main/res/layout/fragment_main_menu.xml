@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:text="LeafByte"
         android:textColor="#000000"
-        android:textSize="48sp"
+        android:textSize="41sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +113,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
         android:text="Tutorial"
+        android:textColor="#007AFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,7 +126,10 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:background="@android:color/transparent"
+
         android:text="Settings"
+        android:textColor="#007AFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -151,6 +156,7 @@
         android:layout_marginRight="8dp"
         android:autoLink="web"
         android:text="zoegp.science/leafbyte"
+        android:textColor="#007AFF"
         android:textColorLink="#7bc9c2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
