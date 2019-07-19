@@ -1,12 +1,12 @@
 package com.thebluefolderproject.leafbyte
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,12 +42,12 @@ class TutorialFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_tutorial, container, false)
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+        val next = view.findViewById<Button>(R.id.tutorial_next)
+        next.setOnClickListener { listener!!.doneTutorial() }
+
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -77,7 +77,7 @@ class TutorialFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun doneTutorial()
     }
 
     companion object {
