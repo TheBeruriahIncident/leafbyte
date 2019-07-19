@@ -132,4 +132,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/savingSummary"
+        android:layout_width="221dp"
+        android:layout_height="84dp"
+        android:text="This is an example wall of text filler filler filler filler filler filler This will be dynamically generated in the future"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="618dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="zoegp.science/leafbyte"
+        android:autoLink="web"
+        android:textColorLink="#7bc9c2"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:layout_editor_absoluteX="135dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

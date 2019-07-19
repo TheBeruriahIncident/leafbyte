@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import java.io.File
@@ -33,6 +34,7 @@ class MainMenuFragment : Fragment() {
         view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }
         view.findViewById<Button>(R.id.takePhotoButton).setOnClickListener { takeAPhoto() }
         view.findViewById<Button>(R.id.start_tutorial).setOnClickListener { listener!!.startTutorial() }
+        view.findViewById<TextView>(R.id.savingSummary).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
 
         return view
     }
