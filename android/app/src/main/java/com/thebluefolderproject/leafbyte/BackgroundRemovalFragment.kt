@@ -202,11 +202,12 @@ class BackgroundRemovalFragment : Fragment() {
         val histogramList = (0..255).asIterable().map { bin -> histogram.get(bin, 0)[0] }
         val maxValue = (histogramList.max()!! + 1).toInt()
 
-        val color = Scalar (220.0, 0.0, 0.0, 255.0)
+        // black
+        val color = Scalar (0.0, 0.0, 0.0, 255.0)
         val graphHeight = 100
         val factor = graphHeight.toDouble() / maxValue
-        val graphMat = Mat(graphHeight, 256, CvType.CV_8UC3, Scalar(0.0, 0.0, 0.0))
-
+        // create transparent background
+        val graphMat = Mat(graphHeight, 256, CvType.CV_8UC4, Scalar(0.0, 0.0, 0.0, 0.0))
 
         for(i in 0..255) {
             val bPoint1 = Point(i.toDouble(), graphHeight.toDouble());
