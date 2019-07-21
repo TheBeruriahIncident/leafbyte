@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,6 +29,7 @@ class ScaleIdentificationFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    var model: WorkflowViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,13 @@ class ScaleIdentificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scale_identification, container, false)
+        val view = inflater.inflate(R.layout.fragment_scale_identification, container, false)
+
+        activity!!.let {
+            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+        }
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event

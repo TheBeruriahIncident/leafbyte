@@ -36,6 +36,7 @@ class BackgroundRemovalFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    var model: WorkflowViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +45,11 @@ class BackgroundRemovalFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_background_removal, container, false)
 
-        var model: WorkflowViewModel
         activity!!.let {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
         }
 
-        val uri = model.uri!!
+        val uri = model!!.uri!!
         val bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
         val imageView = view.findViewById<ImageView>(R.id.imageView)
         val histogramView = view.findViewById<ImageView>(R.id.histogram)
@@ -70,7 +70,9 @@ class BackgroundRemovalFragment : Fragment() {
             }
 
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                imageView.setImageBitmap(threshold(bitmap!!, (p1 * 256 / 100).toDouble()))
+                val bitmap = threshold(bitmap!!, (p1 * 256 / 100).toDouble())
+                imageView.setImageBitmap(bitmap)
+                model.thresholdedImage = bitmap
             }
 
         })
