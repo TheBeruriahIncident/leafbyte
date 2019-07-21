@@ -1,5 +1,6 @@
 package com.thebluefolderproject.leafbyte
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -46,7 +47,6 @@ class BackgroundRemovalFragment : Fragment() {
         var model: WorkflowViewModel
         activity!!.let {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
-            debug(model)
         }
 
         val uri = model.uri!!
@@ -83,11 +83,22 @@ class BackgroundRemovalFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        val item = menu!!.add("Home")
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        val homeButton = menu!!.add("Home")
+        homeButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        homeButton.setIcon(R.drawable.leafimage)
+        homeButton.setOnMenuItemClickListener { listener!!.goHome(); true }
 
-        item.setIcon(R.drawable.leafimage)
-        item.setOnMenuItemClickListener { listener!!.goHome(); true }
+        val helpButton = menu!!.add("Help")
+        helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        helpButton.setIcon(R.drawable.galleryicon)
+        helpButton.setOnMenuItemClickListener {
+            AlertDialog.Builder(activity)
+                    .setMessage("First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
+                            "\n" +
+                            "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)")
+                    .show()
+            true
+        }
 
         super.onCreateOptionsMenu(menu, inflater)
     }
