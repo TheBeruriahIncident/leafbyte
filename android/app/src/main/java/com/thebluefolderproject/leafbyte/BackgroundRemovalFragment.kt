@@ -72,7 +72,7 @@ class BackgroundRemovalFragment : Fragment() {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 val bitmap = threshold(bitmap!!, (p1 * 256 / 100).toDouble())
                 imageView.setImageBitmap(bitmap)
-                model.thresholdedImage = bitmap
+                model!!.thresholdedImage = bitmap
             }
 
         })
