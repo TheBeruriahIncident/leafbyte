@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import org.opencv.android.OpenCVLoader
 import android.content.ContentResolver
-
+import androidx.navigation.NavOptions
 
 
 class LeafByteActivity : AppCompatActivity(),
@@ -50,7 +50,7 @@ class LeafByteActivity : AppCompatActivity(),
     }
 
     override fun doneResults() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
+        findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment, null, NavOptions.Builder().setPopUpTo(R.id.mainMenuFragment, false).build())
     }
 
     override fun doneTutorial() {
