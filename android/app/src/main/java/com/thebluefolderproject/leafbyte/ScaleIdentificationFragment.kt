@@ -1,12 +1,14 @@
 package com.thebluefolderproject.leafbyte
 
 import android.content.Context
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.lifecycle.ViewModelProviders
 
 
@@ -46,16 +48,21 @@ class ScaleIdentificationFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_scale_identification, container, false)
 
+        view.findViewById<Button>(R.id.scaleIdentificationNext).setOnClickListener { listener!!.doneScaleIdentification() }
+
+        activity!!.let {
+            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+        }
+
+        val uri = model!!.uri!!
+        val bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
+        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
+
         activity!!.let {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
         }
 
         return view
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -85,7 +92,7 @@ class ScaleIdentificationFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun doneScaleIdentification()
     }
 
     companion object {

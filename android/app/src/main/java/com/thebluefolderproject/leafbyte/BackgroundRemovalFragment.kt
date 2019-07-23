@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
@@ -53,6 +54,9 @@ class BackgroundRemovalFragment : Fragment() {
         val bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
         val imageView = view.findViewById<ImageView>(R.id.imageView)
         val histogramView = view.findViewById<ImageView>(R.id.histogram)
+        view.findViewById<Button>(R.id.backgroundRemovalNext).setOnClickListener {
+            listener!!.doneBackgroundRemoval()
+        }
 
         val otsu = otsu(bitmap!!)
 
@@ -134,6 +138,7 @@ class BackgroundRemovalFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun goHome()
+        fun doneBackgroundRemoval()
     }
 
     fun otsu(bitmap: Bitmap): Double {

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,12 +43,11 @@ class ResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_results, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_results, container, false)
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+        view.findViewById<Button>(R.id.resultsNext).setOnClickListener { listener!!.doneResults() }
+
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -76,8 +76,7 @@ class ResultsFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun doneResults()
     }
 
     companion object {

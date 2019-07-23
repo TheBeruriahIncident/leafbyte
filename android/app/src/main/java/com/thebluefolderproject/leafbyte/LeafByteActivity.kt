@@ -11,7 +11,8 @@ import android.content.ContentResolver
 
 
 class LeafByteActivity : AppCompatActivity(),
-        MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
+        MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
+        ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
     override fun goHome() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.mainMenuFragment)
     }
@@ -37,6 +38,18 @@ class LeafByteActivity : AppCompatActivity(),
         // TODO: hide and show properly
         supportActionBar!!.show()
         model.uri = imageUri
+        findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
+    }
+
+    override fun doneBackgroundRemoval() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.scaleIdentificationFragment)
+    }
+
+    override fun doneScaleIdentification() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.resultsFragment)
+    }
+
+    override fun doneResults() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
