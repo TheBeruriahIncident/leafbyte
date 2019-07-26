@@ -28,7 +28,7 @@
         android:id="@+id/zoomView"
         android:layout_width="416dp"
         android:layout_height="611dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
