@@ -57,14 +57,14 @@
         android:layout_height="161dp"
         android:layout_marginStart="112dp"
         android:layout_marginLeft="112dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="113dp"
         android:layout_marginRight="113dp"
         android:src="@drawable/leafimage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
@@ -136,13 +136,13 @@
     <TextView
         android:id="@+id/savingSummary"
         android:layout_width="393dp"
-        android:layout_height="67dp"
+        android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="This is an example wall of text filler filler filler filler filler filler This will be dynamically generated in the future"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Data and images are not being saved. Go to Settings to change."
+    app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
