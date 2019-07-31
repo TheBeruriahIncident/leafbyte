@@ -60,7 +60,8 @@ class BackgroundRemovalFragment : Fragment() {
 
         val otsu = otsu(bitmap!!)
 
-        imageView.setImageBitmap(threshold(bitmap!!, otsu))
+        val thresholdedImage = threshold(bitmap!!, otsu)
+        imageView.setImageBitmap(thresholdedImage)
 
         val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
         seekBar.progress = (otsu * 100 / 256).roundToInt()
@@ -82,6 +83,10 @@ class BackgroundRemovalFragment : Fragment() {
         })
 
         val histogram = calculateHistogram(bitmap, histogramView)
+
+        debug("labeling " + bitmap.width + " " + bitmap.height)
+        val foo = labelConnectedComponents(LayeredIndexableImage(thresholdedImage.width, thresholdedImage.height, thresholdedImage), listOf())
+        debug(foo.labelToSize)
 
         setHasOptionsMenu(true)
 
