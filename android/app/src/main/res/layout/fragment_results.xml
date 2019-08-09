@@ -87,7 +87,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
         android:text="Exclude Area"
+        android:textColor="#007AFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/resultsNext"
         app:layout_constraintHorizontal_bias="0.5"
@@ -96,11 +98,13 @@
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
         android:text="Draw"
+        android:textColor="#007AFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
