@@ -9,18 +9,16 @@
         android:id="@+id/chooseFromGalleryButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/galleryicon"
         app:layout_constraintEnd_toStartOf="@+id/takePhotoButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        tools:layout_editor_absoluteY="446dp" />
 
     <Button
         android:id="@+id/takePhotoButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/camera"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,12 +28,14 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="108dp"
-        android:layout_height="28dp"
+        android:layout_width="111dp"
+        android:layout_height="24dp"
         android:text="Take a Photo"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/savingSummary"
         app:layout_constraintEnd_toEndOf="@+id/takePhotoButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/takePhotoButton"
         app:layout_constraintTop_toBottomOf="@+id/takePhotoButton"
         tools:text="Take a Photo" />
@@ -47,7 +47,9 @@
         android:text="@string/choose_image_from_gallery"
         android:textColor="#000000"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/savingSummary"
         app:layout_constraintEnd_toEndOf="@+id/chooseFromGalleryButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/chooseFromGalleryButton"
         app:layout_constraintTop_toBottomOf="@+id/chooseFromGalleryButton" />
 
@@ -55,14 +57,10 @@
         android:id="@+id/imageView2"
         android:layout_width="163dp"
         android:layout_height="161dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginLeft="112dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="113dp"
-        android:layout_marginRight="113dp"
         android:src="@drawable/leafimage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,9 +71,9 @@
         android:text="LeafByte"
         android:textColor="#000000"
         android:textSize="41sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
@@ -161,5 +159,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

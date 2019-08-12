@@ -157,7 +157,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="LeafByte Logo">
-                                <rect key="frame" x="143" y="108" width="128" height="139.5"/>
+                                <rect key="frame" x="143.5" y="108.5" width="128" height="139.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fV7-74-OmP" secondAttribute="height" multiplier="128:139" id="CFh-VO-3N6"/>
                                 </constraints>
@@ -947,7 +947,7 @@
                         <viewLayoutGuide key="safeArea" id="bzd-wJ-GYf"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="roH-yQ-Vce" userLabel="Navigation Content">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="b5g-Ga-ipG" userLabel="Back Button">
+                        <barButtonItem key="leftBarButtonItem" title="Save" id="b5g-Ga-ipG" userLabel="Back Button">
                             <connections>
                                 <action selector="backFromSettings:" destination="vL6-8S-A2W" id="K6m-5z-3R7"/>
                                 <segue destination="vL6-8S-A2W" kind="unwind" identifier="backToMainMenu" customClass="UnwindSegueFromRight" customModule="LeafByte" customModuleProvider="target" unwindAction="backToMainMenuWithSegue:" id="BkN-wm-Kfg"/>
