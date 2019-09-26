@@ -9,7 +9,7 @@
 import GoogleSignIn
 
 // This pretends to be a view controller to handle Google sign-in, because the delegate has a runtime requirement of being a view controller.
-final class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
+final class GoogleSignInManager: UIViewController, GIDSignInDelegate {
     // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
     static let googleSignInManager = GoogleSignInManager()
     
@@ -31,10 +31,16 @@ final class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInU
         
         // Enable callback once the sign-in completes.
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().presentingViewController = self
         
-        // Actually do the sign-in.
-        GIDSignIn.sharedInstance().signIn()
+        // If not already signed-in
+        if !GIDSignIn.sharedInstance().hasPreviousSignIn() {
+            // Actually sign in
+            GIDSignIn.sharedInstance().signIn()
+        } else {
+            // Otherwise, restore the existing sign-in
+            GIDSignIn.sharedInstance().restorePreviousSignIn()
+        }
     }
     
     // MARK: - GIDSignInDelegate overrides
