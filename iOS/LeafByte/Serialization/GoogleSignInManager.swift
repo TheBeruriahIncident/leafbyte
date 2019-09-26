@@ -31,7 +31,7 @@ final class GoogleSignInManager: UIViewController, GIDSignInDelegate, GIDSignInU
         
         // Enable callback once the sign-in completes.
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().presentingViewController = self
         
         // Actually do the sign-in.
         GIDSignIn.sharedInstance().signIn()
