@@ -1,3 +1,23 @@
+# 2019-8-14 -- v5.0.0
+- Changes to GIDSignIn
+    - `uiDelegate` has been replaced with `presentingViewController`.
+    - `hasAuthInKeychain` has been replaced with `hasPreviousSignIn`.
+    - `signInSilently` has been replaced with `restorePreviousSignIn`.
+    - Removed deprecated `kGIDSignInErrorCodeNoSignInHandlersInstalled` error code.
+- Changes to GIDAuthentication
+    - Removed deprecated methods `getAccessTokenWithHandler:` and `refreshAccessTokenWithHandler:`.
+- Changes to GIDGoogleUser
+    - Removed deprecated property `accessibleScopes`, use `grantedScopes` instead.
+- Adds dependencies on AppAuth and GTMAppAuth.
+- Removes the dependency on GoogleToolboxForMac.
+- Drops support for iOS 7.
+
+# 2018-11-26 -- v4.4.0
+- Removes the dependency on GTM OAuth 2.
+
+# 2018-10-1 -- v4.3.0
+- Supports Google's Enterprise Mobile Management.
+
 # 2018-8-10 -- v4.2.0
 - Adds `grantedScopes` to `GIDGoogleUser`, allowing confirmation of which scopes
   have been granted after a successful sign-in.
