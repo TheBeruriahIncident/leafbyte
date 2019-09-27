@@ -13,5 +13,6 @@
 * Sufficiently large objects are ignored during scale selection, as they're unlikely to be the scale, and they take a long time to process on older devices
 
 1.3.0 (Unreleased)
-* When data is added to Google Sheets, numbers will be properly recognized as numbers.
-* "Back" has been changed to the more accurate "Save" on the Settings page.
+* When data is added to Google Sheets, numbers are properly recognized as numbers.
+* When Google Sheets are created, headers are frozen.
+* "Back" is now the more accurate "Save" on the Settings page.

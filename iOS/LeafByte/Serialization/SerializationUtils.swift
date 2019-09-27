@@ -200,10 +200,12 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
         getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
             createSheet(name: settings.datasetName, folderId: folderId, accessToken: accessToken, onSpreadsheetId: { spreadsheetId in
                 appendToSheet(spreadsheetId: spreadsheetId, row: getHeader(settings: settings), accessToken: accessToken, onSuccess: {
-                    settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
-                    settings.serialize()
-                    
-                    onSpreadsheetId(spreadsheetId)
+                    freezeHeader(spreadsheetId: spreadsheetId, accessToken: accessToken, onSuccess: {
+                        settings.setGoogleSpreadsheetId(userId: userId, googleSpreadsheetId: spreadsheetId)
+                        settings.serialize()
+                        
+                        onSpreadsheetId(spreadsheetId)
+                    }, onFailure: { _ in onFailure() })
                 }, onFailure: { _ in onFailure() })
             }, onFailure: { (failedBecauseNotFound: Bool) in
                 if !failedBecauseNotFound || alreadyFailedOnce {

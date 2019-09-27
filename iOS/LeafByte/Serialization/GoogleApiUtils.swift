@@ -26,6 +26,32 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
         onError: { _ in onFailure(false) })
 }
 
+func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
+    post(url: "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId):batchUpdate",
+        accessToken: accessToken,
+        jsonBody:
+        """
+        {
+          requests: [
+            {
+              updateSheetProperties: {
+                properties: {
+                  sheetId: 0,
+                  gridProperties: {
+                    frozenRowCount: 1
+                  }
+                },
+                fields: "gridProperties.frozenRowCount"
+              }
+            }
+          ]
+        }
+        """,
+        onSuccessfulResponse: { response in onSuccess() },
+        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onError: { _ in onFailure(false) })
+}
+
 func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let boundary = "Boundary-\(UUID().uuidString)"
 
@@ -54,7 +80,14 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
     
     post(url: "https://www.googleapis.com/drive/v3/files",
          accessToken: accessToken,
-         jsonBody: "{name: \"\(name)\",\(parentsParam) mimeType: \"application/vnd.google-apps.\(type)\"}",
+         jsonBody:
+         """
+         {
+           name: \"\(name)\",
+           \(parentsParam)
+           mimeType: \"application/vnd.google-apps.\(type)\"
+         }
+         """,
          onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
          onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
          onError: { _ in onFailure(false) })
