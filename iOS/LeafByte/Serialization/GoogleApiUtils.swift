@@ -49,12 +49,12 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let parentsParam = folderId != nil
-        ? " parents: [{id: \"\(folderId!)\"}],"
+        ? " parents: [\"\(folderId!)\"],"
         : ""
     
-    post(url: "https://www.googleapis.com/drive/v2/files",
+    post(url: "https://www.googleapis.com/drive/v3/files",
          accessToken: accessToken,
-         jsonBody: "{title: \"\(name)\",\(parentsParam) mimeType: \"application/vnd.google-apps.\(type)\"}",
+         jsonBody: "{name: \"\(name)\",\(parentsParam) mimeType: \"application/vnd.google-apps.\(type)\"}",
          onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
          onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
          onError: { _ in onFailure(false) })
