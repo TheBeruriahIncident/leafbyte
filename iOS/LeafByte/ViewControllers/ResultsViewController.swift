@@ -208,6 +208,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         notesField.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
+        maintainOldModalPresentationStyle(viewController: imagePicker)
     }
     
     deinit {

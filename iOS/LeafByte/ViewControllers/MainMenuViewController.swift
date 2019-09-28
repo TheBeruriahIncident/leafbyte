@@ -116,6 +116,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         cameraButton.setBackgroundImage(UIImage(named: imageToUse), for: .normal)
         cameraLabel.text = settings.useBarcode ? NSLocalizedString("Scan Barcode and\nTake a Photo", comment: "Option for the user") : NSLocalizedString("Take a Photo", comment: "Option for the user")
         cameraLabel.numberOfLines = settings.useBarcode ? 2 : 1
+        
+        maintainOldModalPresentationStyle(viewController: imagePicker)
     }
     
     // This is called before transitioning from this view to another view.

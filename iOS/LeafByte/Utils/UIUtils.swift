@@ -118,3 +118,8 @@ func presentSampleNumberAlert(self viewController: UIViewController, sampleNumbe
     
     viewController.present(alert, animated: true, completion: nil)
 }
+
+func maintainOldModalPresentationStyle(viewController: UIViewController) {
+    // the SDK in Xcode 11 has a breaking change in modal presentation style that doesn't work well.
+    viewController.modalPresentationStyle = .fullScreen
+}
