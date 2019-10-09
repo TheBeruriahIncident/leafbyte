@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -99,7 +99,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-sd-kIs" userLabel="Camera Button">
-                                <rect key="frame" x="123" y="361" width="196" height="188"/>
+                                <rect key="frame" x="221" y="455" width="98.000000000000028" height="94"/>
                                 <accessibility key="accessibilityConfiguration" label="Camera"/>
                                 <state key="normal" backgroundImage="Camera">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -117,7 +117,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-VP-BSe" userLabel="Photo Library Label">
-                                <rect key="frame" x="88" y="549" width="132.5" height="17"/>
+                                <rect key="frame" x="39" y="549" width="132.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -132,7 +132,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fv-Ge-wCb" userLabel="Photo Library Button">
-                                <rect key="frame" x="56" y="352" width="196" height="197"/>
+                                <rect key="frame" x="56" y="450.5" width="98.000000000000028" height="98.5"/>
                                 <accessibility key="accessibilityConfiguration" label="Photo Library"/>
                                 <state key="normal" backgroundImage="Gallery">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -142,7 +142,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-gX-Mwe">
-                                <rect key="frame" x="179.5" y="549" width="83" height="17"/>
+                                <rect key="frame" x="228.5" y="549" width="83" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -155,7 +155,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Leaf" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-74-OmP" userLabel="LeafByte Logo">
-                                <rect key="frame" x="111.5" y="40" width="192" height="208.5"/>
+                                <rect key="frame" x="143.5" y="109" width="128" height="139.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fV7-74-OmP" secondAttribute="height" multiplier="128:139" id="CFh-VO-3N6"/>
                                 </constraints>
@@ -644,7 +644,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="764"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="915"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="920"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Data Save Location Label">
                                                 <rect key="frame" x="114" y="30" width="147" height="21"/>
@@ -852,7 +852,7 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ReC-JH-DuD" secondAttribute="trailing" id="7oy-Vu-SCi"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" constant="2.5" id="AIw-xZ-1bL"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="PDu-AL-rj6" secondAttribute="trailing" id="BCO-F6-e73"/>
-                                            <constraint firstAttribute="height" constant="915" id="FdZ-y9-8w5"/>
+                                            <constraint firstAttribute="height" constant="920" id="FdZ-y9-8w5"/>
                                             <constraint firstItem="S9r-LJ-W69" firstAttribute="centerX" secondItem="nnO-ux-tfh" secondAttribute="centerX" id="Fgs-cK-K5a"/>
                                             <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="GNf-0c-JDv" secondAttribute="bottom" constant="28" id="Fik-7n-oMA"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="top" secondItem="adf-uG-4TS" secondAttribute="bottom" constant="28" id="GKc-tF-VDF"/>
