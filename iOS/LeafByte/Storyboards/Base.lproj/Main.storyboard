@@ -377,7 +377,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5k2-Es-xYP" userLabel="Tutorial Section 2">
                                                 <rect key="frame" x="13" y="153" width="274" height="122"/>
-                                                <string key="text">(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)</string>
+                                                <string key="text">Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
