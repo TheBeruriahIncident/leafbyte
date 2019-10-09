@@ -53,6 +53,7 @@ final class GoogleSignInManager: UIViewController, GIDSignInDelegate {
         if error == nil {
             onAccessTokenAndUserId(user.authentication.accessToken!, user.userID)
         } else {
+            print("Unsuccessful Google Sign-In: " + error.localizedDescription)
             onError(error)
         }
         return
