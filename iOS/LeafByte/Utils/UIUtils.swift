@@ -91,7 +91,7 @@ func smoothTransitions(self viewController: UIViewController) {
 }
 
 func setSampleNumberButtonText(_ sampleNumberButton: UIButton, settings: Settings) {
-    sampleNumberButton.setTitle(String.localizedStringWithFormat(NSLocalizedString("Sample %d", comment: "Current sample number"), settings.getNextSampleNumber()), for: .normal)
+    sampleNumberButton.setTitle(String.localizedStringWithFormat(NSLocalizedString("Sample %@", comment: "Current sample number"), String(settings.getNextSampleNumber())), for: .normal)
 }
 
 func presentSampleNumberAlert(self viewController: UIViewController, sampleNumberButton: UIButton, settings: Settings) {
@@ -105,11 +105,17 @@ func presentSampleNumberAlert(self viewController: UIViewController, sampleNumbe
     let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel the new sample number"), style: .default)
     let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { (_) in
         let newSampleNumber = alert.textFields![0].text!
+        if newSampleNumber.isEmpty {
+            return
+        }
         
-        if !newSampleNumber.isEmpty && Int(newSampleNumber) != nil {
-            settings.datasetNameToNextSampleNumber[settings.datasetName] = Int(newSampleNumber)
+        let parsedNewSampleNumber = Int(newSampleNumber)
+        if parsedNewSampleNumber != nil {
+            settings.datasetNameToNextSampleNumber[settings.datasetName] = parsedNewSampleNumber
             settings.serialize()
             setSampleNumberButtonText(sampleNumberButton, settings: settings)
+        } else {
+            presentAlert(self: viewController, title: nil, message: "This is not a valid number.")
         }
     })
     
