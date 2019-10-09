@@ -412,7 +412,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         visibleFrame.size.height += scrollView.contentOffset.y
 
         // Check if the field is out of the view.
-        if visibleFrame.size.height < activeField!.frame.maxY {
+        if activeField != nil && visibleFrame.size.height < activeField!.frame.maxY {
             // Scroll down if so.
             scrollView.contentOffset = CGPoint(x: 0, y: (activeField!.frame.maxY - visibleFrame.size.height) + scrollView.contentOffset.y)
         }
