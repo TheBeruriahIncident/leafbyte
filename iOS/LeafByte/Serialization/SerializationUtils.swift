@@ -225,7 +225,7 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
 }
 
 private func getHeader(settings: Settings) -> [String] {
-    return [ "Date", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes", "Scale Length (" + settings.getUnit() + ")"]
+    return [ "Date (year.month.day)", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes", "Scale Length (" + settings.getUnit() + ")"]
 }
 private func getCsvHeader(settings: Settings) -> Data {
     return stringRowToCsvRow(getHeader(settings: settings))
