@@ -16,7 +16,7 @@ enum SerializationFailureCause {
 }
 
 // This is the top-level serialize function.
-func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
+func serialize(settings: Settings, image: UIImage, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, barcode: String?, notes: String, callingViewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     // Get date and time in a way amenable to sorting.
     let date = Date()
     let formatter = DateFormatter()
@@ -26,8 +26,8 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     let formattedTime = formatter.string(from: date)
     
     let onLocation = { (location: CLLocation?) in
-        serializeData(settings: settings, percentConsumed: percentConsumed, leafAreaInUnits2: leafAreaInUnits2, consumedAreaInUnits2: consumedAreaInUnits2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, onSuccess: {
-            serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, onSuccess: {
+        serializeData(settings: settings, percentConsumed: percentConsumed, leafAreaInUnits2: leafAreaInUnits2, consumedAreaInUnits2: consumedAreaInUnits2, date: formattedDate, time: formattedTime, location: location, barcode: barcode, notes: notes, callingViewController: callingViewController, onSuccess: {
+            serializeImage(settings: settings, image: image, date: formattedDate, time: formattedTime, callingViewController: callingViewController, onSuccess: {
                 settings.incrementNextSampleNumber()
                 settings.noteDatasetUsed()
                 settings.serialize()
@@ -45,7 +45,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
 }
 
 // This serializes just the data.
-private func serializeData(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
+private func serializeData(settings: Settings, percentConsumed: String, leafAreaInUnits2: String?, consumedAreaInUnits2: String?, date: String, time: String, location: CLLocation?, barcode: String?, notes: String, callingViewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     if settings.dataSaveLocation == .none {
         onSuccess()
         return
@@ -75,7 +75,7 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
             appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
-        }, onError: { _ in () })
+        }, onError: { _ in () }, callingViewController: callingViewController)
 
     default:
         fatalError("\(settings.dataSaveLocation) not handled in switch")
@@ -101,7 +101,7 @@ private func appendDataToGoogleDrive(settings: Settings, row: [String], accessTo
 }
 
 // This serializes just the image.
-private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
+private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, callingViewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     if settings.imageSaveLocation == .none {
         onSuccess()
         return
@@ -120,7 +120,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
     case .googleDrive:
         GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
             uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
-        }, onError: { _ in onFailure(.googleDrive) })
+        }, onError: { _ in onFailure(.googleDrive) }, callingViewController: callingViewController)
     
     default:
         fatalError("\(settings.imageSaveLocation) not handled in switch")

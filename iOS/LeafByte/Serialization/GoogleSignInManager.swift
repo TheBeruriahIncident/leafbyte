@@ -15,10 +15,12 @@ final class GoogleSignInManager: UIViewController, GIDSignInDelegate {
     
     var onAccessTokenAndUserId: ((_ accessToken: String, _ userId: String) -> Void)!
     var onError: ((_ error: Error) -> Void)!
+    var callingViewController: UIViewController!
     
-    static func initiateSignIn(onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void, onError: @escaping (_ error: Error) -> Void) {
+    static func initiateSignIn(onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void, onError: @escaping (_ error: Error) -> Void, callingViewController: UIViewController) {
         googleSignInManager.onAccessTokenAndUserId = onAccessTokenAndUserId
         googleSignInManager.onError = onError
+        googleSignInManager.callingViewController = callingViewController
         googleSignInManager.initiateSignIn()
     }
     
@@ -29,9 +31,10 @@ final class GoogleSignInManager: UIViewController, GIDSignInDelegate {
         // Only request access to files created by LeafByte.
         GIDSignIn.sharedInstance().scopes = [ "https://www.googleapis.com/auth/drive.file" ]
         
-        // Enable callback once the sign-in completes.
+        // Enable the sign callback below.
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().presentingViewController = self
+        // Make sign-in viewable by giving the modal a parent.
+        GIDSignIn.sharedInstance().presentingViewController = callingViewController
         
         // If not already signed-in
         if !GIDSignIn.sharedInstance().hasPreviousSignIn() {

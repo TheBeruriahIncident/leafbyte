@@ -222,7 +222,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                     presentAlert(self: self, title: nil, message: NSLocalizedString("Cannot save to Google Drive without Google sign-in", comment: "Shown if Google sign-in does not complete successfully"))
                     self.setSavingSummary()
                 }
-            })
+            }, callingViewController: self)
     }
     
     private func setSavingSummary() {

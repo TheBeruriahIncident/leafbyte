@@ -626,7 +626,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             }
         }
         
-        serialize(settings: settings, image: cgToUiImage(originalImage), percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, onSuccess: onSuccess, onFailure: onFailure)
+        serialize(settings: settings, image: cgToUiImage(originalImage), percentConsumed: formattedPercentConsumed, leafAreaInUnits2: formattedLeafAreaIncludingConsumedAreaInUnits2, consumedAreaInUnits2: formattedConsumedAreaInUnits2, barcode: barcode, notes: notesField.text!, callingViewController: self, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     private func handleGoogleDriveFailure(onSuccess: @escaping () -> Void) {
