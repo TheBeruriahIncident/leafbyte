@@ -1,10 +1,12 @@
 package com.thebluefolderproject.leafbyte
 
 import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -88,6 +90,37 @@ class BackgroundRemovalFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return view
+    }
+
+    //https://stackoverflow.com/a/17839597/1092672
+    fun lessResolution(resolver: ContentResolver, uri:Uri, width:Int, height:Int):Bitmap {
+        val reqHeight = height
+        val reqWidth = width
+        val options = BitmapFactory.Options()
+        // First decode with inJustDecodeBounds=true to check dimensions
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, options)
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false
+        return BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, options)!!
+    }
+    private fun calculateInSampleSize(options:BitmapFactory.Options, reqWidth:Int, reqHeight:Int):Int {
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+        if (height > reqHeight || width > reqWidth)
+        {
+            // Calculate ratios of height and width to requested height and width
+            val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
+            val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
+        }
+        return inSampleSize
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
