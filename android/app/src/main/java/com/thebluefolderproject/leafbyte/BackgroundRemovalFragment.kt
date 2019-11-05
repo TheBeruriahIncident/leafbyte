@@ -85,10 +85,6 @@ class BackgroundRemovalFragment : Fragment() {
 
         val histogram = calculateHistogram(bitmap, histogramView)
 
-        debug("labeling " + bitmap.width + " " + bitmap.height)
-        val foo = labelConnectedComponents(LayeredIndexableImage(thresholdedImage.width, thresholdedImage.height, thresholdedImage), listOf())
-        debug(foo.labelToSize)
-
         setHasOptionsMenu(true)
 
         return view

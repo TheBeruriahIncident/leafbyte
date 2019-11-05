@@ -55,12 +55,13 @@ class ScaleIdentificationFragment : Fragment() {
         }
 
         val uri = model!!.uri!!
-        val bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
+        val bitmap = model!!.thresholdedImage!!
         view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
-        activity!!.let {
-            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
-        }
+
+        debug("labeling " + bitmap.width + " " + bitmap.height)
+        val foo = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
+        debug(foo.labelToSize)
 
         return view
     }
