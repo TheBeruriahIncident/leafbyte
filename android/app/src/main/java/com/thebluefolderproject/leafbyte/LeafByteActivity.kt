@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import org.opencv.android.OpenCVLoader
 import android.content.ContentResolver
+import android.graphics.Bitmap
 import androidx.navigation.NavOptions
 
 
@@ -41,7 +42,8 @@ class LeafByteActivity : AppCompatActivity(),
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
-    override fun doneBackgroundRemoval() {
+    override fun doneBackgroundRemoval(bitmap: Bitmap) {
+        model.thresholdedImage = bitmap
         findNavController(R.id.nav_host_fragment).navigate(R.id.scaleIdentificationFragment)
     }
 
