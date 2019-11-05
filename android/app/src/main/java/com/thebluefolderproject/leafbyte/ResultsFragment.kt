@@ -1,15 +1,23 @@
 package com.thebluefolderproject.leafbyte
 
 import android.content.Context
-import android.net.Uri
+import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import org.opencv.android.Utils
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.core.Scalar
+import org.opencv.core.Size
+import org.opencv.imgproc.Imgproc
+import org.opencv.utils.Converters
+import kotlin.math.atan2
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,9 +64,69 @@ class ResultsFragment : Fragment() {
 
         val uri = model!!.uri!!
         val bitmap = model!!.thresholdedImage!!
-        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
+
+        val corrected = correct(bitmap, model!!.scaleMarks!!)
+
+        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(corrected)
+
+        val info = labelConnectedComponents(LayeredIndexableImage(corrected.width, corrected.height, corrected))
+        val pixels = info.labelToSize.entries
+            .filter { entry -> entry.key > 0 }
+            .map { entry -> entry.value }
+            .maxBy { it.total() }
+        debug("Number of pixels: " + pixels)
 
         return view
+    }
+
+    fun correct(bitmap: Bitmap, dotCenters: List<Point>): Bitmap {
+        // first convert bitmap into OpenCV mat object
+        val imageMat = Mat(
+            bitmap.height, bitmap.width,
+            CvType.CV_8U, Scalar(4.0)
+        )
+        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Utils.bitmapToMat(myBitmap, imageMat)
+
+
+
+        // Find the center as the average of the corners.
+        val center = Point(dotCenters.sumBy { it.x }/4, dotCenters.sumBy { it.y }/4)
+
+        // Determine the angle from corner to the center.
+        val cornersAndAngles = dotCenters.map { corner ->
+            val angle = atan2((corner.y - center.y).toDouble(), (corner.x - center.x).toDouble())
+            Pair(corner, angle)
+        }
+
+        // Sort the corners into order around the center so that we know which corner is which.
+        val sortedCorners = cornersAndAngles.sortedBy { it.second }.map { it.first }
+        debug(sortedCorners)
+
+        val trans = Imgproc.getPerspectiveTransform(
+            Converters.vector_Point2f_to_Mat(sortedCorners.map { org.opencv.core.Point(
+                it.x.toDouble(),
+                it.y.toDouble()
+            ) }),
+            Converters.vector_Point2f_to_Mat(listOf(org.opencv.core.Point(0.0, 400.0), org.opencv.core.Point(400.0, 400.0), org.opencv.core.Point(400.0, 0.0), org.opencv.core.Point(0.0, 0.0)))
+        )
+
+
+        val output = Mat(
+            400, 400,
+            CvType.CV_8U, Scalar(4.0)
+        )
+        Imgproc.warpPerspective(imageMat, output, trans, Size(400.0, 400.0))
+
+        // convert back to bitmap for displaying
+        val resultBitmap = Bitmap.createBitmap(
+            400, 400,
+            Bitmap.Config.ARGB_8888
+        )
+        output.convertTo(output, CvType.CV_8UC1)
+        Utils.matToBitmap(output, resultBitmap)
+
+        return resultBitmap
     }
 
     override fun onAttach(context: Context) {
