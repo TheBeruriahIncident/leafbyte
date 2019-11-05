@@ -1,16 +1,15 @@
 package com.thebluefolderproject.leafbyte
 
 import android.content.Context
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import org.opencv.imgproc.Imgproc
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,21 +58,31 @@ class ScaleIdentificationFragment : Fragment() {
 
         val uri = model!!.uri!!
         val bitmap = model!!.thresholdedImage!!
-        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
+        //view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
 
+        debug("Trying to find centers: " + bitmap.width + " " + bitmap.height)
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
 
         val dotLabels = info.labelToSize.entries
             .filter { entry -> entry.key > 0 }
-            .sortedBy { entry -> entry.value.total() }
+            .sortedByDescending { entry -> entry.value.total() }
             .take(5)
             .drop(1)
             .map { entry -> entry.key }
         // find center of point, draw dot
-        dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
+        val dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
 
+        val bmOverlay = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig())
+        val canvas = Canvas(bmOverlay)
+        val paint = Paint()
+        paint.setColor(Color.RED)
+        canvas.drawBitmap(bitmap, Matrix(), null)
+        dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 15.0f, paint) }
+        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bmOverlay)
 
+        debug("Found centers: " + dotCenters)
+        this.dotCenters = dotCenters
         return view
     }
 
