@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProviders
+import org.opencv.imgproc.Imgproc
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,6 +34,8 @@ class ScaleIdentificationFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     var model: WorkflowViewModel? = null
 
+    var dotCenters: List<Point>? = null;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,7 +51,7 @@ class ScaleIdentificationFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_scale_identification, container, false)
 
-        view.findViewById<Button>(R.id.scaleIdentificationNext).setOnClickListener { listener!!.doneScaleIdentification() }
+        view.findViewById<Button>(R.id.scaleIdentificationNext).setOnClickListener { listener!!.doneScaleIdentification(dotCenters!!) }
 
         activity!!.let {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
@@ -59,9 +62,17 @@ class ScaleIdentificationFragment : Fragment() {
         view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
 
-        debug("labeling " + bitmap.width + " " + bitmap.height)
-        val foo = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
-        debug(foo.labelToSize)
+        val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
+
+        val dotLabels = info.labelToSize.entries
+            .filter { entry -> entry.key > 0 }
+            .sortedBy { entry -> entry.value.total() }
+            .take(5)
+            .drop(1)
+            .map { entry -> entry.key }
+        // find center of point, draw dot
+        dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
+
 
         return view
     }
@@ -93,7 +104,7 @@ class ScaleIdentificationFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun doneScaleIdentification()
+        fun doneScaleIdentification(scaleMarks: List<Point>)
     }
 
     companion object {

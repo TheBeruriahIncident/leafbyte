@@ -7,4 +7,5 @@ import androidx.lifecycle.ViewModel
 class WorkflowViewModel : ViewModel() {
     public var uri: Uri? = null
     public var thresholdedImage: Bitmap? = null
+    public var scaleMarks: List<Point>? = null
 }

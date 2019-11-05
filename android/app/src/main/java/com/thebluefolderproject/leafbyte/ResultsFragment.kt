@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import androidx.lifecycle.ViewModelProviders
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,6 +31,7 @@ class ResultsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    var model: WorkflowViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,14 @@ class ResultsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_results, container, false)
 
         view.findViewById<Button>(R.id.resultsNext).setOnClickListener { listener!!.doneResults() }
+
+        activity!!.let {
+            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+        }
+
+        val uri = model!!.uri!!
+        val bitmap = model!!.thresholdedImage!!
+        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
         return view
     }

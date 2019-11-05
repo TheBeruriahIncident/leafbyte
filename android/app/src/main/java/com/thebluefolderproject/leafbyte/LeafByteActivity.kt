@@ -47,7 +47,8 @@ class LeafByteActivity : AppCompatActivity(),
         findNavController(R.id.nav_host_fragment).navigate(R.id.scaleIdentificationFragment)
     }
 
-    override fun doneScaleIdentification() {
+    override fun doneScaleIdentification(scaleMarks: List<Point>) {
+        model.scaleMarks = scaleMarks
         findNavController(R.id.nav_host_fragment).navigate(R.id.resultsFragment)
     }
 
