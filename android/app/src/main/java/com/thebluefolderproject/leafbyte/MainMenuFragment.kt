@@ -1,10 +1,9 @@
 package com.thebluefolderproject.leafbyte
 
-import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -21,8 +20,6 @@ import androidx.fragment.app.Fragment
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 
 
 class MainMenuFragment : Fragment() {
@@ -91,7 +88,7 @@ class MainMenuFragment : Fragment() {
     }
 
     fun showAlert(title: String, message: String) {
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(activity!!)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
@@ -100,14 +97,14 @@ class MainMenuFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(resultCode) {
-            Activity.RESULT_OK -> {
+            AppCompatActivity.RESULT_OK -> {
                 if (data == null) {
                     throw IllegalArgumentException("Intent data is null")
                 }
 
                 processActivityResultData(requestCode, data)
             }
-            Activity.RESULT_CANCELED -> {}
+            AppCompatActivity.RESULT_CANCELED -> {}
             else -> throw IllegalArgumentException("Result code: $resultCode")
         }
     }

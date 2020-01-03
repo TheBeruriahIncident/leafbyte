@@ -2,7 +2,6 @@
     <string name="app_name">LeafByte</string>
 
     <string name="choose_image_from_gallery">Choose from Gallery</string>
-    <string name="take_a_photo">Take a Photo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
