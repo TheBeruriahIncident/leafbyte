@@ -14,6 +14,10 @@ import androidx.navigation.NavOptions
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
         ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
+    override fun openSettings() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
+    }
+
     override fun goHome() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.mainMenuFragment)
     }

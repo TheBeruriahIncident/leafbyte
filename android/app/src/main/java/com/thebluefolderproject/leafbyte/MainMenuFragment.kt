@@ -39,6 +39,7 @@ class MainMenuFragment : Fragment() {
         view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }
         view.findViewById<Button>(R.id.takePhotoButton).setOnClickListener { takeAPhoto() }
         view.findViewById<Button>(R.id.start_tutorial).setOnClickListener { listener!!.startTutorial() }
+        view.findViewById<Button>(R.id.settings).setOnClickListener { listener!!.openSettings() }
         view.findViewById<TextView>(R.id.savingSummary).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
 
         return view
@@ -129,6 +130,7 @@ class MainMenuFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onImageSelection(imageUri: Uri)
         fun startTutorial()
+        fun openSettings()
     }
 }
 
