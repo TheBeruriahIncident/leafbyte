@@ -2,11 +2,28 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ListPreference
+        android:defaultValue="None"
+        android:entries="@array/saveLocations"
+        android:entryValues="@array/saveLocations"
+        android:key="data_save_location_preference"
+        android:title="Data Save Location"
+        app:useSimpleSummaryProvider="true" />
+    <ListPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="None"
+        android:entries="@array/saveLocations"
+        android:entryValues="@array/saveLocations"
+        android:key="image_save_location_preference"
+        android:title="Image Save Location"
+        app:useSimpleSummaryProvider="true" />
     <EditTextPreference
         android:defaultValue="Herbivory Data"
         android:key="dataset_name_preference"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        app:useSimpleSummaryProvider="true"
-        android:title="Dataset Name" />
+        android:title="Dataset Name"
+        app:useSimpleSummaryProvider="true" />
+
 </PreferenceScreen>

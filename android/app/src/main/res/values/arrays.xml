@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="saveLocations">
+        <item>None</item>
+        <item>Locally</item>
+        <item>Google Drive</item>
+    </string-array>
+</resources>
