@@ -27,5 +27,13 @@
         app:useSimpleSummaryProvider="true" />
     <Preference android:title="Use previous dataset"
         android:key="use_previous_dataset"/>
+    <EditTextPreference
+        android:defaultValue="10.0"
+        android:key="scale_length_preference"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Scale Length"
+        android:inputType="number"
+        app:useSimpleSummaryProvider="true" />
 
 </PreferenceScreen>

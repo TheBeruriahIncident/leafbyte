@@ -35,21 +35,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
+        val datasetName: EditTextPreference = preferenceManager.findPreference("dataset_name_preference")!!
         val button: Preference = preferenceManager.findPreference("use_previous_dataset")!!
         button.setOnPreferenceClickListener {
-            debug("clicked")
-
             val builder = AlertDialog.Builder(context!!)
             //builder.setTitle("Choose an animal")
 
             val animals = arrayOf("Hello", "Goodbye")
             builder.setItems(animals) { dialog, which ->
                 //commit vs apply
-                preferenceManager.sharedPreferences.edit().putString("dataset_name_preference", animals.get(which)).apply()
+                //preferenceManager.sharedPreferences.edit().putString("dataset_name_preference", animals.get(which)).apply()
                 //setPreferencesFromResource(R.xml.preferences, rootKey)
 
                 // HACKHACK
-                onCreatePreferences(savedInstanceState, rootKey)
+                //onCreatePreferences(savedInstanceState, rootKey)
+
+                datasetName.text = animals[which]
             }
 
             val dialog = builder.create()

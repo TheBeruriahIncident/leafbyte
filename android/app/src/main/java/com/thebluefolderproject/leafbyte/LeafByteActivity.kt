@@ -16,9 +16,6 @@ class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
         ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
     override fun openSettings() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        debug(prefs.getString("dataset_name_preference", "foo")!!)
-
         findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
     }
 
