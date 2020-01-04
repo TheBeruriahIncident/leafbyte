@@ -81,6 +81,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         p0!!.toString().toDouble()
                     } catch (e: NumberFormatException) {
                         editText.error = e.localizedMessage;
+
+
 //                        editText.rootView.findViewById(android.R.id.button1)
 //                            .setEnabled(validationError == null);
                     }

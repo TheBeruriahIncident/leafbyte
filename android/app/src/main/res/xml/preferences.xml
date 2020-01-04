@@ -26,7 +26,7 @@
         android:title="Dataset Name"
         app:useSimpleSummaryProvider="true" />
     <Preference android:title="Use previous dataset"
-        android:key="use_previous_dataset"/>
+        android:key="use_previous_dataset" />
     <EditTextPreference
         android:defaultValue="10.0"
         android:key="scale_length_preference"
@@ -35,6 +35,13 @@
         android:title="Scale Length"
         android:inputType="number"
         android:dialogLayout="@layout/preference_edit_numeric_text"
+        app:useSimpleSummaryProvider="true" />
+    <ListPreference
+        android:defaultValue="cm"
+        android:entries="@array/units"
+        android:entryValues="@array/units"
+        android:key="units_preference"
+        android:title="Scale length units"
         app:useSimpleSummaryProvider="true" />
 
 </PreferenceScreen>
