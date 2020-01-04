@@ -70,4 +70,7 @@
     <Preference android:title="Sign out of Google"
         android:key="sign_out_of_google" />
 
+    <Preference android:title=""
+        android:key="version" />
+
 </PreferenceScreen>

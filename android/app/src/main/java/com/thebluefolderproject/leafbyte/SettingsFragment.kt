@@ -86,5 +86,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             scaleLengthPreference.summary = scaleLengthPreference.text + " " + newValueString
             true
         }
+
+        val versionPreference: Preference = preferenceManager.findPreference("version")!!
+        versionPreference.title = "version " + BuildConfig.VERSION_NAME
     }
 }
