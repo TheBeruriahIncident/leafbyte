@@ -47,6 +47,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 //commit vs apply
                 preferenceManager.sharedPreferences.edit().putString("dataset_name_preference", animals.get(which)).apply()
                 //setPreferencesFromResource(R.xml.preferences, rootKey)
+
+                // HACKHACK
+                onCreatePreferences(savedInstanceState, rootKey)
             }
 
             val dialog = builder.create()
