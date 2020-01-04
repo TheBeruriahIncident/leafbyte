@@ -34,7 +34,7 @@
         android:singleLine="true"
         android:title="Scale Length"
         android:inputType="number"
-        android:dialogLayout="@layout/preference_edit_numeric_text" />
+        android:dialogLayout="@layout/preference_edit_decimal_numeric_text" />
     <ListPreference
         android:defaultValue="cm"
         android:entries="@array/units"
@@ -42,5 +42,32 @@
         android:key="units_preference"
         android:title="Scale Length Units"
         app:useSimpleSummaryProvider="true" />
+    <EditTextPreference
+        android:defaultValue="1"
+        android:key="next_sample_number_preference"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Next Sample Number"
+        android:inputType="number"
+        android:dialogLayout="@layout/preference_edit_numeric_text"
+        app:useSimpleSummaryProvider="true" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="scan_barcodes_preference"
+        android:title="Scan Barcodes?" />
+    <SwitchPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="false"
+        android:key="save_gps_location_preference"
+        android:title="Save GPS Location?" />
+    <SwitchPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="false"
+        android:key="use_black_background_preference"
+        android:title="Use Black Background?" />
+    <Preference android:title="Sign out of Google"
+        android:key="sign_out_of_google" />
 
 </PreferenceScreen>
