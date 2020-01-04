@@ -25,5 +25,7 @@
         android:singleLine="true"
         android:title="Dataset Name"
         app:useSimpleSummaryProvider="true" />
+    <Preference android:title="Use previous dataset"
+        android:key="use_previous_dataset"/>
 
 </PreferenceScreen>
