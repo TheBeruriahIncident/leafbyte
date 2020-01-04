@@ -34,14 +34,13 @@
         android:singleLine="true"
         android:title="Scale Length"
         android:inputType="number"
-        android:dialogLayout="@layout/preference_edit_numeric_text"
-        app:useSimpleSummaryProvider="true" />
+        android:dialogLayout="@layout/preference_edit_numeric_text" />
     <ListPreference
         android:defaultValue="cm"
         android:entries="@array/units"
         android:entryValues="@array/units"
         android:key="units_preference"
-        android:title="Scale length units"
+        android:title="Scale Length Units"
         app:useSimpleSummaryProvider="true" />
 
 </PreferenceScreen>
