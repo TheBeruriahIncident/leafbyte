@@ -21,7 +21,7 @@
         android:title="Image Save Location"
         app:iconSpaceReserved="false"
         app:useSimpleSummaryProvider="true" />
-    <EditTextPreference
+    <com.thebluefolderproject.leafbyte.TrimmingEditTextPreference
         android:defaultValue="Herbivory Data"
         android:key="dataset_name_preference"
         android:selectAllOnFocus="true"
