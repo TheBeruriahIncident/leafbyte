@@ -1,16 +1,25 @@
 <resources>
-    <string name="preference_key_data_save_location">data_save_location_preference</string>
-    <string name="preference_key_image_save_location">image_save_location_preference</string>
-    <string-array name="save_location_names">
+    <string name="preferences_data_save_location_key">data_save_location</string>
+    <string name="preferences_data_save_location_title">Data Save Location</string>
+    <string name="preferences_image_save_location_key">image_save_location</string>
+    <string name="preferences_image_save_location_title">Image Save Location</string>
+    <string-array name="preferences_save_location_array_names">
         <item>None</item>
         <item>Phone</item>
         <item>Google Drive</item>
     </string-array>
-    <string-array name="save_location_keys">
-        <item>none</item>
+    <string name="preferences_save_location_none_array_key">none</string>
+    <string-array name="preferences_save_location_array_keys">
+        <item>@string/preferences_save_location_none_array_key</item>
         <item>local</item>
         <item>Google Drive</item>
     </string-array>
+
+    <string name="preferences_dataset_name_key">dataset_name</string>
+    <string name="preferences_dataset_name_title">Dataset Name</string>
+    <string name="preferences_dataset_name_default">Herbivory Data</string>
+    <string name="preferences_use_previous_dataset_key">use_previous_dataset</string>
+    <string name="preferences_use_previous_dataset_title">Use Previous Dataset</string>
 
     <string-array name="units">
         <item>mm</item>

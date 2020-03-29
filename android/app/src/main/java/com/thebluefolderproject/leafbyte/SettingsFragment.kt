@@ -21,10 +21,41 @@ import androidx.preference.PreferenceFragmentCompat
  */
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences, rootKey)
+    private fun getAllPreferenceKeys(): List<String> {
+        // don't show up for some reason
+        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "version")
+        debug(preferenceScreen.sharedPreferences.all)
+        keys.addAll(preferenceScreen.sharedPreferences.all.keys)
+        debug(keys)
 
-        val datasetName: EditTextPreference = preferenceManager.findPreference("dataset_name_preference")!!
+        return keys
+    }
+
+    private fun setup() {
+        getAllPreferenceKeys().forEach { key ->
+            debug(key)
+            val preference: Preference = preferenceManager.findPreference(key)!!
+            // every pref needs this or else it's misaligned
+            preference.isIconSpaceReserved = false
+
+            if (key == "scale_length_preference") {
+                return@forEach
+            }
+            if (preference is ListPreference) {
+                preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            } else if (preference is EditTextPreference) {
+                preference.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+            }
+        }
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences_layout, rootKey)
+
+        setup()
+
+
+        val datasetName: EditTextPreference = preferenceManager.findPreference("dataset_name")!!
         val button: Preference = preferenceManager.findPreference("use_previous_dataset")!!
         button.setOnPreferenceClickListener {
             val builder = AlertDialog.Builder(context!!)

@@ -1,21 +1,29 @@
 package com.thebluefolderproject.leafbyte
 
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import org.opencv.android.OpenCVLoader
 import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
+import org.opencv.android.OpenCVLoader
 
 
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
         ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
     override fun openSettings() {
+//        debug("HELLO")
+//        debug(getPreferences(Context.MODE_PRIVATE).getString("dataset_name_preference", "none")!!)
+//
+//        val SP = PreferenceManager.getDefaultSharedPreferences(baseContext)
+//        debug(SP.getString("dataset_name_preference", "none")!!)
+//        debug(SP.getString(resources.getString(R.string.preferences_data_save_location_key), "none")!!)
+
         findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
     }
 
@@ -36,6 +44,8 @@ class LeafByteActivity : AppCompatActivity(),
         if (!OpenCVLoader.initDebug()) {
             throw RuntimeException("Failed to initialize OpenCV")
         }
+
+        PreferenceManager.getDefaultSharedPreferences(baseContext).edit().clear().apply()
 
         model = ViewModelProviders.of(this).get(WorkflowViewModel::class.java)
     }
