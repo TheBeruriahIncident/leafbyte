@@ -23,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun getAllPreferenceKeys(): List<String> {
         // don't show up for some reason
-        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "version")
+        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "website", "citation", "version")
         debug(preferenceScreen.sharedPreferences.all)
         keys.addAll(preferenceScreen.sharedPreferences.all.keys)
         debug(keys)
