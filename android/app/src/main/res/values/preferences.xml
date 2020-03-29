@@ -1,0 +1,28 @@
+<resources>
+    <string name="preference_key_data_save_location">data_save_location_preference</string>
+    <string name="preference_key_image_save_location">image_save_location_preference</string>
+    <string-array name="save_location_names">
+        <item>None</item>
+        <item>Phone</item>
+        <item>Google Drive</item>
+    </string-array>
+    <string-array name="save_location_keys">
+        <item>none</item>
+        <item>local</item>
+        <item>Google Drive</item>
+    </string-array>
+
+    <string-array name="units">
+        <item>mm</item>
+        <item>cm</item>
+        <item>m</item>
+        <item>in</item>
+        <item>ft</item>
+    </string-array>
+
+    <string name="preference_key_scale_length_unit_preference">image_save_location_preference</string>
+    <string name="preference_key_next_sample_number_preference">image_save_location_preference</string>
+    <string name="preference_key_scan_barcodes_preference">image_save_location_preference</string>
+    <string name="preference_key_save_gps_location_preference">image_save_location_preference</string>
+    <string name="preference_key_use_black_background_preference">image_save_location_preference</string>
+</resources>

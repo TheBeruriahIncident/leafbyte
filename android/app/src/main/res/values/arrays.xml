@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="saveLocations">
-        <item>None</item>
-        <item>Locally</item>
-        <item>Google Drive</item>
-    </string-array>
-    <string-array name="units">
-        <item>mm</item>
-        <item>cm</item>
-        <item>m</item>
-        <item>in</item>
-        <item>ft</item>
-    </string-array>
+
 </resources>
