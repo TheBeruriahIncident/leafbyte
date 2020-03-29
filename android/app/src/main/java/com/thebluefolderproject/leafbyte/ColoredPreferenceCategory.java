@@ -9,15 +9,15 @@ import android.widget.TextView;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceViewHolder;
 
-public class PreferenceCategoryWithColor extends PreferenceCategory {
-    public PreferenceCategoryWithColor(Context context) {
+public class ColoredPreferenceCategory extends PreferenceCategory {
+    public ColoredPreferenceCategory(Context context) {
         super(context);
     }
-    public PreferenceCategoryWithColor(Context context, AttributeSet attrs) {
+    public ColoredPreferenceCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-    public PreferenceCategoryWithColor(Context context, AttributeSet attrs,
-                                       int defStyle) {
+    public ColoredPreferenceCategory(Context context, AttributeSet attrs,
+                                     int defStyle) {
         super(context, attrs, defStyle);
     }
 

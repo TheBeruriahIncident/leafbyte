@@ -2,9 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor
-        android:title="Save Locations"
-        app:iconSpaceReserved="false">
+    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+        android:title="@string/preferences_save_locations_category">
 
         <ListPreference
             android:key="@string/preferences_data_save_location_key"
@@ -20,11 +19,11 @@
             android:defaultValue="@string/preferences_save_location_none_array_key"
             android:entries="@array/preferences_save_location_array_names"
             android:entryValues="@array/preferences_save_location_array_keys" />
-    </com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor>
+    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor
-        android:title="Dataset Name"
-        app:iconSpaceReserved="false">
+    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+        android:title="@string/preferences_dataset_name_category">
+
         <com.thebluefolderproject.leafbyte.TrimmingEditTextPreference
             android:key="@string/preferences_dataset_name_key"
             android:title="@string/preferences_dataset_name_title"
@@ -33,79 +32,84 @@
         <Preference
             android:key="@string/preferences_use_previous_dataset_key"
             android:title="@string/preferences_use_previous_dataset_title" />
-    </com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor>
+    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor
-        android:title="Scale Length"
-        app:iconSpaceReserved="false">
+    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+        android:title="@string/preferences_scale_length_category" >
+
         <EditTextPreference
-            android:key="scale_length_preference"
-            android:title="Scale Length"
+            android:key="@string/preferences_scale_length_key"
+            android:title="@string/preferences_scale_length_title"
             android:defaultValue="10.0"
             android:dialogLayout="@layout/preference_edit_decimal_numeric_text"
             android:inputType="number"
             android:selectAllOnFocus="true"
             android:singleLine="true" />
         <ListPreference
-            android:key="units_preference"
-            android:title="Scale Length Units"
-            android:defaultValue="cm"
-            android:entries="@array/units"
-            android:entryValues="@array/units" />
-    </com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor>
+            android:key="@string/preferences_scale_length_units_key"
+            android:title="@string/preferences_scale_length_units_title"
+            android:defaultValue="@string/preferences_scale_length_units_cm_array_key"
+            android:entries="@array/preferences_scale_length_units_array_names"
+            android:entryValues="@array/preferences_scale_length_units_array_keys" />
+    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor
-        android:title="General"
-        app:iconSpaceReserved="false">
+    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+        android:title="@string/preferences_general_category">
+
         <EditTextPreference
-            android:key="next_sample_number_preference"
-            android:title="Next Sample Number"
+            android:key="@string/preference_next_sample_number_key"
+            android:title="@string/preference_next_sample_number_title"
             android:defaultValue="1"
             android:dialogLayout="@layout/preference_edit_numeric_text"
             android:inputType="number"
             android:selectAllOnFocus="true"
             android:singleLine="true" />
         <SwitchPreference
-            android:key="scan_barcodes_preference"
-            android:title="Scan Barcodes?"
+            android:key="@string/preference_scan_barcodes_key"
+            android:title="@string/preference_scan_barcodes_title"
             android:defaultValue="false" />
         <SwitchPreference
-            android:key="save_gps_location_preference"
-            android:title="Save GPS Location?"
+            android:key="@string/preference_save_gps_location_key"
+            android:title="@string/preference_save_gps_location_title"
+            android:summary="@string/preference_save_gps_location_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="false" />
         <SwitchPreference
-            android:key="use_black_background_preference"
-            android:title="Use Black Background?"
+            android:key="@string/preference_use_black_background_key"
+            android:title="@string/preference_use_black_background_title"
+            android:summary="@string/preference_use_black_background_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="false" />
         <Preference
-            android:key="sign_out_of_google"
-            android:title="Sign Out of Google" />
-    </com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor>
+            android:key="@string/preference_sign_out_of_google_key"
+            android:title="@string/preference_sign_out_of_google_title" />
+    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor
-        android:title="About"
-        app:iconSpaceReserved="false">
+    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+        android:title="@string/preferences_about_category">
 
         <Preference
-            android:key="website"
-            android:title="Website (with Guides and FAQs)"/>
+            android:key="@string/preference_website_key"
+            android:title="@string/preference_website_title"
+            android:summary="@string/preference_website_summary"/>
+        <Preference
+            android:key="@string/preference_team_key"
+            android:title="@string/preference_team_title" />
         <!--seems like either of these enableds work, but cabeing paranoid-->
         <Preference
-            android:key="citation"
-            android:title="Cite:"
-            android:summary="Getman‐Pickering, Z. L., Campbell, A., Aflitto, N., Grele, A., Davis, J. K., &amp; Ugine, T. A. (2020). LeafByte: A mobile application that measures leaf area and herbivory quickly and accurately. Methods in Ecology and Evolution, 2041–210X.13340. doi:10.1111/2041-210X.13340"
+            android:key="@string/preference_citation_key"
+            android:title="@string/preference_citation_title"
+            android:summary="@string/preference_citation_summary"
             android:enabled="false"
             app:enabled="false" />
         <!--seems like either of these enableds work, but cabeing paranoid-->
         <Preference
-            android:key="version"
-            android:title=""
+            android:key="@string/preference_version_key"
+            android:title="@string/preference_version_title"
             android:enabled="false"
             app:enabled="false" />
-    </com.thebluefolderproject.leafbyte.PreferenceCategoryWithColor>
+    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
 
 </PreferenceScreen>

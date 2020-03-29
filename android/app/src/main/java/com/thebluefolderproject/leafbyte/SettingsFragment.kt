@@ -23,22 +23,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun getAllPreferenceKeys(): List<String> {
         // don't show up for some reason
-        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "website", "citation", "version")
-        debug(preferenceScreen.sharedPreferences.all)
+        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "website", "team", "citation", "version")
         keys.addAll(preferenceScreen.sharedPreferences.all.keys)
-        debug(keys)
 
         return keys
     }
 
     private fun setup() {
+        for (i in 0 until preferenceScreen.preferenceCount) {
+            val preference = preferenceScreen.getPreference(i)
+
+            preference.isIconSpaceReserved = false
+        }
+
         getAllPreferenceKeys().forEach { key ->
-            debug(key)
             val preference: Preference = preferenceManager.findPreference(key)!!
             // every pref needs this or else it's misaligned
             preference.isIconSpaceReserved = false
 
-            if (key == "scale_length_preference") {
+            if (key == "scale_length") {
                 return@forEach
             }
             if (preference is ListPreference) {
@@ -53,6 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences_layout, rootKey)
 
         setup()
+
 
 
         val datasetName: EditTextPreference = preferenceManager.findPreference("dataset_name")!!
@@ -70,9 +74,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference("units_preference")!!
+        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference("scale_length_units")!!
 
-        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference("scale_length_preference")!!
+        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference("scale_length")!!
         // derived from https://stackoverflow.com/a/59297100/1092672
         scaleLengthPreference.setOnBindEditTextListener { editText ->
             try {
@@ -103,7 +107,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             })
         }
-        scaleLengthPreference.summary = scaleLengthPreference.text + " " + scaleLengthUnitPreference.value
+        scaleLengthPreference.summary = "Length of one side of the scale square from dot center to dot center\n\n" + scaleLengthPreference.text + " " + scaleLengthUnitPreference.value
         scaleLengthPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
             val newValueString: String = newValue as String;
             // TODO: dont dupe this

@@ -1,37 +1,72 @@
-<resources>
-    <string name="preferences_data_save_location_key">data_save_location</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="preferences_save_locations_category">Save Locations</string>
+    <string name="preferences_data_save_location_key" translatable="false">data_save_location</string>
     <string name="preferences_data_save_location_title">Data Save Location</string>
-    <string name="preferences_image_save_location_key">image_save_location</string>
+    <string name="preferences_image_save_location_key" translatable="false">image_save_location</string>
     <string name="preferences_image_save_location_title">Image Save Location</string>
     <string-array name="preferences_save_location_array_names">
         <item>None</item>
         <item>Phone</item>
         <item>Google Drive</item>
     </string-array>
-    <string name="preferences_save_location_none_array_key">none</string>
-    <string-array name="preferences_save_location_array_keys">
+    <string name="preferences_save_location_none_array_key" translatable="false">none</string>
+    <string-array name="preferences_save_location_array_keys" translatable="false">
         <item>@string/preferences_save_location_none_array_key</item>
         <item>local</item>
         <item>Google Drive</item>
     </string-array>
 
-    <string name="preferences_dataset_name_key">dataset_name</string>
+    <string name="preferences_dataset_name_category">Dataset Name</string>
+    <string name="preferences_dataset_name_key" translatable="false">dataset_name</string>
     <string name="preferences_dataset_name_title">Dataset Name</string>
     <string name="preferences_dataset_name_default">Herbivory Data</string>
-    <string name="preferences_use_previous_dataset_key">use_previous_dataset</string>
+    <string name="preferences_use_previous_dataset_key" translatable="false">use_previous_dataset</string>
     <string name="preferences_use_previous_dataset_title">Use Previous Dataset</string>
 
-    <string-array name="units">
+    <string name="preferences_scale_length_category">Scale Length</string>
+    <string name="preferences_scale_length_key" translatable="false">scale_length</string>
+    <string name="preferences_scale_length_title">Scale Length</string>
+    <string name="preferences_scale_length_units_key" translatable="false">scale_length_units</string>
+    <string name="preferences_scale_length_units_title">Scale Length Units</string>
+    <string-array name="preferences_scale_length_units_array_names">
         <item>mm</item>
         <item>cm</item>
         <item>m</item>
         <item>in</item>
         <item>ft</item>
     </string-array>
+    <string name="preferences_scale_length_units_cm_array_key" translatable="false">cm</string>
+    <string-array name="preferences_scale_length_units_array_keys" translatable="false">
+        <item>mm</item>
+        <item>@string/preferences_scale_length_units_cm_array_key</item>
+        <item>m</item>
+        <item>in</item>
+        <item>ft</item>
+    </string-array>
 
-    <string name="preference_key_scale_length_unit_preference">image_save_location_preference</string>
-    <string name="preference_key_next_sample_number_preference">image_save_location_preference</string>
-    <string name="preference_key_scan_barcodes_preference">image_save_location_preference</string>
-    <string name="preference_key_save_gps_location_preference">image_save_location_preference</string>
-    <string name="preference_key_use_black_background_preference">image_save_location_preference</string>
+    <string name="preferences_general_category">General</string>
+    <string name="preference_next_sample_number_key" translatable="false">next_sample_number</string>
+    <string name="preference_next_sample_number_title">Next Sample Number</string>
+    <string name="preference_scan_barcodes_key" translatable="false">scan_barcodes</string>
+    <string name="preference_scan_barcodes_title">Scan Barcodes?</string>
+    <string name="preference_save_gps_location_key" translatable="false">save_gps_location</string>
+    <string name="preference_save_gps_location_title">Save GPS Location?</string>
+    <string name="preference_save_gps_location_summary">May slow saving</string>
+    <string name="preference_use_black_background_key" translatable="false">use_black_background</string>
+    <string name="preference_use_black_background_title">Use Black Background?</string>
+    <string name="preference_use_black_background_summary">For use with light plant tissue</string>
+    <string name="preference_sign_out_of_google_key" translatable="false">sign_out_of_google</string>
+    <string name="preference_sign_out_of_google_title">Sign Out of Google</string>
+
+    <string name="preferences_about_category">About</string>
+    <string name="preference_website_key" translatable="false">website</string>
+    <string name="preference_website_title">Website</string>
+    <string name="preference_website_summary">With guides and FAQs</string>
+    <string name="preference_team_key" translatable="false">team</string>
+    <string name="preference_team_title">The Team</string>
+    <string name="preference_citation_key" translatable="false">citation</string>
+    <string name="preference_citation_title">Cite:</string>
+    <string name="preference_citation_summary" translatable="false" tools:ignore="TypographyDashes">Getman‐Pickering, Z. L., Campbell, A., Aflitto, N., Grele, A., Davis, J. K., &amp; Ugine, T. A. (2020). LeafByte: A mobile application that measures leaf area and herbivory quickly and accurately. Methods in Ecology and Evolution, 2041–210X.13340. doi:10.1111/2041-210X.13340</string>
+    <string name="preference_version_key" translatable="false">version</string>
+    <string name="preference_version_title">version 0.?</string>
 </resources>
