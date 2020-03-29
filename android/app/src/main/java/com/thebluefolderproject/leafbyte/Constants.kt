@@ -10,3 +10,9 @@ const val UNUSED = "UNUSED_PARAMETER"
 fun debug(o: Any) {
     Log.e("ADAM", o.toString())
 }
+
+fun checkState(condition: Boolean, message: String) {
+    if (!condition) {
+        throw IllegalStateException(message)
+    }
+}

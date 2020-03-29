@@ -20,28 +20,19 @@ import androidx.preference.PreferenceFragmentCompat
  *
  */
 class SettingsFragment : PreferenceFragmentCompat() {
-
-    private fun getAllPreferenceKeys(): List<String> {
-        // don't show up for some reason
-        val keys = mutableListOf("sign_out_of_google", "use_previous_dataset", "website", "team", "citation", "version")
-        keys.addAll(preferenceScreen.sharedPreferences.all.keys)
-
-        return keys
-    }
-
-    private fun setup() {
+    private fun setup(preferences: Preferences) {
         for (i in 0 until preferenceScreen.preferenceCount) {
             val preference = preferenceScreen.getPreference(i)
 
             preference.isIconSpaceReserved = false
         }
 
-        getAllPreferenceKeys().forEach { key ->
+        preferences.ALL_KEYS.forEach { key ->
             val preference: Preference = preferenceManager.findPreference(key)!!
             // every pref needs this or else it's misaligned
             preference.isIconSpaceReserved = false
 
-            if (key == "scale_length") {
+            if (key == preferences.SCALE_LENGTH_KEY) {
                 return@forEach
             }
             if (preference is ListPreference) {
@@ -55,12 +46,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_layout, rootKey)
 
-        setup()
+        val preferences = Preferences(activity!!)
+        setup(preferences)
 
 
 
-        val datasetName: EditTextPreference = preferenceManager.findPreference("dataset_name")!!
-        val button: Preference = preferenceManager.findPreference("use_previous_dataset")!!
+        val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.DATASET_NAME_KEY)!!
+        val button: Preference = preferenceManager.findPreference(preferences.USE_PREVIOUS_DATASET_KEY)!!
         button.setOnPreferenceClickListener {
             val builder = AlertDialog.Builder(context!!)
             val options = arrayOf("Hello", "Goodbye")
@@ -74,9 +66,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference("scale_length_units")!!
+        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference(preferences.SCALE_LENGTH_UNITS_KEY)!!
 
-        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference("scale_length")!!
+        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference(preferences.SCALE_LENGTH_KEY)!!
         // derived from https://stackoverflow.com/a/59297100/1092672
         scaleLengthPreference.setOnBindEditTextListener { editText ->
             try {
@@ -122,7 +114,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val versionPreference: Preference = preferenceManager.findPreference("version")!!
+        val versionPreference: Preference = preferenceManager.findPreference(preferences.VERSION_KEY)!!
         versionPreference.title = "version " + BuildConfig.VERSION_NAME
     }
 }

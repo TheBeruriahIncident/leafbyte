@@ -10,10 +10,12 @@
         <item>Google Drive</item>
     </string-array>
     <string name="preferences_save_location_none_array_key" translatable="false">none</string>
+    <string name="preferences_save_location_local_array_key" translatable="false">local</string>
+    <string name="preferences_save_location_google_drive_array_key" translatable="false">google_drive</string>
     <string-array name="preferences_save_location_array_keys" translatable="false">
         <item>@string/preferences_save_location_none_array_key</item>
-        <item>local</item>
-        <item>Google Drive</item>
+        <item>@string/preferences_save_location_local_array_key</item>
+        <item>@string/preferences_save_location_google_drive_array_key</item>
     </string-array>
 
     <string name="preferences_dataset_name_category">Dataset Name</string>
@@ -35,13 +37,17 @@
         <item>in</item>
         <item>ft</item>
     </string-array>
+    <string name="preferences_scale_length_units_mm_array_key" translatable="false">mm</string>
     <string name="preferences_scale_length_units_cm_array_key" translatable="false">cm</string>
+    <string name="preferences_scale_length_units_m_array_key" translatable="false">m</string>
+    <string name="preferences_scale_length_units_in_array_key" translatable="false">in</string>
+    <string name="preferences_scale_length_units_ft_array_key" translatable="false">ft</string>
     <string-array name="preferences_scale_length_units_array_keys" translatable="false">
-        <item>mm</item>
+        <item>@string/preferences_scale_length_units_mm_array_key</item>
         <item>@string/preferences_scale_length_units_cm_array_key</item>
-        <item>m</item>
-        <item>in</item>
-        <item>ft</item>
+        <item>@string/preferences_scale_length_units_m_array_key</item>
+        <item>@string/preferences_scale_length_units_in_array_key</item>
+        <item>@string/preferences_scale_length_units_ft_array_key</item>
     </string-array>
 
     <string name="preferences_general_category">General</string>
