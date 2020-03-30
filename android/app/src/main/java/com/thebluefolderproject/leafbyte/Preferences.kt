@@ -19,7 +19,7 @@ class Preferences(val activity: Activity) {
     val saveGpsLocationKey = activity.getString(R.string.preference_save_gps_location_key)
     val useBlackBackgroundKey = activity.getString(R.string.preference_use_black_background_key)
     val signOutOfGoogleKey = activity.getString(R.string.preference_sign_out_of_google_key)
-    val websiteKeys = activity.getString(R.string.preference_website_key)
+    val websiteKey = activity.getString(R.string.preference_website_key)
     val teamKey = activity.getString(R.string.preference_team_key)
     val citationKey = activity.getString(R.string.preference_citation_key)
     val versionKey = activity.getString(R.string.preference_version_key)
@@ -38,7 +38,7 @@ class Preferences(val activity: Activity) {
         saveGpsLocationKey,
         useBlackBackgroundKey,
         signOutOfGoogleKey,
-        websiteKeys,
+        websiteKey,
         teamKey,
         citationKey,
         versionKey)

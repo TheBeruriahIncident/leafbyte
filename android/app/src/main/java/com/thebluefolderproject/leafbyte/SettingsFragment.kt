@@ -1,5 +1,7 @@
 package com.thebluefolderproject.leafbyte
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -61,6 +63,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
             builder.setItems(options) { dialog, which ->
                 datasetName.text = options[which]
             }
+
+            val dialog = builder.create()
+            dialog.show()
+
+            true
+        }
+
+        val websiteButton: Preference = preferenceManager.findPreference(preferences.websiteKey)!!
+        websiteButton.setOnPreferenceClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://zoegp.science/leafbyte-faqs"));
+            startActivity(browserIntent);
+
+            true
+        }
+
+        val teamButton: Preference = preferenceManager.findPreference(preferences.teamKey)!!
+        teamButton.setOnPreferenceClickListener {
+            val builder = AlertDialog.Builder(context!!)
+            builder.setTitle(getString(R.string.preference_team_title))
+            builder.setMessage(getString(R.string.preference_team_description))
 
             val dialog = builder.create()
             dialog.show()
