@@ -11,6 +11,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
 /**
+ * settings vs preferences
+ *
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
  * [SettingsFragment.OnFragmentInteractionListener] interface
@@ -27,12 +29,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             preference.isIconSpaceReserved = false
         }
 
-        preferences.ALL_KEYS.forEach { key ->
+        preferences.allKeys.forEach { key ->
             val preference: Preference = preferenceManager.findPreference(key)!!
             // every pref needs this or else it's misaligned
             preference.isIconSpaceReserved = false
 
-            if (key == preferences.SCALE_LENGTH_KEY) {
+            if (key == preferences.scaleLengthKey) {
                 return@forEach
             }
             if (preference is ListPreference) {
@@ -51,8 +53,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 
 
-        val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.DATASET_NAME_KEY)!!
-        val button: Preference = preferenceManager.findPreference(preferences.USE_PREVIOUS_DATASET_KEY)!!
+        val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.datasetNameKey)!!
+        val button: Preference = preferenceManager.findPreference(preferences.usePreviousDatasetKey)!!
         button.setOnPreferenceClickListener {
             val builder = AlertDialog.Builder(context!!)
             val options = arrayOf("Hello", "Goodbye")
@@ -66,9 +68,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference(preferences.SCALE_LENGTH_UNITS_KEY)!!
+        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference(preferences.scaleLengthUnitsKey)!!
 
-        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference(preferences.SCALE_LENGTH_KEY)!!
+        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference(preferences.scaleLengthKey)!!
         // derived from https://stackoverflow.com/a/59297100/1092672
         scaleLengthPreference.setOnBindEditTextListener { editText ->
             try {
@@ -114,7 +116,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val versionPreference: Preference = preferenceManager.findPreference(preferences.VERSION_KEY)!!
+        val versionPreference: Preference = preferenceManager.findPreference(preferences.versionKey)!!
         versionPreference.title = "version " + BuildConfig.VERSION_NAME
     }
 }
