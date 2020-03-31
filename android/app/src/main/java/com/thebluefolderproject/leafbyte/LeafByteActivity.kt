@@ -17,13 +17,6 @@ class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
         ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
     override fun openSettings() {
-//        debug("HELLO")
-//        debug(getPreferences(Context.MODE_PRIVATE).getString("dataset_name_preference", "none")!!)
-//
-//        val SP = PreferenceManager.getDefaultSharedPreferences(baseContext)
-//        debug(SP.getString("dataset_name_preference", "none")!!)
-//        debug(SP.getString(resources.getString(R.string.preferences_data_save_location_key), "none")!!)
-
         findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
     }
 

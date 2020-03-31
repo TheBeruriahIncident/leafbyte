@@ -1,11 +1,10 @@
 package com.thebluefolderproject.leafbyte
 
 import android.app.Activity
-import android.content.Context
-import java.lang.IllegalArgumentException
+import androidx.preference.PreferenceManager
 
 class Preferences(val activity: Activity) {
-    val sharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
 
     // technically these aren't constants, but they fundamentally are, so they're cased as such
     val dataSaveLocationKey = activity.getString(R.string.preferences_data_save_location_key)
