@@ -34,7 +34,6 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 
 
 class MainMenuFragment : Fragment() {
@@ -123,7 +122,7 @@ class MainMenuFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        debug("onActivityResult " + resultCode)
+        log("onActivityResult " + resultCode)
         when(resultCode) {
             AppCompatActivity.RESULT_OK -> {
                 if (data == null) {
@@ -162,7 +161,7 @@ class MainMenuFragment : Fragment() {
     private fun handleSignInResult(result: Intent) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
             .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
-                debug("Signed in as " + googleAccount.email)
+                log("Signed in as " + googleAccount.email)
 
                 // Use the authenticated account to sign in to the Drive service.
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
@@ -182,7 +181,7 @@ class MainMenuFragment : Fragment() {
                 )
                     .setApplicationName("LeafByte")
                     .build()
-                debug("created clients")
+                log("created clients")
 
                 val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
                     override protected fun doInBackground(vararg params: Void): Void? {
@@ -194,21 +193,21 @@ class MainMenuFragment : Fragment() {
                                 .setName("Kahlo // created from android")
                         ).execute()
                             ?: throw IOException("Null result when requesting file creation.")
-                        debug("created file " + file.id)
+                        log("created file " + file.id)
 
                         sheets.spreadsheets().values().append(
                             file.id, "Sheet1", ValueRange().setValues(
                                 listOf(listOf("dog"))
                             )
                         ).setValueInputOption("USER_ENTERED").setInsertDataOption("INSERT_ROWS").execute()
-                        debug("appended")
+                        log("appended")
                         return null;
                     }
                 }
                 task.execute()
             }
             .addOnFailureListener { exception: Exception? ->
-                debug(
+                log(
                     "Unable to sign in." +
                             exception
                 )

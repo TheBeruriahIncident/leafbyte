@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -86,6 +85,7 @@ public class ZoomView extends FrameLayout {
         float dx = x - touchLastX;
         float dy = y - touchLastY;
         final float l = (float) Math.hypot(dx, dy);
+        //ConstantsKt.log("x: " + x + ", y: " + y + ", dx: " + dx + ", dy: " + dy);
         touchLastX = x;
         touchLastY = y;
 

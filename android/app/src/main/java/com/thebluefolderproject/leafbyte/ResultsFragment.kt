@@ -73,7 +73,7 @@ class ResultsFragment : Fragment() {
             .filter { entry -> entry.key > 0 }
             .map { entry -> entry.value }
             .maxBy { it.total() }
-        debug("Number of pixels: " + pixels)
+        log("Number of pixels: " + pixels)
 
         return view
     }
@@ -100,7 +100,7 @@ class ResultsFragment : Fragment() {
 
         // Sort the corners into order around the center so that we know which corner is which.
         val sortedCorners = cornersAndAngles.sortedBy { it.second }.map { it.first }
-        debug(sortedCorners)
+        log(sortedCorners)
 
         val size = 1200.0
         val size2 = 1200

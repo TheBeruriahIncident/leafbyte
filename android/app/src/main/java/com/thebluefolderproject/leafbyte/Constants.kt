@@ -7,7 +7,7 @@ import android.util.Log
  */
 const val UNUSED = "UNUSED_PARAMETER"
 
-fun debug(o: Any) {
+fun log(o: Any) {
     Log.e("ABIGAIL", o.toString())
 }
 
