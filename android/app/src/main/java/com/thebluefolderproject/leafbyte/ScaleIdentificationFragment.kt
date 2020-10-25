@@ -63,6 +63,7 @@ class ScaleIdentificationFragment : Fragment() {
 
         debug("Trying to find centers: " + bitmap.width + " " + bitmap.height)
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
+        debug("done labeling")
 
         val dotLabels = info.labelToSize.entries
             .filter { entry -> entry.key > 0 }

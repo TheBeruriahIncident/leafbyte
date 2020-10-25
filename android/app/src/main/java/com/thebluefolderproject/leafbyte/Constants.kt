@@ -8,7 +8,7 @@ import android.util.Log
 const val UNUSED = "UNUSED_PARAMETER"
 
 fun debug(o: Any) {
-    Log.e("ADAM", o.toString())
+    Log.e("ABIGAIL", o.toString())
 }
 
 fun checkState(condition: Boolean, message: String) {
