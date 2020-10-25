@@ -56,7 +56,6 @@ class ScaleIdentificationFragment : Fragment() {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
         }
 
-        val uri = model!!.uri!!
         val bitmap = model!!.thresholdedImage!!
         //view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
@@ -79,7 +78,7 @@ class ScaleIdentificationFragment : Fragment() {
         val paint = Paint()
         paint.setColor(Color.RED)
         canvas.drawBitmap(bitmap, Matrix(), null)
-        dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 15.0f, paint) }
+        dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 8.0f, paint) }
         view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bmOverlay)
 
         debug("Found centers: " + dotCenters)

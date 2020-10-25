@@ -104,7 +104,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
             let fuzzinessLevel = lumaHistogram[intThreshold - 1...intThreshold + 2].reduce(0, +)
             if fuzzinessLevel > FUZZINESS_THRESHOLD {
                 fuzzinessWarning.isEnabled = true
-                fuzzinessWarning.setTitle(NSLocalizedString("Warning: Image may be fuzzy", comment: "Shown if slight adjustments to the slider would have too much affect on the image"), for: .normal)
+                fuzzinessWarning.setTitle(NSLocalizedString("Warning: Image may be fuzzy", comment: "Shown if slight adjustments to the slider would have too much effect on the image"), for: .normal)
             }
             
             // Draw the histogram to make user adjustment easier.

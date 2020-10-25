@@ -62,7 +62,6 @@ class ResultsFragment : Fragment() {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
         }
 
-        val uri = model!!.uri!!
         val bitmap = model!!.thresholdedImage!!
 
         val corrected = correct(bitmap, model!!.scaleMarks!!)
@@ -103,24 +102,27 @@ class ResultsFragment : Fragment() {
         val sortedCorners = cornersAndAngles.sortedBy { it.second }.map { it.first }
         debug(sortedCorners)
 
+        val size = 1200.0
+        val size2 = 1200
+
         val trans = Imgproc.getPerspectiveTransform(
             Converters.vector_Point2f_to_Mat(sortedCorners.map { org.opencv.core.Point(
                 it.x.toDouble(),
                 it.y.toDouble()
             ) }),
-            Converters.vector_Point2f_to_Mat(listOf(org.opencv.core.Point(0.0, 400.0), org.opencv.core.Point(400.0, 400.0), org.opencv.core.Point(400.0, 0.0), org.opencv.core.Point(0.0, 0.0)))
+            Converters.vector_Point2f_to_Mat(listOf(org.opencv.core.Point(0.0, size), org.opencv.core.Point(size, size), org.opencv.core.Point(size, 0.0), org.opencv.core.Point(0.0, 0.0)))
         )
 
 
         val output = Mat(
-            400, 400,
+            size2, size2,
             CvType.CV_8U, Scalar(4.0)
         )
-        Imgproc.warpPerspective(imageMat, output, trans, Size(400.0, 400.0))
+        Imgproc.warpPerspective(imageMat, output, trans, Size(size, size))
 
         // convert back to bitmap for displaying
         val resultBitmap = Bitmap.createBitmap(
-            400, 400,
+            size2, size2,
             Bitmap.Config.ARGB_8888
         )
         output.convertTo(output, CvType.CV_8UC1)

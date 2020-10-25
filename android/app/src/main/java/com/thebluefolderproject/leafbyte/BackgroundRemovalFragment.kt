@@ -54,7 +54,9 @@ class BackgroundRemovalFragment : Fragment() {
         }
 
         val uri = model!!.uri!!
-        val bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
+        var bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
+        // TODO: see if scaled decoding is good enough, noting that it's only powers of two
+        bitmap = Bitmap.createScaledBitmap(bitmap!!, 1200, 1200, true)
         val imageView = view.findViewById<ImageView>(R.id.imageView)
         val histogramView = view.findViewById<ImageView>(R.id.histogram)
         view.findViewById<Button>(R.id.backgroundRemovalNext).setOnClickListener {
