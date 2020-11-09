@@ -58,10 +58,9 @@
         android:layout_height="172dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:srcCompat="@drawable/galleryicon" />
+        app:srcCompat="@drawable/example_leaf" />
 
     <TextView
         android:id="@+id/textView13"
