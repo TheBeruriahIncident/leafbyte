@@ -1,7 +1,8 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.activity
 
 import android.app.Activity
 import androidx.preference.PreferenceManager
+import com.thebluefolderproject.leafbyte.R
 
 class Preferences(val activity: Activity) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -44,12 +45,14 @@ class Preferences(val activity: Activity) {
 
     val saveLocationDefault = SaveLocation.fromKey(
         activity.getString(R.string.preferences_save_location_default_array_key),
-        activity)
+        activity
+    )
     val datasetNameDefault = activity.getString(R.string.preferences_dataset_name_default)
     val scaleLengthDefault = activity.getString(R.string.preferences_scale_length_default).toFloat()
     val scaleLengthUnitsDefault = ScaleLengthUnits.fromKey(
         activity.getString(R.string.preferences_scale_length_units_default_array_key),
-        activity)
+        activity
+    )
     val nextSampleNumberDefault = activity.resources.getInteger(R.integer.preference_next_sample_number_default)
     val scanBarcodesDefault = activity.resources.getBoolean(R.bool.preference_scan_barcodes_default)
     val saveGpsLocationDefault = activity.resources.getBoolean(R.bool.preference_save_gps_location_default)

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
+import com.thebluefolderproject.leafbyte.activity.LeafByteActivity
+import com.thebluefolderproject.leafbyte.activity.Preferences
 
 import org.junit.Test
 import org.junit.runner.RunWith

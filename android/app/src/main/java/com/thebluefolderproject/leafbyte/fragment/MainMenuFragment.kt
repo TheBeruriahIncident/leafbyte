@@ -1,4 +1,4 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -30,6 +30,8 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.ValueRange
+import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.utils.log
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

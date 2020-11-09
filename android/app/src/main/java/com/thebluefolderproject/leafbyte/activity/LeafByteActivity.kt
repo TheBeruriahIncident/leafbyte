@@ -1,7 +1,6 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.activity
 
 import android.content.ContentResolver
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -10,8 +9,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
+import com.thebluefolderproject.leafbyte.utils.Point
+import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.fragment.*
 import org.opencv.android.OpenCVLoader
-
 
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
@@ -61,7 +62,9 @@ class LeafByteActivity : AppCompatActivity(),
     }
 
     override fun doneResults() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment, null, NavOptions.Builder().setPopUpTo(R.id.mainMenuFragment, false).build())
+        findNavController(R.id.nav_host_fragment).navigate(
+            R.id.backgroundRemovalFragment, null, NavOptions.Builder().setPopUpTo(
+                R.id.mainMenuFragment, false).build())
     }
 
     override fun doneTutorial() {

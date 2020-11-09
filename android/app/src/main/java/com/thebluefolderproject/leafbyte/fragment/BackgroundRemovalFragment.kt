@@ -1,4 +1,4 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.fragment
 
 import androidx.appcompat.app.AlertDialog
 import android.content.ContentResolver
@@ -14,6 +14,8 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc

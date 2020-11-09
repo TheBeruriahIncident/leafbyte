@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+    <com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory
         android:title="@string/preferences_save_locations_category">
 
         <ListPreference
@@ -19,12 +19,12 @@
             android:defaultValue="@string/preferences_save_location_default_array_key"
             android:entries="@array/preferences_save_location_array_names"
             android:entryValues="@array/preferences_save_location_array_keys" />
-    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
+    </com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+    <com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory
         android:title="@string/preferences_dataset_name_category">
 
-        <com.thebluefolderproject.leafbyte.TrimmingEditTextPreference
+        <com.thebluefolderproject.leafbyte.view.TrimmingEditTextPreference
             android:key="@string/preferences_dataset_name_key"
             android:title="@string/preferences_dataset_name_title"
 
@@ -32,9 +32,9 @@
         <Preference
             android:key="@string/preferences_use_previous_dataset_key"
             android:title="@string/preferences_use_previous_dataset_title" />
-    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
+    </com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+    <com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory
         android:title="@string/preferences_scale_length_category" >
 
         <EditTextPreference
@@ -51,9 +51,9 @@
             android:defaultValue="@string/preferences_scale_length_units_default_array_key"
             android:entries="@array/preferences_scale_length_units_array_names"
             android:entryValues="@array/preferences_scale_length_units_array_keys" />
-    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
+    </com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+    <com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory
         android:title="@string/preferences_general_category">
 
         <EditTextPreference
@@ -85,9 +85,9 @@
         <Preference
             android:key="@string/preference_sign_out_of_google_key"
             android:title="@string/preference_sign_out_of_google_title" />
-    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
+    </com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory>
 
-    <com.thebluefolderproject.leafbyte.ColoredPreferenceCategory
+    <com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory
         android:title="@string/preferences_about_category">
 
         <Preference
@@ -110,6 +110,6 @@
             android:title="@string/preference_version_title"
             android:enabled="false"
             app:enabled="false" />
-    </com.thebluefolderproject.leafbyte.ColoredPreferenceCategory>
+    </com.thebluefolderproject.leafbyte.view.ColoredPreferenceCategory>
 
 </PreferenceScreen>

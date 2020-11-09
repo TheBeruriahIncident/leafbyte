@@ -7,6 +7,7 @@ package com.thebluefolderproject.leafbyte
 //  Created by Adam Campbell on 1/5/18.
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
+import com.thebluefolderproject.leafbyte.utils.UnionFind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test

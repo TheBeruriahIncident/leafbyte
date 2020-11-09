@@ -1,4 +1,4 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +11,9 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.thebluefolderproject.leafbyte.BuildConfig
+import com.thebluefolderproject.leafbyte.activity.Preferences
+import com.thebluefolderproject.leafbyte.R
 
 /**
  * settings vs preferences

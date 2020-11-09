@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.thebluefolderproject.leafbyte.MainMenuFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.MainMenuFragment"
         android:label="fragment_main_menu"
         tools:layout="@layout/fragment_main_menu" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/backgroundRemovalFragment"
-        android:name="com.thebluefolderproject.leafbyte.BackgroundRemovalFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalFragment"
         android:label="fragment_background_removal"
         tools:layout="@layout/fragment_background_removal" >
         <action
@@ -31,12 +31,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.thebluefolderproject.leafbyte.SettingsFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/tutorialFragment"
-        android:name="com.thebluefolderproject.leafbyte.TutorialFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.TutorialFragment"
         android:label="fragment_tutorial"
         tools:layout="@layout/fragment_tutorial" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/scaleIdentificationFragment"
-        android:name="com.thebluefolderproject.leafbyte.ScaleIdentificationFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationFragment"
         android:label="fragment_scale_identification"
         tools:layout="@layout/fragment_scale_identification" >
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"
-        android:name="com.thebluefolderproject.leafbyte.ResultsFragment"
+        android:name="com.thebluefolderproject.leafbyte.fragment.ResultsFragment"
         android:label="fragment_results"
         tools:layout="@layout/fragment_results" >
         <action

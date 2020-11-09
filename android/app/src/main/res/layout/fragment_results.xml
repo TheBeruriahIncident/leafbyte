@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResultsFragment">
+    tools:context=".fragment.ResultsFragment">
 
     <Button
         android:id="@+id/button6"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView12" />
 
 
-    <com.thebluefolderproject.leafbyte.ZoomView
+    <com.thebluefolderproject.leafbyte.view.ZoomView
         android:id="@+id/zoomView"
         android:layout_width="411dp"
         android:layout_height="592dp"
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.thebluefolderproject.leafbyte.ZoomView>
+    </com.thebluefolderproject.leafbyte.view.ZoomView>
 
     <Button
         android:id="@+id/resultsNext"

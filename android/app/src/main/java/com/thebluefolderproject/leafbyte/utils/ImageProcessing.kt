@@ -1,4 +1,4 @@
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.utils
 
 data class Size(
     var standardPart: Int = 0,
@@ -187,7 +187,7 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
         equivalenceClasses.classToElements.remove(outsideOfImageClass)
     }
     // Update the labels of the points to identify as labels are consolidated.
-    var labelsOfPointsToIdentify = mutableMapOf<Point , Int>()
+    var labelsOfPointsToIdentify = mutableMapOf<Point, Int>()
     // "Normalize" by combining equivalent labels.
     for (equivalenceClassElements in equivalenceClasses.classToElements.values) {
         // Because we take the max, the background class will use -1.

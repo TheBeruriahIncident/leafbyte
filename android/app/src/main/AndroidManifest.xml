@@ -15,7 +15,7 @@
             android:roundIcon="@mipmap/launchericon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".LeafByteActivity">
+        <activity android:name=".activity.LeafByteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
