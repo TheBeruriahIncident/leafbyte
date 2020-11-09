@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,24 +14,25 @@ import android.widget.FrameLayout;
  * Adapted from https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
  */
 public class ZoomView extends FrameLayout {
+    private static final float MIN_ZOOM = 1.0f;
+    private static final float DOUBLE_TAP_ZOOM = 4.0f;
+    private static final float MAX_ZOOM = 50.0f;
 
     // zooming
-    float zoom = 1.0f;
-    float maxZoom = 50.0f;
-    float smoothZoom = 1.0f;
-    float zoomX, zoomY;
-    float smoothZoomX, smoothZoomY;
-    private boolean scrolling; // NOPMD by karooolek on 29.06.11 11:45
+    float currentZoom = MIN_ZOOM;
+    float targetZoom = MIN_ZOOM;
+    float currentXOffset = 0, currentYOffset = 0;
+    float targetXOffset = 0, targetYOffset = 0;
+    private boolean scrolling;
 
     // touching variables
     private long lastTapTime;
-    private float touchStartX, touchStartY;
-    private float touchLastX, touchLastY;
+    private float lastTouchX, lastTouchY;
     private float startd;
     private boolean pinching;
     private float lastd;
-    private float lastdx1, lastdy1;
-    private float lastdx2, lastdy2;
+    private float lastTouchX1, lastTouchY1;
+    private float lastTouchX2, lastTouchY2;
 
     // drawing
     private final Matrix matrix = new Matrix();
@@ -46,32 +46,25 @@ public class ZoomView extends FrameLayout {
         super(context, attrs);
     }
 
-    public void zoomTo(final float zoom, final float x, final float y) {
-        this.zoom = Math.min(zoom, maxZoom);
-        zoomX = x;
-        zoomY = y;
-        smoothZoomTo(this.zoom, x, y);
-    }
-
-    public void smoothZoomTo(final float zoom, final float x, final float y) {
-        smoothZoom = clamp(1.0f, zoom, maxZoom);
-        smoothZoomX = x;
-        smoothZoomY = y;
+    private void smoothZoomTo(float requestedZoom, float x, float y) {
+        targetZoom = clamp(MIN_ZOOM, requestedZoom, MAX_ZOOM);
+        targetXOffset = x;
+        targetYOffset = y;
     }
 
     @Override
-    public boolean dispatchTouchEvent(final MotionEvent ev) {
+    public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
         // single touch
-        if (ev.getPointerCount() == 1) {
-            processSingleTouchEvent(ev);
+        if (motionEvent.getPointerCount() == 1) {
+            processSingleTouchEvent(motionEvent);
         }
 
         // // double touch
-        if (ev.getPointerCount() == 2) {
-            processDoubleTouchEvent(ev);
+        if (motionEvent.getPointerCount() == 2) {
+            processDoubleTouchEvent(motionEvent);
         }
 
-        super.dispatchTouchEvent(ev);
+        super.dispatchTouchEvent(motionEvent);
 
         // redraw
         getRootView().invalidate();
@@ -80,33 +73,31 @@ public class ZoomView extends FrameLayout {
         return true;
     }
 
-    private void processSingleTouchEvent(final MotionEvent ev) {
-        final float x = ev.getX();
-        final float y = ev.getY();
-        float dx = x - touchLastX;
-        float dy = y - touchLastY;
-        final float l = (float) Math.hypot(dx, dy);
-        touchLastX = x;
-        touchLastY = y;
+    private void processSingleTouchEvent(MotionEvent motionEvent) {
+        final float touchX = motionEvent.getX();
+        final float touchY = motionEvent.getY();
+        float touchDx = touchX - lastTouchX;
+        float touchDy = touchY - lastTouchY;
+        final float touchDistance = (float) Math.hypot(touchDx, touchDy);
+        lastTouchX = touchX;
+        lastTouchY = touchY;
 
-        switch (ev.getAction()) {
+        switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchStartX = x;
-                touchStartY = y;
-                touchLastX = x;
-                touchLastY = y;
+                lastTouchX = touchX;
+                lastTouchY = touchY;
                 scrolling = false;
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if (scrolling || (smoothZoom > 1.0f && l > 30.0f)) {
+                if (scrolling || (targetZoom > 1.0f && touchDistance > 30.0f)) {
                     if (!scrolling) {
                         scrolling = true;
-                        ev.setAction(MotionEvent.ACTION_CANCEL);
-                        super.dispatchTouchEvent(ev);
+                        motionEvent.setAction(MotionEvent.ACTION_CANCEL);
+                        super.dispatchTouchEvent(motionEvent);
                     }
-                    smoothZoomX -= dx / zoom;
-                    smoothZoomY -= dy / zoom;
+                    targetXOffset -= touchDx / currentZoom;
+                    targetYOffset -= touchDy / currentZoom;
                     return;
                 }
                 break;
@@ -115,17 +106,17 @@ public class ZoomView extends FrameLayout {
             case MotionEvent.ACTION_UP:
 
                 // tap
-                if (l < 30.0f) {
+                if (touchDistance < 30.0f) {
                     // check double tap
                     if (System.currentTimeMillis() - lastTapTime < 500) {
-                        if (smoothZoom == 1.0f) {
-                            smoothZoomTo(maxZoom, x, y);
+                        if (targetZoom == MIN_ZOOM) {
+                            smoothZoomTo(DOUBLE_TAP_ZOOM, touchX, touchY);
                         } else {
-                            smoothZoomTo(1.0f, getWidth() / 2.0f, getHeight() / 2.0f);
+                            smoothZoomTo(MIN_ZOOM, getWidth() / 2.0f, getHeight() / 2.0f);
                         }
                         lastTapTime = 0;
-                        ev.setAction(MotionEvent.ACTION_CANCEL);
-                        super.dispatchTouchEvent(ev);
+                        motionEvent.setAction(MotionEvent.ACTION_CANCEL);
+                        super.dispatchTouchEvent(motionEvent);
                         return;
                     }
 
@@ -139,34 +130,33 @@ public class ZoomView extends FrameLayout {
                 break;
         }
 
-        ev.setLocation(zoomX + (x - 0.5f * getWidth()) / zoom, zoomY + (y - 0.5f * getHeight()) / zoom);
+        motionEvent.setLocation(currentXOffset + (touchX - 0.5f * getWidth()) / currentZoom, currentYOffset + (touchY - 0.5f * getHeight()) / currentZoom);
 
-        ev.getX();
-        ev.getY();
+        motionEvent.getX();
+        motionEvent.getY();
     }
 
-    private void processDoubleTouchEvent(final MotionEvent ev) {
-        final float x1 = ev.getX(0);
-        final float dx1 = x1 - lastdx1;
-        lastdx1 = x1;
-        final float y1 = ev.getY(0);
-        final float dy1 = y1 - lastdy1;
-        lastdy1 = y1;
-        final float x2 = ev.getX(1);
-        final float dx2 = x2 - lastdx2;
-        lastdx2 = x2;
-        final float y2 = ev.getY(1);
-        final float dy2 = y2 - lastdy2;
-        lastdy2 = y2;
+    private void processDoubleTouchEvent(final MotionEvent motionEvent) {
+        final float touchX1 = motionEvent.getX(0);
+        final float touchDx1 = touchX1 - lastTouchX1;
+        lastTouchX1 = touchX1;
+        final float touchY1 = motionEvent.getY(0);
+        final float touchDy1 = touchY1 - lastTouchY1;
+        lastTouchY1 = touchY1;
+        final float touchX2 = motionEvent.getX(1);
+        final float touchDx2 = touchX2 - lastTouchX2;
+        lastTouchX2 = touchX2;
+        final float touchY2 = motionEvent.getY(1);
+        final float touchDy2 = touchY2 - lastTouchY2;
+        lastTouchY2 = touchY2;
 
         // pointers distance
-        final float d = (float) Math.hypot(x2 - x1, y2 - y1);
+        final float d = (float) Math.hypot(touchX2 - touchX1, touchY2 - touchY1);
         final float dd = d - lastd;
         lastd = d;
         final float ld = Math.abs(d - startd);
 
-        Math.atan2(y2 - y1, x2 - x1);
-        switch (ev.getAction()) {
+        switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startd = d;
                 pinching = false;
@@ -175,9 +165,9 @@ public class ZoomView extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 if (pinching || ld > 30.0f) {
                     pinching = true;
-                    final float dxk = 0.5f * (dx1 + dx2);
-                    final float dyk = 0.5f * (dy1 + dy2);
-                    smoothZoomTo(Math.max(1.0f, zoom * d / (d - dd)), zoomX - dxk / zoom, zoomY - dyk / zoom);
+                    final float dxk = 0.5f * (touchDx1 + touchDx2);
+                    final float dyk = 0.5f * (touchDy1 + touchDy2);
+                    smoothZoomTo(Math.max(1.0f, currentZoom * d / (d - dd)), currentXOffset - dxk / currentZoom, currentYOffset - dyk / currentZoom);
                 }
 
                 break;
@@ -188,7 +178,7 @@ public class ZoomView extends FrameLayout {
                 break;
         }
 
-        ev.setAction(MotionEvent.ACTION_CANCEL);
+        motionEvent.setAction(MotionEvent.ACTION_CANCEL);
     }
 
     private float clamp(final float min, final float value, final float max) {
@@ -205,13 +195,14 @@ public class ZoomView extends FrameLayout {
 
     @Override
     protected void dispatchDraw(final Canvas canvas) {
+        ConstantsKt.log("x "+ currentXOffset + " y "+ currentYOffset);
         // do zoom
-        zoom = lerp(bias(zoom, smoothZoom, 0.05f), smoothZoom, 0.2f);
-        smoothZoomX = clamp(0.5f * getWidth() / smoothZoom, smoothZoomX, getWidth() - 0.5f * getWidth() / smoothZoom);
-        smoothZoomY = clamp(0.5f * getHeight() / smoothZoom, smoothZoomY, getHeight() - 0.5f * getHeight() / smoothZoom);
+        currentZoom = lerp(bias(currentZoom, targetZoom, 0.05f), targetZoom, 0.2f);
+        targetXOffset = clamp(0.5f * getWidth() / targetZoom, targetXOffset, getWidth() - 0.5f * getWidth() / targetZoom);
+        targetYOffset = clamp(0.5f * getHeight() / targetZoom, targetYOffset, getHeight() - 0.5f * getHeight() / targetZoom);
 
-        zoomX = lerp(bias(zoomX, smoothZoomX, 0.1f), smoothZoomX, 0.35f);
-        zoomY = lerp(bias(zoomY, smoothZoomY, 0.1f), smoothZoomY, 0.35f);
+        currentXOffset = lerp(bias(currentXOffset, targetXOffset, 0.1f), targetXOffset, 0.35f);
+        currentYOffset = lerp(bias(currentYOffset, targetYOffset, 0.1f), targetYOffset, 0.35f);
 
         // nothing to draw
         if (getChildCount() == 0) {
@@ -220,9 +211,9 @@ public class ZoomView extends FrameLayout {
 
         // prepare matrix
         matrix.setTranslate(0.5f * getWidth(), 0.5f * getHeight());
-        matrix.preScale(zoom, zoom);
-        matrix.preTranslate(-clamp(0.5f * getWidth() / zoom, zoomX, getWidth() - 0.5f * getWidth() / zoom),
-                -clamp(0.5f * getHeight() / zoom, zoomY, getHeight() - 0.5f * getHeight() / zoom));
+        matrix.preScale(currentZoom, currentZoom);
+        matrix.preTranslate(-clamp(0.5f * getWidth() / currentZoom, currentXOffset, getWidth() - 0.5f * getWidth() / currentZoom),
+                -clamp(0.5f * getHeight() / currentZoom, currentYOffset, getHeight() - 0.5f * getHeight() / currentZoom));
 
         // get view
         final View childView = getChildAt(0);

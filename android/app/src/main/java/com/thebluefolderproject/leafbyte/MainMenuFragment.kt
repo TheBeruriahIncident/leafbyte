@@ -1,11 +1,10 @@
 package com.thebluefolderproject.leafbyte
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -15,15 +14,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Scope
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
+import com.google.api.services.sheets.v4.Sheets
+import com.google.api.services.sheets.v4.model.ValueRange
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class MainMenuFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
+
+    private val REQUEST_CODE_SIGN_IN = 20
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +54,8 @@ class MainMenuFragment : Fragment() {
         view.findViewById<Button>(R.id.start_tutorial).setOnClickListener { listener!!.startTutorial() }
         view.findViewById<Button>(R.id.settings).setOnClickListener { listener!!.openSettings() }
         view.findViewById<TextView>(R.id.savingSummary).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
+
+        //testGoogleApi()
 
         return view
     }
@@ -60,27 +78,35 @@ class MainMenuFragment : Fragment() {
         startActivity(
             MainMenuUtils.IMAGE_PICKER_INTENT,
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE,
-            "choose an image")
+            "choose an image"
+        )
     }
 
     var uri: Uri? = null
 
     private fun takeAPhoto() {
         if (!activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            showAlert("No camera found", "Could not take a photo: no camera was found. Try selecting an existing image instead.")
+            showAlert(
+                "No camera found",
+                "Could not take a photo: no camera was found. Try selecting an existing image instead."
+            )
             return
         }
 
         uri = MainMenuUtils.createImageUri(activity!!)
         startActivity(
-                MainMenuUtils.createCameraIntent(uri!!),
-                MainMenuUtils.CAMERA_REQUEST_CODE,
-                "take a photo")
+            MainMenuUtils.createCameraIntent(uri!!),
+            MainMenuUtils.CAMERA_REQUEST_CODE,
+            "take a photo"
+        )
     }
 
     fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
         if (intent.resolveActivity(activity!!.packageManager) == null) {
-            showAlert("Could not $actionDescription", "Could not $actionDescription: no app was found supporting that action.")
+            showAlert(
+                "Could not $actionDescription",
+                "Could not $actionDescription: no app was found supporting that action."
+            )
             return
         }
 
@@ -96,6 +122,7 @@ class MainMenuFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        log("onActivityResult " + resultCode)
         when(resultCode) {
             AppCompatActivity.RESULT_OK -> {
                 if (data == null) {
@@ -104,9 +131,87 @@ class MainMenuFragment : Fragment() {
 
                 processActivityResultData(requestCode, data)
             }
-            AppCompatActivity.RESULT_CANCELED -> {}
+            AppCompatActivity.RESULT_CANCELED -> {
+            }
             else -> throw IllegalArgumentException("Result code: $resultCode")
         }
+    }
+
+    fun testGoogleApi() {
+        val signInOptions: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+            .build()
+        val client: GoogleSignInClient = GoogleSignIn.getClient(requireContext(), signInOptions)
+
+
+        val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
+            override protected fun doInBackground(vararg params: Void): Void? {
+
+                startActivityForResult(
+                    client.getSignInIntent(),
+                    REQUEST_CODE_SIGN_IN
+                )
+                return null;
+            }
+        }
+        task.execute()
+    }
+
+    private fun handleSignInResult(result: Intent) {
+        GoogleSignIn.getSignedInAccountFromIntent(result)
+            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
+                log("Signed in as " + googleAccount.email)
+
+                // Use the authenticated account to sign in to the Drive service.
+                val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
+                    requireContext(), Collections.singleton(DriveScopes.DRIVE_FILE)
+                )
+                credential.setSelectedAccount(googleAccount.account)
+                val drive: Drive = Drive.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    GsonFactory(),
+                    credential
+                ).setApplicationName("LeafByte")
+                    .build()
+                val sheets: Sheets = Sheets.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    GsonFactory(),
+                    credential
+                )
+                    .setApplicationName("LeafByte")
+                    .build()
+                log("created clients")
+
+                val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
+                    override protected fun doInBackground(vararg params: Void): Void? {
+
+                        val file = drive.files().create(
+                            com.google.api.services.drive.model.File()
+                                //.setParents(Collections.singletonList("root"))
+                                .setMimeType("application/vnd.google-apps.spreadsheet")
+                                .setName("Kahlo // created from android")
+                        ).execute()
+                            ?: throw IOException("Null result when requesting file creation.")
+                        log("created file " + file.id)
+
+                        sheets.spreadsheets().values().append(
+                            file.id, "Sheet1", ValueRange().setValues(
+                                listOf(listOf("dog"))
+                            )
+                        ).setValueInputOption("USER_ENTERED").setInsertDataOption("INSERT_ROWS").execute()
+                        log("appended")
+                        return null;
+                    }
+                }
+                task.execute()
+            }
+            .addOnFailureListener { exception: Exception? ->
+                log(
+                    "Unable to sign in." +
+                            exception
+                )
+            }
     }
 
     private fun processActivityResultData(requestCode: Int, data: Intent) {
@@ -119,6 +224,9 @@ class MainMenuFragment : Fragment() {
             MainMenuUtils.CAMERA_REQUEST_CODE -> {
                 // no meaningful response??
                 listener!!.onImageSelection(uri!!)
+            }
+            REQUEST_CODE_SIGN_IN -> {
+                handleSignInResult(data)
             }
             else -> throw IllegalArgumentException("Request code: $requestCode")
         }
@@ -153,7 +261,11 @@ object MainMenuUtils {
 
     private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
     private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
-    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(PRE_API_19_ACCEPTED_MIME_TYPE, "image/png", "image/bmp")
+    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(
+        PRE_API_19_ACCEPTED_MIME_TYPE,
+        "image/png",
+        "image/bmp"
+    )
 
     fun intentToUri(data: Intent) : Uri {
         if (data.data == null) {
@@ -173,7 +285,8 @@ object MainMenuUtils {
         return FileProvider.getUriForFile(
             context,
             "com.thebluefolderproject.leafbyte.fileprovider",
-            imageFile)
+            imageFile
+        )
     }
 
     private fun createImageFile(externalFilesDir: File): File {

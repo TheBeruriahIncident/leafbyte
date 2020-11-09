@@ -60,9 +60,9 @@ class ScaleIdentificationFragment : Fragment() {
         //view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
 
-        debug("Trying to find centers: " + bitmap.width + " " + bitmap.height)
+        log("Trying to find centers: " + bitmap.width + " " + bitmap.height)
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
-        debug("done labeling")
+        log("done labeling")
 
         val dotLabels = info.labelToSize.entries
             .filter { entry -> entry.key > 0 }
@@ -81,7 +81,7 @@ class ScaleIdentificationFragment : Fragment() {
         dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 8.0f, paint) }
         view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bmOverlay)
 
-        debug("Found centers: " + dotCenters)
+        log("Found centers: " + dotCenters)
         this.dotCenters = dotCenters
         return view
     }
