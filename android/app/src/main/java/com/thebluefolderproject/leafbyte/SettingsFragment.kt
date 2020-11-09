@@ -48,7 +48,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences_layout, rootKey)
+        setPreferencesFromResource(R.layout.preferences_layout, rootKey)
 
         val preferences = Preferences(activity!!)
         setup(preferences)
