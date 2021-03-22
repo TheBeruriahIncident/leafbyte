@@ -2,7 +2,7 @@
 //  Utils.swift
 //  LeafByte
 //
-//  Created by Adam Campbell on 1/23/18.
+//  Created by Abigail Getman-Pickering on 1/23/18.
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  TutorialViewController.swift
 //  LeafByte
 //
-//  Created by Adam Campbell on 2/7/18.
+//  Created by Abigail Getman-Pickering on 2/7/18.
 //  Copyright © 2018 The Blue Folder Project. All rights reserved.
 //
 
