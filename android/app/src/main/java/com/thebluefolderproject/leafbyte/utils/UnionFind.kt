@@ -1,13 +1,9 @@
+/**
+ * Copyright © 2020 Zoe Getman-Pickering. All rights reserved.
+ */
+
 package com.thebluefolderproject.leafbyte.utils
 
-
-//
-//  UnionFind.swift
-//  LeafByte
-//
-//  Created by Adam Campbell on 1/5/18.
-//  Copyright © 2018 The Blue Folder Project. All rights reserved.
-//
 // A union-find allows us to keep track of a partition of a set of elements and combine equivalence classes ( https://en.wikipedia.org/wiki/Disjoint-set_data_structure ).
 // This implementation is adapted from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift .
 // This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .

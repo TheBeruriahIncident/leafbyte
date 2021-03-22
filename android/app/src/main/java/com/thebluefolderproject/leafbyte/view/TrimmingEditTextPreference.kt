@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2020 Zoe Getman-Pickering. All rights reserved.
+ */
+
 package com.thebluefolderproject.leafbyte.view
 
 import android.content.Context
