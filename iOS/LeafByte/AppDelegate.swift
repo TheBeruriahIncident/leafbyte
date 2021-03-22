@@ -3,7 +3,7 @@
 //  LeafByte
 //
 //  Created by Abigail Getman-Pickering on 12/20/17.
-//  Copyright © 2017 The Blue Folder Project. All rights reserved.
+//  Copyright © 2017 Zoe Getman-Pickering. All rights reserved.
 //
 
 import UIKit
