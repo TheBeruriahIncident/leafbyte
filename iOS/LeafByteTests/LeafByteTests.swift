@@ -74,20 +74,20 @@ final class LeafByteTests: XCTestCase {
         settings.datasetNameToUnitToUserIdToGoogleSpreadsheetId =
                 ["Le Morte a'Arthur":
                     ["cm":
-                        ["adamc": "a"]],
+                        ["abigailgp": "a"]],
                  "The Tale of Genji":
                     ["cm":
                         ["zoegp": "b",
-                         "adamc": "c"],
+                         "abigailgp": "c"],
                     "in":
-                        ["adamc": "d"]]]
+                        ["abigailgp": "d"]]]
         settings.imageSaveLocation = .googleDrive
         settings.dataSaveLocation = .googleDrive
         settings.saveGpsData = true
         settings.scaleMarkLength = 32
         settings.useBarcode = true
         settings.useBlackBackground = true
-        settings.userIdToTopLevelGoogleFolderId = ["adamc": "d", "zoegp": "e"]
+        settings.userIdToTopLevelGoogleFolderId = ["abigailgp": "d", "zoegp": "e"]
         
         let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
         settings.serialize(at: url)

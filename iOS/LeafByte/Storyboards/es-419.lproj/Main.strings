@@ -131,8 +131,8 @@
 /* Class = "UIViewController"; title = "Scale Identification View Controller"; ObjectID = "e5s-F7-9rn"; */
 "e5s-F7-9rn.title" = "Scale Identification View Controller";
 
-/* Class = "UILabel"; text = "Zoe Getman-Pickering"; ObjectID = "gE2-ly-MV0"; */
-"gE2-ly-MV0.text" = "Zoe Getman-Pickering";
+/* Class = "UILabel"; text = "Getman-Pickering"; ObjectID = "gE2-ly-MV0"; */
+"gE2-ly-MV0.text" = "Getman-Pickering";
 
 /* Class = "UILabel"; text = "Take a Photo"; ObjectID = "hMs-gX-Mwe"; */
 "hMs-gX-Mwe.text" = "Tomar una foto";
@@ -167,8 +167,8 @@
 /* Class = "UIViewController"; title = "Area Calculation View Controller"; ObjectID = "ueh-Tb-xxm"; */
 "ueh-Tb-xxm.title" = "Area Calculation View Controller";
 
-/* Class = "UILabel"; text = "Adam Campbell"; ObjectID = "uh0-1K-0gr"; */
-"uh0-1K-0gr.text" = "Adam Campbell";
+/* Class = "UILabel"; text = "Zoe & Abigail"; ObjectID = "uh0-1K-0gr"; */
+"uh0-1K-0gr.text" = "Zoe & Abigail";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "x28-4n-nZt"; */
 "x28-4n-nZt.normalTitle" = "Siguente";

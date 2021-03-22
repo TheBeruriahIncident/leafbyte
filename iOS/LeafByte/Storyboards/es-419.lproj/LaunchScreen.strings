@@ -1,9 +1,9 @@
 
-/* Class = "UILabel"; text = "Zoe Getman-Pickering"; ObjectID = "F7X-Lh-oxd"; */
-"F7X-Lh-oxd.text" = "Zoe Getman-Pickering";
+/* Class = "UILabel"; text = "Getman-Pickering"; ObjectID = "F7X-Lh-oxd"; */
+"F7X-Lh-oxd.text" = "Getman-Pickering";
 
-/* Class = "UILabel"; text = "Adam Campbell"; ObjectID = "zA9-DI-sN7"; */
-"zA9-DI-sN7.text" = "Adam Campbell";
+/* Class = "UILabel"; text = "Zoe & Abigail"; ObjectID = "zA9-DI-sN7"; */
+"zA9-DI-sN7.text" = "Zoe & Abigail";
 
 /* Class = "UILabel"; text = "LeafByte"; ObjectID = "zgP-Zn-tNz"; */
 "zgP-Zn-tNz.text" = "LeafByte";
