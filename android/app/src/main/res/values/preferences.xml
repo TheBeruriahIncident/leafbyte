@@ -77,7 +77,7 @@
     <string name="preference_website_description">With guides and FAQs</string>
     <string name="preference_team_key" translatable="false">team</string>
     <string name="preference_team_title">The Team</string>
-    <string name="preference_team_description">LeafByte was made by Zoe & Abigail Getman-Pickering.\n\nNick Aflitto, Ari Grele, George Stack, Todd Ugine, Julie Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.</string>
+    <string name="preference_team_description">LeafByte was made by Abigail and Zoe Getman-Pickering.\n\nNick Aflitto, Ari Grele, George Stack, Todd Ugine, Julie Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.</string>
     <string name="preference_citation_key" translatable="false">citation</string>
     <string name="preference_citation_title">Cite:</string>
     <string name="preference_citation_description" translatable="false" tools:ignore="TypographyDashes">Getman‐Pickering, Z. L., Campbell, A., Aflitto, N., Grele, A., Davis, J. K., &amp; Ugine, T. A. (2020). LeafByte: A mobile application that measures leaf area and herbivory quickly and accurately. Methods in Ecology and Evolution, 2041–210X.13340. doi:10.1111/2041-210X.13340</string>
