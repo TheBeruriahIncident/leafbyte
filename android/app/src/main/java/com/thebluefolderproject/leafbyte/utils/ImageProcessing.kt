@@ -195,7 +195,7 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
     // "Normalize" by combining equivalent labels.
     for (equivalenceClassElements in equivalenceClasses.classToElements.values) {
         // Because we take the max, the background class will use -1.
-        val representative = equivalenceClassElements.max()!!
+        val representative = equivalenceClassElements.maxOrNull()!!
         // Make the member point be the top-most member point in the equivalence.
         // That way the leaf marker is drawn in a place less likely to overlap the leaf.
         val topMostMemberPoint = equivalenceClassElements.map({ labelToMemberPoint[it]!! }).sortedBy { it.y }[0]

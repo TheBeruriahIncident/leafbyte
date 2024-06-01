@@ -82,7 +82,7 @@ class ResultsFragment : Fragment() {
         val pixels = info.labelToSize.entries
             .filter { entry -> entry.key > 0 }
             .map { entry -> entry.value }
-            .maxBy { it.total() }
+            .maxByOrNull { it.total() }
         log("Number of pixels: " + pixels)
 
         return view

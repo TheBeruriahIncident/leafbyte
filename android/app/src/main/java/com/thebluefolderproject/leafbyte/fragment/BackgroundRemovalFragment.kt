@@ -269,12 +269,12 @@ class BackgroundRemovalFragment : Fragment() {
 
         Imgproc.calcHist(Arrays.asList(grayMat), MatOfInt(0), Mat(), histogram, MatOfInt(256),   MatOfFloat(0f, 256f))
         val histogramList = (0..255).asIterable().map { bin -> histogram.get(bin, 0)[0] }
-        val maxValue = (histogramList.max()!! + 1).toInt()
+        val maxValue = (histogramList.maxOrNull()!! + 1).toInt()
 
         // black
         val color = Scalar (0.0, 0.0, 0.0, 255.0)
         val graphHeight = 100
-        val factor = graphHeight.toDouble() / maxValue
+        val factor = graphHeight.toDouble() / maxValue.toDouble()
         // create transparent background
         val graphMat = Mat(graphHeight, 256, CvType.CV_8UC4, Scalar(0.0, 0.0, 0.0, 0.0))
 
