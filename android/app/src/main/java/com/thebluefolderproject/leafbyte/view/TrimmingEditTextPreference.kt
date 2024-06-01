@@ -10,21 +10,21 @@ import androidx.preference.EditTextPreference
 
 class TrimmingEditTextPreference : EditTextPreference {
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyle: Int
     ) : super(context, attrs, defStyle) {
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(
+    constructor(context: Context, attrs: AttributeSet?) : super(
         context,
         attrs
     ) {
     }
 
-    constructor(context: Context?) : super(context) {}
+    constructor(context: Context) : super(context) {}
 
-    override fun setText(text: String) {
+    override fun setText(text: String?) {
         super.setText(text?.trim())
     }
 }

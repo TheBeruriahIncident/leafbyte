@@ -27,8 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
-import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
@@ -91,7 +91,7 @@ class MainMenuFragment : Fragment() {
     var uri: Uri? = null
 
     private fun takeAPhoto() {
-        if (!activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+        if (!requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             showAlert(
                 "No camera found",
                 "Could not take a photo: no camera was found. Try selecting an existing image instead."
@@ -99,7 +99,7 @@ class MainMenuFragment : Fragment() {
             return
         }
 
-        uri = MainMenuUtils.createImageUri(activity!!)
+        uri = MainMenuUtils.createImageUri(requireActivity())
         startActivity(
             MainMenuUtils.createCameraIntent(uri!!),
             MainMenuUtils.CAMERA_REQUEST_CODE,
@@ -108,7 +108,7 @@ class MainMenuFragment : Fragment() {
     }
 
     fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
-        if (intent.resolveActivity(activity!!.packageManager) == null) {
+        if (intent.resolveActivity(requireActivity().packageManager) == null) {
             showAlert(
                 "Could not $actionDescription",
                 "Could not $actionDescription: no app was found supporting that action."
@@ -120,7 +120,7 @@ class MainMenuFragment : Fragment() {
     }
 
     fun showAlert(title: String, message: String) {
-        AlertDialog.Builder(activity!!)
+        AlertDialog.Builder(requireActivity())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
@@ -175,13 +175,13 @@ class MainMenuFragment : Fragment() {
                 )
                 credential.setSelectedAccount(googleAccount.account)
                 val drive: Drive = Drive.Builder(
-                    AndroidHttp.newCompatibleTransport(),
+                    NetHttpTransport(),
                     GsonFactory(),
                     credential
                 ).setApplicationName("LeafByte")
                     .build()
                 val sheets: Sheets = Sheets.Builder(
-                    AndroidHttp.newCompatibleTransport(),
+                    NetHttpTransport(),
                     GsonFactory(),
                     credential
                 )
