@@ -16,11 +16,11 @@ android {
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV's build.gradle
-    compileSdkVersion 29
+    compileSdk 34
     defaultConfig {
         applicationId "com.thebluefolderproject.leafbyte"
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdk 15
+        targetSdk 29
         versionCode 1
         versionName "0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
