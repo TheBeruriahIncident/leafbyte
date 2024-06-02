@@ -121,8 +121,7 @@ class Preferences(val activity: Activity) {
     }
 
     fun scaleLength(): Float {
-        return sharedPreferences.getString(scaleLengthKey, null)?.toFloatOrNull()
-            ?: scaleLengthDefault
+        return sharedPreferences.getFloat(scaleLengthKey, scaleLengthDefault)
     }
 
     fun scaleLengthUnits(): ScaleLengthUnits {

@@ -4,164 +4,167 @@
 
 package com.thebluefolderproject.leafbyte
 
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.rule.ActivityTestRule
+import androidx.preference.PreferenceManager
 import com.thebluefolderproject.leafbyte.activity.LeafByteActivity
 import com.thebluefolderproject.leafbyte.activity.Preferences
+import com.thebluefolderproject.leafbyte.utils.log
+import de.mannodermaus.junit5.ActivityScenarioExtension
 
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
  * This class intentionally uses some literals and avoids using some constants from Preferences
  * to be sure everything is working exactly as expected.
  */
-@RunWith(AndroidJUnit4ClassRunner::class)
 class PreferencesTest {
-    @get:Rule var activityTestRule = ActivityTestRule(LeafByteActivity::class.java)
+    @JvmField
+    @RegisterExtension
+    val activityScenarioExtension = ActivityScenarioExtension.launch<LeafByteActivity>()
 
-    lateinit var activity: Activity
-    lateinit var preferences: Preferences
-    lateinit var sharedPreferences: SharedPreferences
+    private fun helper(test: (preferences: Preferences, set: (key: Int, value: Any) -> Unit) -> Unit) {
+        activityScenarioExtension.scenario.onActivity { activity ->
+            val preferences = Preferences(activity)
+            val sharedPreferences = preferences.sharedPreferences
 
-    @Before
-    fun before() {
-        activity = activityTestRule.activity
-        preferences = Preferences(activity)
-        sharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+            test(preferences) { unresolvedKey, value ->
+                val key = activity.getString(unresolvedKey)
+                val editor = sharedPreferences.edit()
 
-        // wipe any existing preferences to be simple and predictable
-        sharedPreferences.edit().clear().apply()
+                when (value) {
+                    is String -> editor.putString(key, value)
+                    is Int -> editor.putInt(key, value)
+                    is Boolean -> editor.putBoolean(key, value)
+                    is Float -> editor.putFloat(key, value)
+                    else -> throw UnsupportedOperationException()
+                }.apply()
+            }
+
+            // wipe any existing preferences to be simple and predictable
+            sharedPreferences.edit().clear().apply()
+        }
     }
 
     @Test
     fun testDefaultValues() {
-        assertEquals(Preferences.SaveLocation.NONE, preferences.dataSaveLocation())
-        assertEquals(Preferences.SaveLocation.NONE, preferences.imageSaveLocation())
-        assertEquals("Herbivory Data", preferences.datasetName())
-        assertEquals(10f, preferences.scaleLength())
-        assertEquals(Preferences.ScaleLengthUnits.CM, preferences.scaleLengthUnits())
-        assertEquals(1, preferences.nextSampleNumber())
-        assertFalse(preferences.scanBarcodes())
-        assertFalse(preferences.saveGpsLocation())
-        assertFalse(preferences.useBlackBackground())
+        helper { preferences, _ ->
+            assertEquals(Preferences.SaveLocation.NONE, preferences.dataSaveLocation())
+            assertEquals(Preferences.SaveLocation.NONE, preferences.imageSaveLocation())
+            assertEquals("Herbivory Data", preferences.datasetName())
+            assertEquals(10f, preferences.scaleLength())
+            assertEquals(Preferences.ScaleLengthUnits.CM, preferences.scaleLengthUnits())
+            assertEquals(1, preferences.nextSampleNumber())
+            assertFalse(preferences.scanBarcodes())
+            assertFalse(preferences.saveGpsLocation())
+            assertFalse(preferences.useBlackBackground())
+        }
     }
 
     @Test
     fun testDataSaveLocation() {
-        set(R.string.preferences_data_save_location_key, "google_drive")
-        assertEquals(Preferences.SaveLocation.GOOGLE_DRIVE, preferences.dataSaveLocation())
+        helper { preferences, set ->
+            set(R.string.preferences_data_save_location_key, "google_drive")
+            assertEquals(Preferences.SaveLocation.GOOGLE_DRIVE, preferences.dataSaveLocation())
 
-        set(R.string.preferences_data_save_location_key, "local")
-        assertEquals(Preferences.SaveLocation.LOCAL, preferences.dataSaveLocation())
+            set(R.string.preferences_data_save_location_key, "local")
+            assertEquals(Preferences.SaveLocation.LOCAL, preferences.dataSaveLocation())
 
-        set(R.string.preferences_data_save_location_key, "none")
-        assertEquals(Preferences.SaveLocation.NONE, preferences.dataSaveLocation())
+            set(R.string.preferences_data_save_location_key, "none")
+            assertEquals(Preferences.SaveLocation.NONE, preferences.dataSaveLocation())
+        }
     }
 
     @Test
     fun testImageSaveLocation() {
-        set(R.string.preferences_image_save_location_key, "google_drive")
-        assertEquals(Preferences.SaveLocation.GOOGLE_DRIVE, preferences.imageSaveLocation ())
+        helper { preferences, set ->
+            set(R.string.preferences_image_save_location_key, "google_drive")
+            assertEquals(Preferences.SaveLocation.GOOGLE_DRIVE, preferences.imageSaveLocation())
 
-        set(R.string.preferences_image_save_location_key, "local")
-        assertEquals(Preferences.SaveLocation.LOCAL, preferences.imageSaveLocation())
+            set(R.string.preferences_image_save_location_key, "local")
+            assertEquals(Preferences.SaveLocation.LOCAL, preferences.imageSaveLocation())
 
-        set(R.string.preferences_image_save_location_key, "none")
-        assertEquals(Preferences.SaveLocation.NONE, preferences.imageSaveLocation())
+            set(R.string.preferences_image_save_location_key, "none")
+            assertEquals(Preferences.SaveLocation.NONE, preferences.imageSaveLocation())
+        }
     }
 
     @Test
     fun testDatasetName() {
-        set(R.string.preferences_dataset_name_key, "Potato")
-        assertEquals("Potato", preferences.datasetName())
+        helper { preferences, set ->
+            set(R.string.preferences_dataset_name_key, "Potato")
+            assertEquals("Potato", preferences.datasetName())
 
-        set(R.string.preferences_dataset_name_key, "Salad")
-        assertEquals("Salad", preferences.datasetName())
+            set(R.string.preferences_dataset_name_key, "Salad")
+            assertEquals("Salad", preferences.datasetName())
+        }
     }
 
     @Test
     fun testScaleLength() {
-        set(R.string.preferences_scale_length_key, 5.3f)
-        assertEquals(5.3f, preferences.scaleLength())
+        helper { preferences, set ->
+            set(R.string.preferences_scale_length_key, 5.3f)
+            assertEquals(5.3f, preferences.scaleLength())
 
-        set(R.string.preferences_scale_length_key, 241.234f)
-        assertEquals(241.234f, preferences.scaleLength())
+            set(R.string.preferences_scale_length_key, 241.234f)
+            assertEquals(241.234f, preferences.scaleLength())
+        }
     }
 
     @Test
     fun testScaleLengthUnits() {
-        set(R.string.preferences_scale_length_units_key, "mm")
-        assertEquals(Preferences.ScaleLengthUnits.MM, preferences.scaleLengthUnits())
+        helper { preferences, set ->
+            set(R.string.preferences_scale_length_units_key, "mm")
+            assertEquals(Preferences.ScaleLengthUnits.MM, preferences.scaleLengthUnits())
 
-        set(R.string.preferences_scale_length_units_key, "ft")
-        assertEquals(Preferences.ScaleLengthUnits.FT, preferences.scaleLengthUnits())
+            set(R.string.preferences_scale_length_units_key, "ft")
+            assertEquals(Preferences.ScaleLengthUnits.FT, preferences.scaleLengthUnits())
+        }
     }
 
     @Test
     fun testNextSampleNumber() {
-        set(R.string.preference_next_sample_number_key, 12)
-        assertEquals(12, preferences.nextSampleNumber())
+        helper { preferences, set ->
+            set(R.string.preference_next_sample_number_key, 12)
+            assertEquals(12, preferences.nextSampleNumber())
 
-        set(R.string.preference_next_sample_number_key, 25)
-        assertEquals(25, preferences.nextSampleNumber())
+            set(R.string.preference_next_sample_number_key, 25)
+            assertEquals(25, preferences.nextSampleNumber())
+        }
     }
 
     @Test
     fun testScanBarcodes() {
-        set(R.string.preference_scan_barcodes_key, true)
-        assertEquals(true, preferences.scanBarcodes())
+        helper { preferences, set ->
+            set(R.string.preference_scan_barcodes_key, true)
+            assertEquals(true, preferences.scanBarcodes())
 
-        set(R.string.preference_scan_barcodes_key, false)
-        assertEquals(false, preferences.scanBarcodes())
+            set(R.string.preference_scan_barcodes_key, false)
+            assertEquals(false, preferences.scanBarcodes())
+        }
     }
 
     @Test
     fun testGpsLocation() {
-        set(R.string.preference_save_gps_location_key, true)
-        assertEquals(true, preferences.saveGpsLocation())
+        helper { preferences, set ->
+            set(R.string.preference_save_gps_location_key, true)
+            assertEquals(true, preferences.saveGpsLocation())
 
-        set(R.string.preference_save_gps_location_key, false)
-        assertEquals(false, preferences.saveGpsLocation())
+            set(R.string.preference_save_gps_location_key, false)
+            assertEquals(false, preferences.saveGpsLocation())
+        }
     }
 
     @Test
     fun testUseBlackBackground() {
-        set(R.string.preference_use_black_background_key, true)
-        assertEquals(true, preferences.useBlackBackground())
+        helper { preferences, set ->
+            set(R.string.preference_use_black_background_key, true)
+            assertEquals(true, preferences.useBlackBackground())
 
-        set(R.string.preference_use_black_background_key, false)
-        assertEquals(false, preferences.useBlackBackground())
-    }
-
-    private fun set(key: Int, value: String) {
-        sharedPreferences.edit()
-            .putString(activity.getString(key), value)
-            .apply()
-    }
-
-    private fun set(key: Int, value: Int) {
-        sharedPreferences.edit()
-            .putInt(activity.getString(key), value)
-            .apply()
-    }
-
-    private fun set(key: Int, value: Boolean) {
-        sharedPreferences.edit()
-            .putBoolean(activity.getString(key), value)
-            .apply()
-    }
-
-    private fun set(key: Int, value: Float) {
-        sharedPreferences.edit()
-            .putString(activity.getString(key), value.toString())
-            .apply()
+            set(R.string.preference_use_black_background_key, false)
+            assertEquals(false, preferences.useBlackBackground())
+        }
     }
 }

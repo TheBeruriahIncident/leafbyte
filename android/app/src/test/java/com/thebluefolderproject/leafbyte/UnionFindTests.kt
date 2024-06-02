@@ -5,11 +5,11 @@
 package com.thebluefolderproject.leafbyte
 
 import com.thebluefolderproject.leafbyte.utils.UnionFind
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Test
 
-final class DataStructureTests {
+class DataStructureTests {
 
     @Test
     fun testUnionFind() {
