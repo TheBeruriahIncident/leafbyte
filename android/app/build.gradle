@@ -18,6 +18,7 @@ android {
     // Note that these versions must be kept in sync with the versions in OpenCV's build.gradle
     compileSdk 34
     defaultConfig {
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         applicationId "com.thebluefolderproject.leafbyte"
         minSdk 21
         targetSdk 34
@@ -30,7 +31,6 @@ android {
         buildConfigField("String", "CONSUMER_SECRET", secretProperties['clientSecret'])
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
     buildTypes {
         release {
