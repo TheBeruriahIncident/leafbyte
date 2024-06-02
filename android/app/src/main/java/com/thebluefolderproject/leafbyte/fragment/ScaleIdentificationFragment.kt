@@ -62,8 +62,8 @@ class ScaleIdentificationFragment : Fragment() {
 
         view.findViewById<Button>(R.id.scaleIdentificationNext).setOnClickListener { listener!!.doneScaleIdentification(dotCenters!!) }
 
-        activity!!.let {
-            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+        requireActivity().let {
+            model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
         }
 
         val bitmap = model!!.thresholdedImage!!

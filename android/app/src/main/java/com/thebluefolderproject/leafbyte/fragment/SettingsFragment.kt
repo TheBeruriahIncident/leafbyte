@@ -65,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.datasetNameKey)!!
         val button: Preference = preferenceManager.findPreference(preferences.usePreviousDatasetKey)!!
         button.setOnPreferenceClickListener {
-            val builder = AlertDialog.Builder(context!!)
+            val builder = AlertDialog.Builder(requireContext())
             val options = arrayOf("Hello", "Goodbye")
             builder.setItems(options) { dialog, which ->
                 datasetName.text = options[which]

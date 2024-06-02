@@ -68,7 +68,7 @@ class ResultsFragment : Fragment() {
 
         view.findViewById<Button>(R.id.resultsNext).setOnClickListener { listener!!.doneResults() }
 
-        activity!!.let {
+        requireActivity().let {
             model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
         }
 

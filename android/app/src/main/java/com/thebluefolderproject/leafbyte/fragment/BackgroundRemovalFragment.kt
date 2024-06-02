@@ -55,12 +55,12 @@ class BackgroundRemovalFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_background_removal, container, false)
 
-        activity!!.let {
-            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+        requireActivity().let {
+            model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
         }
 
         val uri = model!!.uri!!
-        var bitmap = BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, null)
+        var bitmap = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, null)
         // TODO: see if scaled decoding is good enough, noting that it's only powers of two
         bitmap = Bitmap.createScaledBitmap(bitmap!!, 1200, 1200, true)
         val imageView = view.findViewById<ImageView>(R.id.imageView)
@@ -107,12 +107,12 @@ class BackgroundRemovalFragment : Fragment() {
         val options = BitmapFactory.Options()
         // First decode with inJustDecodeBounds=true to check dimensions
         options.inJustDecodeBounds = true
-        BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, options)
+        BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, options)
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false
-        return BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(uri), null, options)!!
+        return BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, options)!!
     }
     private fun calculateInSampleSize(options:BitmapFactory.Options, reqWidth:Int, reqHeight:Int):Int {
         val height = options.outHeight
