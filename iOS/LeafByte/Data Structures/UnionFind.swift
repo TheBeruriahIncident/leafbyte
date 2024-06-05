@@ -3,7 +3,7 @@
 //  LeafByte
 //
 //  Created by Abigail Getman-Pickering on 1/5/18.
-//  Copyright © 2018 Zoe Getman-Pickering. All rights reserved.
+//  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
 // A union-find allows us to keep track of a partition of a set of elements and combine equivalence classes ( https://en.wikipedia.org/wiki/Disjoint-set_data_structure ).

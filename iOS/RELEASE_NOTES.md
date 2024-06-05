@@ -12,7 +12,10 @@
 * Finding scale marks after user selection is now faster (helpful on older devices)
 * Sufficiently large objects are ignored during scale selection, as they're unlikely to be the scale, and they take a long time to process on older devices
 
-1.3.0 (Unreleased)
+1.3.0
 * When data is added to Google Sheets, numbers are properly recognized as numbers
 * When Google Sheets are created, headers are frozen
 * The "Back" button is now more accurately labeled "Save" on the Settings page
+
+1.4.0 (Unreleased)
+* Some typos are fixed

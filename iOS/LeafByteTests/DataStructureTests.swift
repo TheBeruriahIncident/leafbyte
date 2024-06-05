@@ -3,7 +3,7 @@
 //  LeafByteTests
 //
 //  Created by Abigail Getman-Pickering on 1/5/18.
-//  Copyright © 2018 Zoe Getman-Pickering. All rights reserved.
+//  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
 import XCTest
