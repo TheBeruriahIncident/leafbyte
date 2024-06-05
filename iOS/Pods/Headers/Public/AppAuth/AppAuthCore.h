@@ -1,1 +1,1 @@
-../../../AppAuth/Source/AppAuthCore.h
+../../../AppAuth/Sources/AppAuthCore.h

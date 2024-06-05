@@ -1,1 +1,1 @@
-../../../AppAuth/Source/OIDServiceDiscovery.h
+../../../AppAuth/Sources/AppAuthCore/OIDServiceDiscovery.h

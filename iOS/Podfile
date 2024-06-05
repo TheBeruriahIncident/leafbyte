@@ -1,5 +1,5 @@
 target "LeafByte" do
-  pod 'GoogleSignIn', '~> 5.0.0'
+  pod 'GoogleSignIn', '~> 5.0.2'
 end
 
 inhibit_all_warnings!

@@ -1,1 +1,1 @@
-../../../AppAuth/Source/OIDExternalUserAgentSession.h
+../../../AppAuth/Sources/AppAuthCore/OIDExternalUserAgentSession.h

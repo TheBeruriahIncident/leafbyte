@@ -1,1 +1,1 @@
-../../../AppAuth/Source/OIDErrorUtilities.h
+../../../AppAuth/Sources/AppAuthCore/OIDErrorUtilities.h

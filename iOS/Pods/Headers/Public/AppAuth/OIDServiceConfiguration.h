@@ -1,1 +1,1 @@
-../../../AppAuth/Source/OIDServiceConfiguration.h
+../../../AppAuth/Sources/AppAuthCore/OIDServiceConfiguration.h

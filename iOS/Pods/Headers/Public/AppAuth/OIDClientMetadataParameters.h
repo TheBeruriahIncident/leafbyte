@@ -1,1 +1,1 @@
-../../../AppAuth/Source/OIDClientMetadataParameters.h
+../../../AppAuth/Sources/AppAuthCore/OIDClientMetadataParameters.h

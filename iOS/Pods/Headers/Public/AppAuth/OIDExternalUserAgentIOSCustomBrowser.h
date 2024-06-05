@@ -1,1 +1,1 @@
-../../../AppAuth/Source/iOS/OIDExternalUserAgentIOSCustomBrowser.h
+../../../AppAuth/Sources/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.h
