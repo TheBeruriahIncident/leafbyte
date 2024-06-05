@@ -19,3 +19,5 @@
 
 1.4.0 (Unreleased)
 * Some typos are fixed
+* Update Google sign-in library (no issues have been reported to us, but this should theoretically a) resolve some iOS 13 login issues and b) ensure that the right error message is shown if a user cancels the sign-in flow)
+
