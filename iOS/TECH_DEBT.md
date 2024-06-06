@@ -7,5 +7,6 @@ Things we are avoiding changing to avoid the risk of regressions:
 * Dependencies are handled through CocoaPods. Swift Package Manager now exists and is preferred, but Google Sign-In doesn't work with SPM until 6.x.x.
 
 Things that would be good to do:
-* Proper localization. Much of groundwork was done, but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
+* Proper localization. Much of groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
+* Give more detail when Google Drive saving fails: why? no internet connection? etc
 
