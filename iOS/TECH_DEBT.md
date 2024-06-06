@@ -6,3 +6,6 @@ Things we are avoiding changing to avoid the risk of regressions:
 * There is now a Google Sign-In package with first-class Swift support, but that requires upgrading to 6.x.x.
 * Dependencies are handled through CocoaPods. Swift Package Manager now exists and is preferred, but Google Sign-In doesn't work with SPM until 6.x.x.
 
+Things that would be good to do:
+* Proper localization. Much of groundwork was done, but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
+

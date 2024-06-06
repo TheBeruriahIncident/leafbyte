@@ -41,4 +41,3 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
         onError(error)
     }
 }
-
