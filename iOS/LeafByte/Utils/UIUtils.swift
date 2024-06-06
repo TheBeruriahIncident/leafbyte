@@ -42,7 +42,9 @@ func presentAlert(self viewController: UIViewController, title: String?, message
     let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm an alert"), style: .default)
     alertController.addAction(okAction)
     
-    viewController.present(alertController, animated: true, completion: nil)
+    DispatchQueue.main.async {
+        viewController.present(alertController, animated: true, completion: nil)
+    }
 }
 
 func requestCameraAccess(self viewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void = {}) {
