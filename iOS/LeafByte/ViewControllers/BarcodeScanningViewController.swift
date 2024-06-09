@@ -64,11 +64,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
         // Setup the capture session input.
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [ .builtInWideAngleCamera ], mediaType: AVMediaType.video, position: .back)
         guard let camera = deviceDiscoverySession.devices.first else {
-            // We have never observed this code path, but failing gracefully on principle
-            dismissNavigationController(self: self)
-
-            let mainMenuController = navigationController!.viewControllers[0]
-            presentAlert(self: mainMenuController, title: nil, message: "Failed to find any camera on device. Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
+            crashGracefully(viewController: self, message: "Failed to find any camera on device. Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
             return
         }
         captureSession.addInput(try! AVCaptureDeviceInput(device: camera))

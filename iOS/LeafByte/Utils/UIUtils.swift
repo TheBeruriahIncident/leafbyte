@@ -44,6 +44,16 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
     viewController.dismiss(animated: false, completion: onDismissingPicker)
 }
 
+// There are various cases that we either think are impossible, or have happened in a crash report but we have no idea how. This allows us to return to the main menu with an error, rather than the whole app crashing.
+func crashGracefully(viewController: UIViewController, message: String) {
+    let mainMenuController = viewController.navigationController!.viewControllers[0]
+
+    // We have never observed this code path, but failing gracefully on principle
+    dismissNavigationController(self: viewController)
+
+    presentAlert(self: mainMenuController, title: nil, message: message)
+}
+
 func presentAlert(self viewController: UIViewController, title: String?, message: String) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm an alert"), style: .default)
