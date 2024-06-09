@@ -17,24 +17,31 @@ func dismissNavigationController(self viewController: UIViewController) {
 }
 
 func finishWithImagePicker(self viewController: UIViewController, info: [UIImagePickerController.InfoKey : Any], selectImage: (CGImage) -> Void) {
-    // There may (in theory) contain multiple versions of the image in info; we're not allowing editing, so just take the original.
-    guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-        fatalError("Expected to find an image under UIImagePickerControllerEditedImage in \(info)")
+    // In theory, there may be multiple versions of the image in info. We're not allowing editing, so generally there's only one and we just take the original. However, the crash organizer shows that this isn't always successful, so now we try falling back to an editedImage before failing gracefully with an alert.
+    let selectedImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) ?? (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)
+
+    let onDismissingPicker : () -> Void
+    if (selectedImage != nil) {
+        // We scale it down to make the following operations happen in tolerable time.
+        let resizedImage = resizeImage(selectedImage!)
+
+        // Save the selectedImage off so that during the segue, we can set it onto the next view.
+        selectImage(resizedImage)
+
+        onDismissingPicker = {
+            // Dismissing and then seguing goes from the image picker to the previous view to the next view.
+            // It looks weird to be back at the previous view, so make this transition as short as possible by disabling animation.
+            // Animation is re-renabled in the previous view's viewDidDisappear.
+            UIView.setAnimationsEnabled(false)
+            viewController.performSegue(withIdentifier: "imageChosen", sender: viewController)
+        }
+    } else {
+        onDismissingPicker = {
+            presentAlert(self: viewController, title: "Failed", message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+        }
     }
-    
-    // We scale it down to make the following operations happen in tolerable time.
-    let resizedImage = resizeImage(selectedImage)
-    
-    // Save the selectedImage off so that during the segue, we can set it onto the next view.
-    selectImage(resizedImage)
-    
-    viewController.dismiss(animated: false, completion: {() in
-        // Dismissing and then seguing goes from the image picker to the previous view to the next view.
-        // It looks weird to be back at the previous view, so make this transition as short as possible by disabling animation.
-        // Animation is re-renabled in the previous view's viewDidDisappear.
-        UIView.setAnimationsEnabled(false)
-        viewController.performSegue(withIdentifier: "imageChosen", sender: viewController)
-    })
+
+    viewController.dismiss(animated: false, completion: onDismissingPicker)
 }
 
 func presentAlert(self viewController: UIViewController, title: String?, message: String) {

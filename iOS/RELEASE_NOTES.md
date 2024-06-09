@@ -21,3 +21,5 @@
 * Some typos are fixed
 * Google sign-in library is updated (no issues have been reported to us, but this should theoretically 1) resolve some iOS 13 login issues and 2) ensure that the right error message is shown if a user cancels the sign-in flow)
 * An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
+* In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
+
