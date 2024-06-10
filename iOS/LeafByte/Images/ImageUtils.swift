@@ -31,15 +31,17 @@ func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: I
     return context.makeImage()!
 }
 
-func resizeImage(_ image: UIImage) -> CGImage {
+func resizeImage(_ image: UIImage) -> CGImage? {
     return resizeImage(image, within: CGSize(width: 1200, height: 1200))
 }
 
 // See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
 // Code to account for orientation was adapted from there.
-func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage {
-    let cgImage = uiToCgImage(image)
-    
+func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
+    guard let cgImage = uiToCgImage(image) else {
+        return nil
+    }
+
     // Check if transformation is necessary.
     if image.imageOrientation == .up && image.size.width <= newBounds.width && image.size.height <= newBounds.height {
         return cgImage

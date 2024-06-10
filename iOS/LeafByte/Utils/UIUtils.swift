@@ -25,15 +25,21 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
         // We scale it down to make the following operations happen in tolerable time.
         let resizedImage = resizeImage(selectedImage!)
 
-        // Save the selectedImage off so that during the segue, we can set it onto the next view.
-        selectImage(resizedImage)
+        if (resizedImage != nil) {
+            // Save the selectedImage off so that during the segue, we can set it onto the next view.
+            selectImage(resizedImage!)
 
-        onDismissingPicker = {
-            // Dismissing and then seguing goes from the image picker to the previous view to the next view.
-            // It looks weird to be back at the previous view, so make this transition as short as possible by disabling animation.
-            // Animation is re-renabled in the previous view's viewDidDisappear.
-            UIView.setAnimationsEnabled(false)
-            viewController.performSegue(withIdentifier: "imageChosen", sender: viewController)
+            onDismissingPicker = {
+                // Dismissing and then seguing goes from the image picker to the previous view to the next view.
+                // It looks weird to be back at the previous view, so make this transition as short as possible by disabling animation.
+                // Animation is re-renabled in the previous view's viewDidDisappear.
+                UIView.setAnimationsEnabled(false)
+                viewController.performSegue(withIdentifier: "imageChosen", sender: viewController)
+            }
+        } else {
+            onDismissingPicker = {
+                presentAlert(self: viewController, title: nil, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+            }
         }
     } else {
         onDismissingPicker = {

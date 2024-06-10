@@ -147,7 +147,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.originalImage = originalImage
             
             if numberOfValidScaleMarks == 4 {
-                destination.cgImage = getFixedImage()
+                guard let fixedImage = getFixedImage() else {
+                    crashGracefully(viewController: self, message: "Failed to process image. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
+                    return
+                }
+                destination.cgImage = fixedImage
                 destination.uiImage = cgToUiImage(destination.cgImage)
                 destination.scaleMarkPixelLength = (destination.cgImage.width + destination.cgImage.height) / 2
                 destination.initialConnectedComponentsInfo = nil
@@ -359,12 +363,16 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.finish(imageView: scaleMarkingView)
     }
     
-    private func getFixedImage() -> CGImage {
+    // Returns nil if the ci image cannot be converted to a cg image. We have no idea why this system libraries sometimes do this, but at least it's very rare.
+    private func getFixedImage() -> CGImage? {
         // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
         let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)
         let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
-        return resizeImageIgnoringAspectRatioAndOrientation(ciToCgImage(imageInsideScaleMarks), x: sizeToAdjustTo, y: sizeToAdjustTo)
+        guard let cgImage = ciToCgImage(imageInsideScaleMarks) else {
+            return nil
+        }
+        return resizeImageIgnoringAspectRatioAndOrientation(cgImage, x: sizeToAdjustTo, y: sizeToAdjustTo)
     }
     
     private func setScaleFound() {

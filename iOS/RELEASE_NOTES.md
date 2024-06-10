@@ -23,5 +23,5 @@
 * An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
 * In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
 * If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)
-
+* In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know when this actually happens)
 

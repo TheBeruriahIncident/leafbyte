@@ -367,7 +367,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             
             // If the touched point is not on a filled area, it's likely a mistake, so ignore it.
             let touchedPointInHoles = userDrawingToFilledHoles.project(point: touchedPoint)
-            if IndexableImage(uiToCgImage(leafHolesView.image!)).getPixel(x: roundToInt(touchedPointInHoles.x), y: roundToInt(touchedPointInHoles.y)).isInvisible() {
+            guard let cgImage = uiToCgImage(leafHolesView.image!) else {
+                crashGracefully(viewController: self, message: "Failed to process image during exclusion. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
+                return
+            }
+            if IndexableImage(cgImage).getPixel(x: roundToInt(touchedPointInHoles.x), y: roundToInt(touchedPointInHoles.y)).isInvisible() {
                 return
             }
             
@@ -509,7 +513,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         combinedImage.addImage(baseImage)
         
         // Then we include any user drawings.
-        let userDrawing = IndexableImage(uiToCgImage(userDrawingView.image!))
+        guard let cgImage = uiToCgImage(userDrawingView.image!) else {
+            crashGracefully(viewController: self, message: "Failed to process image during area calculation. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
+            return
+        }
+        let userDrawing = IndexableImage(cgImage)
         combinedImage.addImage(userDrawing)
         
         // Connected components will identify the label of the leaf (if not using the default point) and any excluded areas.

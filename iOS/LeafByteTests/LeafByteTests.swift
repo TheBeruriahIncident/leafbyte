@@ -11,8 +11,8 @@ import XCTest
 
 final class LeafByteTests: XCTestCase {
     func testThresholdingFilter() {
-        let image = uiToCgImage(loadImage(named: "leafWithScale"))
-        
+        let image = uiToCgImage(loadImage(named: "leafWithScale"))!
+
         var thresholdedImage: CIImage!
         self.measure {
             let filter = ThresholdingFilter()
@@ -20,8 +20,8 @@ final class LeafByteTests: XCTestCase {
             thresholdedImage = filter.outputImage
         }
         
-        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
-        
+        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage)!)
+
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isInvisible())
         XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isVisible())
         XCTAssert(indexableImage.getPixel(x: 1820, y: 1690).isVisible())
@@ -31,7 +31,7 @@ final class LeafByteTests: XCTestCase {
     
     func testSuggestedThreshold() {
         let uiImage = loadImage(named: "leafWithScale")
-        let cgImage = uiToCgImage(uiImage)
+        let cgImage = uiToCgImage(uiImage)!
         
         var suggestedThreshold: Float!
         self.measure {
@@ -42,13 +42,13 @@ final class LeafByteTests: XCTestCase {
     }
     
     func testConnectedComponents() {
-        let originalImage = resizeImage(loadImage(named: "leafWithScale"))
+        let originalImage = resizeImage(loadImage(named: "leafWithScale"))!
         
         let filter = ThresholdingFilter()
         filter.setInputImage(image: originalImage, useBlackBackground: false)
         let thresholdedImage = filter.outputImage!
         
-        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage))
+        let indexableImage = IndexableImage(ciToCgImage(thresholdedImage)!)
         let image = LayeredIndexableImage(width: indexableImage.width, height: indexableImage.height)
         image.addImage(indexableImage)
 
