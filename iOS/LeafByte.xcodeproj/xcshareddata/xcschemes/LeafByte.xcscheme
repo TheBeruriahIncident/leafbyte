@@ -75,7 +75,12 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "IDEPreferLogStreaming"
-            value = "YES"
+            value = "oslogToStdio"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "disable"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
