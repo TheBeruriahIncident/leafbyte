@@ -143,11 +143,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         completeButton.isEnabled = false
         
         let afterSerialization = {
-            self.imagePicker.sourceType = self.sourceType
-            
             if self.sourceType == .camera {
                 requestCameraAccess(self: self, onSuccess: {
                     DispatchQueue.main.async {
+                        self.imagePicker.sourceType = .camera
+
                         if self.settings.useBarcode {
                             DispatchQueue.main.async {
                                 self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
@@ -159,6 +159,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                 })
             } else {
                 DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .photoLibrary
+
                     self.present(self.imagePicker, animated: true, completion: nil)
                 }
             }
