@@ -8,7 +8,10 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 
 Immediate TODOs:
 * Make app loudly complain on startup if client id and redirect are not filled in
-* Fix GitHub build (probably by adding AppAuth to LeafByteTests sources)
+* Add essentially empty privacy manifest
+* Can we resolve or ignore all warnings?
+* Remove legacy id from Info.plist
+* Fix GitHub build (probably by adding AppAuth to LeafByteTests sources), and then limit it to iOS changes https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo
 * Get copyright updated to now everywhere
 * Consider getting scope directly off of authstate object at bottom of GoogleSignInUtils
 * Proof Google Sign In error messages with Zoe
@@ -18,12 +21,15 @@ Immediate TODOs:
 * Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Add credits to settings, aligning across iOS, Android, and website
 * Investigate all crashes in Crash Organizer
+* Check Memory Graph tool and Leaks instrument for any memory leaks
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors
 
 Lower priority TODOs:
 * Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
 * Switch from the older UIImagePicker to the newer PHPicker
+* Add SwiftLint (locally and GitHub action)
+* Add static analysis (locally and GitHub action)
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.
