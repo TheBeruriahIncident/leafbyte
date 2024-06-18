@@ -10,7 +10,7 @@
 1.2.0 (June 19, 2019)
 * Greater zoom is now supported (previously the maximum zoom was 10x; now it's 50x)
 * Finding scale marks after user selection is now faster (helpful on older devices)
-* Sufficiently large objects are ignored during scale selection, as they're unlikely to be the scale, and they take a long time to process on older devices
+* Sufficiently large objects are ignored during manual scale selection, as they're unlikely to be the scale, and they take a long time to process on older devices
 
 1.3.0 (Oct 9, 2019)
 * When data is added to Google Sheets, numbers are properly recognized as numbers
