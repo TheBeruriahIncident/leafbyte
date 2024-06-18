@@ -17,7 +17,7 @@ Immediate TODOs:
 * Proof Google Sign In error messages with Zoe
 * Fix weird spacing at the bottom of the tutorial page on newer devices
 * Fix the unsafe pointer init warnings
-* make sure memory leak/closure semantics are correct around self, escaping, and weak refs
+* Make sure memory leak/closure semantics are correct around self, escaping, and weak refs
 * Add the experimental images from the paper as test cases
 * Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Add credits to settings, aligning across iOS, Android, and website
