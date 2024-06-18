@@ -7,6 +7,7 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
+* Add signing on zoe's computer
 * Make app loudly complain on startup if client id and redirect are not filled in
 * Add essentially empty privacy manifest
 * Can we resolve or ignore all warnings?
