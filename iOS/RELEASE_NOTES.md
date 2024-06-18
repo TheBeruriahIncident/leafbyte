@@ -18,10 +18,11 @@
 * The "Back" button is now more accurately labeled "Save" on the Settings page
 
 1.4.0 (??? ??, 2024, the big 2024 refresh!) (Unreleased)
-* Google Sign-In has been updated to ensure that it continues working given changes being made by both Apple and Google
+* The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
+* Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions we weren't even asking for, so we've rewritten the whole login to avoid that) 
 * An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
 * In a specific situation where saving data to Google Drive crashed, the error is now properly shown
 * Various typos are fixed
 * In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
 * If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)
-* In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know when this actually happens)
+* In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know the conditions where this actually happens)
