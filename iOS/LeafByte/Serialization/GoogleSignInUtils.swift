@@ -131,7 +131,7 @@ private func useAuthState(authState: OIDAuthState,
 
 private func getGrantedScopes(authState: OIDAuthState) -> Set<String> {
     guard let scopeString = authState.lastAuthorizationResponse.scope else {
-        // This field has the contract that if all requested scopes were granted, it will be nil. In practice, AppAuth's implementation violates this contract and just returns all granted scopes regardless, but we handle the contracted behavior just in case.
+        // This field has the contract in the RFC that if all requested scopes were granted, it MAY be nil. In practice, Google's OAuth implementation returns all the granted scopes regardless, but we handle this possible behavior just in case.
         return requiredScopes
     }
 
