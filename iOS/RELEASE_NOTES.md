@@ -12,16 +12,16 @@
 * Finding scale marks after user selection is now faster (helpful on older devices)
 * Sufficiently large objects are ignored during scale selection, as they're unlikely to be the scale, and they take a long time to process on older devices
 
-1.3.0
+1.3.0 (Oct 9, 2019)
 * When data is added to Google Sheets, numbers are properly recognized as numbers
 * When Google Sheets are created, headers are frozen
 * The "Back" button is now more accurately labeled "Save" on the Settings page
 
-1.4.0 (Unreleased)
-* Some typos are fixed
-* Google sign-in library is updated (no issues have been reported to us, but this should theoretically 1) resolve some iOS 13 login issues and 2) ensure that the right error message is shown if a user cancels the sign-in flow)
+1.4.0 (??? ??, 2024, the big 2024 refresh!) (Unreleased)
+* Google Sign-In has been updated to ensure that it continues working given changes being made by both Apple and Google
 * An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
+* In a specific situation where saving data to Google Drive crashed, the error is now properly shown
+* Various typos are fixed
 * In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
 * If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)
 * In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know when this actually happens)
-

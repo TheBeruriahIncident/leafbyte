@@ -154,3 +154,16 @@ func maintainOldModalPresentationStyle(viewController: UIViewController) {
     // the SDK in Xcode 11 has a breaking change in modal presentation style that doesn't work well.
     viewController.modalPresentationStyle = .fullScreen
 }
+
+func presentFailedGoogleSignInAlert(cause: GoogleSignInFailureCause, self viewController: UIViewController) {
+    let message = switch cause {
+        case .generic: NSLocalizedString("Google sign-in is required for saving to Google Drive", comment: "Shown if Google sign-in fails after choosing to save to Google Drive")
+        case .noGetUserIdScope: NSLocalizedString("We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with multiple Google accounts. Don't worry: we aren't given access to any private info. All we get is your user id, and even that info never leaves your device.", comment: "Shown if Google sign-in fails specifically because the user rejected LeafByte access to their user id")
+        case .noWriteToGoogleDriveScope: NSLocalizedString("We must be authorized to write to Google Drive to save to Google Drive. Don't worry: we cannot access any part of your Google Drive outside of the files we create. Further, we never even edit: we simply append rows or images.", comment: "Shown if Google sign-in fails specifically because the user rejected LeafByte access to Google Drive")
+        case .neitherScope: NSLocalizedString("We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with multiple Google accounts. Don't worry: we aren't given access to any private info. All we get is your user id, and even that info never leaves your device. Additionally, we cannot access any part of your Google Drive outside of the files we create. Further, we never even edit: we simply append rows or images.", comment: "Shown if Google sign-in fails specifically because the user rejected all access for LeafByte")
+        }
+
+    DispatchQueue.main.async {
+        presentAlert(self: viewController, title: nil, message: message)
+    }
+}

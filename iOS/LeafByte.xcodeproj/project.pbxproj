@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2202501980BBACC8D50543F6 /* libPods-LeafByte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */; };
-		460F687120140A31002C8BA7 /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687020140A31002C8BA7 /* GoogleSignInManager.swift */; };
+		460F687120140A31002C8BA7 /* GoogleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687020140A31002C8BA7 /* GoogleSignInUtils.swift */; };
 		460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687220145AC5002C8BA7 /* RestUtils.swift */; };
 		460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687420145E28002C8BA7 /* GoogleApiUtils.swift */; };
 		46130551200EEFDC00141B68 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 46130550200EEFDC00141B68 /* Podfile */; };
@@ -68,7 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		460F687020140A31002C8BA7 /* GoogleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
+		460F687020140A31002C8BA7 /* GoogleSignInUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInUtils.swift; sourceTree = "<group>"; };
 		460F687220145AC5002C8BA7 /* RestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestUtils.swift; sourceTree = "<group>"; };
 		460F687420145E28002C8BA7 /* GoogleApiUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiUtils.swift; sourceTree = "<group>"; };
 		46130550200EEFDC00141B68 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -117,6 +117,7 @@
 		505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
+		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +184,7 @@
 				46DB8A841FFE9A8A00EF59BE /* Utils */,
 				4656C6D01FF869F600AC6821 /* ViewControllers */,
 				46A6D885209EAD110013891E /* Localizable.strings */,
+				C8A899482C21366A005A7950 /* Secrets.xcconfig */,
 			);
 			path = LeafByte;
 			sourceTree = "<group>";
@@ -266,7 +268,7 @@
 			children = (
 				469E3B022013DB4E009C7337 /* FileUtils.swift */,
 				460F687420145E28002C8BA7 /* GoogleApiUtils.swift */,
-				460F687020140A31002C8BA7 /* GoogleSignInManager.swift */,
+				460F687020140A31002C8BA7 /* GoogleSignInUtils.swift */,
 				460F687220145AC5002C8BA7 /* RestUtils.swift */,
 				469E3AFF2012EC8A009C7337 /* SerializationUtils.swift */,
 				4651F0252011896800365F93 /* Settings.swift */,
@@ -529,7 +531,7 @@
 				46C424BE1FEF6A3E00301F59 /* UnwindSegueFromRight.swift in Sources */,
 				46F1064120012F06000B4B83 /* Extensions.swift in Sources */,
 				46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */,
-				460F687120140A31002C8BA7 /* GoogleSignInManager.swift in Sources */,
+				460F687120140A31002C8BA7 /* GoogleSignInUtils.swift in Sources */,
 				4651F0262011896800365F93 /* Settings.swift in Sources */,
 				46DB8A8E1FFF332C00EF59BE /* UIUtils.swift in Sources */,
 				46DB8A901FFFD74900EF59BE /* ImageUtils.swift in Sources */,
@@ -598,6 +600,7 @@
 /* Begin XCBuildConfiguration section */
 		4621EE5D1FEB70AD004C3011 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8A899482C21366A005A7950 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -658,6 +661,7 @@
 		};
 		4621EE5E1FEB70AD004C3011 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8A899482C21366A005A7950 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;

@@ -207,9 +207,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             return
         }
         
-        GoogleSignInManager.initiateSignIn(
+        initiateGoogleSignIn(
             onAccessTokenAndUserId: { _, _ in () },
-            onError: { _ in
+            onError: { cause, _ in
                 if self.settings.dataSaveLocation == .googleDrive {
                     self.settings.dataSaveLocation = .local
                 }
@@ -219,10 +219,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 self.settings.serialize()
                 
                 DispatchQueue.main.async {
-                    presentAlert(self: self, title: nil, message: NSLocalizedString("Cannot save to Google Drive without Google sign-in", comment: "Shown if Google sign-in does not complete successfully"))
+                    presentFailedGoogleSignInAlert(cause: cause, self: self)
                     self.setSavingSummary()
                 }
-            }, callingViewController: self)
+            }, callingViewController: self, settings: settings)
     }
     
     private func setSavingSummary() {

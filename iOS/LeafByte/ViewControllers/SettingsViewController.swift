@@ -6,7 +6,7 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-import GoogleSignIn
+import AppAuth
 import UIKit
 
 final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -106,16 +106,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
         
         if newSaveLocation == .googleDrive {
-            GoogleSignInManager.initiateSignIn(
+            initiateGoogleSignIn(
                 onAccessTokenAndUserId: { (_, _) in
                     persistChange()
                 },
-                onError: { _ in
+                onError: { cause, _ in
                     DispatchQueue.main.async {
                         self.signOutOfGoogle()
-                        self.presentFailedGoogleSignInAlert()
+                        presentFailedGoogleSignInAlert(cause: cause, self: self)
                     }
-                }, callingViewController: self)
+                }, callingViewController: self, settings: settings)
         } else {
             persistChange()
         }
@@ -133,16 +133,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
         
         if newSaveLocation == .googleDrive {
-            GoogleSignInManager.initiateSignIn(
-                onAccessTokenAndUserId: { _, _ in 
+            initiateGoogleSignIn(
+                onAccessTokenAndUserId: { _, _ in
                     persistChange()
                 },
-                onError: { _ in
+                onError: { cause, _ in
                     DispatchQueue.main.async {
                         self.signOutOfGoogle()
-                        self.presentFailedGoogleSignInAlert()
+                        presentFailedGoogleSignInAlert(cause: cause, self: self)
                     }
-            }, callingViewController: self)
+            }, callingViewController: self, settings: settings)
         } else {
             persistChange()
         }
@@ -341,12 +341,13 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         if settings.imageSaveLocation == .googleDrive {
             settings.imageSaveLocation = .local
         }
+        // Clearing the auth state is counterintuitively actually all we need here. When a user thinks about signing out of Google, they generally don't actually want their whole phone to be signed out of Google, which would likely be a huge inconvenience for them, so we shouldn't initiate an actual sign-out. What they want is for LeafByte itself to not know about their Google sign-in anymore, and all it takes for that is for us to "forget" about their Google sign-in state.
+        settings.googleAuthState = nil
         settings.serialize()
         
         dataSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.dataSaveLocation)
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)
-        
-        GIDSignIn.sharedInstance().signOut()
+
         updateEnabledness()
     }
     
@@ -382,13 +383,9 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         let anySavingEnabled = settings.dataSaveLocation != .none || settings.imageSaveLocation != .none
         datasetName.isEnabled = anySavingEnabled
         datasetNameLabel.isEnabled = anySavingEnabled
-        
-        let anyGoogleDriveSavingEnabled = settings.dataSaveLocation == .googleDrive || settings.imageSaveLocation == .googleDrive
-        signOutOfGoogleButton.isEnabled = anyGoogleDriveSavingEnabled
-    }
-    
-    private func presentFailedGoogleSignInAlert() {
-        presentAlert(self: self, title: nil, message: NSLocalizedString("Google sign-in is required for saving to Google Drive", comment: "Shown if Google sign-in fails after choosing to save to Google Drive"))
+
+        // If there is a Google auth state, there has been a successful sign-in
+        signOutOfGoogleButton.isEnabled = settings.googleAuthState != nil
     }
     
     func registerForKeyboardNotifications() {

@@ -6,6 +6,7 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
+import AppAuth
 import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
@@ -21,7 +22,7 @@ final class Settings: NSObject, NSCoding {
         case googleDrive = "googleDrive"
     }
     
-    struct PropertyKey {
+    private struct PropertyKey {
         // Keeping this string for back-compat.
         static let dataSaveLocation = "measurementSaveLocation"
         static let datasetName = "datasetName"
@@ -31,6 +32,7 @@ final class Settings: NSObject, NSCoding {
         static let datasetNameToUnitInFirstLocalFile = "datasetNameToUnitInFirstLocalFile"
         static let datasetNameToUserIdToGoogleFolderId = "datasetNameToUserIdToGoogleFolderId"
         static let datasetNameToUnitToUserIdToGoogleSpreadsheetId = "datasetNameToUnitToUserIdToGoogleSpreadsheetId"
+        static let googleAuthState = "googleAuthState"
         static let imageSaveLocation = "imageSaveLocation"
         static let saveGpsData = "saveGpsData"
         static let scaleMarkLength = "scaleMarkLength"
@@ -49,13 +51,14 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToUnitInFirstLocalFile = [String: String]()
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
+    var googleAuthState: OIDAuthState? = nil;
     var imageSaveLocation = SaveLocation.local
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var useBarcode = false
     var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
-    
+
     required override init() {}
     
     // MARK: - NSCoding
@@ -85,6 +88,10 @@ final class Settings: NSObject, NSCoding {
         }
         if let datasetNameToUnitToUserIdToGoogleSpreadsheetId = decoder.decodeObject(forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId) as? [String: [String: [String: String]]] {
             self.datasetNameToUnitToUserIdToGoogleSpreadsheetId = datasetNameToUnitToUserIdToGoogleSpreadsheetId
+        }
+        if decoder.containsValue(forKey: PropertyKey.googleAuthState) {
+            // If AppAuth ever changes the format and this decode fails, it should just decode to nil and eventually trigger a new login
+            self.googleAuthState = decoder.decodeObject(forKey: PropertyKey.googleAuthState) as? OIDAuthState
         }
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
             self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
@@ -116,6 +123,7 @@ final class Settings: NSObject, NSCoding {
         coder.encode(datasetNameToUnitInFirstLocalFile, forKey: PropertyKey.datasetNameToUnitInFirstLocalFile)
         coder.encode(datasetNameToUserIdToGoogleFolderId, forKey: PropertyKey.datasetNameToUserIdToGoogleFolderId)
         coder.encode(datasetNameToUnitToUserIdToGoogleSpreadsheetId, forKey: PropertyKey.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
+        coder.encode(googleAuthState, forKey: PropertyKey.googleAuthState)
         coder.encode(imageSaveLocation.rawValue, forKey: PropertyKey.imageSaveLocation)
         coder.encode(saveGpsData, forKey: PropertyKey.saveGpsData)
         coder.encode(scaleMarkLength, forKey: PropertyKey.scaleMarkLength)
