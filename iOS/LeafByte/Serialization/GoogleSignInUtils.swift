@@ -60,6 +60,7 @@ func initiateGoogleSignIn(
                         print("Error accessing AppDelegate")
                         return onError(.generic, nil)
                     }
+                    // This call will automatically protect with PKCE if possible (according to https://github.com/openid/AppAuth-iOS)
                     appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: callingViewController) { authState, error in
                         guard let authState = authState else {
                             print("Did not receive auth state after auth flow: \(error?.localizedDescription ?? "no error information")")
