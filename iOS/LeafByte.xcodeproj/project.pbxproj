@@ -48,6 +48,8 @@
 		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
+		C8E5D4222C224DC500AAEB8A /* libPods-LeafByte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E5D4212C224DC500AAEB8A /* libPods-LeafByte.a */; };
+		C8E5D4242C224DCD00AAEB8A /* libPods-LeafByte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E5D4232C224DCD00AAEB8A /* libPods-LeafByte.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,9 @@
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		C8E5D41F2C224DA600AAEB8A /* libAppAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8E5D4212C224DC500AAEB8A /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8E5D4232C224DCD00AAEB8A /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8E5D4222C224DC500AAEB8A /* libPods-LeafByte.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8E5D4242C224DCD00AAEB8A /* libPods-LeafByte.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +315,9 @@
 		556C555FB0D73897C163614B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C8E5D4232C224DCD00AAEB8A /* libPods-LeafByte.a */,
+				C8E5D4212C224DC500AAEB8A /* libPods-LeafByte.a */,
+				C8E5D41F2C224DA600AAEB8A /* libAppAuth.a */,
 				505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */,
 			);
 			name = Frameworks;
