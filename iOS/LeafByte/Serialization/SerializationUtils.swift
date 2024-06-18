@@ -73,9 +73,9 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
         onSuccess()
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
+        initiateGoogleSignIn(onAccessTokenAndUserId: { accessToken, userId in
             appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
-        }, onError: { _ in () }, callingViewController: callingViewController)
+        }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
 
     default:
         fatalError("\(settings.dataSaveLocation) not handled in switch")
@@ -118,9 +118,9 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
         onSuccess()
         
     case .googleDrive:
-        GoogleSignInManager.initiateSignIn(onAccessTokenAndUserId: { accessToken, userId in
+        initiateGoogleSignIn(onAccessTokenAndUserId: { accessToken, userId in
             uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
-        }, onError: { _ in onFailure(.googleDrive) }, callingViewController: callingViewController)
+        }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
     
     default:
         fatalError("\(settings.imageSaveLocation) not handled in switch")

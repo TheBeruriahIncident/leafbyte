@@ -6,6 +6,7 @@
 //  Copyright © 2017 Zoe Getman-Pickering. All rights reserved.
 //
 
+import AppAuth
 import UIKit
 
 // This class represnts the entry point to our app and is discussed at https://developer.apple.com/documentation/uikit/uiapplicationdelegate .
@@ -14,10 +15,21 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        // This is boilerplate from AppAuth to handle the OAuth redirect flow: after Google sign-in is completed, Google sends the user back to LeafByte, passing through this flow
+        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
+            self.currentAuthorizationFlow = nil
+            return true
+        }
+
+        return false
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
