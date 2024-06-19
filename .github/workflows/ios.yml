@@ -3,11 +3,8 @@ name: iOS workflow
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - iOS/**
   pull_request:
     branches: [ "main" ]
-      - iOS/**
 
 jobs:
   build:
