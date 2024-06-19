@@ -32,7 +32,7 @@ func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: I
 }
 
 func resizeImage(_ image: UIImage) -> CGImage? {
-    resizeImage(image, within: CGSize(width: 1200, height: 1200))
+    resizeImage(image, within: CGSize(width: 1_200, height: 1_200))
 }
 
 // See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
@@ -233,7 +233,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
 
         // If we've explored too much, return nil.
         // This keeps us from spending a long time dealing with large objects that are unlikely to be the scale anyways.
-        if explored.count > 50000 {
+        if explored.count > 50_000 {
             return nil
         }
     }
@@ -251,7 +251,7 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
 
     // We're going to spiral out from the startingPoint looking for visible points. The pattern looks like:
     //      10 11 12 13
-    //  ...  9  2  3 14
+    //  ...  9  2  3 14 // swiftlint:disable:this period_spacing
     //   23  8  1  4 15
     //   22  7  6  5 16
     //   21 20 19 18 17

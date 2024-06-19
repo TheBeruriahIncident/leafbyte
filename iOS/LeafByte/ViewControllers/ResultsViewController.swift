@@ -219,6 +219,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         if !viewDidAppearHasRun {
             let baseImage = IndexableImage(cgImage)
             let combinedImage = LayeredIndexableImage(width: baseImage.width, height: baseImage.height)

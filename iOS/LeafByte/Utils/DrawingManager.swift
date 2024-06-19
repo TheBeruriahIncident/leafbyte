@@ -11,10 +11,10 @@ import UIKit
 
 // This class manages drawing on a CGContext.
 final class DrawingManager {
-    static let lightGreen = UIColor(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
-    static let darkGreen = UIColor(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
-    static let lightRed = UIColor(red: 1.0, green: 0.7529411765, blue: 0.7960784314, alpha: 1.0)
-    static let darkRed = UIColor(red: 1.0, green: 0, blue: 0, alpha: 1.0)
+    static let lightGreen = #colorLiteral(red: 0.780392156, green: 1.0, blue: 0.5647058823, alpha: 1.0)
+    static let darkGreen = #colorLiteral(red: 0.13, green: 1.0, blue: 0.13, alpha: 1.0)
+    static let lightRed = #colorLiteral(red: 1.0, green: 0.7529411765, blue: 0.7960784314, alpha: 1.0)
+    static let darkRed = #colorLiteral(red: 1.0, green: 0, blue: 0, alpha: 1.0)
 
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
@@ -36,9 +36,9 @@ final class DrawingManager {
         context.setShouldAntialias(false)
 
         if baseProjection == nil {
-            self.projection = Projection(scale: 1, xOffset: DrawingManager.pixelOffset, yOffset: DrawingManager.pixelOffset, bounds: canvasSize)
+            self.projection = Projection(scale: 1, xOffset: Self.pixelOffset, yOffset: Self.pixelOffset, bounds: canvasSize)
         } else {
-            self.projection = Projection(fromProjection: baseProjection!, withExtraXOffset: DrawingManager.pixelOffset, withExtraYOffset: DrawingManager.pixelOffset)
+            self.projection = Projection(fromProjection: baseProjection!, withExtraXOffset: Self.pixelOffset, withExtraYOffset: Self.pixelOffset)
         }
     }
 
@@ -66,7 +66,7 @@ final class DrawingManager {
         // Draw dot at the specied point to make it clearer what's being marked.
         let dotSize = size / 13
         context.setLineCap(.round)
-        context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        context.setStrokeColor(Self.darkRed.cgColor)
         context.setLineWidth(dotSize + 1)
         context.addEllipse(in: CGRect(origin: CGPoint(x: projectedPoint.x - dotSize, y: projectedPoint.y - dotSize), size: CGSize(width: dotSize * 2, height: dotSize * 2)))
         context.strokePath()
@@ -82,15 +82,15 @@ final class DrawingManager {
 
         // Draw dark outline for the leaf.
         let startOfLeaf = CGPoint(x: projectedPoint.x + petioleLength, y: projectedPoint.y - petioleLength)
-        context.setFillColor(DrawingManager.darkRed.cgColor)
+        context.setFillColor(Self.darkRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size, withOffset: 2)
 
         // Draw light "filling" of the leaf.
-        context.setFillColor(DrawingManager.lightRed.cgColor)
+        context.setFillColor(Self.lightRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size)
 
         // Draw petiole and midrib.
-        context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        context.setStrokeColor(Self.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
         context.move(to: projectedPoint)

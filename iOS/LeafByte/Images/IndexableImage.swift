@@ -29,7 +29,7 @@ final class IndexableImage {
     }
 
     func getPixel(x: Int, y: Int) -> Pixel {
-        let offset = bytesPerRow * y + IndexableImage.bytesPerPixel * x
+        let offset = bytesPerRow * y + Self.bytesPerPixel * x
         return Pixel(red: pixelDataPointer[offset], green: pixelDataPointer[offset + 1], blue: pixelDataPointer[offset + 2], alpha: pixelDataPointer[offset + 3])
     }
 

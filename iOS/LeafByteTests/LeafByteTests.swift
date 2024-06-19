@@ -23,10 +23,10 @@ final class LeafByteTests: XCTestCase {
         let indexableImage = IndexableImage(ciToCgImage(thresholdedImage)!)
 
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isInvisible())
-        XCTAssert(indexableImage.getPixel(x: 1400, y: 1400).isVisible())
-        XCTAssert(indexableImage.getPixel(x: 1820, y: 1690).isVisible())
-        XCTAssert(indexableImage.getPixel(x: 1660, y: 1820).isInvisible())
-        XCTAssert(indexableImage.getPixel(x: 1740, y: 1820).isVisible())
+        XCTAssert(indexableImage.getPixel(x: 1_400, y: 1_400).isVisible())
+        XCTAssert(indexableImage.getPixel(x: 1_820, y: 1_690).isVisible())
+        XCTAssert(indexableImage.getPixel(x: 1_660, y: 1_820).isInvisible())
+        XCTAssert(indexableImage.getPixel(x: 1_740, y: 1_820).isVisible())
     }
 
     func testSuggestedThreshold() {
@@ -60,14 +60,14 @@ final class LeafByteTests: XCTestCase {
         let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key < 0 }).map({ $0.value.standardPart }).sorted()
         let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key > 0 }).map({ $0.value.standardPart }).sorted()
 
-        XCTAssertEqual([3360, 970005], whiteAreaSizes.suffix(2))
-        XCTAssertEqual([1176, 105398], nonWhiteAreaSizes.suffix(2))
+        XCTAssertEqual([3_360, 970_005], whiteAreaSizes.suffix(2))
+        XCTAssertEqual([1_176, 105_398], nonWhiteAreaSizes.suffix(2))
     }
 
     func testSettingsSerialization() {
         let settings = Settings()
         settings.datasetName = "The Tale of Genji"
-        settings.datasetNameToEpochTimeOfLastUse = ["Le Morte a'Arthur": 1485, "The Tale of Genji": 1021]
+        settings.datasetNameToEpochTimeOfLastUse = ["Le Morte a'Arthur": 1_485, "The Tale of Genji": 1_021]
         settings.datasetNameToNextSampleNumber = ["Le Morte a'Arthur": 10, "The Tale of Genji": 45]
         settings.datasetNameToUnit = ["Le Morte a'Arthur": "cm", "The Tale of Genji": "in"]
         settings.datasetNameToUnitInFirstLocalFile = ["The Tale of Genji": "in"]

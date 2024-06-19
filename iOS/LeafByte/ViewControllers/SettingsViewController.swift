@@ -241,7 +241,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         registerForKeyboardNotifications()
 
         // Make sure touch events aren't intercepted by the scroll view.
-        let recog = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissInput))
+        let recog = UITapGestureRecognizer(target: self, action: #selector(Self.dismissInput))
         recog.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(recog)
 
@@ -267,6 +267,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
     override func viewWillDisappear(_ animated: Bool) {
         deregisterFromKeyboardNotifications()
+        super.viewWillDisappear(animated)
     }
 
     // If a user taps outside of the keyboard, close the keyboard.

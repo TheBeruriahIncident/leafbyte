@@ -162,7 +162,7 @@ final class Settings: NSObject, NSCoding {
 
     func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
         try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
-        NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
+        NSKeyedArchiver.archiveRootObject(self, toFile: Self.getSettingsFile(fromContainingFolder: serializedLocation))
     }
 
     func getGoogleFolderId(userId: String) -> String? {
@@ -178,7 +178,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     func getUnit() -> String {
-        datasetNameToUnit[datasetName] ?? Settings.defaultUnit
+        datasetNameToUnit[datasetName] ?? Self.defaultUnit
     }
 
     func getLocalFilename() -> String {
@@ -212,7 +212,7 @@ final class Settings: NSObject, NSCoding {
     func initializeNextSampleNumberIfNeeded() -> Int {
         let nextSampleNumber = datasetNameToNextSampleNumber[datasetName]
         if nextSampleNumber == nil {
-            datasetNameToNextSampleNumber[datasetName] = Settings.defaultNextSampleNumber
+            datasetNameToNextSampleNumber[datasetName] = Self.defaultNextSampleNumber
         }
 
         return datasetNameToNextSampleNumber[datasetName]!
@@ -245,7 +245,7 @@ final class Settings: NSObject, NSCoding {
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
         let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
         if deserializedData == nil {
-            return Settings()
+            return Self()
         }
 
         return deserializedData!

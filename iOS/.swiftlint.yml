@@ -31,7 +31,6 @@ opt_in_rules:
   - discarded_notification_center_observer
   - discouraged_assert
   - discouraged_none_name
-  - discouraged_object_literal
   - empty_collection_literal
   - empty_count
   - empty_string
@@ -40,7 +39,6 @@ opt_in_rules:
   - expiring_todo
   - explicit_enum_raw_value
   - explicit_init
-  - extension_access_modifier
   - fallthrough
   - fatal_error_message
   - file_name_no_space
@@ -62,27 +60,23 @@ opt_in_rules:
   - lower_acl_than_parent
   - modifier_order
   - multiline_function_chains
-#  - multiline_literal_brackets
-#  - multiline_parameters
-#  - multiline_parameters_brackets
-#  - nimble_operator
-#  - no_extension_access_modifier
-#  - no_grouping_extension
+  - multiline_parameters
+  - nimble_operator
+  - no_extension_access_modifier
+  - no_grouping_extension
 #  - no_magic_numbers
-#  - non_overridable_class_declaration
+  - non_overridable_class_declaration
 #  - nslocalizedstring_key
 #  - nslocalizedstring_require_bundle
-#  - number_separator
-#  - object_literal
-#  - one_declaration_per_file
-#  - operator_usage_whitespace
-#  - optional_enum_case_matching
-#  - overridden_super_call
-#  - override_in_extension
-#  - pattern_matching_keywords
-#  - period_spacing
-#  - prefer_nimble
-#  - prefer_self_in_static_references
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - optional_enum_case_matching
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - period_spacing
+  - prefer_self_in_static_references
 #  - prefer_self_type_over_type_of_self
 #  - prefer_zero_over_explicit_init
 #  - prefixed_toplevel_constant

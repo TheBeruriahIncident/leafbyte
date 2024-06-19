@@ -214,7 +214,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
         let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
-        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10000)
+        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10_000)
         if visiblePixel == nil {
             return
         }
@@ -315,7 +315,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        let farthestPoint1: CGPoint!  = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
+        let farthestPoint1: CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
         // If either farthest point is too far away, we get nil.
         // This allows us to discard objects that are too large and are unlikely to be the scale.
         if farthestPoint1 == nil {
@@ -368,7 +368,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
         let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)
-        let sizeToAdjustTo = min(1200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
+        let sizeToAdjustTo = min(1_200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
         guard let cgImage = ciToCgImage(imageInsideScaleMarks) else {
             return nil
         }

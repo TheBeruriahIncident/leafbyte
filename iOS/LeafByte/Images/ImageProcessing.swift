@@ -43,7 +43,7 @@ func getLumaHistogram(image: CGImage) -> [Int] {
 
     // Our matrix can only have integers, but this is accomodated for by having a post-divisor applied to the result of the multiplication.
     // As such, we're actually doing luma = RGB * [299, 587, 114]' / 1000 .
-    let divisor: Int32 = 1000
+    let divisor: Int32 = 1_000
     vImageMatrixMultiply_ARGB8888(&initialVImage, &lumaVImage, matrix, divisor, nil, nil, UInt32(kvImageNoFlags))
 
     // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
