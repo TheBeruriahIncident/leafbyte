@@ -328,7 +328,8 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     // MARK: - Helpers
 
     // @objc to allow calling as a Selector.
-    @objc private func dismissInput() {
+    @objc
+    private func dismissInput() {
         previousDatasetPicker.isHidden = true
         unitPicker.isHidden = true
         self.view.endEditing(true)
@@ -397,7 +398,8 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
 
     // When the keyboard is to be shown, slide the view up if the keyboard would cover the text field being edited.
-    @objc func keyboardWasShown(notification: NSNotification) {
+    @objc
+    func keyboardWasShown(notification: NSNotification) {
         var visibleFrame = self.view.frame
 
         // The visible frame is covered partially by the status bar, the nav bar, and the keyboard.

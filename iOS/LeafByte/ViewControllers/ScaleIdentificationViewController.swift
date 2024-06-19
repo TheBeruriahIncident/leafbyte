@@ -385,7 +385,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    @objc func deviceRotated() {
+    @objc
+    func deviceRotated() {
         fixContentSize()
     }
 

@@ -745,7 +745,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    @objc func deviceRotated() {
+    @objc
+    func deviceRotated() {
         fixContentSize()
     }
 
