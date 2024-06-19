@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -15,7 +15,6 @@
 			dependencies = (
 			);
 			name = SwiftLint;
-			productName = SwiftLint;
 		};
 /* End PBXAggregateTarget section */
 
@@ -211,11 +210,11 @@
 		3541ECEBE413B1269C05A3D2103A91F8 /* OIDResponseTypes.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDResponseTypes.m; path = Sources/AppAuthCore/OIDResponseTypes.m; sourceTree = "<group>"; };
 		362CFCB87E7B4832E3D0AA2A205AF2C1 /* AppAuth.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppAuth.debug.xcconfig; sourceTree = "<group>"; };
 		3742A9FE3C8E0664E3D22C14CDAE0862 /* OIDAuthState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDAuthState.h; path = Sources/AppAuthCore/OIDAuthState.h; sourceTree = "<group>"; };
-		3FD1B4C1246D643E9476438C28048FA8 /* libAppAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FD1B4C1246D643E9476438C28048FA8 /* AppAuth */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = AppAuth; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4573980AE1F68853C68C592314693860 /* OIDURLSessionProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDURLSessionProvider.m; path = Sources/AppAuthCore/OIDURLSessionProvider.m; sourceTree = "<group>"; };
 		4EE9012B983428B41E8B5A0B5263976A /* OIDEndSessionResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDEndSessionResponse.m; path = Sources/AppAuthCore/OIDEndSessionResponse.m; sourceTree = "<group>"; };
 		4FAE71D1A7AB451661CF501B6C7B48E0 /* OIDIDToken.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDIDToken.h; path = Sources/AppAuthCore/OIDIDToken.h; sourceTree = "<group>"; };
-		50BEE4DBC725D4D291B5C9611D0D5B31 /* libAppAuth-Core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50BEE4DBC725D4D291B5C9611D0D5B31 /* AppAuth-Core */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "AppAuth-Core"; path = "libAppAuth-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5238F4C4A2728646EB1C827BAEA5BCAD /* OIDTokenUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDTokenUtilities.m; path = Sources/AppAuthCore/OIDTokenUtilities.m; sourceTree = "<group>"; };
 		57CD14037215DC0EC91C4C4A05024A8D /* OIDExternalUserAgentIOSCustomBrowser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDExternalUserAgentIOSCustomBrowser.h; path = Sources/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.h; sourceTree = "<group>"; };
 		5B8BB534CBDA97F613D93F3E8284C87A /* OIDAuthStateErrorDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDAuthStateErrorDelegate.h; path = Sources/AppAuthCore/OIDAuthStateErrorDelegate.h; sourceTree = "<group>"; };
@@ -236,19 +235,19 @@
 		7D650050D7250E89B4736EB4B33EA236 /* OIDAuthStateChangeDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDAuthStateChangeDelegate.h; path = Sources/AppAuthCore/OIDAuthStateChangeDelegate.h; sourceTree = "<group>"; };
 		831E264ABEB6DCB27061EEB1E5A1CD6D /* OIDDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDDefines.h; path = Sources/AppAuthCore/OIDDefines.h; sourceTree = "<group>"; };
 		8453F85338B5392939856E49A6A8FE5A /* AppAuth-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AppAuth-dummy.m"; sourceTree = "<group>"; };
-		850F76329BFDE253071A514B340D6A94 /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		850F76329BFDE253071A514B340D6A94 /* Pods-LeafByte */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-LeafByte"; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86865D8E5B2B041DEAE7F50C79B3B697 /* OIDGrantTypes.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDGrantTypes.m; path = Sources/AppAuthCore/OIDGrantTypes.m; sourceTree = "<group>"; };
 		904CFF7F574676630FB9325ABE279246 /* OIDExternalUserAgentIOS.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDExternalUserAgentIOS.h; path = Sources/AppAuth/iOS/OIDExternalUserAgentIOS.h; sourceTree = "<group>"; };
 		93A96E4052243014CF404A385AAC6970 /* Pods-LeafByte-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LeafByte-dummy.m"; sourceTree = "<group>"; };
 		964679F2CF4DB37BA45F4571676F91E5 /* OIDTokenResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDTokenResponse.h; path = Sources/AppAuthCore/OIDTokenResponse.h; sourceTree = "<group>"; };
 		9777F79E3A90F256ACD8A5976DA2F9BF /* OIDGrantTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDGrantTypes.h; path = Sources/AppAuthCore/OIDGrantTypes.h; sourceTree = "<group>"; };
 		9CD6A17B8FF2955EA41C102F676F719F /* AppAuth-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "AppAuth-Core.debug.xcconfig"; path = "../AppAuth-Core/AppAuth-Core.debug.xcconfig"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A35AF0CD10C79AF586B35BB4188C1C3F /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthorizationService+IOS.m"; path = "Sources/AppAuth/iOS/OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
 		A591162DA643623BEA35568063CE901A /* OIDErrorUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDErrorUtilities.h; path = Sources/AppAuthCore/OIDErrorUtilities.h; sourceTree = "<group>"; };
 		A5B517E41EC49D7E5F67726B319AB8B2 /* ResourceBundle-AppAuthCore_Privacy-AppAuth-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-AppAuthCore_Privacy-AppAuth-Info.plist"; sourceTree = "<group>"; };
 		A976CF4C96C1A194732C891CB9D8AF47 /* OIDResponseTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDResponseTypes.h; path = Sources/AppAuthCore/OIDResponseTypes.h; sourceTree = "<group>"; };
-		AC48E44F8819B3AA8CFAB9A80849895E /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC48E44F8819B3AA8CFAB9A80849895E /* Pods-LeafByteTests */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-LeafByteTests"; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD5F6608537C1D3C165F6C6C36FBB3E0 /* Pods-LeafByte-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LeafByte-resources.sh"; sourceTree = "<group>"; };
 		AD9E486A0FCD3DDACF80EF0325E096B9 /* OIDAuthState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDAuthState.m; path = Sources/AppAuthCore/OIDAuthState.m; sourceTree = "<group>"; };
 		ADF5FAF9545BC0805156DA9C774719ED /* OIDScopes.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDScopes.m; path = Sources/AppAuthCore/OIDScopes.m; sourceTree = "<group>"; };
@@ -263,7 +262,7 @@
 		BF157FE69DE8C1B01C6044CE372610B9 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		C022030893F57AFCC105DF41332536F3 /* AppAuth-Core.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; name = "AppAuth-Core.modulemap"; path = "../AppAuth-Core/AppAuth-Core.modulemap"; sourceTree = "<group>"; };
 		C3C58138E9572D1C2E97FEB931D890D2 /* OIDURLQueryComponent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDURLQueryComponent.h; path = Sources/AppAuthCore/OIDURLQueryComponent.h; sourceTree = "<group>"; };
-		C5624DEF4EA0DAF67E840C7C099F66CE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/AppAuthCore/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C5624DEF4EA0DAF67E840C7C099F66CE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/AppAuthCore/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C6AD7DD3AE3A1D6570C942A71126EAEC /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
 		CBCA04F728B1DF071DEDEE08D8CB7776 /* OIDEndSessionRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDEndSessionRequest.h; path = Sources/AppAuthCore/OIDEndSessionRequest.h; sourceTree = "<group>"; };
 		CCB6175A58F62224587010A513829830 /* SwiftLint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftLint.release.xcconfig; sourceTree = "<group>"; };
@@ -283,14 +282,14 @@
 		E3736210D8EFB4E9E0862B20A3DFAD07 /* OIDTokenRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDTokenRequest.h; path = Sources/AppAuthCore/OIDTokenRequest.h; sourceTree = "<group>"; };
 		E9EE574006B22ACCFBCCBD1E2B72895E /* AppAuth.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppAuth.release.xcconfig; sourceTree = "<group>"; };
 		EE7E56B1DC91648A83764A4A923D6FDE /* AppAuth-Core-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "AppAuth-Core-dummy.m"; path = "../AppAuth-Core/AppAuth-Core-dummy.m"; sourceTree = "<group>"; };
-		EF9852680BCD6EC8B15F622B5B92A838 /* AppAuthCore_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthCore_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF9852680BCD6EC8B15F622B5B92A838 /* AppAuth-AppAuthCore_Privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AppAuth-AppAuthCore_Privacy"; path = AppAuthCore_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFF65664C978E4915060EC7931F8EA3E /* Pods-LeafByteTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LeafByteTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0A5B937F69E0354E69D9AA4D5285A69 /* OIDServiceConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDServiceConfiguration.h; path = Sources/AppAuthCore/OIDServiceConfiguration.h; sourceTree = "<group>"; };
 		F0BF896EEFA34257782184553BF4C104 /* OIDRegistrationResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDRegistrationResponse.m; path = Sources/AppAuthCore/OIDRegistrationResponse.m; sourceTree = "<group>"; };
 		F11E72C62CCF54B4EF8AA146F9AD3183 /* ResourceBundle-AppAuthCore_Privacy-AppAuth-Core-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "ResourceBundle-AppAuthCore_Privacy-AppAuth-Core-Info.plist"; path = "../AppAuth-Core/ResourceBundle-AppAuthCore_Privacy-AppAuth-Core-Info.plist"; sourceTree = "<group>"; };
 		F1688DFA5BC6FA8737FC5796F663BE8A /* OIDEndSessionRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDEndSessionRequest.m; path = Sources/AppAuthCore/OIDEndSessionRequest.m; sourceTree = "<group>"; };
 		F193806C7749D9E3E220C4194C00B7F8 /* OIDAuthorizationResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OIDAuthorizationResponse.h; path = Sources/AppAuthCore/OIDAuthorizationResponse.h; sourceTree = "<group>"; };
-		F46CAB9C5836643EFDC74174DB8566B2 /* AppAuthCore_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthCore_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		F46CAB9C5836643EFDC74174DB8566B2 /* AppAuth-Core-AppAuthCore_Privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AppAuth-Core-AppAuthCore_Privacy"; path = AppAuthCore_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF3C904824AA5C57C9BB270D34345C93 /* OIDAuthorizationRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OIDAuthorizationRequest.m; path = Sources/AppAuthCore/OIDAuthorizationRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -357,12 +356,12 @@
 		0C83601BA342D31322A78D99C6D3323D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3FD1B4C1246D643E9476438C28048FA8 /* libAppAuth.a */,
-				EF9852680BCD6EC8B15F622B5B92A838 /* AppAuthCore_Privacy.bundle */,
-				50BEE4DBC725D4D291B5C9611D0D5B31 /* libAppAuth-Core.a */,
-				F46CAB9C5836643EFDC74174DB8566B2 /* AppAuthCore_Privacy.bundle */,
-				850F76329BFDE253071A514B340D6A94 /* libPods-LeafByte.a */,
-				AC48E44F8819B3AA8CFAB9A80849895E /* libPods-LeafByteTests.a */,
+				3FD1B4C1246D643E9476438C28048FA8 /* AppAuth */,
+				EF9852680BCD6EC8B15F622B5B92A838 /* AppAuth-AppAuthCore_Privacy */,
+				50BEE4DBC725D4D291B5C9611D0D5B31 /* AppAuth-Core */,
+				F46CAB9C5836643EFDC74174DB8566B2 /* AppAuth-Core-AppAuthCore_Privacy */,
+				850F76329BFDE253071A514B340D6A94 /* Pods-LeafByte */,
+				AC48E44F8819B3AA8CFAB9A80849895E /* Pods-LeafByteTests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -404,6 +403,7 @@
 			children = (
 				494886FA1DA1AB2829DA4FAFB7965367 /* Support Files */,
 			);
+			name = SwiftLint;
 			path = SwiftLint;
 			sourceTree = "<group>";
 		};
@@ -414,6 +414,7 @@
 				1982B6513DCAA9D23464B84BFD11CB60 /* ExternalUserAgent */,
 				D4BEF01DEDFDF64467602D1ABCC180E1 /* Support Files */,
 			);
+			name = AppAuth;
 			path = AppAuth;
 			sourceTree = "<group>";
 		};
@@ -674,7 +675,7 @@
 			);
 			name = "AppAuth-AppAuthCore_Privacy";
 			productName = AppAuthCore_Privacy;
-			productReference = EF9852680BCD6EC8B15F622B5B92A838 /* AppAuthCore_Privacy.bundle */;
+			productReference = EF9852680BCD6EC8B15F622B5B92A838 /* AppAuth-AppAuthCore_Privacy */;
 			productType = "com.apple.product-type.bundle";
 		};
 		489C7ABF62FB169FAB64FF05AEC2026A /* Pods-LeafByte */ = {
@@ -693,7 +694,7 @@
 			);
 			name = "Pods-LeafByte";
 			productName = "Pods-LeafByte";
-			productReference = 850F76329BFDE253071A514B340D6A94 /* libPods-LeafByte.a */;
+			productReference = 850F76329BFDE253071A514B340D6A94 /* Pods-LeafByte */;
 			productType = "com.apple.product-type.library.static";
 		};
 		5C642AA10FB29936669CC269F42079C6 /* AppAuth */ = {
@@ -711,7 +712,7 @@
 			);
 			name = AppAuth;
 			productName = AppAuth;
-			productReference = 3FD1B4C1246D643E9476438C28048FA8 /* libAppAuth.a */;
+			productReference = 3FD1B4C1246D643E9476438C28048FA8 /* AppAuth */;
 			productType = "com.apple.product-type.library.static";
 		};
 		B764C173339E8122C701BAB957E1B4FB /* AppAuth-Core */ = {
@@ -729,7 +730,7 @@
 			);
 			name = "AppAuth-Core";
 			productName = "AppAuth-Core";
-			productReference = 50BEE4DBC725D4D291B5C9611D0D5B31 /* libAppAuth-Core.a */;
+			productReference = 50BEE4DBC725D4D291B5C9611D0D5B31 /* AppAuth-Core */;
 			productType = "com.apple.product-type.library.static";
 		};
 		C3D5E9856921654F03F29A21E98841F3 /* AppAuth-Core-AppAuthCore_Privacy */ = {
@@ -746,7 +747,7 @@
 			);
 			name = "AppAuth-Core-AppAuthCore_Privacy";
 			productName = AppAuthCore_Privacy;
-			productReference = F46CAB9C5836643EFDC74174DB8566B2 /* AppAuthCore_Privacy.bundle */;
+			productReference = F46CAB9C5836643EFDC74174DB8566B2 /* AppAuth-Core-AppAuthCore_Privacy */;
 			productType = "com.apple.product-type.bundle";
 		};
 		D417F41AB9B1E3B711CC656298843176 /* Pods-LeafByteTests */ = {
@@ -764,7 +765,7 @@
 			);
 			name = "Pods-LeafByteTests";
 			productName = "Pods-LeafByteTests";
-			productReference = AC48E44F8819B3AA8CFAB9A80849895E /* libPods-LeafByteTests.a */;
+			productReference = AC48E44F8819B3AA8CFAB9A80849895E /* Pods-LeafByteTests */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -773,9 +774,8 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1500;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 8.0";
@@ -962,11 +962,9 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppAuth";
-				ENABLE_MODULE_VERIFIER = YES;
 				IBSC_MODULE = AppAuth;
 				INFOPLIST_FILE = "Target Support Files/AppAuth/ResourceBundle-AppAuthCore_Privacy-AppAuth-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = AppAuthCore_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1010,11 +1008,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1035,6 +1031,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1070,11 +1067,9 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				ENABLE_MODULE_VERIFIER = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/AppAuth/AppAuth-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = Headers/Public/AppAuth/AppAuth.modulemap;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -1096,11 +1091,9 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppAuth-Core";
-				ENABLE_MODULE_VERIFIER = YES;
 				IBSC_MODULE = AppAuth;
 				INFOPLIST_FILE = "Target Support Files/AppAuth-Core/ResourceBundle-AppAuthCore_Privacy-AppAuth-Core-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = AppAuthCore_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1116,11 +1109,9 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				ENABLE_MODULE_VERIFIER = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/AppAuth-Core/AppAuth-Core-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = "Headers/Public/AppAuth/AppAuth-Core.modulemap";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -1143,11 +1134,9 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				ENABLE_MODULE_VERIFIER = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/AppAuth/AppAuth-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = Headers/Public/AppAuth/AppAuth.modulemap;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -1210,11 +1199,9 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				ENABLE_MODULE_VERIFIER = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/AppAuth-Core/AppAuth-Core-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = "Headers/Public/AppAuth/AppAuth-Core.modulemap";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -1236,10 +1223,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1252,11 +1236,9 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppAuth-Core";
-				ENABLE_MODULE_VERIFIER = YES;
 				IBSC_MODULE = AppAuth;
 				INFOPLIST_FILE = "Target Support Files/AppAuth-Core/ResourceBundle-AppAuthCore_Privacy-AppAuth-Core-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = AppAuthCore_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1300,11 +1282,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1321,6 +1301,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -1355,10 +1336,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1370,11 +1348,9 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppAuth";
-				ENABLE_MODULE_VERIFIER = YES;
 				IBSC_MODULE = AppAuth;
 				INFOPLIST_FILE = "Target Support Files/AppAuth/ResourceBundle-AppAuthCore_Privacy-AppAuth-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = AppAuthCore_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
