@@ -11,12 +11,12 @@
 // This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .
 final class UnionFind {
     var classToElements = [Int: Set<Int>]()
-    
+
     private var elementToSubset = [Int: Int]()
     private var subsetToParentSubset = [Int]()
     // This is only accurate for the top parent in a tree. It's used to help keep the trees balanced.
     private var subsetToSize = [Int]()
-    
+
     func createSubsetWith(_ element: Int) {
         let subsetIndex = subsetToParentSubset.count
         elementToSubset[element] = subsetIndex
@@ -24,7 +24,7 @@ final class UnionFind {
         subsetToSize.append(1)
         classToElements[subsetIndex] = [element]
     }
-    
+
     func getElementsInClassWith(_ element: Int) -> Set<Int>? {
         if let elementClass = getClassOf(element) {
             return classToElements[elementClass]
@@ -32,7 +32,7 @@ final class UnionFind {
             return nil
         }
     }
-    
+
     func getClassOf(_ element: Int) -> Int? {
         if let indexOfElement = elementToSubset[element] {
             return getClassBySubset(indexOfElement)
@@ -40,7 +40,7 @@ final class UnionFind {
             return nil
         }
     }
-    
+
     // Note that the smaller set becomes a parent of the larger set to help keep balance.
     func combineClassesContaining(_ firstElement: Int, and secondElement: Int) {
         if let firstSet = getClassOf(firstElement), let secondSet = getClassOf(secondElement) {
@@ -54,7 +54,7 @@ final class UnionFind {
                     smallerSet = secondSet
                     largerSet = firstSet
                 }
-                
+
                 subsetToParentSubset[smallerSet] = largerSet
                 subsetToSize[largerSet] += subsetToSize[smallerSet]
                 classToElements[largerSet]!.formUnion(classToElements[smallerSet]!)
@@ -62,7 +62,7 @@ final class UnionFind {
             }
         }
     }
-    
+
     func checkIfSameClass(_ firstElement: Int, and secondElement: Int) -> Bool {
         if let firstSet = getClassOf(firstElement), let secondSet = getClassOf(secondElement) {
             return firstSet == secondSet
@@ -70,7 +70,7 @@ final class UnionFind {
             return false
         }
     }
-    
+
     // This helper incidentally compresses the path from subset to class.
     private func getClassBySubset(_ index: Int) -> Int {
         if index != subsetToParentSubset[index] {

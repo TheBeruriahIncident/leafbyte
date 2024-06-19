@@ -11,9 +11,9 @@
 final class LayeredIndexableImage {
     let width: Int
     let height: Int
-    
+
     var images = [IndexableImage]()
-    
+
     init(width: Int, height: Int) {
         self.width = width
         self.height = height
@@ -22,11 +22,11 @@ final class LayeredIndexableImage {
     func addImage(_ image: IndexableImage) {
         images.append(image)
     }
-    
+
     func getPixel(x: Int, y: Int) -> Bool {
         return getLayerWithPixel(x: x, y: y) > -1
     }
-    
+
     // Finds the first image layer which is true, or -1 if no layers are true.
     func getLayerWithPixel(x: Int, y: Int) -> Int {
         for (index, image) in images.enumerated() {
@@ -34,10 +34,10 @@ final class LayeredIndexableImage {
                 return index
             }
         }
-        
+
         return -1
     }
-    
+
     // Useful for debugging: prints the image to the console as 1s and 0s, supporting different modes of what pixels become 1s vs 0s.
     func printInBinary() {
         for y in 0...height - 1 {

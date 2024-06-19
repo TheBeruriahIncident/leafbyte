@@ -13,18 +13,18 @@ import UIKit
 final class GpsManager: UIViewController, CLLocationManagerDelegate {
     // This is a static variable so that it doesn't get garbage collected before the callback ( https://en.wikipedia.org/wiki/Garbage_collection_(computer_science) ).
     static let gpsManager = GpsManager()
-    
+
     let clLocationManager = CLLocationManager()
-    
+
     var onLocation: ((_ location: CLLocation) -> Void)!
     var onError: ((_ error: Error) -> Void)!
-    
+
     static func requestLocation(onLocation: @escaping (_ location: CLLocation) -> Void, onError: @escaping (_ error: Error) -> Void) {
         gpsManager.onLocation = onLocation
         gpsManager.onError = onError
         gpsManager.requestLocation()
     }
-    
+
     func requestLocation() {
         clLocationManager.requestWhenInUseAuthorization()
         // Best accuracy is tempting, but that takes ~5 seconds per request, as opposed to nearly instantaneous.
@@ -32,11 +32,11 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
         clLocationManager.delegate = self
         clLocationManager.requestLocation()
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         onLocation(locations.first!)
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         onError(error)
     }

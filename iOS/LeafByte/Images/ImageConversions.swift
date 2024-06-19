@@ -29,14 +29,14 @@ func ciToCgImage(_ ciImage: CIImage) -> CGImage? {
     //     return ciImage.cgImage!
     // }
     // But it turns out that this gives you a downsampled version.
-    
+
     return context.createCGImage(ciImage, from: ciImage.extent)
 }
 
 // Convert a Core Image image to a UI image.
 func ciToUiImage(_ ciImage: CIImage) -> UIImage? {
     // UIImage(ciImage: ciImage) seems obvious, but it stretches the image.
-    
+
     guard let cgImage = ciToCgImage(ciImage) else {
         return nil
     }
@@ -50,7 +50,7 @@ func uiToCgImage(_ uiImage: UIImage) -> CGImage? {
     //     return uiImage.cgImage!
     // }
     // But it turns out that this gives you a downsampled version.
-    
+
     guard let ciImage = uiToCiImage(uiImage) else {
         return nil
     }
@@ -62,6 +62,6 @@ func uiToCiImage(_ uiImage: UIImage) -> CIImage? {
     if uiImage.ciImage != nil {
        return uiImage.ciImage!
     }
-    
+
     return CIImage(image: uiImage)
 }

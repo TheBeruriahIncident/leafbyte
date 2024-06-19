@@ -15,13 +15,13 @@ final class Settings: NSObject, NSCoding {
     static let defaultNextSampleNumber = 1
     static let defaultScaleMarkLength = 10.0
     static let defaultUnit = "cm"
-    
+
     enum SaveLocation: String {
         case none = "none"
         case local = "local"
         case googleDrive = "googleDrive"
     }
-    
+
     private struct PropertyKey {
         // Keeping this string for back-compat.
         static let dataSaveLocation = "measurementSaveLocation"
@@ -40,7 +40,7 @@ final class Settings: NSObject, NSCoding {
         static let useBlackBackground = "useBlackBackground"
         static let userIdToTopLevelGoogleFolderId = "userIdToTopLevelGoogleFolderId"
     }
-    
+
     var dataSaveLocation = SaveLocation.local
     var datasetName = Settings.defaultDatasetName
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
@@ -60,9 +60,9 @@ final class Settings: NSObject, NSCoding {
     var userIdToTopLevelGoogleFolderId = [String: String]()
 
     required override init() {}
-    
+
     // MARK: - NSCoding
-    
+
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
         if let dataSaveLocation = decoder.decodeObject(forKey: PropertyKey.dataSaveLocation) as? String {
@@ -112,7 +112,7 @@ final class Settings: NSObject, NSCoding {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
         }
     }
-    
+
     // This defines how to serialize (how to save a Settings to disk).
     func encode(with coder: NSCoder) {
         coder.encode(dataSaveLocation.rawValue, forKey: PropertyKey.dataSaveLocation)
@@ -131,14 +131,14 @@ final class Settings: NSObject, NSCoding {
         coder.encode(useBlackBackground, forKey: PropertyKey.useBlackBackground)
         coder.encode(userIdToTopLevelGoogleFolderId, forKey: PropertyKey.userIdToTopLevelGoogleFolderId)
     }
-    
+
     // MARK: - NSObject
-    
+
     override func isEqual(_ other: Any?) -> Bool {
         guard let other = other as? Settings else {
             return false
         }
-        
+
         return dataSaveLocation == other.dataSaveLocation
             && datasetName == other.datasetName
             && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
@@ -154,100 +154,100 @@ final class Settings: NSObject, NSCoding {
             && useBlackBackground == other.useBlackBackground
             && userIdToTopLevelGoogleFolderId == other.userIdToTopLevelGoogleFolderId
     }
-    
+
     // MARK: - Helpers
-    
+
     func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
         try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
         NSKeyedArchiver.archiveRootObject(self, toFile: Settings.getSettingsFile(fromContainingFolder: serializedLocation))
     }
-    
+
     func getGoogleFolderId(userId: String) -> String? {
         return datasetNameToUserIdToGoogleFolderId[datasetName]?[userId]
     }
-    
+
     func getGoogleSpreadsheetId(userId: String) -> String? {
         return datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]?[getUnit()]?[userId]
     }
-    
+
     func getTopLevelGoogleFolderId(userId: String) -> String? {
         return userIdToTopLevelGoogleFolderId[userId]
     }
-    
+
     func getUnit() -> String {
         return datasetNameToUnit[datasetName] ?? Settings.defaultUnit
     }
-    
+
     func getLocalFilename() -> String {
         if datasetNameToUnitInFirstLocalFile[datasetName] == nil || datasetNameToUnitInFirstLocalFile[datasetName] == getUnit() {
             datasetNameToUnitInFirstLocalFile[datasetName] = getUnit()
             return datasetName
         }
-        
+
         return datasetName + " [" + getUnit() + "]"
     }
-    
+
     func getNextSampleNumber() -> Int {
         return datasetNameToNextSampleNumber[datasetName]!
     }
-    
+
     func noteDatasetUsed() {
         datasetNameToEpochTimeOfLastUse[datasetName] = Int(Date().timeIntervalSince1970)
     }
-    
+
     func getPreviousDatasetNames() -> [String] {
         // Order the previously used datasets by most recently used, then put the current dataset name first on the list.
         var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted(by: { $0.1 > $1.1 }).map({ $0.key }).filter({ $0 != datasetName })
         previousDatasets.insert(datasetName, at: 0)
         return previousDatasets
     }
-    
+
     func incrementNextSampleNumber() {
         return datasetNameToNextSampleNumber[datasetName]! += 1
     }
-    
+
     func initializeNextSampleNumberIfNeeded() -> Int {
         let nextSampleNumber = datasetNameToNextSampleNumber[datasetName]
         if nextSampleNumber == nil {
             datasetNameToNextSampleNumber[datasetName] = Settings.defaultNextSampleNumber
         }
-        
+
         return datasetNameToNextSampleNumber[datasetName]!
     }
-    
+
     func setGoogleFolderId(userId: String, googleFolderId: String?) {
         if datasetNameToUserIdToGoogleFolderId[datasetName] == nil {
             datasetNameToUserIdToGoogleFolderId[datasetName] = [String: String]()
         }
-        
+
         datasetNameToUserIdToGoogleFolderId[datasetName]![userId] = googleFolderId
     }
-    
+
     func setGoogleSpreadsheetId(userId: String, googleSpreadsheetId: String?) {
         if datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName] == nil {
             datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName] = [String: [String: String]]()
         }
-        
+
         if datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] == nil {
             datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] = [String: String]()
         }
-        
+
         datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()]![userId] = googleSpreadsheetId
     }
-    
+
     func setTopLevelGoogleFolderId(userId: String, topLevelGoogleFolderId: String?) {
         userIdToTopLevelGoogleFolderId[userId] = topLevelGoogleFolderId
     }
-    
+
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
         let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
         if deserializedData == nil {
             return Settings()
         }
-        
+
         return deserializedData!
     }
-    
+
     private static func getSettingsFile(fromContainingFolder folder: URL) -> String {
         return folder.appendingPathComponent("settings").path
     }

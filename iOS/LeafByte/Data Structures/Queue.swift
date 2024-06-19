@@ -14,20 +14,20 @@ import CoreGraphics
 public struct Queue {
     private var array = [CGPoint?]()
     private var head = 0
-    
+
     public var isEmpty: Bool {
         return array.count - head == 0
     }
-    
+
     public mutating func enqueue(_ point: CGPoint) {
         array.append(point)
     }
-    
+
     public mutating func dequeue() -> CGPoint? {
         guard head < array.count, let point = array[head] else {
             return nil
         }
-        
+
         array[head] = nil
         head += 1
 
@@ -37,7 +37,7 @@ public struct Queue {
             array.removeFirst(head)
             head = 0
         }
-        
+
         return point
     }
 }

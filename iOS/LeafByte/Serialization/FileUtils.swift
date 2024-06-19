@@ -20,7 +20,7 @@ func getUrlForVisibleFolder(named folderName: String) -> URL {
     if !FileManager().fileExists(atPath: url.path) {
         try! FileManager().createDirectory(at: url, withIntermediateDirectories: false)
     }
-    
+
     return url
 }
 
@@ -39,7 +39,7 @@ func appendToFile(_ url: URL, data: Data) {
     defer {
         fileHandle.closeFile()
     }
-    
+
     fileHandle.seekToEndOfFile()
     fileHandle.write(data)
 }

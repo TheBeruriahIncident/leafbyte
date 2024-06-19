@@ -26,7 +26,7 @@ func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: I
         space: image.colorSpace!,
         bitmapInfo: image.bitmapInfo.rawValue)!
     context.interpolationQuality = .high
-    
+
     context.draw(image, in: CGRect(origin: CGPoint.zero, size: CGSize(width: x, height: y)))
     return context.makeImage()!
 }
@@ -46,20 +46,20 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     if image.imageOrientation == .up && image.size.width <= newBounds.width && image.size.height <= newBounds.height {
         return cgImage
     }
-    
+
     // Find the resizing ratio that maintains the aspect ratio.
     let resizingRatioForWidth = newBounds.width / image.size.width
     let resizingRatioForHeight = newBounds.height / image.size.height
     let uncappedResizingRatio = min(resizingRatioForWidth, resizingRatioForHeight)
     // Make sure we don't scale up.
     let resizingRatio = min(uncappedResizingRatio, 1)
-    
+
     // Calculate the new image size.
     let newWidth = image.size.width * resizingRatio
     let newHeight = image.size.height * resizingRatio
     let newWidthRoundedDown = roundToInt(newWidth, rule: .down)
     let newHeightRoundedDown = roundToInt(newHeight, rule: .down)
-    
+
     // Create the context to draw into.
     var maybeContext = CGContext(
         data: nil,
@@ -69,7 +69,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
         bytesPerRow: 0,
         space: cgImage.colorSpace!,
         bitmapInfo: cgImage.bitmapInfo.rawValue)
-    
+
     // This is an awful hack that I'd love to improve. Sometimes the context isn't created (the initializer returns nil).
     // I can't figure why, but it seems to be that the initializer succceeds when the bitmap info is 1, 2, 5, or 6.
     // I can't find documentation for the bitmap info or why the initializer would fail.
@@ -81,7 +81,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
         if i == 32 {
             fatalError("Context could not be created")
         }
-        
+
         maybeContext = CGContext(
             data: nil,
             width: newWidthRoundedDown,
@@ -92,14 +92,14 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
             bitmapInfo: i)
         i += 1
     }
-    
+
     let context = maybeContext!
     context.interpolationQuality = .high
-    
+
     // Consider the orientation of the original image, and rotate/flip as appropriate for the result to be right-side up.
     let transform = getTransformToCorrectUIImage(withOrientation: image.imageOrientation, intoWidth: newWidth, andHeight: newHeight)
     context.concatenate(transform)
-    
+
     // Actually draw into the context, transposing if need be.
     var drawTransposed: Bool!
     switch (image.imageOrientation) {
@@ -111,14 +111,14 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size:
         CGSize(width: drawTransposed ? newHeight : newWidth,
                height: drawTransposed ? newWidth : newHeight)))
-    
+
     return context.makeImage()!
 }
 
 // A UIImage can have various orientations that must be corrected for. This was adapted from http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ .
 private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.Orientation, intoWidth width: CGFloat, andHeight height: CGFloat) -> CGAffineTransform {
     var transform = CGAffineTransform.identity
-    
+
     // Account for direction by rotating (the translations move the rotated image back "into frame").
     switch (orientation) {
     case .down, .downMirrored:
@@ -130,7 +130,7 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     default:
         ()
     }
-    
+
     // Account for mirroring by flipping (the translations again move the flipped image back "into frame").
     switch (orientation) {
     case .upMirrored, .downMirrored:
@@ -140,7 +140,7 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     default:
         ()
     }
-    
+
     return transform
 }
 
@@ -148,12 +148,12 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     // Size the canvas to the first image (which is assumed to be the same as the rest).
     UIGraphicsBeginImageContext(imageViews[0].image!.size)
-    
+
     // Draw each image into the canvas.
     for imageView in imageViews {
         imageView.image!.draw(at: CGPoint.zero)
     }
-    
+
     let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return combinedImage
@@ -163,17 +163,17 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
     // Find the center as the average of the corners.
     let centerSum = corners.reduce(CGPoint.zero, { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) })
     let center = CGPoint(x: centerSum.x / 4, y: centerSum.y / 4)
-    
+
     // Determine the angle from corner to the center.
     let cornersAndAngles = corners.map { corner -> (CGPoint, CGFloat) in
         let distanceFromCenter = (corner.x - center.x, corner.y - center.y)
         let angle = atan2(distanceFromCenter.1, distanceFromCenter.0)
         return (corner, angle)
     }
-    
+
     // Sort the corners into order around the center so that we know which corner is which.
     let sortedCorners = cornersAndAngles.sorted(by: { $0.1 > $1.1 }).map { $0.0 }
-    
+
     return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
 }
 
@@ -184,7 +184,7 @@ private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint
     perspectiveCorrection.setValue(CIVector(cgPoint: bottomRight), forKey: "inputBottomRight")
     perspectiveCorrection.setValue(CIVector(cgPoint: topLeft), forKey: "inputTopLeft")
     perspectiveCorrection.setValue(CIVector(cgPoint: topRight), forKey: "inputTopRight")
-    
+
     return perspectiveCorrection.outputImage!
 }
 
@@ -195,22 +195,22 @@ private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint
 func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint? {
     let width = image.width
     let height = image.height
-    
+
     var explored = Set<CGPoint>()
     var queue = Queue()
     queue.enqueue(startingPoint)
-    
+
     var farthestPointSoFar: CGPoint!
-    
+
     while !queue.isEmpty {
         let point = queue.dequeue()!
         if explored.contains(point) {
             continue
         }
-        
+
         let x = roundToInt(point.x)
         let y = roundToInt(point.y)
-        
+
         let westPoint = CGPoint(x: x - 1, y: y)
         if x > 0 && image.getPixel(x: x - 1, y: y).isVisible() && !explored.contains(westPoint) {
             queue.enqueue(westPoint)
@@ -227,17 +227,17 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         if y < height - 1 && image.getPixel(x: x, y: y + 1).isVisible() && !explored.contains(northPoint) {
             queue.enqueue(northPoint)
         }
-        
+
         explored.insert(point)
         farthestPointSoFar = point
-        
+
         // If we've explored too much, return nil.
         // This keeps us from spending a long time dealing with large objects that are unlikely to be the scale anyways.
         if explored.count > 50000 {
             return nil
         }
     }
-    
+
     return farthestPointSoFar
 }
 
@@ -248,7 +248,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
 func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, checkingNoMoreThan maxPixelsToCheck: Int) -> CGPoint? {
     let width = image.width
     let height = image.height
-    
+
     // We're going to spiral out from the startingPoint looking for visible points. The pattern looks like:
     //      10 11 12 13
     //  ...  9  2  3 14
@@ -257,16 +257,16 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
     //   21 20 19 18 17
     // Note the every two sides of the spiral, the side length increases by 1.
     // E.g. you go up 1, right 1, down 2, left 2, up 3, right 3, down 4...
-    
+
     // Roughly how many pixels have been checked so far
     var pixelsChecked = 0
     // The current length of a spiral side (increments every two sides)
     var spiralSideLength = 1
-    
+
     // The current position
     var x = roundToInt(startingPoint.x)
     var y = roundToInt(startingPoint.y)
-    
+
     // Because we only do this check once per time around the spiral and because the pixels checked is approximate, the maxPixelsToCheck is approximate.
     while pixelsChecked < maxPixelsToCheck {
         // The left side of the spiral, moving north
@@ -277,18 +277,18 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
                 loopStart = 1 - y
                 y = 0
             }
-            
+
             for i in loopStart...spiralSideLength {
                 if y >= height {
                     // If we're off the top of the image, skip to the end of this side
                     y += spiralSideLength - i + 1
                     break
                 }
-                
+
                 if image.getPixel(x: x, y: y).isVisible() {
                     return CGPoint(x: x, y: y)
                 }
-                
+
                 // Move up one spot
                 y += 1
             }
@@ -296,7 +296,7 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
             // If we're off the left side of the image, skip checking this side
             y += spiralSideLength
         }
-        
+
         // The top side of the spiral, moving right
         if y < height {
             // If we're off the left of the image, skip over to the left edge
@@ -305,18 +305,18 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
                 loopStart = 1 - x
                 x = 0
             }
-            
+
             for i in loopStart...spiralSideLength {
                 if x >= width {
                     // If we're off the top of the image, skip to the end of this side
                     x += spiralSideLength - i + 1
                     break
                 }
-                
+
                 if image.getPixel(x: x, y: y).isVisible() {
                     return CGPoint(x: x, y: y)
                 }
-                
+
                 // Move over one spot
                 x += 1
             }
@@ -324,10 +324,10 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
             // If we're off the top side of the image, skip checking this side
             x += spiralSideLength
         }
-        
+
         // We've done two sides, so increment the side length.
         spiralSideLength += 1
-        
+
         // The right side of the spiral, moving south
         if x < width {
             // If we're off the top of the image, skip down to the top
@@ -336,18 +336,18 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
                 loopStart = y - height + 2
                 y = height - 1
             }
-            
+
             for i in loopStart...spiralSideLength {
                 if y < 0 {
                     // If we're off the bottom of the image, skip to the end of this side
                     y -= spiralSideLength - i + 1
                     break
                 }
-                
+
                 if image.getPixel(x: x, y: y).isVisible() {
                     return CGPoint(x: x, y: y)
                 }
-                
+
                 // Move down one spot
                 y -= 1
             }
@@ -355,7 +355,7 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
             // If we're off the right side of the image, skip checking this side
             y -= spiralSideLength
         }
-        
+
         // The bottom side of the spiral, moving left
         if y >= 0 {
             // If we're off the right of the image, skip over to the right edge
@@ -364,18 +364,18 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
                 loopStart = x - width + 2
                 x = width - 1
             }
-            
+
             for i in loopStart...spiralSideLength {
                 if x < 0 {
                     // If we're off the left of the image, skip to the end of this side
                     x -= spiralSideLength - i + 1
                     break
                 }
-                
+
                 if image.getPixel(x: x, y: y).isVisible() {
                     return CGPoint(x: x, y: y)
                 }
-                
+
                 // Move over one spot
                 x -= 1
             }
@@ -383,14 +383,14 @@ func searchForVisible(inImage image: IndexableImage, fromPoint startingPoint: CG
             // If we're off the bottom side of the image, skip checking this side
             x -= spiralSideLength
         }
-        
+
         // We've done two sides, so increment the side length.
         spiralSideLength += 1
-        
+
         // Quickly approximate how many pixels were checked in this circuit.
         pixelsChecked += spiralSideLength * 4
     }
-    
+
     return nil
 }
 
@@ -401,7 +401,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
     var filledRanges = [Int: [(Int, Int)]]()
     // This is a list of points to fill from.
     var queue: Set<CGPoint> = [startingPoint]
-    
+
     while !queue.isEmpty {
         // We're going to find the largest horizontal line containing this point that stays in the empty area.
         let point = queue.popFirst()!
@@ -411,7 +411,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         if isFilled(x: x, y: y, referringTo: filledRanges) {
             continue
         }
-        
+
         // Check if the points above or below the point should be added to the queue.
         if y < image.height - 1 && !image.getPixel(x: x, y: y + 1) && !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
             queue.insert(CGPoint(x: x, y: y + 1))
@@ -424,14 +424,14 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         // As such, we need to track eligibility for adding to the queue on both the north and south side.
         let initialEligibleForQueueNorth = y < image.height - 1 && image.getPixel(x: x, y: y + 1)
         let initialEligibleForQueueSouth = y > 0 && image.getPixel(x: x, y: y - 1)
-        
+
         var leftmostX = x
         var eligibleForQueueNorth = initialEligibleForQueueNorth
         var eligibleForQueueSouth = initialEligibleForQueueSouth
         // Move left as far as possible.
         while leftmostX > 0 && !image.getPixel(x: leftmostX - 1, y: y) {
             leftmostX -= 1
-            
+
             // Check if the northern pixel should be added to the queue, and update eligibility.
             if y < image.height - 1 {
                 if image.getPixel(x: leftmostX, y: y + 1) {
@@ -443,7 +443,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
                     eligibleForQueueNorth = false
                 }
             }
-            
+
             // Check if the southern pixel should be added to the queue, and update eligibility.
             if y > 0 {
                 if image.getPixel(x: leftmostX, y: y - 1) {
@@ -463,7 +463,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         // Move right as far as possible.
         while rightmostX < image.width - 1 && !image.getPixel(x: rightmostX + 1, y: y) {
             rightmostX += 1
-            
+
             // Check if the northern pixel should be added to the queue, and update eligibility.
             if y < image.height - 1 {
                 if image.getPixel(x: rightmostX, y: y + 1) {
@@ -475,7 +475,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
                     eligibleForQueueNorth = false
                 }
             }
-            
+
             // Check if the southern pixel should be added to the queue, and update eligibility.
             if y > 0 {
                 if image.getPixel(x: rightmostX, y: y - 1) {
@@ -488,10 +488,10 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
                 }
             }
         }
-        
+
         // Draw the horizontal line from the leftmost clear point to the rightmost clear point.
         drawingManager.drawLine(from: CGPoint(x: leftmostX - 1, y: y), to: CGPoint(x: rightmostX + 1, y: y))
-        
+
         // Mark the range as filled in so we don't come back to it.
         if filledRanges[y] != nil {
             filledRanges[y]!.append((leftmostX, rightmostX))
@@ -506,7 +506,7 @@ private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int
     if filledXRanges == nil {
         return false
     }
-    
+
     return filledXRanges!.contains(where: { filledXRange in
         x >= filledXRange.0 && x <= filledXRange.1 })
 }

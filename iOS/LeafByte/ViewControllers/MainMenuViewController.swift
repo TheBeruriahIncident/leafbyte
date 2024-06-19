@@ -16,42 +16,42 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")!
 
     var settings: Settings!
-    
+
     let imagePicker = UIImagePickerController()
-    
+
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
-    
+
     // Both of these are set while picking an image and are passed forward to the next view.
     var sourceType: UIImagePickerController.SourceType?
     var selectedImage: CGImage?
-    
+
     // To prevent double tapping from double seguing, we disable segue after the first tap until coming back to this view.
     var segueEnabled = true
-    
+
     // MARK: - Outlets
-    
+
     @IBOutlet weak var savingSummary: UILabel!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var cameraLabel: UILabel!
-    
+
     // MARK: - Actions
-    
+
     @IBAction func goToSettings() {
         if !segueEnabled {
             return
         }
         segueEnabled = false
-        
+
         performSegue(withIdentifier: "toSettings", sender: self)
     }
-    
+
     @IBAction func goToTutorial() {
         if !segueEnabled {
             return
         }
         segueEnabled = false
-        
+
         performSegue(withIdentifier: "toTutorial", sender: self)
     }
 
@@ -63,19 +63,19 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             UIApplication.shared.openURL(leafbyteWebsiteUrl)
         }
     }
-    
+
     @IBAction func pickImageFromCamera(_ sender: Any) {
         if !segueEnabled {
             return
         }
         segueEnabled = false
-        
+
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             presentAlert(self: self, title: nil, message: NSLocalizedString("No available camera", comment: "Shown when trying to take a picture if no camera is available, e.g. in a simulator"))
             segueEnabled = true
             return
         }
-        
+
         requestCameraAccess(self: self, onSuccess: {
             DispatchQueue.main.async {
                 if self.settings.useBarcode {
@@ -86,24 +86,24 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             }
         }, onFailure: { self.segueEnabled = true })
     }
-    
+
     @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
         if !segueEnabled {
             return
         }
         segueEnabled = false
-        
+
         presentImagePicker(sourceType: UIImagePickerController.SourceType.photoLibrary)
     }
-    
+
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
     @IBAction func backToMainMenu(segue: UIStoryboardSegue) {}
-    
+
     // MARK: - UIViewController overrides
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         settings = Settings.deserialize()
         setupImagePicker(imagePicker: imagePicker, self: self)
 
@@ -113,26 +113,26 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             print("************************************************************")
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         segueEnabled = true
-        
+
         if !viewDidAppearHasRun {
             maybeDoGoogleSignIn()
             viewDidAppearHasRun = true
         }
-        
+
         setSavingSummary()
-        
+
         let imageToUse = settings.useBarcode ? "Barcode" : "Camera"
         cameraButton.setBackgroundImage(UIImage(named: imageToUse), for: .normal)
         cameraLabel.text = settings.useBarcode ? NSLocalizedString("Scan Barcode and\nTake a Photo", comment: "Option for the user") : NSLocalizedString("Take a Photo", comment: "Option for the user")
         cameraLabel.numberOfLines = settings.useBarcode ? 2 : 1
-        
+
         maintainOldModalPresentationStyle(viewController: imagePicker)
     }
-    
+
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
@@ -143,7 +143,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             guard let destination = navigationController.topViewController as? BackgroundRemovalViewController else {
                 fatalError("Expected the view inside the navigation controller to be the thresholding view but is  \(String(describing: navigationController.topViewController))")
             }
-            
+
             destination.settings = settings
             destination.sourceType = sourceType
             destination.image = selectedImage
@@ -157,7 +157,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             guard let destination = navigationController.topViewController as? SettingsViewController else {
                 fatalError("Expected the view inside the navigation controller to be the settings view but is  \(String(describing: navigationController.topViewController))")
             }
-            
+
             destination.settings = settings
         }
         // If the segue is toTutorial, we're starting the tutorial, and we need to pass the settings forward.
@@ -168,7 +168,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             guard let destination = navigationController.topViewController as? TutorialViewController else {
                 fatalError("Expected the view inside the navigation controller to be the tutorial view but is  \(String(describing: navigationController.topViewController))")
             }
-            
+
             destination.settings = settings
         }
         // If the segue is toBarcodeScanning, we're starting the main flow, but with barcode scanning at the start instead of image picking.
@@ -180,46 +180,46 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 guard let destination = navigationController.topViewController as? BarcodeScanningViewController else {
                     fatalError("Expected the view inside the navigation controller to be the barcode scanning view but is  \(String(describing: navigationController.topViewController))")
                 }
-                
+
                 destination.settings = settings
             } else {
                 fatalError("Attempting to use barcode scanning pre-iOS 10.0")
             }
         }
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         // See finishWithImagePicker for why animations may be disabled; make sure they're enabled before leaving.
         UIView.setAnimationsEnabled(true)
     }
 
     // MARK: - UIImagePickerControllerDelegate overrides
-    
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
-    
+
     // If the image picker is canceled, dismiss it.
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     // MARK: - Helpers
-    
+
     private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
         self.sourceType = sourceType
         imagePicker.sourceType = sourceType
         present(imagePicker, animated: true, completion: nil)
     }
-    
+
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {
         if settings.dataSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
             return
         }
-        
+
         initiateGoogleSignIn(
             onAccessTokenAndUserId: { _, _ in () },
             onError: { cause, _ in
@@ -230,18 +230,18 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                     self.settings.imageSaveLocation = .local
                 }
                 self.settings.serialize()
-                
+
                 DispatchQueue.main.async {
                     presentFailedGoogleSignInAlert(cause: cause, self: self)
                     self.setSavingSummary()
                 }
             }, callingViewController: self, settings: settings)
     }
-    
+
     private func setSavingSummary() {
         let dataSaveLocation = settings.dataSaveLocation
         let imageSaveLocation = settings.imageSaveLocation
-        
+
         var savedMessage: String!
         if dataSaveLocation != .none || imageSaveLocation != .none {
             var savedMessageStart: String!
@@ -251,10 +251,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 let dataSavedMessage = dataSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("data to %@", comment: "Says data are being saved somewhere"), saveLocationToName(dataSaveLocation)) : ""
                 let imageSavedMessage = imageSaveLocation != .none ? String.localizedStringWithFormat(NSLocalizedString("images to %@", comment: "Says images are being saved somewhere"), saveLocationToName(imageSaveLocation)) : ""
                 let savedMessageStartConnector = dataSaveLocation != .none && imageSaveLocation != .none ? NSLocalizedString(" and ", comment: "Conjunction connecting where data and iamges are being saved") : ""
-                
+
                 savedMessageStart = NSLocalizedString("Saving ", comment: "Beginning of message of where things are saved") + "\(dataSavedMessage)\(savedMessageStartConnector)\(imageSavedMessage)"
             }
-            
+
             // Cap the displayed length of the dataset name.
             let maxDatasetNameLength = 33
             var displayDatasetName: String!
@@ -263,12 +263,12 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             } else {
                 displayDatasetName = settings.datasetName
             }
-            
+
             savedMessage = savedMessageStart + NSLocalizedString(" under the name ", comment: "Connector saying that something is saved with a certain name") + "\(displayDatasetName!)."
         } else {
             savedMessage = ""
         }
-        
+
         var notSavedMessage: String!
         if dataSaveLocation == .none || imageSaveLocation == .none {
             var notSavedMessageElements: String!
@@ -279,27 +279,27 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             } else {
                 notSavedMessageElements = NSLocalizedString("Images", comment: "Name for what's being saved")
             }
-            
+
             notSavedMessage = notSavedMessageElements! + NSLocalizedString(" are not being saved. Go to Settings to change.", comment: "Says that something is not being saved")
         } else {
             notSavedMessage = ""
         }
-        
+
         savingSummary.numberOfLines = 0
         savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
-        
+
         // It can be very bad if you unintentionally aren't saving data, so put some text in red.
         if dataSaveLocation == .none {
             let stringToColor = "not being saved"
             let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
-            
+
             let attributedString = NSMutableAttributedString.init(string: savingSummary.text!)
             attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: rangeToColor)
-            
+
             savingSummary.attributedText = attributedString
         }
     }
-    
+
     private func saveLocationToName(_ saveLocation: Settings.SaveLocation) -> String {
         switch saveLocation {
         case .none:

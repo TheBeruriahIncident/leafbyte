@@ -63,7 +63,7 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
     body.append(Data("Content-Type: image/png\r\n\r\n".utf8))
     body.append(data)
     body.append(Data("\r\n--\(boundary)--\r\n".utf8))
-    
+
     post(url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
             accessToken: accessToken,
             body: body,
@@ -77,7 +77,7 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
     let parentsParam = folderId != nil
         ? " parents: [\"\(folderId!)\"],"
         : ""
-    
+
     post(url: "https://www.googleapis.com/drive/v3/files",
          accessToken: accessToken,
          jsonBody:

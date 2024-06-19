@@ -4,7 +4,7 @@ Xcode is the recommended development environment.
 Open iOS/LeafByte.xcworkspace in Xcode to begin work.
 
 Before the app can run properly, you must fill in the the GOOGLE_SIGN_IN_CLIENT_ID and GOOGLE_SIGN_IN_REDIRECT_URL in iOS/LeafByte/Secrets.xcconfig .
-First, run `git update-index --assume-unchanged iOS/LeafByte/Secrets.xcconfig` to prevent checking in any secrets.
+First, run `git update-index --skip-worktree iOS/LeafByte/Secrets.xcconfig` to prevent checking in any secrets.
 If you're part of the core LeafByte development team, replace the whole file with the version from leafbyte.app@gmail.com's Google Drive.
 If you're an outside contributor (welcome! 😊), you can generate an iOS-type client id using [Google's guide](https://support.google.com/cloud/answer/6158849?hl=en) .
 Pull out the appropriate section of the client id to replace FILL_ME_IN.

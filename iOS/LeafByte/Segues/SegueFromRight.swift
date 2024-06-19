@@ -11,14 +11,14 @@ import UIKit
 // This allows views to transition from the right side over the current view.
 final class SegueFromRight: UIStoryboardSegue {
     // MARK: UIStoryboardSegue overrides
-    
+
     override func perform() {
         let source = self.source
         let destination = self.destination
-        
+
         source.view.superview?.insertSubview(destination.view, aboveSubview: source.view)
         destination.view.transform = CGAffineTransform(translationX: source.view.frame.size.width, y: 0)
-        
+
         UIView.animate(
             withDuration: 0.25,
             delay: 0.0,
