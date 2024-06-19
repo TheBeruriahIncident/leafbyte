@@ -7,13 +7,12 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* Make sure memory leak/closure semantics are correct around self, escaping, and weak refs
-* Add the experimental images from the paper as test cases
 * Investigate all crashes in Crash Organizer
 * Check Memory Graph tool and Leaks instrument for any memory leaks
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors
 
 Lower priority TODOs:
+* Add the experimental images from the paper as test cases
 * Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
 * Related to the above, consider upping the resolution, perhaps even dynamically based on phone speed. Related: Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless

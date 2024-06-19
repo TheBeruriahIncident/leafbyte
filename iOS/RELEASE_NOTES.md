@@ -27,3 +27,4 @@
 * If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)
 * In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know the conditions where this actually happens)
 * Prevent crashing in an extremely rare (perhaps theoretical) situation where the memory is affected in an odd way while the thresholding screen is prepared
+* Prevent crashing in a rare situation where the phone is particularly busy as a new screen finishes sliding out

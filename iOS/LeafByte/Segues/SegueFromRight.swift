@@ -27,7 +27,10 @@ final class SegueFromRight: UIStoryboardSegue {
                 destination.view.transform = CGAffineTransform(translationX: 0, y:0)
             },
             completion: { finished in
-                source.present(destination, animated: false, completion: nil)
+                // This proooobably is already the main thread, but it's not in the contract, so let's just be sure
+                DispatchQueue.main.async {
+                    source.present(destination, animated: false, completion: nil)
+                }
             }
         )
     }
