@@ -366,7 +366,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // Returns nil if the ci image cannot be converted to a cg image. We have no idea why this system libraries sometimes do this, but at least it's very rare.
     private func getFixedImage() -> CGImage? {
         // The coordinate space is flipped for CI.
-        let adjustedCenters = scaleMarks.map({ point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) })
+        let adjustedCenters = scaleMarks.map { point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) }
         let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)
         let sizeToAdjustTo = min(1_200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
         guard let cgImage = ciToCgImage(imageInsideScaleMarks) else {

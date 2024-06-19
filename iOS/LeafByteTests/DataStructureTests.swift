@@ -24,7 +24,7 @@ final class DataStructureTests: XCTestCase {
         XCTAssertFalse(queue.isEmpty)
         XCTAssertEqual(point2, queue.dequeue())
         XCTAssert(queue.isEmpty)
-        XCTAssertEqual(nil, queue.dequeue())
+        XCTAssertNil(queue.dequeue())
     }
 
     func testUnionFind() {

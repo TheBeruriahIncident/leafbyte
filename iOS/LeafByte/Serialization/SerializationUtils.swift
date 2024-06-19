@@ -40,6 +40,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
     }
 
     if settings.saveGpsData && settings.dataSaveLocation != .none {
+        // swiftlint:disable:next trailing_closure
         GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onFailure(.gps) })
     } else {
         onLocation(nil)
@@ -87,6 +88,7 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
 
 private func appendDataToGoogleDrive(settings: Settings, row: [String], accessToken: String, userId: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     getGoogleSpreadsheetId(settings: settings, accessToken: accessToken, userId: userId, onSpreadsheetId: { spreadsheetId in
+        // swiftlint:disable:next trailing_closure
         appendToSheet(spreadsheetId: spreadsheetId, row: row, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
             if !failedBecauseNotFound || alreadyFailedOnce {
                 onFailure()
@@ -138,6 +140,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
 
 private func uploadDataToGoogleDrive(settings: Settings, filename: String, accessToken: String, userId: String, pngImage: Data, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
+        // swiftlint:disable:next trailing_closure
         uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
             if !failedBecauseNotFound || alreadyFailedOnce {
                 onFailure()

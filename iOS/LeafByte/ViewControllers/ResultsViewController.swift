@@ -144,6 +144,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
         let afterSerialization = {
             if self.sourceType == .camera {
+                // swiftlint:disable:next trailing_closure
                 requestCameraAccess(self: self, onSuccess: {
                     DispatchQueue.main.async {
                         self.imagePicker.sourceType = .camera
@@ -406,7 +407,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     // MARK: - UIImagePickerControllerDelegate overrides
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
+        finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.
@@ -539,7 +540,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
         // Assume the largest occupied component is the leaf.
-        let leafLabelAndSize = labelsAndSizes.first(where: { $0.key > 0 })
+        let leafLabelAndSize = labelsAndSizes.first { $0.key > 0 }
 
         if leafLabelAndSize == nil {
             // This is a blank image, and trying to calculate area will crash.
@@ -652,6 +653,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func handleGoogleDriveFailure(onSuccess: @escaping () -> Void) {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: nil, message: NSLocalizedString("Could not save to Google Drive.", comment: "Shown if saving to Google Drive fails"), preferredStyle: .alert)
+            // swiftlint:disable:next trailing_closure
             let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancels the attempt to save"), style: .default, handler: { _ in
                 DispatchQueue.main.async {
                     self.completeButton.isEnabled = true
@@ -666,6 +668,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                 localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
             }
 
+            // swiftlint:disable:next trailing_closure
             let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails, to provide an alternative"), style: .default, handler: { _ in
                 DispatchQueue.main.async {
                     if self.settings.dataSaveLocation == .googleDrive {
@@ -679,6 +682,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                     self.handleSerialization(onSuccess: onSuccess)
                 }
             })
+            // swiftlint:disable:next trailing_closure
             let retryAction = UIAlertAction(title: NSLocalizedString("Retry", comment: "Allows attempting to save to Google Drive again"), style: .default, handler: { _ in
                 self.handleSerialization(onSuccess: onSuccess)
             })

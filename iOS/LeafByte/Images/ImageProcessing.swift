@@ -76,8 +76,9 @@ func otsusMethod(histogram: [Int]) -> Float {
     let sumOfOmegas = histogram.reduce(0, +)
     var mu0Numerator = 0
     // This calculates a dot product.
-    let sumOfMuNumerators = zip(Array(0...numberOfHistogramBuckets - 1), histogram).reduce(0, { accumulator, pair in
-        accumulator + (pair.0 * pair.1) })
+    let sumOfMuNumerators = zip(Array(0...numberOfHistogramBuckets - 1), histogram).reduce(0) { accumulator, pair in
+        accumulator + (pair.0 * pair.1)
+    }
 
     var maximumInterClassVariance = 0.0
     var bestCut = 0
@@ -326,7 +327,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
     let outsideOfImageClass = equivalenceClasses.getClassOf(backgroundLabel)!
-    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first(where: { $0 != backgroundLabel })
+    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first { $0 != backgroundLabel }
     if outsideOfImageClassElement != nil {
         labelToMemberPoint[backgroundLabel] = labelToMemberPoint[outsideOfImageClassElement!]
     } else {
@@ -349,8 +350,8 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         // Make the member point be the top-most member point in the equivalence.
         // That way the leaf marker is drawn in a place less likely to overlap the leaf.
         let topMostMemberPoint = equivalenceClassElements
-            .map({ labelToMemberPoint[$0]! })
-            .sorted(by: { $0.1 < $1.1 })[0]
+            .map { labelToMemberPoint[$0]! }
+            .sorted { $0.1 < $1.1 }[0]
         labelToMemberPoint[representative] = topMostMemberPoint
 
         // Do an initial loop-through including the first element of the class.

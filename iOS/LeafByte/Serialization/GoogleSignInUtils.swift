@@ -47,6 +47,7 @@ func initiateGoogleSignIn(
     callingViewController: UIViewController,
     settings: Settings) {
 
+        // swiftlint:disable:next trailing_closure
         tryToUseExistingLogin(
             authState: settings.googleAuthState,
             onAccessTokenAndUserId: onAccessTokenAndUserId,
@@ -95,6 +96,7 @@ private func tryToUseExistingLogin(
             return ifNoExistingLogin()
         }
 
+        // swiftlint:disable:next trailing_closure
         useAuthState(authState: authState, onAccessTokenAndUserId: onAccessTokenAndUserId, onError: { _, _ in ifNoExistingLogin() })
     }
 

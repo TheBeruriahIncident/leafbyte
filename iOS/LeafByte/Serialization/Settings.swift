@@ -200,7 +200,7 @@ final class Settings: NSObject, NSCoding {
 
     func getPreviousDatasetNames() -> [String] {
         // Order the previously used datasets by most recently used, then put the current dataset name first on the list.
-        var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted(by: { $0.1 > $1.1 }).map({ $0.key }).filter({ $0 != datasetName })
+        var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted { $0.1 > $1.1 }.map { $0.key }.filter { $0 != datasetName }
         previousDatasets.insert(datasetName, at: 0)
         return previousDatasets
     }

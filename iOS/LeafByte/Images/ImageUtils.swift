@@ -167,7 +167,7 @@ func combineImages(_ imageViews: [UIImageView]) -> UIImage {
 
 func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIImage {
     // Find the center as the average of the corners.
-    let centerSum = corners.reduce(CGPoint.zero, { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) })
+    let centerSum = corners.reduce(CGPoint.zero) { CGPoint(x: $0.x + $1.x, y: $0.y + $1.y) }
     let center = CGPoint(x: centerSum.x / 4, y: centerSum.y / 4)
 
     // Determine the angle from corner to the center.
@@ -178,7 +178,7 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
     }
 
     // Sort the corners into order around the center so that we know which corner is which.
-    let sortedCorners = cornersAndAngles.sorted(by: { $0.1 > $1.1 }).map { $0.0 }
+    let sortedCorners = cornersAndAngles.sorted { $0.1 > $1.1 }.map { $0.0 }
 
     return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
 }
@@ -513,6 +513,7 @@ private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int
         return false
     }
 
-    return filledXRanges!.contains(where: { filledXRange in
-        x >= filledXRange.0 && x <= filledXRange.1 })
+    return filledXRanges!.contains { filledXRange in
+        x >= filledXRange.0 && x <= filledXRange.1
+    }
 }

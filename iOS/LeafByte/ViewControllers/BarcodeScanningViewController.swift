@@ -130,6 +130,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
                 // Pause for 1s to preview what was scanned.
                 usleep(1_000_000)
 
+                // swiftlint:disable:next trailing_closure
                 requestCameraAccess(self: self, onSuccess: {
                     DispatchQueue.main.async {
                         self.present(self.imagePicker, animated: true, completion: nil)
@@ -142,7 +143,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     // MARK: - UIImagePickerControllerDelegate overrides
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
+        finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.

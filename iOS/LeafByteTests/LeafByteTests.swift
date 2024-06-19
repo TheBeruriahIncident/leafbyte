@@ -57,8 +57,8 @@ final class LeafByteTests: XCTestCase {
             connectedComponentsInfo = labelConnectedComponents(image: image)
         }
 
-        let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key < 0 }).map({ $0.value.standardPart }).sorted()
-        let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter({ $0.key > 0 }).map({ $0.value.standardPart }).sorted()
+        let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter { $0.key < 0 }.map { $0.value.standardPart }.sorted()
+        let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter { $0.key > 0 }.map { $0.value.standardPart }.sorted()
 
         XCTAssertEqual([3_360, 970_005], whiteAreaSizes.suffix(2))
         XCTAssertEqual([1_176, 105_398], nonWhiteAreaSizes.suffix(2))
