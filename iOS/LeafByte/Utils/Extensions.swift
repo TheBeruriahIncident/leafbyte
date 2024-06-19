@@ -18,7 +18,7 @@ extension CGPoint: Hashable {
 
     // Calculate the distance between two points ( https://en.wikipedia.org/wiki/Euclidean_distance ).
     public func distance(to other: CGPoint) -> CGFloat {
-        return pow(pow(self.x - other.x, 2) + pow(self.y - other.y, 2), 0.5)
+        pow(pow(self.x - other.x, 2) + pow(self.y - other.y, 2), 0.5)
     }
 }
 

@@ -292,13 +292,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     // MARK: - UIPopoverPresentationControllerDelegate overrides
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
+        UIModalPresentationStyle.none
     }
 
     // MARK: - UIScrollViewDelegate overrides
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollContentView
+        scrollContentView
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
@@ -524,8 +524,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         // Connected components will identify the label of the leaf (if not using the default point) and any excluded areas.
         var pointsToIdentify = [PointToIdentify]()
         let exclusions = undoBuffer.filter { $0.type == .exclusion }
-                .map { userDrawingToBaseImage.project(point: $0.points[0]) }
-                .map { PointToIdentify($0) }
+            .map { userDrawingToBaseImage.project(point: $0.points[0]) }
+            .map { PointToIdentify($0) }
         pointsToIdentify.append(contentsOf: exclusions)
 
         let connectedComponentsInfo = labelConnectedComponents(image: combinedImage, pointsToIdentify: pointsToIdentify)
@@ -614,7 +614,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     private func formatDouble(withThreeDecimalPoints double: Double) -> String {
-        return String(format: "%.3f", double)
+        String(format: "%.3f", double)
     }
 
     private func getCombinedImage() -> UIImage {

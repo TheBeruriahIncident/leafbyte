@@ -10,15 +10,15 @@ import CoreGraphics
 import Foundation
 
 func roundToInt(_ number: Double, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
-    return Int(number.rounded(rule))
+    Int(number.rounded(rule))
 }
 
 func roundToInt(_ number: Float, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
-    return roundToInt(Double(number), rule: rule)
+    roundToInt(Double(number), rule: rule)
 }
 
 func roundToInt(_ number: CGFloat, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
-    return roundToInt(Float(number), rule: rule)
+    roundToInt(Float(number), rule: rule)
 }
 
 // Adapted from https://stackoverflow.com/questions/40915607/how-can-i-decode-jwt-json-web-token-token-in-swift
@@ -34,15 +34,15 @@ func extractPayload(fromJwt jwt: String) -> [String: Any]? {
 }
 
 private func decodeJWTPayload(_ rawPayload: String) -> [String: Any]? {
-  guard
-    let unparsedPayload = decodeBase64Url(rawPayload),
-    let jsonPayload = try? JSONSerialization.jsonObject(with: unparsedPayload, options: []),
-    let payload = jsonPayload as? [String: Any] else {
-      print("Could not decode JWT payload: \(rawPayload)")
-      return nil
-  }
+    guard
+        let unparsedPayload = decodeBase64Url(rawPayload),
+        let jsonPayload = try? JSONSerialization.jsonObject(with: unparsedPayload, options: []),
+        let payload = jsonPayload as? [String: Any] else {
+            print("Could not decode JWT payload: \(rawPayload)")
+            return nil
+    }
 
-  return payload
+    return payload
 }
 
 // Note that base64url is different from base64, which is why some characters are replaced, and padding is added

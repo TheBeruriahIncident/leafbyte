@@ -32,7 +32,7 @@ func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: I
 }
 
 func resizeImage(_ image: UIImage) -> CGImage? {
-    return resizeImage(image, within: CGSize(width: 1200, height: 1200))
+    resizeImage(image, within: CGSize(width: 1200, height: 1200))
 }
 
 // See http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ for some of the gotchas here.
@@ -110,7 +110,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     }
     context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size:
         CGSize(width: drawTransposed ? newHeight : newWidth,
-               height: drawTransposed ? newWidth : newHeight)))
+            height: drawTransposed ? newWidth : newHeight)))
 
     return context.makeImage()!
 }

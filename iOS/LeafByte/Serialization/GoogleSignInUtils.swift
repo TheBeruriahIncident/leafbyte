@@ -34,11 +34,11 @@ private let redirectUrl = URL(string: Bundle.main.object(forInfoDictionaryKey: "
 private let incompleteConfigIndicator = "FILL_ME_IN"
 
 func isGoogleSignInConfigured() -> Bool {
-    return isConfigInitialized(clientId) && isConfigInitialized(redirectUrl.absoluteString)
+    isConfigInitialized(clientId) && isConfigInitialized(redirectUrl.absoluteString)
 }
 
 private func isConfigInitialized(_ configValue: String) -> Bool {
-    return !configValue.isEmpty && !configValue.contains(incompleteConfigIndicator)
+    !configValue.isEmpty && !configValue.contains(incompleteConfigIndicator)
 }
 
 func initiateGoogleSignIn(
@@ -57,13 +57,14 @@ func initiateGoogleSignIn(
                         return onError(.generic, error)
                     }
 
-                    let request = OIDAuthorizationRequest(configuration: configuration,
-                                                          clientId: clientId,
-                                                          clientSecret: nil,
-                                                          scopes: requiredScopesList,
-                                                          redirectURL: redirectUrl,
-                                                          responseType: OIDResponseTypeCode,
-                                                          additionalParameters: nil)
+                    let request = OIDAuthorizationRequest(
+                        configuration: configuration,
+                        clientId: clientId,
+                        clientSecret: nil,
+                        scopes: requiredScopesList,
+                        redirectURL: redirectUrl,
+                        responseType: OIDResponseTypeCode,
+                        additionalParameters: nil)
 
                     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                         print("Error accessing AppDelegate")

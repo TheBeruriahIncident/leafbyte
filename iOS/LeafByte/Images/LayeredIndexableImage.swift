@@ -24,7 +24,7 @@ final class LayeredIndexableImage {
     }
 
     func getPixel(x: Int, y: Int) -> Bool {
-        return getLayerWithPixel(x: x, y: y) > -1
+        getLayerWithPixel(x: x, y: y) > -1
     }
 
     // Finds the first image layer which is true, or -1 if no layers are true.

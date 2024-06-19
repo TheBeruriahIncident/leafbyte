@@ -139,23 +139,23 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
 private func uploadDataToGoogleDrive(settings: Settings, filename: String, accessToken: String, userId: String, pngImage: Data, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
         uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
-                if !failedBecauseNotFound || alreadyFailedOnce {
-                    onFailure()
-                    return
-                }
+            if !failedBecauseNotFound || alreadyFailedOnce {
+                onFailure()
+                return
+            }
 
-                // Handle the case where data couldn't be uploaded because the dataset folder was deleted.
-                settings.setGoogleFolderId(userId: userId, googleFolderId: nil)
-                settings.serialize()
+            // Handle the case where data couldn't be uploaded because the dataset folder was deleted.
+            settings.setGoogleFolderId(userId: userId, googleFolderId: nil)
+            settings.serialize()
 
-                // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
-                uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
-            })
+            // Recursive, but set the alreadyFailedOnce flag, so that we can only recurse once.
+            uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: onFailure, alreadyFailedOnce: true)
+        })
     }, onFailure: onFailure)
 }
 
 private func stringRowToCsvRow(_ row: [String]) -> Data {
-    return (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
+    (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
 }
 
 // Get the folder id for the top-level LeafByte folder containing all datasets.
@@ -233,12 +233,12 @@ private func getGoogleSpreadsheetId(settings: Settings, accessToken: String, use
 }
 
 private func getHeader(settings: Settings) -> [String] {
-    return [ "Date (year.month.day)", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes", "Scale Length (" + settings.getUnit() + ")"]
+    [ "Date (year.month.day)", "Time", "Latitude (degrees)", "Longitude (degrees)", "Barcode", "Sample Number", "Total Leaf Area (" + settings.getUnit() + "2)", "Consumed Leaf Area (" + settings.getUnit() + "2)", "Percent Consumed", "Notes", "Scale Length (" + settings.getUnit() + ")"]
 }
 private func getCsvHeader(settings: Settings) -> Data {
-    return stringRowToCsvRow(getHeader(settings: settings))
+    stringRowToCsvRow(getHeader(settings: settings))
 }
 
 private func formatDouble(withFiveDecimalPoints double: Double) -> String {
-    return String(format: "%.5f", double)
+    String(format: "%.5f", double)
 }

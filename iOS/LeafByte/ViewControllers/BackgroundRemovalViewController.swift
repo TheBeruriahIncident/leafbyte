@@ -147,13 +147,13 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // MARK: - UIPopoverPresentationControllerDelegate overrides
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
+        UIModalPresentationStyle.none
     }
 
     // MARK: - UIScrollViewDelegate overrides
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollContentView
+        scrollContentView
     }
 
     // MARK: - Helpers

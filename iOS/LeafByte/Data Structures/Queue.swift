@@ -16,7 +16,7 @@ public struct Queue {
     private var head = 0
 
     public var isEmpty: Bool {
-        return array.count - head == 0
+        array.count - head == 0
     }
 
     public mutating func enqueue(_ point: CGPoint) {

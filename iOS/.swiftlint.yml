@@ -43,18 +43,16 @@ opt_in_rules:
   - extension_access_modifier
   - fallthrough
   - fatal_error_message
-#  - file_name_no_space
-#  - file_types_order
-#  - final_test_case
-#  - first_where
-#  - flatmap_over_map_reduce
-#  - force_unwrapping
-#  - function_default_parameter_at_end
-#  - ibinspectable_in_extension
-#  - identical_operands
-#  - implicit_return
-#  - implicitly_unwrapped_optional
-#  - indentation_width
+  - file_name_no_space
+  - final_test_case
+  - first_where
+  - flatmap_over_map_reduce
+  #- force_unwrapping
+  - ibinspectable_in_extension
+  - identical_operands
+  - implicit_return
+  #- implicitly_unwrapped_optional
+  - indentation_width
 #  - inert_defer
 #  - joined_default_parameter
 #  - last_where

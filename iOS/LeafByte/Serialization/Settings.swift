@@ -146,8 +146,8 @@ final class Settings: NSObject, NSCoding {
             && datasetName == other.datasetName
             && datasetNameToEpochTimeOfLastUse == other.datasetNameToEpochTimeOfLastUse
             && datasetNameToNextSampleNumber == other.datasetNameToNextSampleNumber
-            && datasetNameToUnit == datasetNameToUnit
-            && datasetNameToUnitInFirstLocalFile == datasetNameToUnitInFirstLocalFile
+            && datasetNameToUnit == other.datasetNameToUnit
+            && datasetNameToUnitInFirstLocalFile == other.datasetNameToUnitInFirstLocalFile
             && NSDictionary(dictionary: datasetNameToUserIdToGoogleFolderId).isEqual(to: other.datasetNameToUserIdToGoogleFolderId)
             && NSDictionary(dictionary: datasetNameToUnitToUserIdToGoogleSpreadsheetId).isEqual(to: other.datasetNameToUnitToUserIdToGoogleSpreadsheetId)
             && imageSaveLocation == other.imageSaveLocation
@@ -166,19 +166,19 @@ final class Settings: NSObject, NSCoding {
     }
 
     func getGoogleFolderId(userId: String) -> String? {
-        return datasetNameToUserIdToGoogleFolderId[datasetName]?[userId]
+        datasetNameToUserIdToGoogleFolderId[datasetName]?[userId]
     }
 
     func getGoogleSpreadsheetId(userId: String) -> String? {
-        return datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]?[getUnit()]?[userId]
+        datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]?[getUnit()]?[userId]
     }
 
     func getTopLevelGoogleFolderId(userId: String) -> String? {
-        return userIdToTopLevelGoogleFolderId[userId]
+        userIdToTopLevelGoogleFolderId[userId]
     }
 
     func getUnit() -> String {
-        return datasetNameToUnit[datasetName] ?? Settings.defaultUnit
+        datasetNameToUnit[datasetName] ?? Settings.defaultUnit
     }
 
     func getLocalFilename() -> String {
@@ -191,7 +191,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     func getNextSampleNumber() -> Int {
-        return datasetNameToNextSampleNumber[datasetName]!
+        datasetNameToNextSampleNumber[datasetName]!
     }
 
     func noteDatasetUsed() {
@@ -206,7 +206,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     func incrementNextSampleNumber() {
-        return datasetNameToNextSampleNumber[datasetName]! += 1
+        datasetNameToNextSampleNumber[datasetName]! += 1
     }
 
     func initializeNextSampleNumberIfNeeded() -> Int {
@@ -252,6 +252,6 @@ final class Settings: NSObject, NSCoding {
     }
 
     private static func getSettingsFile(fromContainingFolder folder: URL) -> String {
-        return folder.appendingPathComponent("settings").path
+        folder.appendingPathComponent("settings").path
     }
 }

@@ -12,7 +12,7 @@ import Foundation
 // E.g. the end user should see saved data, but not the settings file.
 
 func getUrlForVisibleFiles() -> URL {
-    return FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
 }
 
 func getUrlForVisibleFolder(named folderName: String) -> URL {
@@ -25,7 +25,7 @@ func getUrlForVisibleFolder(named folderName: String) -> URL {
 }
 
 func getUrlForInvisibleFiles() -> URL {
-    return FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+    FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 }
 
 func initializeFileIfNonexistant(_ url: URL, withData data: Data) {

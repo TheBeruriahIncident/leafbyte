@@ -72,15 +72,17 @@ final class LeafByteTests: XCTestCase {
         settings.datasetNameToUnit = ["Le Morte a'Arthur": "cm", "The Tale of Genji": "in"]
         settings.datasetNameToUnitInFirstLocalFile = ["The Tale of Genji": "in"]
         settings.datasetNameToUnitToUserIdToGoogleSpreadsheetId =
-                ["Le Morte a'Arthur":
-                    ["cm":
-                        ["abigailgp": "a"]],
-                 "The Tale of Genji":
-                    ["cm":
-                        ["zoegp": "b",
-                         "abigailgp": "c"],
-                     "in":
-                        ["abigailgp": "d"]]]
+            // swiftlint:disable indentation_width
+            ["Le Morte a'Arthur":
+                ["cm":
+                    ["abigailgp": "a"]],
+             "The Tale of Genji":
+                ["cm":
+                    ["zoegp": "b",
+                     "abigailgp": "c"],
+                 "in":
+                    ["abigailgp": "d"]]]
+        // swiftlint:enable indentation_width
         settings.imageSaveLocation = .googleDrive
         settings.dataSaveLocation = .googleDrive
         settings.saveGpsData = true

@@ -8,7 +8,7 @@
 
 import XCTest
 
-class LeafByteUITests: XCTestCase {
+final class LeafByteUITests: XCTestCase {
 
     override func setUp() {
         super.setUp()

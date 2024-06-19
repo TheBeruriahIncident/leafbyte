@@ -51,7 +51,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
     func datasetNameChanged(_ candidateNewName: String) {
         let sanitizedCandidateNewName = candidateNewName
-                .replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
+            .replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
 
         // Fall back to the default if the box is empty or only brackets.
         var newDatasetName: String!
@@ -295,7 +295,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     // MARK: - UIPickerViewDataSource, UIPickerViewDelegate overrides
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {

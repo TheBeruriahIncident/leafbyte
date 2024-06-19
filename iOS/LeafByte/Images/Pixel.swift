@@ -14,17 +14,17 @@ struct Pixel: Equatable {
     let alpha: UInt8
 
     func isVisible() -> Bool {
-        return self.alpha != 0
+        self.alpha != 0
     }
 
     func isInvisible() -> Bool {
-        return self.alpha == 0
+        self.alpha == 0
     }
 
     // MARK: Equatable overrides
 
     static func == (lhs: Pixel, rhs: Pixel) -> Bool {
-        return lhs.red == rhs.red
+        lhs.red == rhs.red
             && lhs.green == rhs.green
             && lhs.blue == rhs.blue
             && lhs.alpha == rhs.alpha

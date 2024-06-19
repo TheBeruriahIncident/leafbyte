@@ -29,6 +29,7 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
 func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     post(url: "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId):batchUpdate",
         accessToken: accessToken,
+        // swiftlint:disable indentation_width
         jsonBody:
         """
         {
@@ -47,6 +48,7 @@ func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escapi
           ]
         }
         """,
+        // swiftlint:enable indentation_width
         onSuccessfulResponse: { _ in onSuccess() },
         onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
         onError: { _ in onFailure(false) })
@@ -64,13 +66,14 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
     body.append(data)
     body.append(Data("\r\n--\(boundary)--\r\n".utf8))
 
-    post(url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-            accessToken: accessToken,
-            body: body,
-            contentType: "multipart/related; boundary=\(boundary)",
-            onSuccessfulResponse: { _ in onSuccess() },
-            onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
-            onError: { _ in onFailure(false) })
+    post(
+        url: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+        accessToken: accessToken,
+        body: body,
+        contentType: "multipart/related; boundary=\(boundary)",
+        onSuccessfulResponse: { _ in onSuccess() },
+        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onError: { _ in onFailure(false) })
 }
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
@@ -78,21 +81,24 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
         ? " parents: [\"\(folderId!)\"],"
         : ""
 
-    post(url: "https://www.googleapis.com/drive/v3/files",
-         accessToken: accessToken,
-         jsonBody:
-         """
-         {
-           name: \"\(name)\",
-           \(parentsParam)
-           mimeType: \"application/vnd.google-apps.\(type)\"
-         }
-         """,
-         onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
-         onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
-         onError: { _ in onFailure(false) })
+    post(
+        url: "https://www.googleapis.com/drive/v3/files",
+        accessToken: accessToken,
+        // swiftlint:disable indentation_width
+        jsonBody:
+        """
+        {
+          name: \"\(name)\",
+          \(parentsParam)
+          mimeType: \"application/vnd.google-apps.\(type)\"
+        }
+        """,
+        // swiftlint:enable indentation_width
+        onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
+        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onError: { _ in onFailure(false) })
 }
 
 private func isStatusCodeNotFound(_ statusCode: Int) -> Bool {
-    return statusCode == 404
+    statusCode == 404
 }

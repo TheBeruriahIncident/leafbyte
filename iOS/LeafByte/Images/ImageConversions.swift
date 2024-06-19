@@ -13,12 +13,12 @@ import UIKit
 
 // Convert a Core Graphics image to a Core Image image.
 func cgToCIImage(_ cgImage: CGImage) -> CIImage {
-    return CIImage(cgImage: cgImage)
+    CIImage(cgImage: cgImage)
 }
 
 // Convert a Core Graphics image to a UI image.
 func cgToUiImage(_ cgImage: CGImage) -> UIImage {
-    return UIImage(cgImage: cgImage)
+    UIImage(cgImage: cgImage)
 }
 
 // Convert a Core Image image to a Core Graphics image.
@@ -60,7 +60,7 @@ func uiToCgImage(_ uiImage: UIImage) -> CGImage? {
 // Convert a UI image to a Core Image image.
 func uiToCiImage(_ uiImage: UIImage) -> CIImage? {
     if uiImage.ciImage != nil {
-       return uiImage.ciImage!
+        return uiImage.ciImage!
     }
 
     return CIImage(image: uiImage)
