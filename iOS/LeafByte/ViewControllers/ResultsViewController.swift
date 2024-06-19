@@ -551,7 +551,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
         let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
 
-        if emptyLabelsAndSizes.count == 0 {
+        if emptyLabelsAndSizes.isEmpty {
             // This is a solid image, so calculating area is pointless.
             setNoLeafFound()
             return
