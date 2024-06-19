@@ -1,5 +1,6 @@
 module AppAuth {
   umbrella header "AppAuth-umbrella.h"
+  exclude header "AppAuth-Core-umbrella.h"
 
   export *
   module * { export * }

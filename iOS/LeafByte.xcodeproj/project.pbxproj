@@ -48,6 +48,7 @@
 		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
+		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,7 +116,10 @@
 		46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayeredIndexableImage.swift; sourceTree = "<group>"; };
 		46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanningViewController.swift; sourceTree = "<group>"; };
 		505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByteTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByteTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
+		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,6 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */,
+				AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -318,6 +324,8 @@
 			children = (
 				C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */,
 				A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */,
+				93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */,
+				9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -348,9 +356,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4621EE621FEB70AD004C3011 /* Build configuration list for PBXNativeTarget "LeafByteTests" */;
 			buildPhases = (
+				2EA35A8CA060A3D8026E838C /* [CP] Check Pods Manifest.lock */,
 				4621EE471FEB70AD004C3011 /* Sources */,
 				4621EE481FEB70AD004C3011 /* Frameworks */,
 				4621EE491FEB70AD004C3011 /* Resources */,
+				9BDBBD81420EC154CBBE7372 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -461,6 +471,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2EA35A8CA060A3D8026E838C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LeafByteTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		372693C106CABA48D222044A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -495,6 +527,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9BDBBD81420EC154CBBE7372 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth-Core/AppAuthCore_Privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthCore_Privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -769,6 +819,7 @@
 		};
 		4621EE631FEB70AD004C3011 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -786,6 +837,7 @@
 		};
 		4621EE641FEB70AD004C3011 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

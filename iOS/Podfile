@@ -1,6 +1,10 @@
 target "LeafByte" do
   pod 'AppAuth', '~> 1.7.5'
 end
+target 'LeafByteTests' do
+  inherit! :search_paths
+  pod 'AppAuth/Core'
+end
 
 inhibit_all_warnings!
 
