@@ -115,7 +115,7 @@ struct Size {
         standardPart + drawingPart
     }
 
-    static func += (left: inout Size, right: Size) {
+    static func += (left: inout Self, right: Self) {
         left.standardPart += right.standardPart
         left.drawingPart += right.drawingPart
     }

@@ -30,7 +30,7 @@ func ciToCgImage(_ ciImage: CIImage) -> CGImage? {
     // }
     // But it turns out that this gives you a downsampled version.
 
-    return context.createCGImage(ciImage, from: ciImage.extent)
+    context.createCGImage(ciImage, from: ciImage.extent)
 }
 
 // Convert a Core Image image to a UI image.

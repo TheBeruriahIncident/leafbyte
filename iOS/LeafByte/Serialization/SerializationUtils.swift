@@ -77,6 +77,7 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
 
     case .googleDrive:
         initiateGoogleSignIn(onAccessTokenAndUserId: { accessToken, userId in
+            // swiftlint:disable:next trailing_closure
             appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
         }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
 
@@ -129,6 +130,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
 
     case .googleDrive:
         initiateGoogleSignIn(onAccessTokenAndUserId: { accessToken, userId in
+            // swiftlint:disable:next trailing_closure
             uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
         }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
 

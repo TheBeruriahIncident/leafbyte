@@ -623,7 +623,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     private func getCombinedImage() -> UIImage {
         // The markingsView is not included, as it's not pretty in a saved image.
-        return combineImages([ leafHolesView, userDrawingView, baseImageView ])
+        combineImages([ leafHolesView, userDrawingView, baseImageView ])
     }
 
     private func setNoLeafFound() {

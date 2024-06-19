@@ -47,10 +47,11 @@ func initiateGoogleSignIn(
     callingViewController: UIViewController,
     settings: Settings) {
 
-        // swiftlint:disable:next trailing_closure
+        // Local SwiftLint flags the trailing_closure here, while CI flags it below. The marker is thus below to make CI work; ignore the warning locally.
         tryToUseExistingLogin(
             authState: settings.googleAuthState,
             onAccessTokenAndUserId: onAccessTokenAndUserId,
+            // swiftlint:disable:next trailing_closure
             ifNoExistingLogin: {
                 OIDAuthorizationService.discoverConfiguration(forIssuer: issuerUrl) { configuration, error in
                     guard let configuration else {

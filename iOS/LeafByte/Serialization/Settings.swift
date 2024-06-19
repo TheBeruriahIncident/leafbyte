@@ -138,7 +138,7 @@ final class Settings: NSObject, NSCoding {
     // MARK: - NSObject
 
     override func isEqual(_ other: Any?) -> Bool {
-        guard let other = other as? Settings else {
+        guard let other = other as? Self else {
             return false
         }
 
@@ -243,7 +243,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
-        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Settings
+        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Self
         if deserializedData == nil {
             return Self()
         }
