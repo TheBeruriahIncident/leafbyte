@@ -45,15 +45,24 @@ func getLumaHistogram(image: CGImage) -> [Int] {
     
     // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
     // Since luma is the only channel we care about (we zeroed the rest), we'll use a garbage array to catch the other histograms.
-    let lumaHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
-    let lumaHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: lumaHistogram) as UnsafeMutablePointer<vImagePixelCount>?
-    let garbageHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
-    let garbageHistogramPointer = UnsafeMutablePointer<vImagePixelCount>(mutating: garbageHistogram) as UnsafeMutablePointer<vImagePixelCount>?
-    let histogramArray = [lumaHistogramPointer, garbageHistogramPointer, garbageHistogramPointer, garbageHistogramPointer]
-    let histogramArrayPointer = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: histogramArray)
-    
-    vImageHistogramCalculation_ARGB8888(&lumaVImage, histogramArrayPointer, UInt32(kvImageNoFlags))
-    
+    var lumaHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
+    var garbageHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
+
+    lumaHistogram.withUnsafeMutableBufferPointer {
+        lumaHistogramPointer in
+        garbageHistogram.withUnsafeMutableBufferPointer {
+            garbageHistogramPointer in
+
+            let garbageHistogramBasePointer = garbageHistogramPointer.baseAddress
+            var histogramArray = [lumaHistogramPointer.baseAddress, garbageHistogramBasePointer, garbageHistogramBasePointer, garbageHistogramBasePointer]
+
+            _ = histogramArray.withUnsafeMutableBufferPointer {
+                histogramArrayPointer in
+                vImageHistogramCalculation_ARGB8888(&lumaVImage, histogramArrayPointer.baseAddress!, UInt32(kvImageNoFlags))
+            }
+        }
+    }
+
     return lumaHistogram.map { Int($0) }
 }
 

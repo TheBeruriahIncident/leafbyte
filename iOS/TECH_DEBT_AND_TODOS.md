@@ -11,7 +11,6 @@ Immediate TODOs:
 * Can we resolve or ignore all warnings?
 * Proof Google Sign In error messages with Zoe
 * Fix weird spacing at the bottom of the tutorial page on newer devices
-* Fix the unsafe pointer init warnings
 * Make sure memory leak/closure semantics are correct around self, escaping, and weak refs
 * Add the experimental images from the paper as test cases
 * Add credits to settings, aligning across iOS, Android, and website
