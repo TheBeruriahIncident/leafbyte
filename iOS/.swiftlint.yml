@@ -77,25 +77,20 @@ opt_in_rules:
   - pattern_matching_keywords
   - period_spacing
   - prefer_self_in_static_references
-#  - prefer_self_type_over_type_of_self
-#  - prefer_zero_over_explicit_init
-#  - prefixed_toplevel_constant
-#  - private_action
-#  - private_outlet
-#  - private_subject
-#  - private_swiftui_state
-#  - prohibited_interface_builder
-#  - prohibited_super_call
-#  - quick_discouraged_call
-#  - quick_discouraged_focused_test
-#  - quick_discouraged_pending_test
-#  - raw_value_for_camel_cased_codable_enum
-#  - reduce_into
-#  - redundant_nil_coalescing
-#  - redundant_self_in_closure
-#  - redundant_type_annotation
-#  - required_enum_case
-#  - return_value_from_void_function
+  - prefer_self_type_over_type_of_self
+  - prefer_zero_over_explicit_init
+  - private_subject
+  - private_swiftui_state
+  - prohibited_super_call
+  - quick_discouraged_call
+  - quick_discouraged_focused_test
+  - quick_discouraged_pending_test
+  - raw_value_for_camel_cased_codable_enum
+  - reduce_into
+  - redundant_nil_coalescing
+  - redundant_self_in_closure
+  - redundant_type_annotation
+  - required_enum_case
 #  - self_binding
 #  - shorthand_argument
 #  - shorthand_optional_binding
