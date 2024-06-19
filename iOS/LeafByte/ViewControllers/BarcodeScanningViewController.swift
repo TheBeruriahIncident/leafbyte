@@ -166,19 +166,14 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             switch UIDevice.current.orientation {
             case .portrait:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
-                break
             case .landscapeRight:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
-                break
             case .landscapeLeft:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-                break
             case .portraitUpsideDown:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
-                break
             default:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
-                break
             }
         }
     }

@@ -9,7 +9,7 @@
 import Accelerate
 import CoreGraphics
 
-let NUMBER_OF_HISTOGRAM_BUCKETS = 256
+let numberOfHistogramBuckets = 256
 
 // Turns an image into a histogram of luma, or intensity.
 // The histogram is represented as an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
@@ -37,7 +37,7 @@ func getLumaHistogram(image: CGImage) -> [Int] {
     let matrix: [Int16] = [ 299, 0, 0, 0,
                             587, 0, 0, 0,
                             114, 0, 0, 0,
-                            0,   0, 0, 0 ]
+                            0,   0, 0, 0 ] // swiftlint:disable:this comma
     // Our matrix can only have integers, but this is accomodated for by having a post-divisor applied to the result of the multiplication.
     // As such, we're actually doing luma = RGB * [299, 587, 114]' / 1000 .
     let divisor: Int32 = 1000
@@ -45,19 +45,16 @@ func getLumaHistogram(image: CGImage) -> [Int] {
 
     // Now we're going to use vImageHistogramCalculation_ARGB8888 to get a histogram of each channel in our image.
     // Since luma is the only channel we care about (we zeroed the rest), we'll use a garbage array to catch the other histograms.
-    var lumaHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
-    var garbageHistogram = [UInt](repeating: 0, count: NUMBER_OF_HISTOGRAM_BUCKETS)
+    var lumaHistogram = [UInt](repeating: 0, count: numberOfHistogramBuckets)
+    var garbageHistogram = [UInt](repeating: 0, count: numberOfHistogramBuckets)
 
-    lumaHistogram.withUnsafeMutableBufferPointer {
-        lumaHistogramPointer in
-        garbageHistogram.withUnsafeMutableBufferPointer {
-            garbageHistogramPointer in
+    lumaHistogram.withUnsafeMutableBufferPointer { lumaHistogramPointer in
+        garbageHistogram.withUnsafeMutableBufferPointer { garbageHistogramPointer in
 
             let garbageHistogramBasePointer = garbageHistogramPointer.baseAddress
             var histogramArray = [lumaHistogramPointer.baseAddress, garbageHistogramBasePointer, garbageHistogramBasePointer, garbageHistogramBasePointer]
 
-            _ = histogramArray.withUnsafeMutableBufferPointer {
-                histogramArrayPointer in
+            _ = histogramArray.withUnsafeMutableBufferPointer { histogramArrayPointer in
                 vImageHistogramCalculation_ARGB8888(&lumaVImage, histogramArrayPointer.baseAddress!, UInt32(kvImageNoFlags))
             }
         }
@@ -76,14 +73,14 @@ func otsusMethod(histogram: [Int]) -> Float {
     let sumOfOmegas = histogram.reduce(0, +)
     var mu0Numerator = 0
     // This calculates a dot product.
-    let sumOfMuNumerators = zip(Array(0...NUMBER_OF_HISTOGRAM_BUCKETS - 1), histogram).reduce(0, { (accumulator, pair) in
+    let sumOfMuNumerators = zip(Array(0...numberOfHistogramBuckets - 1), histogram).reduce(0, { (accumulator, pair) in
         accumulator + (pair.0 * pair.1) })
 
     var maximumInterClassVariance = 0.0
     var bestCut = 0
 
-    for index in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
-        omega0 = omega0 + histogram[index]
+    for index in 0...numberOfHistogramBuckets - 1 {
+        omega0 += histogram[index]
         let omega1 = sumOfOmegas - omega0
         if omega0 == 0 || omega1 == 0 {
             continue
@@ -103,7 +100,7 @@ func otsusMethod(histogram: [Int]) -> Float {
         }
     }
 
-    return Float(bestCut) / Float(NUMBER_OF_HISTOGRAM_BUCKETS - 1)
+    return Float(bestCut) / Float(numberOfHistogramBuckets - 1)
 }
 
 struct Size {
@@ -114,7 +111,7 @@ struct Size {
         return standardPart + drawingPart
     }
 
-    static func +=(left: inout Size, right: Size) {
+    static func += (left: inout Size, right: Size) {
         left.standardPart += right.standardPart
         left.drawingPart += right.drawingPart
     }
@@ -160,7 +157,7 @@ struct ConnectedComponentsInfo {
     }
 }
 
-let BACKGROUND_LABEL = -1
+let backgroundLabel = -1
 
 // Find all the connected components in an image, that is the contiguous areas that are the same ( https://en.wikipedia.org/wiki/Connected-component_labeling ).
 // "Occupied" refers to "true" values in the image, and "empty" refers to "false" values in the image.
@@ -187,9 +184,9 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     var nextEmptyLabel = -2
 
     // Use -1 as a special label for the area outside the image.
-    equivalenceClasses.createSubsetWith(BACKGROUND_LABEL)
-    emptyLabelToNeighboringOccupiedLabels[BACKGROUND_LABEL] = []
-    labelToSize[BACKGROUND_LABEL] = Size()
+    equivalenceClasses.createSubsetWith(backgroundLabel)
+    emptyLabelToNeighboringOccupiedLabels[backgroundLabel] = []
+    labelToSize[backgroundLabel] = Size()
 
     // As an optimization (speeds this loop up by 40%), save off the isOccupied and label values for the previous y layer for the next loop through.
     var previousYIsOccupied: [Bool]!
@@ -302,7 +299,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
 
             // Any empty pixels on the edge of the image are part of the "outside of the image" component.
             if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
-                equivalenceClasses.combineClassesContaining(label, and: BACKGROUND_LABEL)
+                equivalenceClasses.combineClassesContaining(label, and: backgroundLabel)
             }
 
             previousXLabel = label
@@ -333,16 +330,16 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
 
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
-    let outsideOfImageClass = equivalenceClasses.getClassOf(BACKGROUND_LABEL)!
-    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first(where: { $0 != BACKGROUND_LABEL })
+    let outsideOfImageClass = equivalenceClasses.getClassOf(backgroundLabel)!
+    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first(where: { $0 != backgroundLabel })
     if outsideOfImageClassElement != nil {
-        labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement!]
+        labelToMemberPoint[backgroundLabel] = labelToMemberPoint[outsideOfImageClassElement!]
     } else {
         // -1 is in a class of it's own.
         // This means it's useless, so remove it.
-        labelToMemberPoint[BACKGROUND_LABEL] = nil
-        emptyLabelToNeighboringOccupiedLabels[BACKGROUND_LABEL] = nil
-        labelToSize[BACKGROUND_LABEL] = nil
+        labelToMemberPoint[backgroundLabel] = nil
+        emptyLabelToNeighboringOccupiedLabels[backgroundLabel] = nil
+        labelToSize[backgroundLabel] = nil
         equivalenceClasses.classToElements[outsideOfImageClass] = nil
     }
 

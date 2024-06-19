@@ -97,46 +97,47 @@ private func tryToUseExistingLogin(
         useAuthState(authState: authState, onAccessTokenAndUserId: onAccessTokenAndUserId, onError: {_, _ in ifNoExistingLogin()})
     }
 
-private func useAuthState(authState: OIDAuthState,
-                 onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,
-                 onError: @escaping (_ cause: GoogleSignInFailureCause, _ error: Error?) -> Void) {
-    authState.performAction { (accessToken, idToken, error) in
-        if error != nil {
-            print("Error when getting a fresh token from the existing auth state: \(error!.localizedDescription)")
-            return onError(.generic, error)
-        }
-        guard let accessToken = accessToken else {
-            print("No access token received from existing auth state")
-            return onError(.generic, nil)
-        }
-        guard let idToken = idToken else {
-            print("Access token available, but no id token received from existing auth state")
-            return onError(.generic, nil)
-        }
-        guard let jwtPayload = extractPayload(fromJwt: idToken) else {
-            print("Failed to extract payload from jwt: \(idToken)")
-            return onError(.generic, nil)
-        }
-        guard let googleUserId = jwtPayload[JwtPayloadKey.userId] as? String else {
-            print("Failed to retrieve Google user id from jwt payload: \(jwtPayload)")
-            return onError(.generic, nil)
-        }
-
-        let currentScopes = getGrantedScopes(authState: authState)
-        guard requiredScopes.isSubset(of: currentScopes) else {
-            print("Don't yet have sufficient access. Current scopes: \(currentScopes)")
-
-            if currentScopes.contains(Scope.getUserId) {
-                return onError(.noWriteToGoogleDriveScope, nil)
-            } else if currentScopes.contains(Scope.writeToGoogleDrive) {
-                return onError(.noGetUserIdScope, nil)
-            } else {
-                return onError(.neitherScope, nil)
+private func useAuthState(
+    authState: OIDAuthState,
+    onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,
+    onError: @escaping (_ cause: GoogleSignInFailureCause, _ error: Error?) -> Void) {
+        authState.performAction { (accessToken, idToken, error) in
+            if error != nil {
+                print("Error when getting a fresh token from the existing auth state: \(error!.localizedDescription)")
+                return onError(.generic, error)
             }
-        }
+            guard let accessToken = accessToken else {
+                print("No access token received from existing auth state")
+                return onError(.generic, nil)
+            }
+            guard let idToken = idToken else {
+                print("Access token available, but no id token received from existing auth state")
+                return onError(.generic, nil)
+            }
+            guard let jwtPayload = extractPayload(fromJwt: idToken) else {
+                print("Failed to extract payload from jwt: \(idToken)")
+                return onError(.generic, nil)
+            }
+            guard let googleUserId = jwtPayload[JwtPayloadKey.userId] as? String else {
+                print("Failed to retrieve Google user id from jwt payload: \(jwtPayload)")
+                return onError(.generic, nil)
+            }
 
-        onAccessTokenAndUserId(accessToken, googleUserId)
-    }
+            let currentScopes = getGrantedScopes(authState: authState)
+            guard requiredScopes.isSubset(of: currentScopes) else {
+                print("Don't yet have sufficient access. Current scopes: \(currentScopes)")
+
+                if currentScopes.contains(Scope.getUserId) {
+                    return onError(.noWriteToGoogleDriveScope, nil)
+                } else if currentScopes.contains(Scope.writeToGoogleDrive) {
+                    return onError(.noGetUserIdScope, nil)
+                } else {
+                    return onError(.neitherScope, nil)
+                }
+            }
+
+            onAccessTokenAndUserId(accessToken, googleUserId)
+        }
 }
 
 private func getGrantedScopes(authState: OIDAuthState) -> Set<String> {

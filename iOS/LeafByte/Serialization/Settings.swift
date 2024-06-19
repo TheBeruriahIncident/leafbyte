@@ -17,9 +17,12 @@ final class Settings: NSObject, NSCoding {
     static let defaultUnit = "cm"
 
     enum SaveLocation: String {
+        // We redundantly define the string for these enums to ensure that the serialization format is stable, regardless of any future refactors/renames
+        // swiftlint:disable redundant_string_enum_value
         case none = "none"
         case local = "local"
         case googleDrive = "googleDrive"
+        // swiftlint:enable redundant_string_enum_value
     }
 
     private struct PropertyKey {

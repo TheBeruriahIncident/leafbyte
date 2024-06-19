@@ -557,7 +557,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             return
         }
 
-        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != BACKGROUND_LABEL }
+        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != backgroundLabel }
 
         // Filter out any areas marked for exclusion.
         let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize!.key }

@@ -10,8 +10,8 @@ import Accelerate
 import UIKit
 
 final class BackgroundRemovalViewController: UIViewController, UIScrollViewDelegate, UIPopoverPresentationControllerDelegate {
-    let HISTOGRAM_MAX = 100
-    let FUZZINESS_THRESHOLD = 400
+    let histogramMax = 100
+    let fuzzinessThreshold = 400
 
     // MARK: - Fields
 
@@ -100,9 +100,9 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
             // Sum the 2 buckets before and after the threshold in the histogram to get the "fuzziness level".
             // If the fuzziness level is above a threshold (different threshold than the main threshold here), the image is warned to be fuzzy.
             // This essentially represents the amount of pixels that'll change if you slightly adjust the slider.
-            let intThreshold = roundToInt(suggestedThreshold * Float(NUMBER_OF_HISTOGRAM_BUCKETS))
+            let intThreshold = roundToInt(suggestedThreshold * Float(numberOfHistogramBuckets))
             let fuzzinessLevel = lumaHistogram[intThreshold - 1...intThreshold + 2].reduce(0, +)
-            if fuzzinessLevel > FUZZINESS_THRESHOLD {
+            if fuzzinessLevel > fuzzinessThreshold {
                 fuzzinessWarning.isEnabled = true
                 fuzzinessWarning.setTitle(NSLocalizedString("Warning: Image may be fuzzy", comment: "Shown if slight adjustments to the slider would have too much effect on the image"), for: .normal)
             }
@@ -166,15 +166,15 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     }
 
     private func drawHistogram(lumaHistogram: [Int]) {
-        let drawingManager = DrawingManager(withCanvasSize: CGSize(width: NUMBER_OF_HISTOGRAM_BUCKETS, height: HISTOGRAM_MAX))
+        let drawingManager = DrawingManager(withCanvasSize: CGSize(width: numberOfHistogramBuckets, height: histogramMax))
 
         let maxValue = lumaHistogram.max()!
 
-        for i in 0...NUMBER_OF_HISTOGRAM_BUCKETS - 1 {
-            let x = NUMBER_OF_HISTOGRAM_BUCKETS - i - 1
-            let height = roundToInt(Double(HISTOGRAM_MAX) * Double(lumaHistogram[i]) / Double(maxValue), rule: .down)
+        for i in 0...numberOfHistogramBuckets - 1 {
+            let x = numberOfHistogramBuckets - i - 1
+            let height = roundToInt(Double(histogramMax) * Double(lumaHistogram[i]) / Double(maxValue), rule: .down)
 
-            drawingManager.drawLine(from: CGPoint(x: x, y: HISTOGRAM_MAX), to: CGPoint(x: x, y: HISTOGRAM_MAX - height))
+            drawingManager.drawLine(from: CGPoint(x: x, y: histogramMax), to: CGPoint(x: x, y: histogramMax - height))
         }
         drawingManager.finish(imageView: histogramImageView)
     }

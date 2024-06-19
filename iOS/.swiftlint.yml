@@ -1,36 +1,18 @@
-# rule identifiers turned on by default to exclude from running
 disabled_rules:
-   # disabling the rules that fail initially so I can piecemeal bring SwiftLint in
-   - line_length
-   - identifier_name
-   - force_cast
    - cyclomatic_complexity
-   - force_try
-   - switch_case_alignment
-   - type_body_length
-   - shorthand_operator
+   - file_length
    - function_body_length
    - function_parameter_count
-   - closure_parameter_position
-   - comma
-   - colon
-   - vertical_whitespace
-   - redundant_string_enum_value
-   - trailing_semicolon
-   - unused_closure_parameter
-   - trailing_comma
-   - unneeded_break_in_switch
-   - file_length
-   - trailing_newline
-   - vertical_parameter_alignment
-   - empty_parentheses_with_trailing_closure
-   - operator_whitespace
-   - redundant_optional_initialization
-   - for_where
-   - opening_brace
-   - statement_position
-   - is_disjoint
-   - control_statement
+   - line_length
+   - type_body_length
+
+identifier_name:
+  excluded:
+    - x
+    - y
+    - i
+  max_length:
+    warning: 50
 
 excluded:
    - Pods
