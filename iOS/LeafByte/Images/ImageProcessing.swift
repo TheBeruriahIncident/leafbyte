@@ -147,14 +147,6 @@ struct ConnectedComponentsInfo {
     let labelToSize: [Int: Size]
     let equivalenceClasses: UnionFind
     let labelsOfPointsToIdentify: [PointToIdentify: Int]
-
-    init(labelToMemberPoint: [Int: (Int, Int)], emptyLabelToNeighboringOccupiedLabels: [Int: Set<Int>], labelToSize: [Int: Size], equivalenceClasses: UnionFind, labelsOfPointsToIdentify: [PointToIdentify: Int]) {
-        self.labelToMemberPoint = labelToMemberPoint
-        self.emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels
-        self.labelToSize = labelToSize
-        self.equivalenceClasses = equivalenceClasses
-        self.labelsOfPointsToIdentify = labelsOfPointsToIdentify
-    }
 }
 
 let backgroundLabel = -1
