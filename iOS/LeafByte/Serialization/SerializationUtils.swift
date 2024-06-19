@@ -13,6 +13,8 @@ import UIKit
 enum SerializationFailureCause {
     case googleDrive
     case gps
+    case imageToPng
+    case writingImageToFile
 }
 
 // This is the top-level serialize function.
@@ -77,8 +79,9 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
             appendDataToGoogleDrive(settings: settings, row: row, accessToken: accessToken, userId: userId, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
         }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
 
-    default:
-        fatalError("\(settings.dataSaveLocation) not handled in switch")
+    case .none:
+        // I don't think it's possible to get here, short of some weird race condition. But, we've had plenty of weird race conditions...
+        onSuccess()
     }
 }
 
@@ -103,18 +106,23 @@ private func appendDataToGoogleDrive(settings: Settings, row: [String], accessTo
 // This serializes just the image.
 private func serializeImage(settings: Settings, image: UIImage, date: String, time: String, callingViewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping (SerializationFailureCause) -> Void) {
     if settings.imageSaveLocation == .none {
-        onSuccess()
-        return
+        return onSuccess()
     }
     
     let filename = "\(settings.datasetName)-\(settings.getNextSampleNumber()) (\(date) \(time)).png"
-    let pngImage = image.pngData()!
-    
+    guard let pngImage = image.pngData() else {
+        return onFailure(.imageToPng)
+    }
+
     switch settings.imageSaveLocation {
     case .local:
         let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
-        try! pngImage.write(to: url)
-        
+        do {
+            try pngImage.write(to: url)
+        } catch {
+            return onFailure(.writingImageToFile)
+        }
+
         onSuccess()
         
     case .googleDrive:
@@ -122,8 +130,9 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
             uploadDataToGoogleDrive(settings: settings, filename: filename, accessToken: accessToken, userId: userId, pngImage: pngImage, onSuccess: onSuccess, onFailure: { onFailure(.googleDrive) })
         }, onError: { _, _ in onFailure(.googleDrive) }, callingViewController: callingViewController, settings: settings)
     
-    default:
-        fatalError("\(settings.imageSaveLocation) not handled in switch")
+    case .none:
+        // I don't think it's possible to get here, short of some weird race condition. But, we've had plenty of weird race conditions...
+        onSuccess()
     }
 }
 

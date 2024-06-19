@@ -629,10 +629,15 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     
     private func handleSerialization(onSuccess: @escaping () -> Void) {
         let onFailure = { (serializationFailureCause: SerializationFailureCause) in
-            if serializationFailureCause == .googleDrive {
+            switch serializationFailureCause {
+            case .googleDrive:
                 self.handleGoogleDriveFailure(onSuccess: onSuccess)
-            } else {
+            case .gps:
                 self.handleGpsFailure()
+            case .imageToPng:
+                self.handleImageToPngFailure()
+            case .writingImageToFile:
+                self.handleWritingImageToFileFailure()
             }
         }
         
@@ -689,7 +694,25 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             }
         }
     }
-    
+
+    private func handleWritingImageToFileFailure() {
+        DispatchQueue.main.async {
+            presentAlert(self: self, title: NSLocalizedString("Could not write image to Files App.", comment: "Title of the alert that writing image to file failed"), message: NSLocalizedString("Is there space on the phone? If so, please reach out to leafbyte@zoegp.science with details so we can fix this issue.", comment: "Explanation of how to proceed after writing image to file failed"))
+            DispatchQueue.main.async {
+                self.completeButton.isEnabled = true
+            }
+        }
+    }
+
+    private func handleImageToPngFailure() {
+        DispatchQueue.main.async {
+            presentAlert(self: self, title: NSLocalizedString("Could not process image.", comment: "Title of the alert that converting image to png failed"), message: NSLocalizedString("Is there something unusual about this image? Please reach out to leafbyte@zoegp.science with the image and any details so we can fix this issue.", comment: "Explanation of how to proceed after writing image to png failed"))
+            DispatchQueue.main.async {
+                self.completeButton.isEnabled = true
+            }
+        }
+    }
+
     private func drawMarkers() {
         let drawingManager = DrawingManager(withCanvasSize: markingsView.image!.size)
         

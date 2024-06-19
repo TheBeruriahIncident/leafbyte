@@ -29,3 +29,5 @@
 * Prevent crashing in an extremely rare (perhaps theoretical) situation where the memory is affected in an odd way while the thresholding screen is prepared
 * Prevent crashing in a rare situation where the phone is particularly busy as a new screen finishes sliding out
 * Prevent crashing in a rare situation where you manage to return to home while the app is already returning to home
+* Fail gracefully rather than crashing when saving a corrupt image that cannot be converted into a png (This appears in a crash report, but we don't know the conditions where this actually happens)
+* Fail gracefully rather than crashing when failing to save a file to the Files App (This appears in a crash report, but we don't know the conditions where this actually happens; perhaps no disk space?)
