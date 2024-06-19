@@ -25,7 +25,7 @@ final class Settings: NSObject, NSCoding {
         // swiftlint:enable redundant_string_enum_value
     }
 
-    private struct PropertyKey {
+    private enum PropertyKey {
         // Keeping this string for back-compat.
         static let dataSaveLocation = "measurementSaveLocation"
         static let datasetName = "datasetName"

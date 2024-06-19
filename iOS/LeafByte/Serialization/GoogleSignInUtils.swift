@@ -15,12 +15,12 @@ enum GoogleSignInFailureCause {
     case neitherScope
 }
 
-private struct JwtPayloadKey {
+private enum JwtPayloadKey {
     // Short for "subject"
     static let userId = "sub"
     static let scopes = "scope"
 }
-private struct Scope {
+private enum Scope {
     static let getUserId = "openid"
     static let writeToGoogleDrive = "https://www.googleapis.com/auth/drive.file"
 }
