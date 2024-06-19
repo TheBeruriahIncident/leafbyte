@@ -15,10 +15,11 @@ func getUrlForVisibleFiles() -> URL {
     FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
 }
 
-func getUrlForVisibleFolder(named folderName: String) -> URL {
+// Throws if creating the directory fails
+func getUrlForVisibleFolder(named folderName: String) throws -> URL {
     let url = getUrlForVisibleFiles().appendingPathComponent(folderName)
     if !FileManager().fileExists(atPath: url.path) {
-        try! FileManager().createDirectory(at: url, withIntermediateDirectories: false)
+        try FileManager().createDirectory(at: url, withIntermediateDirectories: false)
     }
 
     return url
@@ -28,9 +29,10 @@ func getUrlForInvisibleFiles() -> URL {
     FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 }
 
-func initializeFileIfNonexistant(_ url: URL, withData data: Data) {
+// Throws if creating the file fails
+func initializeFileIfNonexistant(_ url: URL, withData data: Data) throws {
     if !FileManager().fileExists(atPath: url.path) {
-        try! data.write(to: url)
+        try data.write(to: url)
     }
 }
 

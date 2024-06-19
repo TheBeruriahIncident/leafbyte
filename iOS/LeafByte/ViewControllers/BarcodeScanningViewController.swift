@@ -67,7 +67,13 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             crashGracefully(viewController: self, message: "Failed to find any camera on device. Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
             return
         }
-        captureSession.addInput(try! AVCaptureDeviceInput(device: camera))
+        do {
+            captureSession.addInput(try AVCaptureDeviceInput(device: camera))
+        } catch {
+            print("AVCaptureDeviceInput initialization crashed: \(error)")
+            crashGracefully(viewController: self, message: "Camera fails to be AV capture device. Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
+            return
+        }
 
         // Setup the capture session output.
         let captureMetadataOutput = AVCaptureMetadataOutput()

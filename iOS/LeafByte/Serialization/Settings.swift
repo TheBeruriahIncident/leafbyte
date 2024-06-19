@@ -160,9 +160,27 @@ final class Settings: NSObject, NSCoding {
 
     // MARK: - Helpers
 
-    func serialize(at serializedLocation: URL = getUrlForInvisibleFiles()) {
-        try! FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
-        NSKeyedArchiver.archiveRootObject(self, toFile: Self.getSettingsFile(fromContainingFolder: serializedLocation))
+    func serialize(at serializedLocation: URL = getUrlForInvisibleFiles(), self viewController: UIViewController? = nil) {
+        do {
+            try FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
+            let settingsFile = Self.getSettingsFile(fromContainingFolder: serializedLocation)
+
+            if #available(iOS 11.0, *) {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
+                try data.write(to: settingsFile)
+            } else {
+                // If this crashes, we may not even be able to catch it as it isn't marked throwing
+                NSKeyedArchiver.archiveRootObject(self, toFile: settingsFile.path)
+            }
+        } catch {
+            print("Failed to serialize settings: \(error)")
+
+            if viewController != nil {
+                presentAlert(self: viewController!, title: "Failed to save settings", message: "Is there space on your phone? Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
+            }
+            // Just returning isn't great, but it's not clear what more we can do short of crashing the app
+            return
+        }
     }
 
     func getGoogleFolderId(userId: String) -> String? {
@@ -243,15 +261,29 @@ final class Settings: NSObject, NSCoding {
     }
 
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
-        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation)) as? Self
-        if deserializedData == nil {
+        let deserializedData: Self?
+        do {
+            let settingsFile = getSettingsFile(fromContainingFolder: serializedLocation)
+
+            if #available(iOS 11.0, *) {
+                let fileData = try Data(contentsOf: settingsFile)
+                deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: fileData)
+            } else {
+                deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: settingsFile.path) as? Self
+            }
+        } catch {
+            print("Failed to deserialize settings: \(error)")
             return Self()
         }
 
-        return deserializedData!
+        guard let deserializedData else {
+            return Self()
+        }
+
+        return deserializedData
     }
 
-    private static func getSettingsFile(fromContainingFolder folder: URL) -> String {
-        folder.appendingPathComponent("settings").path
+    private static func getSettingsFile(fromContainingFolder folder: URL) -> URL {
+        folder.appendingPathComponent("settings")
     }
 }

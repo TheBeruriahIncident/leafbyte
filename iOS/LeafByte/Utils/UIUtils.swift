@@ -139,7 +139,7 @@ func presentSampleNumberAlert(self viewController: UIViewController, sampleNumbe
         let parsedNewSampleNumber = Int(newSampleNumber)
         if parsedNewSampleNumber != nil {
             settings.datasetNameToNextSampleNumber[settings.datasetName] = parsedNewSampleNumber
-            settings.serialize()
+            settings.serialize(self: viewController)
             setSampleNumberButtonText(sampleNumberButton, settings: settings)
         } else {
             presentAlert(self: viewController, title: nil, message: "This is not a valid number.")

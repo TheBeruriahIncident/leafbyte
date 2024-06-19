@@ -43,8 +43,6 @@ disabled_rules:
   - type_contents_order
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_opening_braces
-  # Standard rules we need to comply with
-  - force_try
   # Opt-in rules we need to comply with
   - force_unwrapping
   - implicitly_unwrapped_optional

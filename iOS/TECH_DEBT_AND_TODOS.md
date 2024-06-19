@@ -23,6 +23,7 @@ Lower priority TODOs:
 * Add credits to settings, aligning across iOS, Android, and website
 * Fix weird spacing at the bottom of the tutorial page on newer devices
 * Audit all force unwraps
+* Temporarily set target to latest to see deprecations
 * Not all lint rules are enabled
 
 Known bugs to figure out and fix:

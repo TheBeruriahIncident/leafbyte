@@ -642,8 +642,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             case .imageToPng:
                 self.handleImageToPngFailure()
 
-            case .writingImageToFile:
-                self.handleWritingImageToFileFailure()
+            case .writingToFile:
+                self.handleWritingToFileFailure()
             }
         }
 
@@ -704,9 +704,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
     }
 
-    private func handleWritingImageToFileFailure() {
+    private func handleWritingToFileFailure() {
         DispatchQueue.main.async {
-            presentAlert(self: self, title: NSLocalizedString("Could not write image to Files App.", comment: "Title of the alert that writing image to file failed"), message: NSLocalizedString("Is there space on the phone? If so, please reach out to leafbyte@zoegp.science with details so we can fix this issue.", comment: "Explanation of how to proceed after writing image to file failed"))
+            presentAlert(self: self, title: NSLocalizedString("Could not write file to Files App.", comment: "Title of the alert that writing image to file failed"), message: NSLocalizedString("Is there space on the phone? If so, please reach out to leafbyte@zoegp.science with details so we can fix this issue.", comment: "Explanation of how to proceed after writing image to file failed"))
             DispatchQueue.main.async {
                 self.completeButton.isEnabled = true
             }

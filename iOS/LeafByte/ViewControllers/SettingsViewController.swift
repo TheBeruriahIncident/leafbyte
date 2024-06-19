@@ -65,7 +65,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         // Switch to the next sample number and unit associated with this dataset.
         nextSampleNumber.text = String(settings.initializeNextSampleNumberIfNeeded())
         scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
-        settings.serialize()
+        settings.serialize(self: self)
 
         // Update the box, in case this was a fallback or via the picker.
         datasetName.text = newDatasetName
@@ -100,7 +100,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         let persistChange = {
             self.settings.imageSaveLocation = newSaveLocation
-            self.settings.serialize()
+            self.settings.serialize(self: self)
 
             self.updateEnabledness()
         }
@@ -127,7 +127,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         let newSaveLocation = indexToSaveLocation(sender.selectedSegmentIndex)
         let persistChange = {
             self.settings.dataSaveLocation = newSaveLocation
-            self.settings.serialize()
+            self.settings.serialize(self: self)
 
             self.updateEnabledness()
         }
@@ -161,28 +161,28 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
 
         settings.datasetNameToNextSampleNumber[settings.datasetName] = newNextSampleNumber
-        settings.serialize()
+        settings.serialize(self: self)
     }
 
     @IBAction func saveGpsChanged(_ sender: UISwitch) {
         dismissInput()
 
         settings.saveGpsData = sender.isOn
-        settings.serialize()
+        settings.serialize(self: self)
     }
 
     @IBAction func useBarcodesChanged(_ sender: UISwitch) {
         dismissInput()
 
         settings.useBarcode = sender.isOn
-        settings.serialize()
+        settings.serialize(self: self)
     }
 
     @IBAction func blackBackgroundChanged(_ sender: UISwitch) {
         dismissInput()
 
         settings.useBlackBackground = sender.isOn
-        settings.serialize()
+        settings.serialize(self: self)
     }
 
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
@@ -198,7 +198,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
 
         settings.scaleMarkLength = newScaleMarkLength
-        settings.serialize()
+        settings.serialize(self: self)
     }
 
     @IBAction func signOutOfGoogle(_ sender: Any) {
@@ -320,7 +320,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
             datasetNameChanged(previousDatasetPickerData[row])
         } else {
             settings.datasetNameToUnit[settings.datasetName] = unitPickerData[row]
-            settings.serialize()
+            settings.serialize(self: self)
 
             scaleMarkUnitButton.setTitle(settings.getUnit(), for: .normal)
         }
@@ -345,7 +345,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
         // Clearing the auth state is counterintuitively actually all we need here. When a user thinks about signing out of Google, they generally don't actually want their whole phone to be signed out of Google, which would likely be a huge inconvenience for them, so we shouldn't initiate an actual sign-out. What they want is for LeafByte itself to not know about their Google sign-in anymore, and all it takes for that is for us to "forget" about their Google sign-in state.
         settings.googleAuthState = nil
-        settings.serialize()
+        settings.serialize(self: self)
 
         dataSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.dataSaveLocation)
         imageSaveLocation.selectedSegmentIndex = saveLocationToIndex(settings.imageSaveLocation)

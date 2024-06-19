@@ -14,7 +14,7 @@ enum SerializationFailureCause {
     case googleDrive
     case gps
     case imageToPng
-    case writingImageToFile
+    case writingToFile
 }
 
 // This is the top-level serialize function.
@@ -65,9 +65,15 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
         let localFilename = settings.getLocalFilename()
         settings.serialize()
 
-        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(localFilename).csv")
-        // If the file doesn't exist, create with the header.
-        initializeFileIfNonexistant(url, withData: getCsvHeader(settings: settings))
+        let url: URL
+        do {
+            url = try getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent("\(localFilename).csv")
+            // If the file doesn't exist, create with the header.
+            try initializeFileIfNonexistant(url, withData: getCsvHeader(settings: settings))
+        } catch {
+            print("Initializing local file crashed: \(error)")
+            return onFailure(.writingToFile)
+        }
 
         // Add the data to the file.
         let csvRow = stringRowToCsvRow(row)
@@ -119,11 +125,12 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
 
     switch settings.imageSaveLocation {
     case .local:
-        let url = getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
         do {
+            let url = try getUrlForVisibleFolder(named: settings.datasetName).appendingPathComponent(filename)
             try pngImage.write(to: url)
         } catch {
-            return onFailure(.writingImageToFile)
+            print("Failed to write image to file: \(error)")
+            return onFailure(.writingToFile)
         }
 
         onSuccess()
