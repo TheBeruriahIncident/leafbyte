@@ -3,7 +3,7 @@
 //  LeafByte
 //
 //  Created by Abigail Getman-Pickering on 12/23/17.
-//  Copyright © 2017 Zoe Getman-Pickering. All rights reserved.
+//  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
 import UIKit

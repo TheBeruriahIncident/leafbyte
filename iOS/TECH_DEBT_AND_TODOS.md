@@ -7,13 +7,10 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* Add signing on zoe's computer
 * Make app loudly complain on startup if client id and redirect are not filled in
 * Add essentially empty privacy manifest
 * Can we resolve or ignore all warnings?
-* Remove legacy id from Info.plist
 * Fix GitHub build (probably by adding AppAuth to LeafByteTests sources), and then limit it to iOS changes https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo and make it cancel on new pushes https://stackoverflow.com/questions/66335225/how-to-cancel-previous-runs-in-the-pr-when-you-push-new-commitsupdate-the-curre
-* Get copyright updated to now everywhere
 * Consider getting scope directly off of authstate object at bottom of GoogleSignInUtils
 * Proof Google Sign In error messages with Zoe
 * Fix weird spacing at the bottom of the tutorial page on newer devices
