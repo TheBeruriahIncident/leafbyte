@@ -22,8 +22,8 @@ extension CGPoint: Hashable {
     }
 }
 
-extension NSMutableAttributedString {
-    public func addLink(text: String, url: String) -> NSMutableAttributedString {
+public extension NSMutableAttributedString {
+    func addLink(text: String, url: String) -> NSMutableAttributedString {
         let foundRange = self.mutableString.range(of: text)
         self.addAttribute(.link, value: url, range: foundRange)
 

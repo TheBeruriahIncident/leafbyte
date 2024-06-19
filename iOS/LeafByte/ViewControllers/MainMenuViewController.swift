@@ -293,7 +293,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             let stringToColor = "not being saved"
             let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
 
-            let attributedString = NSMutableAttributedString.init(string: savingSummary.text!)
+            let attributedString = NSMutableAttributedString(string: savingSummary.text!)
             attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: rangeToColor)
 
             savingSummary.attributedText = attributedString
