@@ -32,4 +32,3 @@
 * Fail gracefully rather than crashing when saving a corrupt image that cannot be converted into a png (This appears in a crash report, but we don't know the conditions where this actually happens)
 * Fail gracefully rather than crashing when failing to save a file to the Files App (This appears in a crash report, but we don't know the conditions where this actually happens; perhaps no disk space?)
 * Prevent crashing when linking to the LeafByte website on very slow internet
-* Prevent crashing if Google's API sends a malformed response

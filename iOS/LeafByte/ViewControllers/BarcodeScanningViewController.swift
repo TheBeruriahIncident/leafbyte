@@ -119,7 +119,9 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
         if metadataObjects.isEmpty {
             return
         }
-        let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        guard let metadataObject = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else {
+            return
+        }
 
         if supportedBarcodeTypes.contains(metadataObject.type) {
             captureSession.stopRunning()

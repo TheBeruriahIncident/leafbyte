@@ -26,7 +26,10 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
             print("Failed to append to sheet. Status code: \(statusCode). Response: \(response)")
             return onFailure(isStatusCodeNotFound(statusCode))
         },
-        onError: { _ in onFailure(false) })
+        onError: { error in
+            print("Failed to append to sheet. Error: \(error)")
+            return onFailure(false)
+        })
 }
 
 func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
@@ -57,7 +60,10 @@ func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escapi
             print("Failed to freeze header. Status code: \(statusCode). Response: \(response)")
             return onFailure(isStatusCodeNotFound(statusCode))
         },
-        onError: { _ in onFailure(false) })
+        onError: { error in
+            print("Failed to freeze header. Error: \(error)")
+            return onFailure(false)
+        })
 }
 
 func uploadData(name: String, data: Data, folderId: String, accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
@@ -82,7 +88,10 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
             print("Failed to upload data. Status code: \(statusCode). Response: \(response)")
             return onFailure(isStatusCodeNotFound(statusCode))
         },
-        onError: { _ in onFailure(false) })
+        onError: { error in
+            print("Failed to upload data. Error: \(error)")
+            return onFailure(false)
+        })
 }
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
@@ -114,7 +123,10 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
             print("Failed to create file. Status code: \(statusCode). Response: \(response)")
             return onFailure(isStatusCodeNotFound(statusCode))
         },
-        onError: { _ in onFailure(false) })
+        onError: { error in
+            print("Failed to create file. Error: \(error)")
+            return onFailure(false)
+        })
 }
 
 private func isStatusCodeNotFound(_ statusCode: Int) -> Bool {

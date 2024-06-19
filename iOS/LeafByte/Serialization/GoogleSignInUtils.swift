@@ -28,9 +28,11 @@ private let requiredScopesList = [Scope.getUserId, Scope.writeToGoogleDrive]
 private let requiredScopes = Set(requiredScopesList)
 
 private let issuerUrl = URL(string: "https://accounts.google.com")!
+// swiftlint:disable force_cast
 // DO NOT CHECK THESE IN.
 private let clientId = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_CLIENT_ID") as! String
 private let redirectUrl = URL(string: Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_REDIRECT_URL") as! String)!
+// swiftlint:enable force_cast
 private let incompleteConfigIndicator = "FILL_ME_IN"
 
 func isGoogleSignInConfigured() -> Bool {

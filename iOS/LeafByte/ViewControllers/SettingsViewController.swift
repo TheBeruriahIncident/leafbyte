@@ -422,9 +422,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
     }
 
+    // We want to get the actual value, but this is our fallback https://stackoverflow.com/questions/11284321/what-is-the-height-of-iphones-onscreen-keyboard
+    private let defaultKeyboardHeight = CGFloat(200)
     private func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let info = notification.userInfo!
-        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size
+        guard let info = notification.userInfo else {
+            return defaultKeyboardHeight
+        }
+        guard let container = info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue else {
+            return defaultKeyboardHeight
+        }
+        let keyboardSize = container.cgRectValue.size
         return keyboardSize.height
     }
 }
