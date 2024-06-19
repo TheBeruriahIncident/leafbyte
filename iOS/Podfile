@@ -1,3 +1,5 @@
+platform :ios, '9.0'
+
 target "LeafByte" do
   pod 'AppAuth', '~> 1.7.5'
 end

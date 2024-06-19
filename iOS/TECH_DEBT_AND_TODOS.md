@@ -14,7 +14,6 @@ Immediate TODOs:
 * Fix the unsafe pointer init warnings
 * Make sure memory leak/closure semantics are correct around self, escaping, and weak refs
 * Add the experimental images from the paper as test cases
-* Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Add credits to settings, aligning across iOS, Android, and website
 * Investigate all crashes in Crash Organizer
 * Check Memory Graph tool and Leaks instrument for any memory leaks
@@ -23,6 +22,7 @@ Immediate TODOs:
 Lower priority TODOs:
 * Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
+* Related to the above, consider upping the resolution, perhaps even dynamically based on phone speed. Related: Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Switch from the older UIImagePicker to the newer PHPicker
 * Add SwiftLint (locally and GitHub action)
 * Add static analysis (locally and GitHub action)
