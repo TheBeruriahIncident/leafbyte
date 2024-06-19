@@ -1,0 +1,13 @@
+# rule identifiers turned on by default to exclude from running
+disabled_rules:
+   # disabling the rules that fail initially so I can piecemeal bring SwiftLint in
+   - line_length
+   - identifier_name
+   - force_cast
+   - cyclomatic_complexity
+   - force_try
+   - type_body_length
+   - shorthand_operator
+   - function_body_length
+   - function_parameter_count
+
