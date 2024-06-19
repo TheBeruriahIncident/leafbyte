@@ -33,3 +33,5 @@ disabled_rules:
    - trailing_whitespace
    - control_statement
 
+excluded:
+   - Pods
