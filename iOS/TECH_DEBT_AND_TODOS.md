@@ -21,6 +21,7 @@ Lower priority TODOs:
 * Add static analysis (locally and GitHub action)
 * Add credits to settings, aligning across iOS, Android, and website
 * Fix weird spacing at the bottom of the tutorial page on newer devices
+* Audit all force unwraps
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.

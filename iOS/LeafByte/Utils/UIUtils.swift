@@ -12,7 +12,8 @@ import UIKit
 // Dismisses the current navigation controller, showing what is beneath.
 func dismissNavigationController(self viewController: UIViewController) {
     DispatchQueue.main.async {
-        viewController.navigationController!.dismiss(animated: true)
+        // Note the ?: if this is nil, I'm guessing it's a weird race condition where the navigation controller has already been dismissed, so there's nothing wrong with just moving on
+        viewController.navigationController?.dismiss(animated: true)
     }
 }
 

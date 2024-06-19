@@ -45,8 +45,8 @@ final class UnionFind {
     func combineClassesContaining(_ firstElement: Int, and secondElement: Int) {
         if let firstSet = getClassOf(firstElement), let secondSet = getClassOf(secondElement) {
             if firstSet != secondSet {
-                var smallerSet: Int!
-                var largerSet: Int!
+                var smallerSet: Int
+                var largerSet: Int
                 if subsetToSize[firstSet] < subsetToSize[secondSet] {
                     smallerSet = firstSet
                     largerSet = secondSet
