@@ -31,6 +31,15 @@ private let issuerUrl = URL(string: "https://accounts.google.com")!
 // DO NOT CHECK THESE IN.
 private let clientId = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_CLIENT_ID") as! String
 private let redirectUrl = URL(string: Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_REDIRECT_URL") as! String)!
+private let incompleteConfigIndicator = "FILL_ME_IN"
+
+func isGoogleSignInConfigured() -> Bool {
+    return isConfigInitialized(clientId) && isConfigInitialized(redirectUrl.absoluteString)
+}
+
+private func isConfigInitialized(_ configValue: String) -> Bool {
+    return !configValue.isEmpty && !configValue.contains(incompleteConfigIndicator)
+}
 
 func initiateGoogleSignIn(
     onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,

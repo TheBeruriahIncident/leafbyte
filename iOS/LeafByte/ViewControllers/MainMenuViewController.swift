@@ -99,6 +99,12 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         
         settings = Settings.deserialize()
         setupImagePicker(imagePicker: imagePicker, self: self)
+
+        if !isGoogleSignInConfigured() {
+            print("************************************************************")
+            print("STOP! Please fill in the Secrets.xcconfig file! Google Sign-In is not configured and WILL NOT WORK!")
+            print("************************************************************")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

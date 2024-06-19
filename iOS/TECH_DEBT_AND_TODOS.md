@@ -7,13 +7,8 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* Make app loudly complain on startup if client id and redirect are not filled in
-* Can we resolve or ignore all warnings?
-* Proof Google Sign In error messages with Zoe
-* Fix weird spacing at the bottom of the tutorial page on newer devices
 * Make sure memory leak/closure semantics are correct around self, escaping, and weak refs
 * Add the experimental images from the paper as test cases
-* Add credits to settings, aligning across iOS, Android, and website
 * Investigate all crashes in Crash Organizer
 * Check Memory Graph tool and Leaks instrument for any memory leaks
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors
@@ -25,6 +20,8 @@ Lower priority TODOs:
 * Switch from the older UIImagePicker to the newer PHPicker
 * Add SwiftLint (locally and GitHub action)
 * Add static analysis (locally and GitHub action)
+* Add credits to settings, aligning across iOS, Android, and website
+* Fix weird spacing at the bottom of the tutorial page on newer devices
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.
