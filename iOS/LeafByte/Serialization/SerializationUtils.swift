@@ -138,8 +138,7 @@ private func serializeImage(settings: Settings, image: UIImage, date: String, ti
 
 private func uploadDataToGoogleDrive(settings: Settings, filename: String, accessToken: String, userId: String, pngImage: Data, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void, alreadyFailedOnce: Bool = false) {
     getDatasetGoogleFolderId(settings: settings, accessToken: accessToken, userId: userId, onFolderId: { folderId in
-        uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure:
-            { (failedBecauseNotFound: Bool) in
+        uploadData(name: filename, data: pngImage, folderId: folderId, accessToken: accessToken, onSuccess: onSuccess, onFailure: { (failedBecauseNotFound: Bool) in
                 if !failedBecauseNotFound || alreadyFailedOnce {
                     onFailure()
                     return

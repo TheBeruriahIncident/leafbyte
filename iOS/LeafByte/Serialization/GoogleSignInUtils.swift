@@ -100,8 +100,8 @@ private func tryToUseExistingLogin(
 private func useAuthState(authState: OIDAuthState,
                  onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,
                  onError: @escaping (_ cause: GoogleSignInFailureCause, _ error: Error?) -> Void) {
-    authState.performAction() { (accessToken, idToken, error) in
-        if error != nil  {
+    authState.performAction { (accessToken, idToken, error) in
+        if error != nil {
             print("Error when getting a fresh token from the existing auth state: \(error!.localizedDescription)")
             return onError(.generic, error)
         }

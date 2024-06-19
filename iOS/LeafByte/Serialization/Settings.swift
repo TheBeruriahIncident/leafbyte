@@ -51,7 +51,7 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToUnitInFirstLocalFile = [String: String]()
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
-    var googleAuthState: OIDAuthState? = nil;
+    var googleAuthState: OIDAuthState?
     var imageSaveLocation = SaveLocation.local
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength

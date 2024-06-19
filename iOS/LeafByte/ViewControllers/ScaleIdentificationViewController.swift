@@ -229,7 +229,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
             // Since a non-white section in the image was touched, it may be a scale mark.
             let markFound = measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1, markNumber: markNumber)
-            if (markFound) {
+            if markFound {
                 if numberOfValidScaleMarks == 4 {
                     numberOfValidScaleMarks = 0
                 }
@@ -299,7 +299,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
 
             let markFound = measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5, markNumber: markNumber)
-            if (!markFound) {
+            if !markFound {
                 setScaleNotFound()
                 numberOfValidScaleMarks = 0
                 return
@@ -315,13 +315,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        let farthestPoint1 : CGPoint!  = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
+        let farthestPoint1: CGPoint!  = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
         // If either farthest point is too far away, we get nil.
         // This allows us to discard objects that are too large and are unlikely to be the scale.
         if farthestPoint1 == nil {
             return false
         }
-        let farthestPoint2 : CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
+        let farthestPoint2: CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
         if farthestPoint2 == nil {
             return false
         }
@@ -385,7 +385,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    @objc func deviceRotated(){
+    @objc func deviceRotated() {
         fixContentSize()
     }
 

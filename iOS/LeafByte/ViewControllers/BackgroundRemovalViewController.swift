@@ -124,8 +124,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // This is called before transitioning from this view to another view.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
-        if segue.identifier == "thresholdingComplete"
-        {
+        if segue.identifier == "thresholdingComplete" {
             guard let destination = segue.destination as? ScaleIdentificationViewController else {
                 fatalError("Expected the next view to be the scale identification view but is \(segue.destination)")
             }

@@ -17,16 +17,16 @@ func dismissNavigationController(self viewController: UIViewController) {
     }
 }
 
-func finishWithImagePicker(self viewController: UIViewController, info: [UIImagePickerController.InfoKey : Any], selectImage: (CGImage) -> Void) {
+func finishWithImagePicker(self viewController: UIViewController, info: [UIImagePickerController.InfoKey: Any], selectImage: (CGImage) -> Void) {
     // In theory, there may be multiple versions of the image in info. We're not allowing editing, so generally there's only one and we just take the original. However, the crash organizer shows that this isn't always successful, so now we try falling back to an editedImage before failing gracefully with an alert.
     let selectedImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) ?? (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)
 
-    let onDismissingPicker : () -> Void
-    if (selectedImage != nil) {
+    let onDismissingPicker: () -> Void
+    if selectedImage != nil {
         // We scale it down to make the following operations happen in tolerable time.
         let resizedImage = resizeImage(selectedImage!)
 
-        if (resizedImage != nil) {
+        if resizedImage != nil {
             // Save the selectedImage off so that during the segue, we can set it onto the next view.
             selectImage(resizedImage!)
 
@@ -94,7 +94,7 @@ func setBackButton(self previousViewController: UIViewController, next nextViewC
 
 func setupScrollView(scrollView: UIScrollView, self viewController: UIScrollViewDelegate) {
     scrollView.delegate = viewController
-    scrollView.minimumZoomScale = 0.9;
+    scrollView.minimumZoomScale = 0.9
     scrollView.maximumZoomScale = 50.0
 }
 

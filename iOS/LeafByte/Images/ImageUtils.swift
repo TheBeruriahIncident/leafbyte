@@ -102,7 +102,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
 
     // Actually draw into the context, transposing if need be.
     var drawTransposed: Bool!
-    switch (image.imageOrientation) {
+    switch image.imageOrientation {
     case .left, .leftMirrored, .right, .rightMirrored:
         drawTransposed = true
     default:
@@ -120,7 +120,7 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     var transform = CGAffineTransform.identity
 
     // Account for direction by rotating (the translations move the rotated image back "into frame").
-    switch (orientation) {
+    switch orientation {
     case .down, .downMirrored:
         transform = transform.translatedBy(x: width, y: height).rotated(by: CGFloat.pi)
     case .left, .leftMirrored:
@@ -132,7 +132,7 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     }
 
     // Account for mirroring by flipping (the translations again move the flipped image back "into frame").
-    switch (orientation) {
+    switch orientation {
     case .upMirrored, .downMirrored:
         transform = transform.translatedBy(x: width, y: 0).scaledBy(x: -1, y: 1)
     case .leftMirrored, .rightMirrored:

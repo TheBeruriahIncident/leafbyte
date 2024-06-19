@@ -11,7 +11,7 @@ import XCTest
 
 final class DataStructureTests: XCTestCase {
     func testQueue() {
-        var queue = Queue();
+        var queue = Queue()
         let point1 = CGPoint(x: 1, y: 2)
         let point2 = CGPoint(x: 4, y: 3)
 

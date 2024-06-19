@@ -129,7 +129,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             UIActivity.ActivityType.assignToContact,
             UIActivity.ActivityType.openInIBooks,
             UIActivity.ActivityType.postToVimeo,
-            UIActivity.ActivityType.print,
+            UIActivity.ActivityType.print
         ]
 
         // Make this work on iPads ( https://stackoverflow.com/questions/25644054/uiactivityviewcontroller-crashing-on-ios8-ipads ).
@@ -265,8 +265,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             } else {
                 fatalError("Attempting to use barcode scanning pre-iOS 10.0")
             }
-        }
-        else if segue.identifier == "helpPopover" {
+        } else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
     }
@@ -404,7 +403,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
 
@@ -746,7 +745,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    @objc func deviceRotated(){
+    @objc func deviceRotated() {
         fixContentSize()
     }
 

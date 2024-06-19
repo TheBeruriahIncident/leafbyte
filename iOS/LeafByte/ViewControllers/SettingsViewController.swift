@@ -300,9 +300,9 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView.tag == 1 {
-            return previousDatasetPickerData.count;
+            return previousDatasetPickerData.count
         } else {
-            return unitPickerData.count;
+            return unitPickerData.count
         }
     }
 

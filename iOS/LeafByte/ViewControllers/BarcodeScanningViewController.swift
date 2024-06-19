@@ -29,7 +29,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
         AVMetadataObject.ObjectType.aztec,
         AVMetadataObject.ObjectType.dataMatrix,
         AVMetadataObject.ObjectType.pdf417,
-        AVMetadataObject.ObjectType.qr,
+        AVMetadataObject.ObjectType.qr
     ]
 
     // This is passed from the previous view.
@@ -141,7 +141,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
 
@@ -163,7 +163,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             }
 
             // Left and right need to be swapped to effectively counteract the rotation.
-            switch (UIDevice.current.orientation) {
+            switch UIDevice.current.orientation {
             case .portrait:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
                 break

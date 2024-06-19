@@ -197,7 +197,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info, selectImage: { selectedImage = $0 })
     }
 

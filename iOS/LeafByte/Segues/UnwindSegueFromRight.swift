@@ -26,7 +26,7 @@ final class UnwindSegueFromRight: UIStoryboardSegue {
             animations: {
                 source.view.transform = CGAffineTransform(translationX: source.view.frame.size.width, y: 0)
             },
-            completion: { finished in
+            completion: { _ in
                 // This proooobably is already the main thread, but it's not in the contract, so let's just be sure
                 DispatchQueue.main.async {
                     source.dismiss(animated: false, completion: nil)

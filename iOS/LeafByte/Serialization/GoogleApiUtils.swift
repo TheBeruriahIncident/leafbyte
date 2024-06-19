@@ -21,7 +21,7 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
     post(url: "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId)/values/Sheet1:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
         accessToken: accessToken,
         jsonBody: "{values: [[\(formattedRow)]]}",
-        onSuccessfulResponse: { response in onSuccess() },
+        onSuccessfulResponse: { _ in onSuccess() },
         onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
         onError: { _ in onFailure(false) })
 }
@@ -47,7 +47,7 @@ func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escapi
           ]
         }
         """,
-        onSuccessfulResponse: { response in onSuccess() },
+        onSuccessfulResponse: { _ in onSuccess() },
         onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
         onError: { _ in onFailure(false) })
 }
