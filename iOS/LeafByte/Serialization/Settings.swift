@@ -62,7 +62,7 @@ final class Settings: NSObject, NSCoding {
     var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
 
-    required override init() {}
+    override required init() {}
 
     // MARK: - NSCoding
 
