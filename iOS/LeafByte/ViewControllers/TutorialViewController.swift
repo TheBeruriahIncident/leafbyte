@@ -11,8 +11,10 @@ import UIKit
 final class TutorialViewController: UIViewController {
     // MARK: - Fields
 
-    // These are passed from the main menu view.
+    // These are passed from the previous view.
+    // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     // MARK: - Outlets
 

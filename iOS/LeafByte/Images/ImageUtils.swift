@@ -101,7 +101,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     context.concatenate(transform)
 
     // Actually draw into the context, transposing if need be.
-    var drawTransposed: Bool!
+    let drawTransposed: Bool
     switch image.imageOrientation {
     case .left, .leftMirrored, .right, .rightMirrored:
         drawTransposed = true
@@ -206,6 +206,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     var queue = Queue()
     queue.enqueue(startingPoint)
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var farthestPointSoFar: CGPoint!
 
     while !queue.isEmpty {

@@ -15,10 +15,12 @@ import UIKit
 final class ThresholdingFilter: CIFilter {
     var threshold: Float = 0.5
 
+    // These are initialized in the entry point.
+    // swiftlint:disable implicitly_unwrapped_optional
     private var inputImageOriginalColorSpace: CIImage!
     private var inputImageSaturated: CIImage!
-
     private var useBlackBackground: Bool!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     func setInputImage(image: CGImage, useBlackBackground: Bool) {
         // Explicitly prevent Core Image from changing the color space, in order to get predictable thresholding. https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_performance/ci_performance.html#//apple_ref/doc/uid/TP30001185-CH10-SW7
@@ -29,6 +31,8 @@ final class ThresholdingFilter: CIFilter {
 
     // MARK: CIFilter overrides
 
+    // Should never be null, and handling this more gracefully is pretty messy
+    // swiftlint:disable:next implicitly_unwrapped_optional
     override var outputImage: CIImage! {
         let arguments: [Any] = [inputImageOriginalColorSpace!, inputImageSaturated!, threshold]
         return getThresholdingKernel().apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)

@@ -13,6 +13,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // MARK: - Fields
 
     // These are passed from the previous view.
+    // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
     var sourceType: UIImagePickerController.SourceType!
     var originalImage: CGImage!
@@ -21,6 +22,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var uiImage: UIImage!
     var inTutorial: Bool!
     var barcode: String?
+    // swiftlint:enable implicitly_unwrapped_optional
 
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
@@ -36,11 +38,16 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     var numberOfValidScaleMarks = 0
     var scaleMarks = Array(repeating: CGPoint.zero, count: 4)
 
+    // This is initialized in a call from viewDidAppear.
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var connectedComponentsInfo: ConnectedComponentsInfo!
 
+    // These are initialized in viewDidLoad.
+    // swiftlint:disable implicitly_unwrapped_optional
     // Projection from the full base image view to the actual image, so we can check if the touch is within the image.
     var baseImageViewToImage: Projection!
     var baseImageRect: CGRect!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     // MARK: - Outlets
 
@@ -220,7 +227,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         }
 
         if mode == .identifyingScale {
-            var markNumber: Int!
+            let markNumber: Int
             if numberOfValidScaleMarks == 4 {
                 markNumber = 0
             } else {
@@ -315,14 +322,12 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         // Find the farthest point in the scale mark away, then the farthest away from that.
         // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
         // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        let farthestPoint1: CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: startPoint)
-        // If either farthest point is too far away, we get nil.
-        // This allows us to discard objects that are too large and are unlikely to be the scale.
-        if farthestPoint1 == nil {
+        guard let farthestPoint1 = getFarthestPointInComponent(inImage: image, fromPoint: startPoint) else {
+            // If either farthest point is too far away, we get nil.
+            // This allows us to discard objects that are too large and are unlikely to be the scale.
             return false
         }
-        let farthestPoint2: CGPoint! = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1)
-        if farthestPoint2 == nil {
+        guard let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1) else {
             return false
         }
 

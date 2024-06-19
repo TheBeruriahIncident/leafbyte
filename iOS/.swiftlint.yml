@@ -45,7 +45,7 @@ disabled_rules:
   - vertical_whitespace_opening_braces
   # Opt-in rules we need to comply with
   - force_unwrapping
-  - implicitly_unwrapped_optional
+  # Rules we may want to comply with once we deal with localization
   - nslocalizedstring_key
   - nslocalizedstring_require_bundle
 

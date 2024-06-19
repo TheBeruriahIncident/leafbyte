@@ -185,8 +185,10 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     labelToSize[backgroundLabel] = Size()
 
     // As an optimization (speeds this loop up by 40%), save off the isOccupied and label values for the previous y layer for the next loop through.
+    // swiftlint:disable implicitly_unwrapped_optional
     var previousYIsOccupied: [Bool]!
     var previousYLabels: [Int]!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     // The labels of any points to identify will be saved.
     // This is indexed in this direction to simplify the process of consolidating equivalent labels later.
@@ -213,8 +215,10 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         currentYLabels.reserveCapacity(width)
 
         // As an optimization (speeds this loop up by another 40%), save off the isOccupied and label value for the previous x for the next loop through.
+        // swiftlint:disable implicitly_unwrapped_optional
         var previousXIsOccupied: Bool!
         var previousXLabel: Int!
+        // swiftlint:enable implicitly_unwrapped_optional
         for x in 0...width - 1 {
             let layerWithPixel = image.getLayerWithPixel(x: x, y: y)
             let isOccupied = layerWithPixel > -1
@@ -238,9 +242,9 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
             }
 
             // Determine what label this pixel should have.
-            var label: Int!
+            let label: Int
             if isOccupied == westIsOccupied {
-                label = westLabel
+                label = westLabel!
 
                 // If this pixel matches the west and north, those two ought to be equivalent.
                 if isOccupied == northIsOccupied {

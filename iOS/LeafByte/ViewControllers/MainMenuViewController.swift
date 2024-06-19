@@ -15,6 +15,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")!
 
+    // This is set in viewDidLoad.
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var settings: Settings!
 
     let imagePicker = UIImagePickerController()
@@ -242,9 +244,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         let dataSaveLocation = settings.dataSaveLocation
         let imageSaveLocation = settings.imageSaveLocation
 
-        var savedMessage: String!
+        let savedMessage: String
         if dataSaveLocation != .none || imageSaveLocation != .none {
-            var savedMessageStart: String!
+            let savedMessageStart: String
             if dataSaveLocation == imageSaveLocation {
                 savedMessageStart = String.localizedStringWithFormat(NSLocalizedString("Saving data and images to %@", comment: "Says that both data and images are being saved somewhere"), saveLocationToName(dataSaveLocation))
             } else {
@@ -257,21 +259,21 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
             // Cap the displayed length of the dataset name.
             let maxDatasetNameLength = 33
-            var displayDatasetName: String!
+            let displayDatasetName: String
             if settings.datasetName.count > maxDatasetNameLength {
                 displayDatasetName = String(settings.datasetName.prefix(maxDatasetNameLength - 3)) + "..."
             } else {
                 displayDatasetName = settings.datasetName
             }
 
-            savedMessage = savedMessageStart + NSLocalizedString(" under the name ", comment: "Connector saying that something is saved with a certain name") + "\(displayDatasetName!)."
+            savedMessage = savedMessageStart + NSLocalizedString(" under the name ", comment: "Connector saying that something is saved with a certain name") + "\(displayDatasetName)."
         } else {
             savedMessage = ""
         }
 
-        var notSavedMessage: String!
+        let notSavedMessage: String
         if dataSaveLocation == .none || imageSaveLocation == .none {
-            var notSavedMessageElements: String!
+            let notSavedMessageElements: String
             if dataSaveLocation == .none && imageSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
             } else if dataSaveLocation == .none {
@@ -280,13 +282,13 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 notSavedMessageElements = NSLocalizedString("Images", comment: "Name for what's being saved")
             }
 
-            notSavedMessage = notSavedMessageElements! + NSLocalizedString(" are not being saved. Go to Settings to change.", comment: "Says that something is not being saved")
+            notSavedMessage = notSavedMessageElements + NSLocalizedString(" are not being saved. Go to Settings to change.", comment: "Says that something is not being saved")
         } else {
             notSavedMessage = ""
         }
 
         savingSummary.numberOfLines = 0
-        savingSummary.text = "\(savedMessage!)\n\(notSavedMessage!)"
+        savingSummary.text = "\(savedMessage)\n\(notSavedMessage)"
 
         // It can be very bad if you unintentionally aren't saving data, so put some text in red.
         if dataSaveLocation == .none {

@@ -13,6 +13,8 @@ final class LeafByteTests: XCTestCase {
     func testThresholdingFilter() {
         let image = uiToCgImage(loadImage(named: "leafWithScale"))!
 
+        // This is set within measure.
+        // swiftlint:disable:next implicitly_unwrapped_optional
         var thresholdedImage: CIImage!
         self.measure {
             let filter = ThresholdingFilter()
@@ -33,6 +35,8 @@ final class LeafByteTests: XCTestCase {
         let uiImage = loadImage(named: "leafWithScale")
         let cgImage = uiToCgImage(uiImage)!
 
+        // This is set within measure.
+        // swiftlint:disable:next implicitly_unwrapped_optional
         var suggestedThreshold: Float!
         self.measure {
             suggestedThreshold = otsusMethod(histogram: getLumaHistogram(image: cgImage))
@@ -52,6 +56,8 @@ final class LeafByteTests: XCTestCase {
         let image = LayeredIndexableImage(width: indexableImage.width, height: indexableImage.height)
         image.addImage(indexableImage)
 
+        // This is set within measure.
+        // swiftlint:disable:next implicitly_unwrapped_optional
         var connectedComponentsInfo: ConnectedComponentsInfo!
         self.measure {
             connectedComponentsInfo = labelConnectedComponents(image: image)

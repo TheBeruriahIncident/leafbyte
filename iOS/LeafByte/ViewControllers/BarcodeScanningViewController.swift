@@ -33,9 +33,13 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     ]
 
     // This is passed from the previous view.
+    // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     let captureSession = AVCaptureSession()
+    // This is initialized in viewDidLoad.
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     var barcode: String?
 

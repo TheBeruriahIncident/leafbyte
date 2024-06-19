@@ -16,11 +16,13 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // MARK: - Fields
 
     // These are passed from the previous view.
+    // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
     var sourceType: UIImagePickerController.SourceType!
     var image: CGImage!
     var inTutorial: Bool!
     var barcode: String?
+    // swiftlint:enable implicitly_unwrapped_optional
 
     let filter = ThresholdingFilter()
 

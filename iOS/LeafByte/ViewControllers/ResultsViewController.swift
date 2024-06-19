@@ -13,6 +13,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     // MARK: - Fields
 
     // These are passed from the previous view.
+    // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
     var sourceType: UIImagePickerController.SourceType!
     var originalImage: CGImage!
@@ -22,13 +23,16 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     var inTutorial: Bool!
     var barcode: String?
     var initialConnectedComponentsInfo: ConnectedComponentsInfo!
+    // swiftlint:enable implicitly_unwrapped_optional
 
+    // These are initialized in viewDidLoad.
+    // swiftlint:disable implicitly_unwrapped_optional
     // Projection from the drawing space back to the base image, so we can check if the drawing is in bounds.
     var userDrawingToBaseImage: Projection!
     var baseImageRect: CGRect!
-
     // Projection from the drawing space back to the filled holes image, so we can check if an exclusion makes sense.
     var userDrawingToFilledHoles: Projection!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     enum ActionType {
         case drawing
@@ -61,8 +65,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         case markingExcludedConsumedArea
     }
 
+    // These are initialized from a call from viewDidAppear.
     // Track the actual results.
-    var formattedPercentConsumed: String!
+    var formattedPercentConsumed: String! // swiftlint:disable:this implicitly_unwrapped_optional
     var formattedLeafAreaIncludingConsumedAreaInUnits2: String?
     var formattedConsumedAreaInUnits2: String?
 
@@ -358,7 +363,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             return
         }
 
-        var action: Action!
+        let action: Action
         if mode == .drawing {
             // If only one point, nothing has been drawn yet.
             if currentTouchPath.count == 1 {

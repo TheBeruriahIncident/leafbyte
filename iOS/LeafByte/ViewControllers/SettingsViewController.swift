@@ -12,6 +12,8 @@ import UIKit
 final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     // MARK: - Fields
 
+    // This was set by the caller.
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var settings: Settings!
 
     var activeField: UITextField?
@@ -54,7 +56,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
             .replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
 
         // Fall back to the default if the box is empty or only brackets.
-        var newDatasetName: String!
+        let newDatasetName: String
         if sanitizedCandidateNewName.isEmpty {
             newDatasetName = Settings.defaultDatasetName
         } else {
@@ -150,14 +152,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
-        var newNextSampleNumber: Int!
+        let newNextSampleNumber: Int
         if sender.text!.isEmpty || Int(sender.text!) == nil {
             newNextSampleNumber = Settings.defaultNextSampleNumber
 
             // If we fallback, update the box too.
             nextSampleNumber.text = String(newNextSampleNumber)
         } else {
-            newNextSampleNumber = Int(sender.text!)
+            // Unparseable case handled above
+            // swiftlint:disable:next force_unwrapping
+            newNextSampleNumber = Int(sender.text!)!
         }
 
         settings.datasetNameToNextSampleNumber[settings.datasetName] = newNextSampleNumber
@@ -187,14 +191,16 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
-        var newScaleMarkLength: Double!
+        let newScaleMarkLength: Double
         if sender.text!.isEmpty || Double(sender.text!) == nil {
             newScaleMarkLength = Settings.defaultScaleMarkLength
 
             // If we fallback, update the box too.
             scaleMarkLength.text = String(newScaleMarkLength)
         } else {
-            newScaleMarkLength = Double(sender.text!)
+            // Unparseable case handled above
+            // swiftlint:disable:next force_unwrapping
+            newScaleMarkLength = Double(sender.text!)!
         }
 
         settings.scaleMarkLength = newScaleMarkLength

@@ -16,8 +16,11 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
 
     let clLocationManager = CLLocationManager()
 
+    // These are initialized at the entry point to this class.
+    // swiftlint:disable implicitly_unwrapped_optional
     var onLocation: ((_ location: CLLocation) -> Void)!
     var onError: ((_ error: Error) -> Void)!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     static func requestLocation(onLocation: @escaping (_ location: CLLocation) -> Void, onError: @escaping (_ error: Error) -> Void) {
         gpsManager.onLocation = onLocation
