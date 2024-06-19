@@ -22,7 +22,10 @@ func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, on
         accessToken: accessToken,
         jsonBody: "{values: [[\(formattedRow)]]}",
         onSuccessfulResponse: { _ in onSuccess() },
-        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onUnsuccessfulResponse: { statusCode, response in
+            print("Failed to append to sheet. Status code: \(statusCode). Response: \(response)")
+            return onFailure(isStatusCodeNotFound(statusCode))
+        },
         onError: { _ in onFailure(false) })
 }
 
@@ -50,7 +53,10 @@ func freezeHeader(spreadsheetId: String, accessToken: String, onSuccess: @escapi
         """,
         // swiftlint:enable indentation_width
         onSuccessfulResponse: { _ in onSuccess() },
-        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onUnsuccessfulResponse: { statusCode, response in
+            print("Failed to freeze header. Status code: \(statusCode). Response: \(response)")
+            return onFailure(isStatusCodeNotFound(statusCode))
+        },
         onError: { _ in onFailure(false) })
 }
 
@@ -72,7 +78,10 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
         body: body,
         contentType: "multipart/related; boundary=\(boundary)",
         onSuccessfulResponse: { _ in onSuccess() },
-        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onUnsuccessfulResponse: { statusCode, response in
+            print("Failed to upload data. Status code: \(statusCode). Response: \(response)")
+            return onFailure(isStatusCodeNotFound(statusCode))
+        },
         onError: { _ in onFailure(false) })
 }
 
@@ -94,8 +103,17 @@ private func createFile(name: String, folderId: String?, type: String, accessTok
         }
         """,
         // swiftlint:enable indentation_width
-        onSuccessfulResponse: { response in onFileId(response["id"] as! String) },
-        onUnsuccessfulResponse: { statusCode, _ in onFailure(isStatusCodeNotFound(statusCode)) },
+        onSuccessfulResponse: { response in
+            guard let fileId = response["id"] as? String else {
+                print("Could not parse id in response: \(response)")
+                return onFailure(false)
+            }
+            onFileId(fileId)
+        },
+        onUnsuccessfulResponse: { statusCode, response in
+            print("Failed to create file. Status code: \(statusCode). Response: \(response)")
+            return onFailure(isStatusCodeNotFound(statusCode))
+        },
         onError: { _ in onFailure(false) })
 }
 

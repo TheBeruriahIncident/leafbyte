@@ -44,7 +44,6 @@ disabled_rules:
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_opening_braces
   # Standard rules we need to comply with
-  - force_cast
   - force_try
   # Opt-in rules we need to comply with
   - force_unwrapping

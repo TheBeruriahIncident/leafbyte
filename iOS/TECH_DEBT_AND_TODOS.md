@@ -20,8 +20,6 @@ Lower priority TODOs:
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
 * Related to the above, consider upping the resolution, perhaps even dynamically based on phone speed. Related: Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Switch from the older UIImagePicker to the newer PHPicker
-* Add SwiftLint (locally and GitHub action)
-* Add static analysis (locally and GitHub action)
 * Add credits to settings, aligning across iOS, Android, and website
 * Fix weird spacing at the bottom of the tutorial page on newer devices
 * Audit all force unwraps
