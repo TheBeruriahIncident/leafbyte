@@ -91,34 +91,32 @@ opt_in_rules:
   - redundant_self_in_closure
   - redundant_type_annotation
   - required_enum_case
-#  - self_binding
-#  - shorthand_argument
-#  - shorthand_optional_binding
-#  - single_test_class
-#  - sorted_enum_cases
-#  - sorted_first_last
-#  - sorted_imports
-#  - static_operator
-#  - strict_fileprivate
-#  - superfluous_else
-#  - switch_case_on_newline
-#  - test_case_accessibility
-#  - toggle_bool
-#  - trailing_closure
-#  - type_contents_order
-#  - unavailable_function
-#  - unhandled_throwing_task
-#  - unneeded_parentheses_in_closure_argument
-#  - unowned_variable_capture
-#  - untyped_error_in_catch
-#  - unused_capture_list
-#  - vertical_parameter_alignment_on_call
-#  - vertical_whitespace_between_cases
-#  - vertical_whitespace_closing_braces
-#  - vertical_whitespace_opening_braces
-#  - weak_delegate
-#  - xct_specific_matcher
-#  - yoda_condition
+  - self_binding
+  - shorthand_argument
+  - shorthand_optional_binding
+  - single_test_class
+  - sorted_enum_cases
+  - sorted_first_last
+  - sorted_imports
+  - static_operator
+  - strict_fileprivate
+  - superfluous_else
+  - switch_case_on_newline
+  - test_case_accessibility
+  - toggle_bool
+  - trailing_closure
+  - unavailable_function
+  - unhandled_throwing_task
+  - unneeded_parentheses_in_closure_argument
+  - unowned_variable_capture
+  - untyped_error_in_catch
+  - unused_capture_list
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_between_cases
+  - vertical_whitespace_closing_braces
+  - weak_delegate
+  - xct_specific_matcher
+  - yoda_condition
 
 identifier_name:
   excluded:
