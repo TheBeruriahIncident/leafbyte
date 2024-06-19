@@ -8,7 +8,6 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 
 Immediate TODOs:
 * Make app loudly complain on startup if client id and redirect are not filled in
-* Add essentially empty privacy manifest
 * Can we resolve or ignore all warnings?
 * Fix GitHub build (probably by adding AppAuth to LeafByteTests sources), and then limit it to iOS changes https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo and make it cancel on new pushes https://stackoverflow.com/questions/66335225/how-to-cancel-previous-runs-in-the-pr-when-you-push-new-commitsupdate-the-curre
 * Consider getting scope directly off of authstate object at bottom of GoogleSignInUtils

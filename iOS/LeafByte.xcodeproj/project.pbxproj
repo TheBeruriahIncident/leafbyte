@@ -49,6 +49,7 @@
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
 		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
+		C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,7 @@
 		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 				4656C6CE1FF869B600AC6821 /* Filters */,
 				4623585E20016AF9005EA36E /* Images */,
 				4621EE461FEB70AD004C3011 /* Info.plist */,
+				C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */,
 				4656C6CF1FF869E900AC6821 /* Segues */,
 				469E3B012013DAB8009C7337 /* Serialization */,
 				4656C6D11FF87EAC00AC6821 /* Storyboards */,
@@ -445,6 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */,
 				46A6D883209EAD110013891E /* Localizable.strings in Resources */,
 				4621EE451FEB70AD004C3011 /* LaunchScreen.storyboard in Resources */,
 				46130551200EEFDC00141B68 /* Podfile in Resources */,
