@@ -52,7 +52,7 @@ func initiateGoogleSignIn(
             onAccessTokenAndUserId: onAccessTokenAndUserId,
             ifNoExistingLogin: {
                 OIDAuthorizationService.discoverConfiguration(forIssuer: issuerUrl) { configuration, error in
-                    guard let configuration = configuration else {
+                    guard let configuration else {
                         print("Error retrieving OAuth discovery document: \(error?.localizedDescription ?? "no error information")")
                         return onError(.generic, error)
                     }
@@ -72,7 +72,7 @@ func initiateGoogleSignIn(
                     }
                     // This call will automatically protect with PKCE if possible (according to https://github.com/openid/AppAuth-iOS)
                     appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: callingViewController) { authState, error in
-                        guard let authState = authState else {
+                        guard let authState else {
                             print("Did not receive auth state after auth flow: \(error?.localizedDescription ?? "no error information")")
                             return onError(.generic, error)
                         }
@@ -91,7 +91,7 @@ private func tryToUseExistingLogin(
     onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,
     ifNoExistingLogin: @escaping () -> Void) {
 
-        guard let authState = authState, authState.isAuthorized else {
+        guard let authState, authState.isAuthorized else {
             return ifNoExistingLogin()
         }
 
@@ -102,16 +102,16 @@ private func useAuthState(
     authState: OIDAuthState,
     onAccessTokenAndUserId: @escaping (_ accessToken: String, _ userId: String) -> Void,
     onError: @escaping (_ cause: GoogleSignInFailureCause, _ error: Error?) -> Void) {
-        authState.performAction { (accessToken, idToken, error) in
+        authState.performAction { accessToken, idToken, error in
             if error != nil {
                 print("Error when getting a fresh token from the existing auth state: \(error!.localizedDescription)")
                 return onError(.generic, error)
             }
-            guard let accessToken = accessToken else {
+            guard let accessToken else {
                 print("No access token received from existing auth state")
                 return onError(.generic, nil)
             }
-            guard let idToken = idToken else {
+            guard let idToken else {
                 print("Access token available, but no id token received from existing auth state")
                 return onError(.generic, nil)
             }

@@ -443,6 +443,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         switch action.type {
         case .drawing:
             drawCompleteDrawing(action.points)
+
         case .exclusion:
             // Originally this drew an X where things were excluded, but that was determined to just be noise.
             break
@@ -633,10 +634,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             switch serializationFailureCause {
             case .googleDrive:
                 self.handleGoogleDriveFailure(onSuccess: onSuccess)
+
             case .gps:
                 self.handleGpsFailure()
+
             case .imageToPng:
                 self.handleImageToPngFailure()
+
             case .writingImageToFile:
                 self.handleWritingImageToFileFailure()
             }

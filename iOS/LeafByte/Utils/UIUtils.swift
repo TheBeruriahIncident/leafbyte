@@ -123,13 +123,13 @@ func setSampleNumberButtonText(_ sampleNumberButton: UIButton, settings: Setting
 func presentSampleNumberAlert(self viewController: UIViewController, sampleNumberButton: UIButton, settings: Settings) {
     let alert = UIAlertController(title: NSLocalizedString("Sample Number", comment: "Title of alert asking for the new sample number"), message: nil, preferredStyle: .alert)
 
-    alert.addTextField { (textField) in
+    alert.addTextField { textField in
         textField.placeholder = String(settings.getNextSampleNumber())
         textField.keyboardType = UIKeyboardType.numberPad
     }
 
     let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel the new sample number"), style: .default)
-    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { (_) in
+    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { _ in
         let newSampleNumber = alert.textFields![0].text!
         if newSampleNumber.isEmpty {
             return

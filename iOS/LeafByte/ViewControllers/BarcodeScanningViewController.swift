@@ -6,8 +6,8 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 @available(iOS 10.0, *)
 final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -166,12 +166,16 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             switch UIDevice.current.orientation {
             case .portrait:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+
             case .landscapeRight:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+
             case .landscapeLeft:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+
             case .portraitUpsideDown:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+
             default:
                 videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
             }

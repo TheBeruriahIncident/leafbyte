@@ -105,6 +105,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     switch image.imageOrientation {
     case .left, .leftMirrored, .right, .rightMirrored:
         drawTransposed = true
+
     default:
         drawTransposed = false
     }
@@ -123,10 +124,13 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     switch orientation {
     case .down, .downMirrored:
         transform = transform.translatedBy(x: width, y: height).rotated(by: CGFloat.pi)
+
     case .left, .leftMirrored:
         transform = transform.translatedBy(x: width, y: 0).rotated(by: CGFloat.pi / 2)
+
     case .right, .rightMirrored:
         transform = transform.translatedBy(x: 0, y: height).rotated(by: -CGFloat.pi / 2)
+
     default:
         ()
     }
@@ -135,8 +139,10 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
     switch orientation {
     case .upMirrored, .downMirrored:
         transform = transform.translatedBy(x: width, y: 0).scaledBy(x: -1, y: 1)
+
     case .leftMirrored, .rightMirrored:
         transform = transform.translatedBy(x: height, y: 0).scaledBy(x: -1, y: 1)
+
     default:
         ()
     }

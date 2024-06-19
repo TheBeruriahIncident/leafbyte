@@ -76,7 +76,7 @@ func otsusMethod(histogram: [Int]) -> Float {
     let sumOfOmegas = histogram.reduce(0, +)
     var mu0Numerator = 0
     // This calculates a dot product.
-    let sumOfMuNumerators = zip(Array(0...numberOfHistogramBuckets - 1), histogram).reduce(0, { (accumulator, pair) in
+    let sumOfMuNumerators = zip(Array(0...numberOfHistogramBuckets - 1), histogram).reduce(0, { accumulator, pair in
         accumulator + (pair.0 * pair.1) })
 
     var maximumInterClassVariance = 0.0

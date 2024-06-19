@@ -107,7 +107,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
         if newSaveLocation == .googleDrive {
             initiateGoogleSignIn(
-                onAccessTokenAndUserId: { (_, _) in
+                onAccessTokenAndUserId: { _, _ in
                     persistChange()
                 },
                 onError: { cause, _ in
@@ -357,8 +357,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         switch index {
         case 1:
             return Settings.SaveLocation.local
+
         case 2:
             return Settings.SaveLocation.googleDrive
+
         default:
             return Settings.SaveLocation.none
         }
@@ -368,8 +370,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         switch saveLocation {
         case .none:
             return 0
+
         case .local:
             return 1
+
         case .googleDrive:
             return 2
         }

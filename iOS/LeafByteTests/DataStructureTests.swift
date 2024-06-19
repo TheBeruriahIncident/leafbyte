@@ -6,8 +6,8 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-import XCTest
 @testable import LeafByte
+import XCTest
 
 final class DataStructureTests: XCTestCase {
     func testQueue() {

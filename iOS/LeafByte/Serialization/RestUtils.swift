@@ -29,7 +29,7 @@ private func makeRestCall(method: String, url urlString: String, accessToken: St
 
     let session = URLSession(configuration: URLSessionConfiguration.default)
 
-    let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+    let task = session.dataTask(with: request as URLRequest) { data, response, error in
         if error != nil {
             print("REST error: \(error!)")
             onError(error!)

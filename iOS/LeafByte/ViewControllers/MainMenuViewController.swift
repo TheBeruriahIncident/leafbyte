@@ -304,6 +304,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         switch saveLocation {
         case .none:
             return NSLocalizedString("none", comment: "Not saving")
+
         case .local:
             // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
             if #available(iOS 11.0, *) {
@@ -311,6 +312,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             } else {
                 return NSLocalizedString("the phone", comment: "Name for local storage before iOS 11")
             }
+
         case .googleDrive:
             return NSLocalizedString("Google Drive", comment: "Name of Google Drive")
         }
