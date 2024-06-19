@@ -142,7 +142,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                         self.signOutOfGoogle()
                         presentFailedGoogleSignInAlert(cause: cause, self: self)
                     }
-            }, callingViewController: self, settings: settings)
+                }, callingViewController: self, settings: settings)
         } else {
             persistChange()
         }

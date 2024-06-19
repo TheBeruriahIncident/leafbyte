@@ -17,7 +17,7 @@ func createSheet(name: String, folderId: String, accessToken: String, onSpreadsh
 }
 
 func appendToSheet(spreadsheetId: String, row: [String], accessToken: String, onSuccess: @escaping () -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
-    let formattedRow = row.map({"\"\($0)\""}).joined(separator: ",")
+    let formattedRow = row.map({ "\"\($0)\"" }).joined(separator: ",")
     post(url: "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId)/values/Sheet1:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
         accessToken: accessToken,
         jsonBody: "{values: [[\(formattedRow)]]}",

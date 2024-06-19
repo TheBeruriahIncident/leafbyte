@@ -94,7 +94,7 @@ private func tryToUseExistingLogin(
             return ifNoExistingLogin()
         }
 
-        useAuthState(authState: authState, onAccessTokenAndUserId: onAccessTokenAndUserId, onError: {_, _ in ifNoExistingLogin()})
+        useAuthState(authState: authState, onAccessTokenAndUserId: onAccessTokenAndUserId, onError: { _, _ in ifNoExistingLogin() })
     }
 
 private func useAuthState(
