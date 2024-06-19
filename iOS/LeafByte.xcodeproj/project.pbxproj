@@ -345,11 +345,11 @@
 				4621EE341FEB70AD004C3011 /* Frameworks */,
 				4621EE351FEB70AD004C3011 /* Resources */,
 				372693C106CABA48D222044A /* [CP] Copy Pods Resources */,
+				C8C01DD12C23315F00A78453 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C89481B02C23204C00E730BE /* PBXTargetDependency */,
 			);
 			name = LeafByte;
 			productName = LeafByte;
@@ -554,6 +554,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C8C01DD12C23315F00A78453 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -624,10 +641,6 @@
 			isa = PBXTargetDependency;
 			target = 4621EE361FEB70AD004C3011 /* LeafByte */;
 			targetProxy = 4621EE571FEB70AD004C3011 /* PBXContainerItemProxy */;
-		};
-		C89481B02C23204C00E730BE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = C89481AF2C23204C00E730BE /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -936,25 +949,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C89481AE2C231E6800E730BE /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.55.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C89481AF2C23204C00E730BE /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C89481AE2C231E6800E730BE /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintBuildToolPlugin";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4621EE2F1FEB70AD004C3011 /* Project object */;
 }
