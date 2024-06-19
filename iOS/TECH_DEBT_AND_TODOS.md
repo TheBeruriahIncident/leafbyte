@@ -24,4 +24,4 @@ Lower priority TODOs:
 * Audit all force unwraps
 
 Known bugs to figure out and fix:
-* One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.
+* One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext/handleSerialization. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.

@@ -12,7 +12,9 @@ import UIKit
 // This class controls the main menu view, the first view in the app.
 final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
-    
+
+    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")!
+
     var settings: Settings!
     
     let imagePicker = UIImagePickerController()
@@ -52,9 +54,14 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         
         performSegue(withIdentifier: "toTutorial", sender: self)
     }
-    
+
     @IBAction func openWebsite(_ sender: Any) {
-        UIApplication.shared.openURL(URL(string: "https://zoegp.science/leafbyte")!)
+        if #available(iOS 10.0, *) {
+            // Note that, unlike the deprecated openURL method, this is async, which will hopefully resolve the cryptic crash report on openURL that I'm guessing was a timeout on the main thread
+            UIApplication.shared.open(leafbyteWebsiteUrl)
+        } else {
+            UIApplication.shared.openURL(leafbyteWebsiteUrl)
+        }
     }
     
     @IBAction func pickImageFromCamera(_ sender: Any) {
