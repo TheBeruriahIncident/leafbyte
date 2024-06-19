@@ -1,10 +1,14 @@
 disabled_rules:
    - cyclomatic_complexity
    - file_length
+   - for_where
    - function_body_length
    - function_parameter_count
    - line_length
    - type_body_length
+   # These should actually be fixed
+   - force_cast
+   - force_try
 
 identifier_name:
   excluded:

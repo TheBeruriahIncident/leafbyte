@@ -571,7 +571,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         var consumedAreaInPixels = leafLabelAndSize!.value.drawingPart
         for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {
             // This component is a hole if it neighbors the leaf (since we already filtered out the background).
-            if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.intersection(leafLabels).isEmpty {
+            if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.isDisjoint(with: leafLabels) {
                 // Add to the consumed size.
                 consumedAreaInPixels += emptyLabelAndSize.value.standardPart
 
