@@ -131,8 +131,8 @@ private func useAuthState(authState: OIDAuthState,
 }
 
 private func getGrantedScopes(authState: OIDAuthState) -> Set<String> {
-    guard let scopeString = authState.lastAuthorizationResponse.scope else {
-        // This field has the contract in the RFC that if all requested scopes were granted, it MAY be nil. In practice, Google's OAuth implementation returns all the granted scopes regardless, but we handle this possible behavior just in case.
+    guard let scopeString = authState.scope else {
+        // This field is nullable for no documented reason. The contract of the RFC is that this MAY be null in the wire type if all requested scopes were granted. The AppAuth implementation however explicitly hides that from the consumer and fills in the requested scopes for this type if the wire type doesn't contain scopes. So, we don't know why this is null, but we handle it as if it's null for the same reason as the wire type might be.
         return requiredScopes
     }
 
