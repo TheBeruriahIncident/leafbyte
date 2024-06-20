@@ -8,7 +8,7 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 
 Immediate TODOs:
 * Switch from the older UIImagePicker to the newer PHPicker
-Failed to deserialize settings: Error Domain=NSCocoaErrorDomain Code=4864 "This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it." UserInfo={NSDebugDescription=This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it.}
+* Switch settings to using Codable
 Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
 * Fix have memory leaks!
 * Add the experimental images from the paper as test cases

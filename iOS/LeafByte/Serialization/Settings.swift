@@ -166,13 +166,8 @@ final class Settings: NSObject, NSCoding {
             try FileManager().createDirectory(at: serializedLocation, withIntermediateDirectories: true)
             let settingsFile = Self.getSettingsFile(fromContainingFolder: serializedLocation)
 
-            if #available(iOS 11.0, *) {
-                let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
-                try data.write(to: settingsFile)
-            } else {
-                // If this crashes, we may not even be able to catch it as it isn't marked throwing
-                NSKeyedArchiver.archiveRootObject(self, toFile: settingsFile.path)
-            }
+            // If this crashes, we may not even be able to catch it as it isn't marked throwing
+            NSKeyedArchiver.archiveRootObject(self, toFile: settingsFile.path)
         } catch {
             print("Failed to serialize settings: \(error)")
 
@@ -266,20 +261,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
-        let deserializedData: Self?
-        do {
-            let settingsFile = getSettingsFile(fromContainingFolder: serializedLocation)
-
-            if #available(iOS 11.0, *) {
-                let fileData = try Data(contentsOf: settingsFile)
-                deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: fileData)
-            } else {
-                deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: settingsFile.path) as? Self
-            }
-        } catch {
-            print("Failed to deserialize settings: \(error)")
-            return Self()
-        }
+        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation).path) as? Self
 
         guard let deserializedData else {
             return Self()
