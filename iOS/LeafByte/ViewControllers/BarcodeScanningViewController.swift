@@ -135,7 +135,11 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
 
         if supportedBarcodeTypes.contains(metadataObject.type) {
             captureSession.stopRunning()
-            barcode = metadataObject.stringValue!
+            barcode = metadataObject.stringValue
+            guard let barcode else {
+                return
+            }
+
             label.text = barcode
 
             DispatchQueue.main.async {

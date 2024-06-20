@@ -27,12 +27,12 @@ private enum Scope {
 private let requiredScopesList = [Scope.getUserId, Scope.writeToGoogleDrive]
 private let requiredScopes = Set(requiredScopesList)
 
-private let issuerUrl = URL(string: "https://accounts.google.com")!
-// swiftlint:disable force_cast
+// swiftlint:disable force_cast force_unwrapping
 // DO NOT CHECK THESE IN.
+private let issuerUrl = URL(string: "https://accounts.google.com")!
 private let clientId = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_CLIENT_ID") as! String
 private let redirectUrl = URL(string: Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_REDIRECT_URL") as! String)!
-// swiftlint:enable force_cast
+// swiftlint:enable force_cast force_unwrapping
 private let incompleteConfigIndicator = "FILL_ME_IN"
 
 func isGoogleSignInConfigured() -> Bool {
@@ -109,6 +109,7 @@ private func useAuthState(
     onError: @escaping (_ cause: GoogleSignInFailureCause, _ error: Error?) -> Void) {
         authState.performAction { accessToken, idToken, error in
             if error != nil {
+                // swiftlint:disable:next force_unwrapping
                 print("Error when getting a fresh token from the existing auth state: \(error!.localizedDescription)")
                 return onError(.generic, error)
             }

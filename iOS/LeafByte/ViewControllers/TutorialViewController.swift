@@ -47,6 +47,7 @@ final class TutorialViewController: UIViewController {
 
             destination.settings = settings
             destination.sourceType = .photoLibrary
+            // swiftlint:disable:next force_unwrapping
             destination.image = resizeImage(#imageLiteral(resourceName: "Example Image"))!
             destination.inTutorial = true
 

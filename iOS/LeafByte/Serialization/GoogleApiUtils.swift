@@ -96,7 +96,7 @@ func uploadData(name: String, data: Data, folderId: String, accessToken: String,
 
 private func createFile(name: String, folderId: String?, type: String, accessToken: String, onFileId: @escaping (String) -> Void, onFailure: @escaping (_ failedBecauseNotFound: Bool) -> Void) {
     let parentsParam = folderId != nil
-        ? " parents: [\"\(folderId!)\"],"
+        ? " parents: [\"\(folderId!)\"]," // swiftlint:disable:this force_unwrapping
         : ""
 
     post(

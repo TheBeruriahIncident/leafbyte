@@ -109,7 +109,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         baseImageView.image = uiImage
         scaleMarkingView.contentMode = .scaleAspectFit
 
+        // swiftlint:disable:next force_unwrapping
         baseImageViewToImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
+        // swiftlint:disable:next force_unwrapping
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
 
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
@@ -212,7 +214,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             return
         }
 
-        let candidatePoint = touches.first!.location(in: baseImageView)
+        guard let candidatePoint = touches.first?.location(in: baseImageView) else {
+            return
+        }
         let projectedPoint = baseImageViewToImage.project(point: candidatePoint)
         // Touches outside the image don't matter.
         if !baseImageRect.contains(projectedPoint) {
@@ -221,8 +225,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
         let indexableImage = IndexableImage(cgImage)
         // Touches in white don't matter.
-        let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10_000)
-        if visiblePixel == nil {
+        guard let visiblePixel = searchForVisible(inImage: indexableImage, fromPoint: projectedPoint, checkingNoMoreThan: 10_000) else {
             return
         }
 
@@ -235,7 +238,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             }
 
             // Since a non-white section in the image was touched, it may be a scale mark.
-            let markFound = measureScaleMark(fromPointInMark: visiblePixel!, inImage: indexableImage, withMinimumLength: 1, markNumber: markNumber)
+            let markFound = measureScaleMark(fromPointInMark: visiblePixel, inImage: indexableImage, withMinimumLength: 1, markNumber: markNumber)
             if markFound {
                 if numberOfValidScaleMarks == 4 {
                     numberOfValidScaleMarks = 0
@@ -303,6 +306,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             let scaleMarkLabel = sortedOccupiedLabelsAndSizes[markNumber + 1].key
 
             // Get a point in the scale mark.
+            // swiftlint:disable:next force_unwrapping
             let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
 
             let markFound = measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5, markNumber: markNumber)
@@ -354,6 +358,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
 
     private func drawMarkers() {
+        // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
         drawingManager.context.setLineWidth(2)
         drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)

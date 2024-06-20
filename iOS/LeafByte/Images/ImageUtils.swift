@@ -23,12 +23,13 @@ func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: I
         height: y,
         bitsPerComponent: image.bitsPerComponent,
         bytesPerRow: 0,
+        // swiftlint:disable:next force_unwrapping
         space: image.colorSpace!,
-        bitmapInfo: image.bitmapInfo.rawValue)!
+        bitmapInfo: image.bitmapInfo.rawValue)! // swiftlint:disable:this force_unwrapping
     context.interpolationQuality = .high
 
     context.draw(image, in: CGRect(origin: CGPoint.zero, size: CGSize(width: x, height: y)))
-    return context.makeImage()!
+    return context.makeImage()! // swiftlint:disable:this force_unwrapping
 }
 
 func resizeImage(_ image: UIImage) -> CGImage? {
@@ -67,6 +68,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
         height: newHeightRoundedDown,
         bitsPerComponent: cgImage.bitsPerComponent,
         bytesPerRow: 0,
+        // swiftlint:disable:next force_unwrapping
         space: cgImage.colorSpace!,
         bitmapInfo: cgImage.bitmapInfo.rawValue)
 
@@ -88,12 +90,13 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
             height: newHeightRoundedDown,
             bitsPerComponent: cgImage.bitsPerComponent,
             bytesPerRow: 0,
+            // swiftlint:disable:next force_unwrapping
             space: cgImage.colorSpace!,
             bitmapInfo: i)
         i += 1
     }
 
-    let context = maybeContext!
+    let context = maybeContext! // swiftlint:disable:this force_unwrapping
     context.interpolationQuality = .high
 
     // Consider the orientation of the original image, and rotate/flip as appropriate for the result to be right-side up.
@@ -113,7 +116,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
         CGSize(width: drawTransposed ? newHeight : newWidth,
             height: drawTransposed ? newWidth : newHeight)))
 
-    return context.makeImage()!
+    return context.makeImage()! // swiftlint:disable:this force_unwrapping
 }
 
 // A UIImage can have various orientations that must be corrected for. This was adapted from http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/ .
@@ -153,14 +156,14 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
 // Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     // Size the canvas to the first image (which is assumed to be the same as the rest).
-    UIGraphicsBeginImageContext(imageViews[0].image!.size)
+    UIGraphicsBeginImageContext(imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
 
     // Draw each image into the canvas.
     for imageView in imageViews {
-        imageView.image!.draw(at: CGPoint.zero)
+        imageView.image!.draw(at: CGPoint.zero) // swiftlint:disable:this force_unwrapping
     }
 
-    let combinedImage = UIGraphicsGetImageFromCurrentImageContext()!
+    let combinedImage = UIGraphicsGetImageFromCurrentImageContext()! // swiftlint:disable:this force_unwrapping
     UIGraphicsEndImageContext()
     return combinedImage
 }
@@ -184,14 +187,14 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
 }
 
 private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint, bottomRight: CGPoint, topLeft: CGPoint, topRight: CGPoint) -> CIImage {
-    let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")!
+    let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")! // swiftlint:disable:this force_unwrapping
     perspectiveCorrection.setValue(image, forKey: kCIInputImageKey)
     perspectiveCorrection.setValue(CIVector(cgPoint: bottomLeft), forKey: "inputBottomLeft")
     perspectiveCorrection.setValue(CIVector(cgPoint: bottomRight), forKey: "inputBottomRight")
     perspectiveCorrection.setValue(CIVector(cgPoint: topLeft), forKey: "inputTopLeft")
     perspectiveCorrection.setValue(CIVector(cgPoint: topRight), forKey: "inputTopRight")
 
-    return perspectiveCorrection.outputImage!
+    return perspectiveCorrection.outputImage! // swiftlint:disable:this force_unwrapping
 }
 
 // Find the point farthest away from a point within a connected component.
@@ -210,7 +213,7 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     var farthestPointSoFar: CGPoint!
 
     while !queue.isEmpty {
-        let point = queue.dequeue()!
+        let point = queue.dequeue()! // swiftlint:disable:this force_unwrapping
         if explored.contains(point) {
             continue
         }
@@ -411,7 +414,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
 
     while !queue.isEmpty {
         // We're going to find the largest horizontal line containing this point that stays in the empty area.
-        let point = queue.popFirst()!
+        let point = queue.popFirst()! // swiftlint:disable:this force_unwrapping
         let x = roundToInt(point.x)
         let y = roundToInt(point.y)
         // If this point is already filled, we can truncate here.
@@ -501,6 +504,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
 
         // Mark the range as filled in so we don't come back to it.
         if filledRanges[y] != nil {
+            // swiftlint:disable:next force_unwrapping
             filledRanges[y]!.append((leftmostX, rightmostX))
         } else {
             filledRanges[y] = [(leftmostX, rightmostX)]
@@ -509,12 +513,11 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
 }
 
 private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int)]]) -> Bool {
-    let filledXRanges = filledRanges[y]
-    if filledXRanges == nil {
+    guard let filledXRanges = filledRanges[y] else {
         return false
     }
 
-    return filledXRanges!.contains { filledXRange in
+    return filledXRanges.contains { filledXRange in
         x >= filledXRange.0 && x <= filledXRange.1
     }
 }

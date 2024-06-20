@@ -13,7 +13,7 @@ import UIKit
 final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
 
-    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")!
+    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
 
     // This is set in viewDidLoad.
     // swiftlint:disable:next implicitly_unwrapped_optional
@@ -293,9 +293,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         // It can be very bad if you unintentionally aren't saving data, so put some text in red.
         if dataSaveLocation == .none {
             let stringToColor = "not being saved"
-            let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor)
+            let rangeToColor = (savingSummary.text! as NSString).range(of: stringToColor) // swiftlint:disable:this force_unwrapping
 
-            let attributedString = NSMutableAttributedString(string: savingSummary.text!)
+            let attributedString = NSMutableAttributedString(string: savingSummary.text!) // swiftlint:disable:this force_unwrapping
             attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: rangeToColor)
 
             savingSummary.attributedText = attributedString

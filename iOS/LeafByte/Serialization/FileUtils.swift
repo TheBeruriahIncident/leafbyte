@@ -12,6 +12,7 @@ import Foundation
 // E.g. the end user should see saved data, but not the settings file.
 
 func getUrlForVisibleFiles() -> URL {
+    // swiftlint:disable:next force_unwrapping
     FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
 }
 
@@ -26,7 +27,8 @@ func getUrlForVisibleFolder(named folderName: String) throws -> URL {
 }
 
 func getUrlForInvisibleFiles() -> URL {
-    FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+    // there should always be an app support directory
+    FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first! // swiftlint:disable:this force_unwrapping
 }
 
 // Throws if creating the file fails
@@ -36,8 +38,8 @@ func initializeFileIfNonexistant(_ url: URL, withData data: Data) throws {
     }
 }
 
-func appendToFile(_ url: URL, data: Data) {
-    let fileHandle = FileHandle(forWritingAtPath: url.path)!
+func appendToFile(_ url: URL, data: Data) throws {
+    let fileHandle = try FileHandle(forWritingTo: url)
     defer {
         fileHandle.closeFile()
     }

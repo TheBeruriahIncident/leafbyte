@@ -9,6 +9,7 @@
 @testable import LeafByte
 import XCTest
 
+// swiftlint:disable force_unwrapping
 final class LeafByteTests: XCTestCase {
     func testThresholdingFilter() {
         let image = uiToCgImage(loadImage(named: "leafWithScale"))!
@@ -122,3 +123,4 @@ final class LeafByteTests: XCTestCase {
         return image
     }
 }
+// swiftlint:enable force_unwrapping

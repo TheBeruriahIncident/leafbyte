@@ -14,7 +14,8 @@ let numberOfHistogramBuckets = 256
 // Turns an image into a histogram of luma, or intensity.
 // The histogram is represented as an array with 256 buckets, each bucket containing the number of pixels in that range of intensity.
 func getLumaHistogram(image: CGImage) -> [Int] {
-    let pixelData = image.dataProvider!.data!
+    // These appear to be optional just because it's legacy Objective-C code
+    let pixelData = image.dataProvider!.data! // swiftlint:disable:this force_unwrapping
     var initialVImage = vImage_Buffer(
         data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(pixelData)),
         height: vImagePixelCount(image.height),
@@ -58,6 +59,8 @@ func getLumaHistogram(image: CGImage) -> [Int] {
             var histogramArray = [lumaHistogramPointer.baseAddress, garbageHistogramBasePointer, garbageHistogramBasePointer, garbageHistogramBasePointer]
 
             _ = histogramArray.withUnsafeMutableBufferPointer { histogramArrayPointer in
+                // base address should only be nil if the histogram were empty, which we know is not the case
+                // swiftlint:disable:next force_unwrapping
                 vImageHistogramCalculation_ARGB8888(&lumaVImage, histogramArrayPointer.baseAddress!, UInt32(kvImageNoFlags))
             }
         }
@@ -200,10 +203,8 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         if pointsToIdentifyYsToXs[pointToIdentify.y] == nil {
             pointsToIdentifyYsToXs[pointToIdentify.y] = [ pointToIdentify.x ]
         } else {
-            // Due to strange behavior in Swift 4 (this will change in Swift 5), we can't directly append to a list in a dictionary ( https://stackoverflow.com/a/24535563/1092672 ).
-            var pointsToIdentifyXsForY = pointsToIdentifyYsToXs[pointToIdentify.y]!
-            pointsToIdentifyXsForY.append(pointToIdentify.x)
-            pointsToIdentifyYsToXs[pointToIdentify.y] = pointsToIdentifyXsForY
+            // safe to unwrap because we just checked it
+            pointsToIdentifyYsToXs[pointToIdentify.y]!.append(pointToIdentify.x) // swiftlint:disable:this force_unwrapping
         }
     }
 
@@ -244,13 +245,16 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
             // Determine what label this pixel should have.
             let label: Int
             if isOccupied == westIsOccupied {
+                // swiftlint:disable:next force_unwrapping
                 label = westLabel!
 
                 // If this pixel matches the west and north, those two ought to be equivalent.
                 if isOccupied == northIsOccupied {
+                    // swiftlint:disable:next force_unwrapping
                     equivalenceClasses.combineClassesContaining(westLabel!, and: northLabel!)
                 }
             } else if isOccupied == northIsOccupied {
+                // swiftlint:disable:next force_unwrapping
                 label = northLabel!
             } else {
                 // If this pixel matches neither, it's part of a new component.
@@ -274,26 +278,26 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
             // If on the 0th layer, it's the main leaf.
             // If -1, it was unoccupied.
             if layerWithPixel == 1 {
-                labelToSize[label]!.drawingPart += 1
+                labelToSize[label]!.drawingPart += 1 // swiftlint:disable:this force_unwrapping
             } else {
-                labelToSize[label]!.standardPart += 1
+                labelToSize[label]!.standardPart += 1 // swiftlint:disable:this force_unwrapping
             }
 
             // Update the neighbor map if we have neighboring occupied and empty.
             if isOccupied {
                 // Note that these are explicit checks rather just "if !westIsOccupied {", because these values are optional.
                 if westIsOccupied == false {
-                    emptyLabelToNeighboringOccupiedLabels[westLabel!]!.insert(label)
+                    emptyLabelToNeighboringOccupiedLabels[westLabel!]!.insert(label) // swiftlint:disable:this force_unwrapping
                 }
                 if northIsOccupied == false {
-                    emptyLabelToNeighboringOccupiedLabels[northLabel!]!.insert(label)
+                    emptyLabelToNeighboringOccupiedLabels[northLabel!]!.insert(label) // swiftlint:disable:this force_unwrapping
                 }
             } else {
                 if westIsOccupied == true {
-                    emptyLabelToNeighboringOccupiedLabels[label]!.insert(westLabel!)
+                    emptyLabelToNeighboringOccupiedLabels[label]!.insert(westLabel!) // swiftlint:disable:this force_unwrapping
                 }
                 if northIsOccupied == true {
-                    emptyLabelToNeighboringOccupiedLabels[label]!.insert(northLabel!)
+                    emptyLabelToNeighboringOccupiedLabels[label]!.insert(northLabel!) // swiftlint:disable:this force_unwrapping
                 }
             }
 
@@ -309,6 +313,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         // Check if this y row has any associated points to identify.
         let pointsToIdentifyXs = pointsToIdentifyYsToXs[y]
         if pointsToIdentifyXs != nil {
+            // swiftlint:disable:next force_unwrapping
             for pointToIdentifyX in pointsToIdentifyXs! {
                 // For each associated point to identify, record the association between the point and label.
                 let label = currentYLabels[pointToIdentifyX]
@@ -316,10 +321,8 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
                 if labelsToPointsToIdentify[label] == nil {
                     labelsToPointsToIdentify[label] = [ point ]
                 } else {
-                    // Due to strange behavior in Swift 4 (this will change in Swift 5), we can't directly append to a list in a dictionary ( https://stackoverflow.com/a/24535563/1092672 ).
-                    var pointsForLabel = labelsToPointsToIdentify[label]!
-                    pointsForLabel.append(point)
-                    labelsToPointsToIdentify[label] = pointsForLabel
+                    // safe to unwrap because we just checked
+                    labelsToPointsToIdentify[label]!.append(point)  // swiftlint:disable:this force_unwrapping
                 }
             }
         }
@@ -330,10 +333,10 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
 
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
-    let outsideOfImageClass = equivalenceClasses.getClassOf(backgroundLabel)!
-    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first { $0 != backgroundLabel }
+    let outsideOfImageClass = equivalenceClasses.getClassOf(backgroundLabel)!  // swiftlint:disable:this force_unwrapping
+    let outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!.first { $0 != backgroundLabel }  // swiftlint:disable:this force_unwrapping
     if outsideOfImageClassElement != nil {
-        labelToMemberPoint[backgroundLabel] = labelToMemberPoint[outsideOfImageClassElement!]
+        labelToMemberPoint[backgroundLabel] = labelToMemberPoint[outsideOfImageClassElement!]  // swiftlint:disable:this force_unwrapping
     } else {
         // -1 is in a class of it's own.
         // This means it's useless, so remove it.
@@ -349,12 +352,12 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
     // "Normalize" by combining equivalent labels.
     for equivalenceClassElements in equivalenceClasses.classToElements.values {
         // Because we take the max, the background class will use -1.
-        let representative = equivalenceClassElements.max()!
+        let representative = equivalenceClassElements.max()! // swiftlint:disable:this force_unwrapping
 
         // Make the member point be the top-most member point in the equivalence.
         // That way the leaf marker is drawn in a place less likely to overlap the leaf.
         let topMostMemberPoint = equivalenceClassElements
-            .map { labelToMemberPoint[$0]! }
+            .map { labelToMemberPoint[$0]! }  // swiftlint:disable:this force_unwrapping
             .sorted { $0.1 < $1.1 }[0]
         labelToMemberPoint[representative] = topMostMemberPoint
 
@@ -362,7 +365,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         equivalenceClassElements.forEach { label in
             // The label of the point to identify would now be obsolete, so save off the new canonical label.
             if labelsToPointsToIdentify[label] != nil {
-                for point in labelsToPointsToIdentify[label]! {
+                for point in labelsToPointsToIdentify[label]! {  // swiftlint:disable:this force_unwrapping
                     labelsOfPointsToIdentify[point] = representative
                 }
             }
@@ -371,10 +374,11 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
         // Do a second loop-through without the representative element of the class.
         equivalenceClassElements.filter { $0 != representative }.forEach { label in
             // Normalize labelToSize.
-            labelToSize[representative]! += labelToSize[label]!
+            labelToSize[representative]! += labelToSize[label]! // swiftlint:disable:this force_unwrapping
             labelToSize[label] = nil
 
             // Normalize emptyLabelToNeighboringOccupiedLabels.
+            // swiftlint:disable:next force_unwrapping
             emptyLabelToNeighboringOccupiedLabels[representative]!.formUnion(emptyLabelToNeighboringOccupiedLabels[label]!)
             emptyLabelToNeighboringOccupiedLabels[label] = nil
         }

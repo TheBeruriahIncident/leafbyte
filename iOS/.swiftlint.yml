@@ -43,8 +43,6 @@ disabled_rules:
   - type_contents_order
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_opening_braces
-  # Opt-in rules we need to comply with
-  - force_unwrapping
   # Rules we may want to comply with once we deal with localization
   - nslocalizedstring_key
   - nslocalizedstring_require_bundle

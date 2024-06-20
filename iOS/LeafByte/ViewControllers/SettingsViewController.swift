@@ -48,6 +48,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     // MARK: - Actions
 
     @IBAction func datasetNameChanged(_ sender: UITextField) {
+        // swiftlint:disable:next force_unwrapping
         datasetNameChanged(sender.text!)
     }
 
@@ -79,6 +80,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
         let currentSelection = previousDatasetPickerData.firstIndex(of: settings.datasetName)
         if currentSelection != nil {
+            // swiftlint:disable:next force_unwrapping
             previousDatasetPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
         }
 
@@ -90,6 +92,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
         let currentSelection = unitPickerData.firstIndex(of: settings.getUnit())
         if currentSelection != nil {
+            // swiftlint:disable:next force_unwrapping
             unitPicker.selectRow(currentSelection!, inComponent: 0, animated: false)
         }
 
@@ -153,6 +156,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func nextSampleNumberChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         let newNextSampleNumber: Int
+        // swiftlint:disable:next force_unwrapping
         if sender.text!.isEmpty || Int(sender.text!) == nil {
             newNextSampleNumber = Settings.defaultNextSampleNumber
 
@@ -192,6 +196,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     @IBAction func scaleMarkLengthChanged(_ sender: UITextField) {
         // Fall back to the default if the box is empty.
         let newScaleMarkLength: Double
+        // swiftlint:disable:next force_unwrapping
         if sender.text!.isEmpty || Double(sender.text!) == nil {
             newScaleMarkLength = Settings.defaultScaleMarkLength
 
@@ -259,6 +264,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         unitPicker.delegate = self
         unitPicker.isHidden = true
 
+        // swiftlint:disable:next force_unwrapping
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
 
         if #available(iOS 10.0, *) {
@@ -415,16 +421,19 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
 
         // The visible frame is covered partially by the status bar, the nav bar, and the keyboard.
         visibleFrame.size.height -= getKeyboardHeight(notification: notification)
-        visibleFrame.size.height -= self.navigationController!.navigationBar.frame.height
+        if self.navigationController != nil {
+            // swiftlint:disable:next force_unwrapping
+            visibleFrame.size.height -= self.navigationController!.navigationBar.frame.height
+        }
         visibleFrame.size.height -= UIApplication.shared.statusBarFrame.height
 
         // Account for any scrolling that has already happened.
         visibleFrame.size.height += scrollView.contentOffset.y
 
         // Check if the field is out of the view.
-        if activeField != nil && visibleFrame.size.height < activeField!.frame.maxY {
+        if activeField != nil && visibleFrame.size.height < activeField!.frame.maxY { // swiftlint:disable:this force_unwrapping
             // Scroll down if so.
-            scrollView.contentOffset = CGPoint(x: 0, y: (activeField!.frame.maxY - visibleFrame.size.height) + scrollView.contentOffset.y)
+            scrollView.contentOffset = CGPoint(x: 0, y: (activeField!.frame.maxY - visibleFrame.size.height) + scrollView.contentOffset.y)  // swiftlint:disable:this force_unwrapping
         }
     }
 

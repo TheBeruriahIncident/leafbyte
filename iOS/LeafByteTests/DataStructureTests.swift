@@ -9,6 +9,7 @@
 @testable import LeafByte
 import XCTest
 
+// swiftlint:disable force_unwrapping
 final class DataStructureTests: XCTestCase {
     func testQueue() {
         var queue = Queue()
@@ -59,3 +60,4 @@ final class DataStructureTests: XCTestCase {
         }
     }
 }
+// swiftlint:enable force_unwrapping

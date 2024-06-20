@@ -34,6 +34,8 @@ final class ThresholdingFilter: CIFilter {
     // Should never be null, and handling this more gracefully is pretty messy
     // swiftlint:disable:next implicitly_unwrapped_optional
     override var outputImage: CIImage! {
+        // These are initialized in the entry point.
+        // swiftlint:disable:next force_unwrapping
         let arguments: [Any] = [inputImageOriginalColorSpace!, inputImageSaturated!, threshold]
         return getThresholdingKernel().apply(extent: inputImageOriginalColorSpace.extent, arguments: arguments)
     }
@@ -56,6 +58,7 @@ final class ThresholdingFilter: CIFilter {
             "  return luma " + comparisonOperator + " threshold ? vec4(saturatedPixel.rgb, 1) : invisiblePixel;" +
             "}"
 
-        return CIColorKernel(source: kernelCode)!
+        // Only null if the kernel code is invalid
+        return CIColorKernel(source: kernelCode)! // swiftlint:disable:this force_unwrapping
     }
 }

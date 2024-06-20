@@ -125,6 +125,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     @IBAction func share(_ sender: Any) {
         let imageToShare = getCombinedImage()
+        // swiftlint:disable:next force_unwrapping
         let dataToShare = [ imageToShare, resultsText.text! + NSLocalizedString(" Analyzed with LeafByte https://zoegp.science/leafbyte", comment: "Shown after the results when sharing the results, e.g. on social media. Note the leading space that separates from the results") ] as [Any]
         let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
 
@@ -202,9 +203,12 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         initializeImage(view: markingsView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
 
+        // swiftlint:disable:next force_unwrapping
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
+        // swiftlint:disable:next force_unwrapping
         baseImageRect = CGRect(origin: CGPoint.zero, size: baseImageView.image!.size)
 
+        // swiftlint:disable:next force_unwrapping
         userDrawingToFilledHoles = Projection(fromView: baseImageView, toImageInView: leafHolesView.image!)
 
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
@@ -259,6 +263,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
             destination.settings = settings
             destination.sourceType = sourceType
+            // swiftlint:disable:next force_unwrapping
             destination.image = selectedImage!
             destination.inTutorial = false
         }
@@ -325,7 +330,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             return
         }
 
-        let candidatePoint = (touches.first?.location(in: userDrawingView))!
+        guard let candidatePoint = touches.first?.location(in: userDrawingView) else {
+            return
+        }
         // "Drawing" outside the image doesn't count.
         if !isTouchedPointInBaseImage(candidatePoint) {
             return
@@ -339,7 +346,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             return
         }
 
-        let candidatePoint = touches.first!.location(in: userDrawingView)
+        guard let candidatePoint = touches.first?.location(in: userDrawingView) else {
+            return
+        }
         // Touching outside the image doesn't count.
         if !isTouchedPointInBaseImage(candidatePoint) {
             return
@@ -347,6 +356,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
         // If there was a previous point, connect the dots.
         if !currentTouchPath.isEmpty && mode == .drawing {
+            // swiftlint:disable:next force_unwrapping
             drawLine(fromPoint: currentTouchPath.last!, toPoint: candidatePoint)
         }
 
@@ -367,15 +377,18 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         if mode == .drawing {
             // If only one point, nothing has been drawn yet.
             if currentTouchPath.count == 1 {
+                // swiftlint:disable:next force_unwrapping
                 drawLine(fromPoint: currentTouchPath.last!, toPoint: currentTouchPath.last!)
             }
 
             action = Action(type: .drawing, points: currentTouchPath)
         } else {
+            // swiftlint:disable:next force_unwrapping
             let touchedPoint = currentTouchPath.last!
 
             // If the touched point is not on a filled area, it's likely a mistake, so ignore it.
             let touchedPointInHoles = userDrawingToFilledHoles.project(point: touchedPoint)
+            // swiftlint:disable:next force_unwrapping
             guard let cgImage = uiToCgImage(leafHolesView.image!) else {
                 crashGracefully(viewController: self, message: "Failed to process image during exclusion. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
                 return
@@ -466,11 +479,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     private func drawLine(points: [CGPoint]) {
+        // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
         drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
         drawingManager.context.setLineWidth(2)
 
         if points.count == 1 {
+            // swiftlint:disable:next force_unwrapping
             drawingManager.drawLine(from: points.first!, to: points.first!)
         } else {
             for index in 0...points.count - 2 {
@@ -523,6 +538,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         combinedImage.addImage(baseImage)
 
         // Then we include any user drawings.
+        // swiftlint:disable:next force_unwrapping
         guard let cgImage = uiToCgImage(userDrawingView.image!) else {
             crashGracefully(viewController: self, message: "Failed to process image during area calculation. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
             return
@@ -547,16 +563,17 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         // Assume the largest occupied component is the leaf.
         let leafLabelAndSize = labelsAndSizes.first { $0.key > 0 }
 
-        if leafLabelAndSize == nil {
+        guard let leafLabelAndSize else {
             // This is a blank image, and trying to calculate area will crash.
             setNoLeafFound()
             return
         }
-        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabelAndSize!.key]
+        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabelAndSize.key]
         drawMarkers()
 
-        let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize!.key)!
-        let leafAreaInPixels = leafLabelAndSize!.value.standardPart
+        // swiftlint:disable:next force_unwrapping
+        let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize.key)!
+        let leafAreaInPixels = leafLabelAndSize.value.standardPart
 
         let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
 
@@ -569,22 +586,25 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != backgroundLabel }
 
         // Filter out any areas marked for exclusion.
-        let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize!.key }
+        let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize.key }
         let emptyLabelsToTreatAsConsumed = emptyLabelsWithoutBackground.filter { !labelsToExclude.contains($0.key) }
 
+        // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
         drawingManager.context.setLineWidth(2)
         drawingManager.context.setLineCap(.square)
 
-        var consumedAreaInPixels = leafLabelAndSize!.value.drawingPart
+        var consumedAreaInPixels = leafLabelAndSize.value.drawingPart
         for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {
             // This component is a hole if it neighbors the leaf (since we already filtered out the background).
+            // swiftlint:disable:next force_unwrapping
             if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.isDisjoint(with: leafLabels) {
                 // Add to the consumed size.
                 consumedAreaInPixels += emptyLabelAndSize.value.standardPart
 
                 // And fill in the consumed area.
+                // swiftlint:disable:next force_unwrapping
                 let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
                 floodFill(image: image, fromPoint: CGPoint(x: floodStartX, y: floodStartY), drawingTo: drawingManager)
             }
@@ -605,20 +625,22 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             // Set the number of lines or else lines past the first are dropped.
             resultsText.numberOfLines = 3
             let unit = settings.getUnit()
+            // swiftlint:disable:next force_unwrapping
             resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Total Leaf Area= %@ %@2\nConsumed Leaf Area= %@ %@2\nPercent Consumed= %@%%", comment: "Results including absolute data"), formattedLeafAreaIncludingConsumedAreaInUnits2!, unit, formattedConsumedAreaInUnits2!, unit, formattedPercentConsumed!)
         } else {
             formattedLeafAreaIncludingConsumedAreaInUnits2 = nil
             formattedConsumedAreaInUnits2 = nil
+            // swiftlint:disable:next force_unwrapping
             resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %@%%", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
     }
 
     private func convertPixelsToUnits2(_ pixels: Int) -> Double {
-        if scaleMarkPixelLength == nil {
+        guard let scaleMarkPixelLength else {
             fatalError("Attempting to calculate absolute area without scale set.")
         }
 
-        let unitsPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength!)
+        let unitsPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength)
         return pow(unitsPerPixel, 2) * Double(pixels)
     }
 
@@ -728,9 +750,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     private func drawMarkers() {
+        // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: markingsView.image!.size)
 
         if pointOnLeaf != nil {
+            // swiftlint:disable:next force_unwrapping
             drawingManager.drawLeaf(atPoint: CGPoint(x: pointOnLeaf!.0, y: pointOnLeaf!.1), size: 56)
         }
 

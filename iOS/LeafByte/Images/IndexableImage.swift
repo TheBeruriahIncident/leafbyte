@@ -21,7 +21,8 @@ final class IndexableImage {
     let height: Int
 
     init(_ cgImage: CGImage) {
-        pixelData = cgImage.dataProvider!.data!
+        // These appear to be optional just because it's legacy Objective-C code
+        pixelData = cgImage.dataProvider!.data! // swiftlint:disable:this force_unwrapping
         pixelDataPointer = CFDataGetBytePtr(pixelData)
         bytesPerRow = cgImage.bytesPerRow
         width = cgImage.width

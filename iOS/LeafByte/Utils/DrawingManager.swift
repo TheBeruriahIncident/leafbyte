@@ -27,7 +27,8 @@ final class DrawingManager {
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection? = nil) {
         self.canvasSize = canvasSize
         UIGraphicsBeginImageContext(canvasSize)
-        context = UIGraphicsGetCurrentContext()!
+        // Safe to unwrap, because we just initialized it
+        context = UIGraphicsGetCurrentContext()! // swiftlint:disable:this force_unwrapping
         // Make all the drawing precise.
         // This avoids our drawn lines looking blurry (since you can zoom in).
         // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
@@ -38,6 +39,7 @@ final class DrawingManager {
         if baseProjection == nil {
             self.projection = Projection(scale: 1, xOffset: Self.pixelOffset, yOffset: Self.pixelOffset, bounds: canvasSize)
         } else {
+            // swiftlint:disable:next force_unwrapping
             self.projection = Projection(fromProjection: baseProjection!, withExtraXOffset: Self.pixelOffset, withExtraYOffset: Self.pixelOffset)
         }
     }
@@ -132,6 +134,7 @@ final class DrawingManager {
             imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
         }
 
+        // swiftlint:disable:next force_unwrapping
         imageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
     }

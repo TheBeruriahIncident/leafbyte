@@ -54,8 +54,10 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
         return
     }
 
+    // swiftlint:disable force_unwrapping
     let latitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.latitude) : ""
     let longitude = location != nil ? formatDouble(withFiveDecimalPoints: location!.coordinate.longitude) : ""
+    // swiftlint:enable force_unwrapping
 
     // Form a row useful for any spreadsheet-like format.
     let row = [ date, time, latitude, longitude, barcode ?? "", String(settings.getNextSampleNumber()), leafAreaInUnits2 ?? "", consumedAreaInUnits2 ?? "", percentConsumed, notes, String(format: "%.3f", settings.scaleMarkLength) ]
@@ -77,7 +79,12 @@ private func serializeData(settings: Settings, percentConsumed: String, leafArea
 
         // Add the data to the file.
         let csvRow = stringRowToCsvRow(row)
-        appendToFile(url, data: csvRow)
+        do {
+            try appendToFile(url, data: csvRow)
+        } catch {
+            print("Appending to local file crashed: \(error)")
+            return onFailure(.writingToFile)
+        }
 
         onSuccess()
 
@@ -167,7 +174,8 @@ private func uploadDataToGoogleDrive(settings: Settings, filename: String, acces
 }
 
 private func stringRowToCsvRow(_ row: [String]) -> Data {
-    (row.joined(separator: ",") + "\n").data(using: String.Encoding.utf8)!
+    let rowString = (row.joined(separator: ",") + "\n")
+    return Data(rowString.utf8)
 }
 
 // Get the folder id for the top-level LeafByte folder containing all datasets.

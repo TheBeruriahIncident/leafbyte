@@ -51,6 +51,7 @@ jobs:
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+  # The SwiftLint in our normal build is a pretty old version of SwiftLint, because we're developing for an old SDK to support older devices. That means that it doesn't catch everything that latest will. This job will run a much newer SwiftLint. If it catches something that doesn't show up locally, it's very hard to debug from its logs. But, you can add SwiftLint via the Swift Package Manager and enable it under Build Phases/Run Build Tool Plug-ins. This is the only way we can get newer SwiftLint running for us until we take a newer SDK, but running SwiftLint this way breaks current XCode.
   SwiftLint:
     runs-on: ubuntu-latest
 

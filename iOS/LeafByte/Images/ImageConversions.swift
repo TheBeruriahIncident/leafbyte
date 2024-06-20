@@ -59,9 +59,5 @@ func uiToCgImage(_ uiImage: UIImage) -> CGImage? {
 
 // Convert a UI image to a Core Image image.
 func uiToCiImage(_ uiImage: UIImage) -> CIImage? {
-    if uiImage.ciImage != nil {
-        return uiImage.ciImage!
-    }
-
-    return CIImage(image: uiImage)
+    uiImage.ciImage ?? CIImage(image: uiImage)
 }

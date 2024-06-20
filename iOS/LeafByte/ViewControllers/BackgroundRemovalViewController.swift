@@ -70,7 +70,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
 
         if inTutorial {
             // Since we'll have a real back button, hide our fake back button.
-            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems![1]]
+            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems![1]] // swiftlint:disable:this force_unwrapping
         }
 
         smoothTransitions(self: self)
@@ -85,7 +85,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
 
         // Disable swiping right to go back in the navigation controller (it gets in the way when zooming/drawing).
-        self.navigationController!.interactivePopGestureRecognizer?.isEnabled = false
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -163,13 +163,14 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     private func setThreshold(_ threshold: Float) {
         filter.threshold = threshold
         ciImageThresholded = filter.outputImage
-        cgImageThresholded = ciToCgImage(ciImageThresholded!)
-        baseImageView.image = cgToUiImage(cgImageThresholded!)
+        cgImageThresholded = ciToCgImage(ciImageThresholded!) // swiftlint:disable:this force_unwrapping
+        baseImageView.image = cgToUiImage(cgImageThresholded!) // swiftlint:disable:this force_unwrapping
     }
 
     private func drawHistogram(lumaHistogram: [Int]) {
         let drawingManager = DrawingManager(withCanvasSize: CGSize(width: numberOfHistogramBuckets, height: histogramMax))
 
+        // swiftlint:disable:next force_unwrapping
         let maxValue = lumaHistogram.max()!
 
         for i in 0...numberOfHistogramBuckets - 1 {

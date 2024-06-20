@@ -24,10 +24,12 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
     let onDismissingPicker: () -> Void
     if selectedImage != nil {
         // We scale it down to make the following operations happen in tolerable time.
+        // swiftlint:disable:next force_unwrapping
         let resizedImage = resizeImage(selectedImage!)
 
         if resizedImage != nil {
             // Save the selectedImage off so that during the segue, we can set it onto the next view.
+            // swiftlint:disable:next force_unwrapping
             selectImage(resizedImage!)
 
             onDismissingPicker = {
@@ -56,9 +58,10 @@ func crashGracefully(viewController: UIViewController, message: String) {
     let mainMenuController = viewController.navigationController?.viewControllers[0]
     dismissNavigationController(self: viewController)
 
-    if mainMenuController != nil {
-        presentAlert(self: mainMenuController!, title: nil, message: message)
+    guard let mainMenuController else {
+        return
     }
+    presentAlert(self: mainMenuController, title: nil, message: message)
 }
 
 func presentAlert(self viewController: UIViewController, title: String?, message: String) {
@@ -107,13 +110,13 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
 
 func setupPopoverViewController(_ popoverViewController: UIViewController, self hostingViewController: UIPopoverPresentationControllerDelegate) {
     popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-    popoverViewController.popoverPresentationController!.delegate = hostingViewController
+    popoverViewController.popoverPresentationController?.delegate = hostingViewController
     popoverViewController.popoverPresentationController?.passthroughViews = nil
 }
 
 func smoothTransitions(self viewController: UIViewController) {
     // This prevents a black shadow from appearing in the navigation bar during transitions (see https://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5 ).
-    viewController.navigationController!.view.backgroundColor = UIColor.white
+    viewController.navigationController?.view.backgroundColor = UIColor.white
 }
 
 func setSampleNumberButtonText(_ sampleNumberButton: UIButton, settings: Settings) {
@@ -131,6 +134,7 @@ func presentSampleNumberAlert(self viewController: UIViewController, sampleNumbe
     let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel the new sample number"), style: .default)
     // swiftlint:disable:next trailing_closure
     let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm the new sample number"), style: .default, handler: { _ in
+        // swiftlint:disable:next force_unwrapping
         let newSampleNumber = alert.textFields![0].text!
         if newSampleNumber.isEmpty {
             return

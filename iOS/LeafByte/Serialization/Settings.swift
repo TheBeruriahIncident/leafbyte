@@ -13,6 +13,7 @@ import Foundation
 final class Settings: NSObject, NSCoding {
     static let defaultDatasetName = "Herbivory Data"
     static let defaultNextSampleNumber = 1
+    static let defaultSaveLocation = SaveLocation.local
     static let defaultScaleMarkLength = 10.0
     static let defaultUnit = "cm"
 
@@ -44,7 +45,7 @@ final class Settings: NSObject, NSCoding {
         static let userIdToTopLevelGoogleFolderId = "userIdToTopLevelGoogleFolderId"
     }
 
-    var dataSaveLocation = SaveLocation.local
+    var dataSaveLocation = defaultSaveLocation
     var datasetName = Settings.defaultDatasetName
     // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer and only use ~200 KBs, so it's a truly pathological case where this matters.
     var datasetNameToEpochTimeOfLastUse = [String: Int]()
@@ -55,7 +56,7 @@ final class Settings: NSObject, NSCoding {
     var datasetNameToUserIdToGoogleFolderId = [String: [String: String]]()
     var datasetNameToUnitToUserIdToGoogleSpreadsheetId = [String: [String: [String: String]]]()
     var googleAuthState: OIDAuthState?
-    var imageSaveLocation = SaveLocation.local
+    var imageSaveLocation = defaultSaveLocation
     var saveGpsData = false
     var scaleMarkLength = defaultScaleMarkLength
     var useBarcode = false
@@ -69,7 +70,7 @@ final class Settings: NSObject, NSCoding {
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
         if let dataSaveLocation = decoder.decodeObject(forKey: PropertyKey.dataSaveLocation) as? String {
-            self.dataSaveLocation = SaveLocation(rawValue: dataSaveLocation)!
+            self.dataSaveLocation = SaveLocation(rawValue: dataSaveLocation) ?? Self.defaultSaveLocation
         }
         if let datasetName = decoder.decodeObject(forKey: PropertyKey.datasetName) as? String {
             self.datasetName = datasetName
@@ -97,7 +98,7 @@ final class Settings: NSObject, NSCoding {
             self.googleAuthState = decoder.decodeObject(forKey: PropertyKey.googleAuthState) as? OIDAuthState
         }
         if let imageSaveLocation = decoder.decodeObject(forKey: PropertyKey.imageSaveLocation) as? String {
-            self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation)!
+            self.imageSaveLocation = SaveLocation(rawValue: imageSaveLocation) ?? Self.defaultSaveLocation
         }
         if decoder.containsValue(forKey: PropertyKey.saveGpsData) {
             self.saveGpsData = decoder.decodeBool(forKey: PropertyKey.saveGpsData)
@@ -175,11 +176,11 @@ final class Settings: NSObject, NSCoding {
         } catch {
             print("Failed to serialize settings: \(error)")
 
-            if viewController != nil {
-                presentAlert(self: viewController!, title: "Failed to save settings", message: "Is there space on your phone? Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
+            guard let viewController else {
+                // Just returning isn't great, but it's not clear what more we can do short of crashing the app
+                return
             }
-            // Just returning isn't great, but it's not clear what more we can do short of crashing the app
-            return
+            presentAlert(self: viewController, title: "Failed to save settings", message: "Is there space on your phone? Please reach out to leafbyte@zoegp.science with information about your device so we can fix this issue.")
         }
     }
 
@@ -209,7 +210,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     func getNextSampleNumber() -> Int {
-        datasetNameToNextSampleNumber[datasetName]!
+        datasetNameToNextSampleNumber[datasetName]! // swiftlint:disable:this force_unwrapping
     }
 
     func noteDatasetUsed() {
@@ -224,7 +225,7 @@ final class Settings: NSObject, NSCoding {
     }
 
     func incrementNextSampleNumber() {
-        datasetNameToNextSampleNumber[datasetName]! += 1
+        datasetNameToNextSampleNumber[datasetName]! += 1  // swiftlint:disable:this force_unwrapping
     }
 
     func initializeNextSampleNumberIfNeeded() -> Int {
@@ -233,7 +234,7 @@ final class Settings: NSObject, NSCoding {
             datasetNameToNextSampleNumber[datasetName] = Self.defaultNextSampleNumber
         }
 
-        return datasetNameToNextSampleNumber[datasetName]!
+        return datasetNameToNextSampleNumber[datasetName]!  // swiftlint:disable:this force_unwrapping
     }
 
     func setGoogleFolderId(userId: String, googleFolderId: String?) {
@@ -241,6 +242,7 @@ final class Settings: NSObject, NSCoding {
             datasetNameToUserIdToGoogleFolderId[datasetName] = [String: String]()
         }
 
+        // swiftlint:disable:next force_unwrapping
         datasetNameToUserIdToGoogleFolderId[datasetName]![userId] = googleFolderId
     }
 
@@ -249,10 +251,13 @@ final class Settings: NSObject, NSCoding {
             datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName] = [String: [String: String]]()
         }
 
+        // swiftlint:disable:next force_unwrapping
         if datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] == nil {
+            // swiftlint:disable:next force_unwrapping
             datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()] = [String: String]()
         }
 
+        // swiftlint:disable:next force_unwrapping
         datasetNameToUnitToUserIdToGoogleSpreadsheetId[datasetName]![getUnit()]![userId] = googleSpreadsheetId
     }
 

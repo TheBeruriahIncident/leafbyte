@@ -36,7 +36,13 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
         clLocationManager.requestLocation()
     }
 
+    private class GenericGpsError: Error {}
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard !locations.isEmpty else {
+            return onError(GenericGpsError())
+        }
+        // swiftlint:disable:next force_unwrapping
         onLocation(locations.first!)
     }
 

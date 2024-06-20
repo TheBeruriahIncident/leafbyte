@@ -57,6 +57,7 @@ final class UnionFind {
 
                 subsetToParentSubset[smallerSet] = largerSet
                 subsetToSize[largerSet] += subsetToSize[smallerSet]
+                // swiftlint:disable:next force_unwrapping
                 classToElements[largerSet]!.formUnion(classToElements[smallerSet]!)
                 classToElements[smallerSet] = nil
             }
