@@ -7,25 +7,21 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* We have memory leaks!
-* Save and next seems weirdly slow
-* Check Memory Graph tool and Leaks instrument for any memory leaks
+* Switch from the older UIImagePicker to the newer PHPicker
+Failed to deserialize settings: Error Domain=NSCocoaErrorDomain Code=4864 "This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it." UserInfo={NSDebugDescription=This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it.}
+Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
+* Fix have memory leaks!
+* Add the experimental images from the paper as test cases
+* When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
+* Rewrite ThresholdingFilter to use Metal instead of deprecated kernels
+* Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
+* Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
 
 Lower priority TODOs:
-* Add the experimental images from the paper as test cases
-* When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
-* When selecting an image in "save and next", there's a flicker
 * Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right. Note two relevant disable lint rules.
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
-* Rewrite ThresholdingFilter to use Metal instead of deprecated kernels
 * Related to the above, consider upping the resolution, perhaps even dynamically based on phone speed. Related: Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
-* Switch from the older UIImagePicker to the newer PHPicker
-* Add credits to settings, aligning across iOS, Android, and website
-* Fix weird spacing at the bottom of the tutorial page on newer devices
-* Temporarily set target to latest to see deprecations
-Failed to deserialize settings: Error Domain=NSCocoaErrorDomain Code=4864 "This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it." UserInfo={NSDebugDescription=This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it.}
-Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext/handleSerialization. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.
