@@ -7,13 +7,13 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* Switch from the older UIImagePicker to the newer PHPicker
-* Switch settings to using Codable
-Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
-* Fix have memory leaks!
+* Switch from the older UIImagePicker to the newer PHPicker, noting live images and icloud images https://medium.com/@dari.tamim028/ios-swift-phpickerviewcontroller-implementation-real-life-insights-on-advantages-and-ab5f376185b9 https://stackoverflow.com/questions/71954672/how-to-load-image-from-photos-using-new-phpickerviewcontroller-in-ios-programmat
+* Switch settings to using Codable: wrapper at https://stackoverflow.com/questions/48566443/implementing-codable-for-uicolor
+* Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
+* Fix the memory leaks!
 * Add the experimental images from the paper as test cases
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
-* Rewrite ThresholdingFilter to use Metal instead of deprecated kernels
+* Rewrite ThresholdingFilter to use Metal instead of deprecated kernels https://ikyle.me/blog/2022/creating-a-coreimage-filter-with-a-metal-kernel
 * Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
