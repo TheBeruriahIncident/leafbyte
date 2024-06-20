@@ -16,16 +16,14 @@ Lower priority TODOs:
 * Add the experimental images from the paper as test cases
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * When selecting an image in "save and next", there's a flicker
-* Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right.
+* Proper localization (Probably to Spanish and Chinese in the short term). Much of the groundwork was done (although maybe string catalogs are the current approach), but the Spanish translations were much longer than the English, so we have to make the constraints a bit more flexible to keep the app looking right. Note two relevant disable lint rules.
 * Work with multiple leaves. We need to figure how to do this in a way that keeps that app speedy and the UI simple. There's also concern about this reducing accuracy as you'll be zoomed out more.
 * Rewrite ThresholdingFilter to use Metal instead of deprecated kernels
 * Related to the above, consider upping the resolution, perhaps even dynamically based on phone speed. Related: Check if ciToCgImage is faster with CPU rendering https://stackoverflow.com/questions/14402413/getting-a-cgimage-from-ciimage . Note that this may be less accurate, and if so, we may not want to use this regardless
 * Switch from the older UIImagePicker to the newer PHPicker
 * Add credits to settings, aligning across iOS, Android, and website
 * Fix weird spacing at the bottom of the tutorial page on newer devices
-* Audit all force unwraps
 * Temporarily set target to latest to see deprecations
-* Not all lint rules are enabled
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext/handleSerialization. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.

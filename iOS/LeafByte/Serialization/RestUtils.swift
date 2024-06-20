@@ -53,7 +53,7 @@ private func makeRestCall(method: String, url urlString: String, accessToken: St
             print("Could not deserialize JSON data: \(data), error: \(error)")
             return onError(error)
         }
-        guard let dataJson = dataJson else {
+        guard let dataJson else {
             print("Could not deserialize JSON data: \(data)")
             return onError(GenericRestError())
         }
