@@ -10,7 +10,7 @@ Immediate TODOs:
 * We have memory leaks!
 * Save and next seems weirdly slow
 * Check Memory Graph tool and Leaks instrument for any memory leaks
-* When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors
+* When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
 
 Lower priority TODOs:
 * Add the experimental images from the paper as test cases
@@ -24,6 +24,8 @@ Lower priority TODOs:
 * Add credits to settings, aligning across iOS, Android, and website
 * Fix weird spacing at the bottom of the tutorial page on newer devices
 * Temporarily set target to latest to see deprecations
+Failed to deserialize settings: Error Domain=NSCocoaErrorDomain Code=4864 "This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it." UserInfo={NSDebugDescription=This decoder will only decode classes that adopt NSSecureCoding. Class 'LeafByte.Settings' does not adopt it.}
+Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
 
 Known bugs to figure out and fix:
 * One person has reported crashing when saving to the Files App, and many crash reports show crashing within saveAndNext/handleSerialization. The crash reports give minimal details (not even a line number). We can't figure what would cause this and are attempting to gather more data.

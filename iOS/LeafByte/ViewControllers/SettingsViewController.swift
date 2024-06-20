@@ -425,7 +425,14 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
             // swiftlint:disable:next force_unwrapping
             visibleFrame.size.height -= self.navigationController!.navigationBar.frame.height
         }
-        visibleFrame.size.height -= UIApplication.shared.statusBarFrame.height
+        let statusBarHeight: CGFloat
+        if #available(iOS 13.0, *) {
+            // Default from https://stackoverflow.com/questions/12991935/how-to-programmatically-get-ios-status-bar-height
+            statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
+        } else {
+            statusBarHeight = UIApplication.shared.statusBarFrame.height
+        }
+        visibleFrame.size.height -= statusBarHeight
 
         // Account for any scrolling that has already happened.
         visibleFrame.size.height += scrollView.contentOffset.y

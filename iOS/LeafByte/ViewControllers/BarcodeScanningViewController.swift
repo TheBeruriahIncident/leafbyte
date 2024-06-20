@@ -179,22 +179,46 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
                 return
             }
 
-            // Left and right need to be swapped to effectively counteract the rotation.
-            switch UIDevice.current.orientation {
-            case .portrait:
-                videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+            if #available(iOS 17.0, *) {
+                // Left and right need to be swapped to effectively counteract the rotation.
+                let videoRotationAngle: CGFloat
+                switch UIDevice.current.orientation {
+                case .portrait:
+                    videoRotationAngle = 90
 
-            case .landscapeRight:
-                videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+                case .landscapeRight:
+                    videoRotationAngle = 180
 
-            case .landscapeLeft:
-                videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+                case .landscapeLeft:
+                    videoRotationAngle = 0
 
-            case .portraitUpsideDown:
-                videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+                case .portraitUpsideDown:
+                    videoRotationAngle = 270
 
-            default:
-                videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+                default:
+                    videoRotationAngle = 90
+                }
+                if videoPreviewLayerConnection.isVideoRotationAngleSupported(videoRotationAngle) {
+                    videoPreviewLayerConnection.videoRotationAngle = videoRotationAngle
+                }
+            } else {
+                // Left and right need to be swapped to effectively counteract the rotation.
+                switch UIDevice.current.orientation {
+                case .portrait:
+                    videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+
+                case .landscapeRight:
+                    videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+
+                case .landscapeLeft:
+                    videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+
+                case .portraitUpsideDown:
+                    videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+
+                default:
+                    videoPreviewLayerConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+                }
             }
         }
     }
