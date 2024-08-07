@@ -115,7 +115,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             }
 
             destination.settings = settings
-            destination.sourceType = .camera
+            destination.sourceMode = .camera
             destination.image = selectedImage
             destination.inTutorial = false
             destination.barcode = barcode

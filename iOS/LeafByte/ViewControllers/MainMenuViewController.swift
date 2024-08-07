@@ -25,7 +25,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var viewDidAppearHasRun = false
 
     // Both of these are set while picking an image and are passed forward to the next view.
-    var sourceType: UIImagePickerController.SourceType?
+    var sourceMode: ImageSourceMode?
     var selectedImage: CGImage?
 
     // To prevent double tapping from double seguing, we disable segue after the first tap until coming back to this view.
@@ -83,7 +83,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 if self.settings.useBarcode {
                     self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                 } else {
-                    self.presentImagePicker(sourceType: UIImagePickerController.SourceType.camera)
+                    self.presentImagePicker(sourceMode: .camera)
                 }
             }
         }, onFailure: { self.segueEnabled = true })
@@ -95,7 +95,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         segueEnabled = false
 
-        presentImagePicker(sourceType: UIImagePickerController.SourceType.photoLibrary)
+        presentImagePicker(sourceMode: .photoLibrary)
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
@@ -147,7 +147,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             destination.image = selectedImage
             destination.inTutorial = false
         }
@@ -210,9 +210,15 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - Helpers
 
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        self.sourceType = sourceType
-        imagePicker.sourceType = sourceType
+    private func presentImagePicker(sourceMode: ImageSourceMode) {
+        self.sourceMode = sourceMode
+        switch sourceMode {
+        case .camera:
+            imagePicker.sourceType = .camera
+        case .photoLibrary:
+            imagePicker.sourceType = .photoLibrary
+        }
+
         present(imagePicker, animated: true, completion: nil)
     }
 

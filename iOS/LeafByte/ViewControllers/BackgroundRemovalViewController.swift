@@ -18,7 +18,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // These are passed from the previous view.
     // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
-    var sourceType: UIImagePickerController.SourceType!
+    var sourceMode: ImageSourceMode!
     var image: CGImage!
     var inTutorial: Bool!
     var barcode: String?
@@ -132,7 +132,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             destination.originalImage = image
             destination.cgImage = cgImageThresholded
             destination.ciImage = ciImageThresholded

@@ -15,7 +15,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // These are passed from the previous view.
     // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
-    var sourceType: UIImagePickerController.SourceType!
+    var sourceMode: ImageSourceMode!
     var originalImage: CGImage!
     var cgImage: CGImage!
     var ciImage: CIImage!
@@ -150,7 +150,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             destination.inTutorial = inTutorial
             destination.barcode = barcode
             destination.originalImage = originalImage

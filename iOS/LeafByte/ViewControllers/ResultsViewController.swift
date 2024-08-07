@@ -15,7 +15,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     // These are passed from the previous view.
     // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
-    var sourceType: UIImagePickerController.SourceType!
+    var sourceMode: ImageSourceMode!
     var originalImage: CGImage!
     var cgImage: CGImage!
     var uiImage: UIImage!
@@ -149,7 +149,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         completeButton.isEnabled = false
 
         let afterSerialization = {
-            if self.sourceType == .camera {
+            switch self.sourceMode! {
+            case .camera:
                 // swiftlint:disable:next trailing_closure
                 requestCameraAccess(self: self, onSuccess: {
                     DispatchQueue.main.async {
@@ -164,7 +165,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                         }
                     }
                 })
-            } else {
+            case .photoLibrary:
                 DispatchQueue.main.async {
                     self.imagePicker.sourceType = .photoLibrary
 
@@ -262,7 +263,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             // swiftlint:disable:next force_unwrapping
             destination.image = selectedImage!
             destination.inTutorial = false
