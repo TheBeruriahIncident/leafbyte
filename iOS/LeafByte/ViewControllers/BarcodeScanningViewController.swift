@@ -175,10 +175,6 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
         videoPreviewLayer.frame = view.layer.bounds
 
         if let videoPreviewLayerConnection = videoPreviewLayer.connection {
-            if !videoPreviewLayerConnection.isVideoOrientationSupported {
-                return
-            }
-
             if #available(iOS 17.0, *) {
                 // Left and right need to be swapped to effectively counteract the rotation.
                 let videoRotationAngle: CGFloat
@@ -198,10 +194,15 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
                 default:
                     videoRotationAngle = 90
                 }
+
                 if videoPreviewLayerConnection.isVideoRotationAngleSupported(videoRotationAngle) {
                     videoPreviewLayerConnection.videoRotationAngle = videoRotationAngle
                 }
             } else {
+                if !videoPreviewLayerConnection.isVideoOrientationSupported {
+                    return
+                }
+
                 // Left and right need to be swapped to effectively counteract the rotation.
                 switch UIDevice.current.orientation {
                 case .portrait:

@@ -104,6 +104,9 @@ final class ThresholdingFilter: CIFilter {
             "}"
 
         // Only null if the kernel code is invalid
-        return CIColorKernel(source: kernelCode)! // swiftlint:disable:this force_unwrapping
+        guard let kernel = CIColorKernel(source: kernelCode) else {
+            fatalError("Failed to compile kernel code")
+        }
+        return kernel
     }
 }
