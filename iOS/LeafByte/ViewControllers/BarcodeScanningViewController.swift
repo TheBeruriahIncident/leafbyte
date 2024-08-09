@@ -92,7 +92,10 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
         setupViewPreviewLayer()
 
         // Start the capture session.
-        captureSession.startRunning()
+        // If this runs on the main thread, we get warnings that it might cause UI unresponsiveness
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession.startRunning()
+        }
     }
 
     override func viewDidLayoutSubviews() {
