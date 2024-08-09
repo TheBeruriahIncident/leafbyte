@@ -15,7 +15,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     // These are passed from the previous view.
     // swiftlint:disable implicitly_unwrapped_optional
     var settings: Settings!
-    var sourceType: UIImagePickerController.SourceType!
+    var sourceMode: ImageSourceMode!
     var originalImage: CGImage!
     var cgImage: CGImage!
     var ciImage: CIImage!
@@ -66,11 +66,11 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
     // MARK: - Actions
 
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func goHome(_: Any) {
         dismissNavigationController(self: self)
     }
 
-    @IBAction func toggleScaleIdentification(_ sender: Any) {
+    @IBAction func toggleScaleIdentification(_: Any) {
         setScrollingMode(mode == .identifyingScale ? .scrolling : .identifyingScale)
 
         if mode == .scrolling {
@@ -86,7 +86,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawMarkers()
     }
 
-    @IBAction func clearScale(_ sender: Any) {
+    @IBAction func clearScale(_: Any) {
         numberOfValidScaleMarks = 0
         drawMarkers()
         scaleStatusText.text = NSLocalizedString("No Scale", comment: "Shown if the user clears the scale")
@@ -94,7 +94,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         setScrollingMode(Mode.scrolling)
     }
 
-    @IBAction func editSampleNumber(_ sender: Any) {
+    @IBAction func editSampleNumber(_: Any) {
         presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
     }
 
@@ -142,7 +142,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is scaleIdentificationComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "scaleIdentificationComplete" {
             guard let destination = segue.destination as? ResultsViewController else {
@@ -150,7 +150,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             destination.inTutorial = inTutorial
             destination.barcode = barcode
             destination.originalImage = originalImage
@@ -191,24 +191,24 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
     // MARK: - UIPopoverPresentationControllerDelegate overrides
 
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for _: UIPresentationController) -> UIModalPresentationStyle {
         UIModalPresentationStyle.none
     }
 
     // MARK: - UIScrollViewDelegate overrides
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in _: UIScrollView) -> UIView? {
         scrollContentView
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_: UIScrollView, with _: UIView?, atScale scale: CGFloat) {
         fixContentSize(scale: scale)
     }
 
     // MARK: - UIResponder overrides
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
         // Touches don't matter in scrolling mode.
         if mode == .scrolling {
             return

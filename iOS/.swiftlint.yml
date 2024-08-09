@@ -10,6 +10,7 @@ disabled_rules:
   # Opt-in rules we don't want
   - balanced_xctest_lifecycle
   - closure_body_length
+  - contrasted_opening_brace
   - discouraged_object_literal
   - discouraged_optional_boolean
   - discouraged_optional_collection

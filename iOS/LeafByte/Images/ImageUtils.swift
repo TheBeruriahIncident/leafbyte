@@ -181,7 +181,7 @@ func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIIm
     }
 
     // Sort the corners into order around the center so that we know which corner is which.
-    let sortedCorners = cornersAndAngles.sorted { $0.1 > $1.1 }.map { $0.0 }
+    let sortedCorners = cornersAndAngles.sorted { $0.1 > $1.1 }.map(\.0)
 
     return createImageFromQuadrilateral(in: image, bottomLeft: sortedCorners[3], bottomRight: sortedCorners[2], topLeft: sortedCorners[0], topRight: sortedCorners[1])
 }

@@ -74,7 +74,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         datasetName.text = newDatasetName
     }
 
-    @IBAction func choosePreviousDataset(_ sender: Any) {
+    @IBAction func choosePreviousDataset(_: Any) {
         previousDatasetPickerData = settings.getPreviousDatasetNames()
         previousDatasetPicker.reloadAllComponents()
 
@@ -87,7 +87,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         previousDatasetPicker.isHidden = false
     }
 
-    @IBAction func chooseUnit(_ sender: Any) {
+    @IBAction func chooseUnit(_: Any) {
         unitPicker.reloadAllComponents()
 
         let currentSelection = unitPickerData.firstIndex(of: settings.getUnit())
@@ -212,7 +212,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         settings.serialize(self: self)
     }
 
-    @IBAction func signOutOfGoogle(_ sender: Any) {
+    @IBAction func signOutOfGoogle(_: Any) {
         signOutOfGoogle()
     }
 
@@ -283,14 +283,14 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
     }
 
     // If a user taps outside of the keyboard, close the keyboard.
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_: Set<UITouch>, with _: UIEvent?) {
         dismissInput()
     }
 
     // MARK: - UITextFieldDelegate overrides
 
     // Called when return is pressed on the keyboard.
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_: UITextField) -> Bool {
         dismissInput()
         return true
     }
@@ -300,18 +300,18 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         activeField = textField
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_: UITextField) {
         // Clear the current edited fields.
         activeField = nil
     }
 
     // MARK: - UIPickerViewDataSource, UIPickerViewDelegate overrides
 
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in _: UIPickerView) -> Int {
         1
     }
 
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
         if pickerView.tag == 1 {
             return previousDatasetPickerData.count
         } else {
@@ -319,7 +319,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent _: Int) -> String? {
         if pickerView.tag == 1 {
             return previousDatasetPickerData[row]
         } else {
@@ -327,7 +327,7 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         }
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent _: Int) {
         if pickerView.tag == 1 {
             datasetNameChanged(previousDatasetPickerData[row])
         } else {

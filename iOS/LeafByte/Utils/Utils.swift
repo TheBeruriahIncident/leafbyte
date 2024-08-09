@@ -9,6 +9,11 @@
 import CoreGraphics
 import Foundation
 
+enum ImageSourceMode {
+    case camera
+    case photoLibrary
+}
+
 func roundToInt(_ number: Double, rule: FloatingPointRoundingRule = .toNearestOrEven) -> Int {
     Int(number.rounded(rule))
 }

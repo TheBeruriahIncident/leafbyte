@@ -7,10 +7,11 @@
 //
 
 import AVFoundation
+import PhotosUI
 import UIKit
 
 // This class controls the main menu view, the first view in the app.
-final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
@@ -25,7 +26,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var viewDidAppearHasRun = false
 
     // Both of these are set while picking an image and are passed forward to the next view.
-    var sourceType: UIImagePickerController.SourceType?
+    var sourceMode: ImageSourceMode?
     var selectedImage: CGImage?
 
     // To prevent double tapping from double seguing, we disable segue after the first tap until coming back to this view.
@@ -57,7 +58,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         performSegue(withIdentifier: "toTutorial", sender: self)
     }
 
-    @IBAction func openWebsite(_ sender: Any) {
+    @IBAction func openWebsite(_: Any) {
         if #available(iOS 10.0, *) {
             // Note that, unlike the deprecated openURL method, this is async, which will hopefully resolve the cryptic crash report on openURL that I'm guessing was a timeout on the main thread
             UIApplication.shared.open(leafbyteWebsiteUrl)
@@ -66,7 +67,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
     }
 
-    @IBAction func pickImageFromCamera(_ sender: Any) {
+    @IBAction func pickImageFromCamera(_: Any) {
         if !segueEnabled {
             return
         }
@@ -83,23 +84,28 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 if self.settings.useBarcode {
                     self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                 } else {
-                    self.presentImagePicker(sourceType: UIImagePickerController.SourceType.camera)
+                    self.sourceMode = .camera
+                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
                 }
             }
         }, onFailure: { self.segueEnabled = true })
     }
 
-    @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
+    @IBAction func pickImageFromPhotoLibrary(_: Any) {
         if !segueEnabled {
             return
         }
         segueEnabled = false
 
-        presentImagePicker(sourceType: UIImagePickerController.SourceType.photoLibrary)
+        self.sourceMode = .photoLibrary
+        // beforeShowingPHPicker is a terrible hack. segueEnabled should be reset when the PHPicker completes, but there's a bug in PHPicker such that if you close the PHPicker by swiping it down rather than pressing cancel, the completion callback does not run. This puts you into a state where the app is frozen if we don't reset segueEnabled in advance. Once Apple fixes this bug, we can remove this hack.
+        // swiftlint:disable:next trailing_closure
+        presentImagePickerOrPHPicker(self: self, imagePicker: imagePicker, sourceMode: .photoLibrary, beforeShowingPHPicker: { () in self.segueEnabled = true })
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
-    @IBAction func backToMainMenu(segue: UIStoryboardSegue) {}
+    // swiftlint:disable:next no_empty_block
+    @IBAction func backToMainMenu(segue _: UIStoryboardSegue) {}
 
     // MARK: - UIViewController overrides
 
@@ -136,7 +142,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen" {
             guard let navigationController = segue.destination as? UINavigationController else {
@@ -147,7 +153,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             }
 
             destination.settings = settings
-            destination.sourceType = sourceType
+            destination.sourceMode = sourceMode
             destination.image = selectedImage
             destination.inTutorial = false
         }
@@ -199,22 +205,26 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Helpers
+    // MARK: - PHPickerViewControllerDelegate overrides
 
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        self.sourceType = sourceType
-        imagePicker.sourceType = sourceType
-        present(imagePicker, animated: true, completion: nil)
+    @available(iOS 14.0, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // When this picker is dismissed, viewDidAppear is not called, unlike when the imagePicker is dismissed, so we can't count on this being reset there.
+        segueEnabled = true
+
+        finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
     }
+
+    // MARK: - Helpers
 
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {

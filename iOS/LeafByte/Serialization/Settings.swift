@@ -63,6 +63,8 @@ final class Settings: NSObject, NSCoding {
     var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
 
+    // This empty block is required for overriding
+    // swiftlint:disable:next no_empty_block
     override required init() {}
 
     // MARK: - NSCoding
@@ -214,7 +216,7 @@ final class Settings: NSObject, NSCoding {
 
     func getPreviousDatasetNames() -> [String] {
         // Order the previously used datasets by most recently used, then put the current dataset name first on the list.
-        var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted { $0.1 > $1.1 }.map { $0.key }.filter { $0 != datasetName }
+        var previousDatasets = datasetNameToEpochTimeOfLastUse.sorted { $0.1 > $1.1 }.map(\.key).filter { $0 != datasetName }
         previousDatasets.insert(datasetName, at: 0)
         return previousDatasets
     }

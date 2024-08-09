@@ -49,7 +49,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     var selectedImage: CGImage?
 
     // MARK: - Actions
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func goHome(_: Any) {
         dismissNavigationController(self: self)
     }
 
@@ -107,7 +107,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen" {
             guard let destination = segue.destination as? BackgroundRemovalViewController else {
@@ -115,7 +115,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
             }
 
             destination.settings = settings
-            destination.sourceType = .camera
+            destination.sourceMode = .camera
             destination.image = selectedImage
             destination.inTutorial = false
             destination.barcode = barcode
@@ -125,7 +125,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     // MARK: - AVCaptureMetadataOutputObjectsDelegate overrides
 
     // Accept the captured barcode.
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+    func metadataOutput(_: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from _: AVCaptureConnection) {
         if metadataObjects.isEmpty {
             return
         }
@@ -158,13 +158,13 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.
     // Also go back to the home screen, to make it consistent that going back from after taking a picture goes to the home screen.
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
         dismissNavigationController(self: self)
     }
