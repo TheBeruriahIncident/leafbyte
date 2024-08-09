@@ -58,7 +58,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         performSegue(withIdentifier: "toTutorial", sender: self)
     }
 
-    @IBAction func openWebsite(_ sender: Any) {
+    @IBAction func openWebsite(_: Any) {
         if #available(iOS 10.0, *) {
             // Note that, unlike the deprecated openURL method, this is async, which will hopefully resolve the cryptic crash report on openURL that I'm guessing was a timeout on the main thread
             UIApplication.shared.open(leafbyteWebsiteUrl)
@@ -67,7 +67,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
     }
 
-    @IBAction func pickImageFromCamera(_ sender: Any) {
+    @IBAction func pickImageFromCamera(_: Any) {
         if !segueEnabled {
             return
         }
@@ -91,7 +91,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }, onFailure: { self.segueEnabled = true })
     }
 
-    @IBAction func pickImageFromPhotoLibrary(_ sender: Any) {
+    @IBAction func pickImageFromPhotoLibrary(_: Any) {
         if !segueEnabled {
             return
         }
@@ -141,7 +141,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen" {
             guard let navigationController = segue.destination as? UINavigationController else {
@@ -204,12 +204,12 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
 

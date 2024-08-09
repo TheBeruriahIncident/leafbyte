@@ -101,11 +101,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - Actions
 
-    @IBAction func toggleDrawingMode(_ sender: Any) {
+    @IBAction func toggleDrawingMode(_: Any) {
         setScrollingMode(mode == .drawing ? .scrolling : .drawing)
     }
 
-    @IBAction func undo(_ sender: Any) {
+    @IBAction func undo(_: Any) {
         // Remove the last action from the buffer.
         undoBuffer.removeLast()
 
@@ -120,11 +120,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         self.calculateArea()
     }
 
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func goHome(_: Any) {
         dismissNavigationController(self: self)
     }
 
-    @IBAction func share(_ sender: Any) {
+    @IBAction func share(_: Any) {
         let imageToShare = getCombinedImage()
         // swiftlint:disable:next force_unwrapping
         let dataToShare = [ imageToShare, resultsText.text! + NSLocalizedString(" Analyzed with LeafByte https://zoegp.science/leafbyte", comment: "Shown after the results when sharing the results, e.g. on social media. Note the leading space that separates from the results") ] as [Any]
@@ -145,7 +145,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         self.present(activityViewController, animated: true, completion: nil)
     }
 
-    @IBAction func nextImage(_ sender: Any) {
+    @IBAction func nextImage(_: Any) {
         // Disable to prevent double serializing.
         completeButton.isEnabled = false
 
@@ -178,11 +178,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         handleSerialization(onSuccess: afterSerialization)
     }
 
-    @IBAction func editSampleNumber(_ sender: Any) {
+    @IBAction func editSampleNumber(_: Any) {
         presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
     }
 
-    @IBAction func excludeConsumedArea(_ sender: Any) {
+    @IBAction func excludeConsumedArea(_: Any) {
         setScrollingMode(mode == .markingExcludedConsumedArea ? .scrolling : .markingExcludedConsumedArea)
     }
 
@@ -255,7 +255,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is imageChosen, we're transitioning forward in the main flow, and we need to pass the selection forward.
         if segue.identifier == "imageChosen" {
             guard let destination = segue.destination as? BackgroundRemovalViewController else {
@@ -305,25 +305,25 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - UIPopoverPresentationControllerDelegate overrides
 
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for _: UIPresentationController) -> UIModalPresentationStyle {
         UIModalPresentationStyle.none
     }
 
     // MARK: - UIScrollViewDelegate overrides
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in _: UIScrollView) -> UIView? {
         scrollContentView
     }
 
     // fixContentSize is called from a bunch of spots, but it's necessary; removing any degrades the UX.
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ _: UIScrollView, with _: UIView?, atScale scale: CGFloat) {
         fixContentSize(scale: scale)
     }
 
     // MARK: - UIResponder overrides
 
     // Note that these callbacks don't run when in scroll mode, because scrollView isn't enabled for user interaction.
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
         // If a user taps outside of the keyboard, close the keyboard.
         dismissKeyboard()
 
@@ -342,7 +342,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         currentTouchPath.append(candidatePoint)
     }
 
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with _: UIEvent?) {
         if mode == .scrolling {
             return
         }
@@ -364,7 +364,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         currentTouchPath.append(candidatePoint)
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesEnded(_: Set<UITouch>, with _: UIEvent?) {
         if mode == .scrolling {
             return
         }
@@ -425,13 +425,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - UIImagePickerControllerDelegate overrides
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         finishWithImagePicker(self: self, info: info) { selectedImage = $0 }
     }
 
     // If the image picker is canceled, dismiss it.
     // Also go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
         dismissNavigationController(self: self)
     }
@@ -445,13 +445,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - UITextFieldDelegate overrides
 
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_: UITextField) {
         // Disable the gesture recognition so that we can catch touches outside of the keyboard to cancel the keyboard.
         scrollView.isUserInteractionEnabled = false
     }
 
     // Called when return is pressed on the keyboard.
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_: UITextField) -> Bool {
         dismissKeyboard()
         return true
     }

@@ -47,11 +47,11 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     // MARK: - Actions
 
     // This is called from the back button in the navigation bar.
-    @IBAction func backFromThreshold(_ sender: Any) {
+    @IBAction func backFromThreshold(_: Any) {
         self.performSegue(withIdentifier: "backToMainMenu", sender: self)
     }
 
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func goHome(_: Any) {
         dismissNavigationController(self: self)
     }
 
@@ -59,7 +59,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
         setThreshold(1 - sender.value)
     }
 
-    @IBAction func editSampleNumber(_ sender: Any) {
+    @IBAction func editSampleNumber(_: Any) {
         presentSampleNumberAlert(self: self, sampleNumberButton: sampleNumberButton, settings: settings)
     }
 
@@ -124,7 +124,7 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is thresholdingComplete, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "thresholdingComplete" {
             guard let destination = segue.destination as? ScaleIdentificationViewController else {
@@ -148,13 +148,13 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
 
     // MARK: - UIPopoverPresentationControllerDelegate overrides
 
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for _: UIPresentationController) -> UIModalPresentationStyle {
         UIModalPresentationStyle.none
     }
 
     // MARK: - UIScrollViewDelegate overrides
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in _: UIScrollView) -> UIView? {
         scrollContentView
     }
 

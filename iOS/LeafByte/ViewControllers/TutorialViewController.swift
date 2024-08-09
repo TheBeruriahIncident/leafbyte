@@ -22,7 +22,7 @@ final class TutorialViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func goHome(_: Any) {
         dismissNavigationController(self: self)
     }
 
@@ -38,7 +38,7 @@ final class TutorialViewController: UIViewController {
     }
 
     // This is called before transitioning from this view to another view.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // If the segue is continueTutorial, we're transitioning forward in the main flow, and we need to pass our data forward.
         if segue.identifier == "continueTutorial" {
             guard let destination = segue.destination as? BackgroundRemovalViewController else {

@@ -38,7 +38,7 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
 
     private class GenericGpsError: Error {}
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard !locations.isEmpty else {
             return onError(GenericGpsError())
         }
@@ -46,7 +46,7 @@ final class GpsManager: UIViewController, CLLocationManagerDelegate {
         onLocation(locations.first!)
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    func locationManager(_: CLLocationManager, didFailWithError error: Error) {
         onError(error)
     }
 }
