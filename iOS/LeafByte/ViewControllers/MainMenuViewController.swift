@@ -104,7 +104,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
-    @IBAction func backToMainMenu(segue: UIStoryboardSegue) {}
+    // swiftlint:disable:next no_empty_block
+    @IBAction func backToMainMenu(segue _: UIStoryboardSegue) {}
 
     // MARK: - UIViewController overrides
 

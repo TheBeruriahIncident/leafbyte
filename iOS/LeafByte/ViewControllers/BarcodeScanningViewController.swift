@@ -125,7 +125,7 @@ final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOu
     // MARK: - AVCaptureMetadataOutputObjectsDelegate overrides
 
     // Accept the captured barcode.
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from _: AVCaptureConnection) {
+    func metadataOutput(_: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from _: AVCaptureConnection) {
         if metadataObjects.isEmpty {
             return
         }
