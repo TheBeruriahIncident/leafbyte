@@ -23,7 +23,9 @@
 * Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions we weren't even asking for, so we've rewritten the whole login to avoid that) 
 * An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
 * In a specific situation where saving data to Google Drive crashed, the error is now properly shown
+* Text during barcode scanning (e.g. previews of what you scanned) is now easier to read
 * Various typos are fixed
+* Fix potential brief unresponsiveness when initiating barcode scanning
 * Thresholding may be slightly faster now that it is rewritten to use the modern Metal language
 * In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
 * If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)

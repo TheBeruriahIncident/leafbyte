@@ -8,7 +8,6 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 
 Immediate TODOs:
 * Switch settings to using Codable: wrapper at https://stackoverflow.com/questions/48566443/implementing-codable-for-uicolor and fix deprecations in Settings
-* Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
 * Fix the memory leaks!
 * Add the experimental images from the paper as test cases
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
