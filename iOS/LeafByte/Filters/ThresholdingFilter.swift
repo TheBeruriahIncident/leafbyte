@@ -41,6 +41,51 @@ final class ThresholdingFilter: CIFilter {
     }
 
     private func getThresholdingKernel() -> CIColorKernel {
+        useBlackBackground
+            ? Self.blackBackgroundThresholdKernel
+            : Self.whiteBackgroundThresholdKernel
+    }
+
+    // Static in order to (lazily) compute only once
+    private static let whiteBackgroundThresholdKernel: CIColorKernel = {
+        if #available(iOS 11.0, *) {
+            return getMetalThresholdingKernel(useBlackBackground: false)
+        } else {
+            return getLegacyThresholdingKernel(useBlackBackground: false)
+        }
+    }()
+
+    // Static in order to (lazily) compute only once
+    private static let blackBackgroundThresholdKernel: CIColorKernel = {
+        if #available(iOS 11.0, *) {
+            return getMetalThresholdingKernel(useBlackBackground: true)
+        } else {
+            return getLegacyThresholdingKernel(useBlackBackground: true)
+        }
+    }()
+
+    @available(iOS 11.0, *)
+    private static func getMetalThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
+        guard let url = Bundle.main.url(forResource: "ThresholdingFilter", withExtension: "coreimage.metallib") else {
+            fatalError("Invalid url for ThresholdingFilter.coreimage.metallib")
+        }
+
+        let data: Data
+        do {
+            data = try Data(contentsOf: url)
+        } catch {
+            fatalError("Failed to load ThresholdingFilter.coreimage.metallib: \(error)")
+        }
+
+        let functionName = useBlackBackground ? "thresholdBlackBackground" : "thresholdWhiteBackground"
+        do {
+            return try CIColorKernel(functionName: functionName, fromMetalLibraryData: data)
+        } catch {
+            fatalError("Failed to load CIColorKernel from ThresholdingFilter.coreimage.metallib: \(error)")
+        }
+    }
+
+    private static func getLegacyThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
         // Normally a leaf is more intense than the background, but with a black background, it's less intense.
         let comparisonOperator = useBlackBackground ? ">" : "<"
 

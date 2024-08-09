@@ -12,7 +12,6 @@ Immediate TODOs:
 * Fix the memory leaks!
 * Add the experimental images from the paper as test cases
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
-* Rewrite ThresholdingFilter to use Metal instead of deprecated kernels https://ikyle.me/blog/2022/creating-a-coreimage-filter-with-a-metal-kernel
 * Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
