@@ -41,6 +41,35 @@ final class ThresholdingFilter: CIFilter {
     }
 
     private func getThresholdingKernel() -> CIColorKernel {
+        if #available(iOS 11.0, *) {
+            return getMetalThresholdingKernel()
+        } else {
+            return getLegacyThresholdingKernel()
+        }
+    }
+
+    @available(iOS 11.0, *)
+    private func getMetalThresholdingKernel() -> CIColorKernel {
+        guard let url = Bundle.main.url(forResource: "ThresholdingFilter", withExtension: "coreimage.metallib") else {
+            fatalError("Invalid url for ThresholdingFilter.coreimage.metallib")
+        }
+
+        let data: Data
+        do {
+            data = try Data(contentsOf: url)
+        } catch {
+            fatalError("Failed to load ThresholdingFilter.coreimage.metallib: \(error)")
+        }
+
+        let functionName = useBlackBackground ? "thresholdBlackBackground" : "thresholdWhiteBackground"
+        do {
+            return try CIColorKernel(functionName: functionName, fromMetalLibraryData: data)
+        } catch {
+            fatalError("Failed to load CIColorKernel from ThresholdingFilter.coreimage.metallib: \(error)")
+        }
+    }
+
+    private func getLegacyThresholdingKernel() -> CIColorKernel {
         // Normally a leaf is more intense than the background, but with a black background, it's less intense.
         let comparisonOperator = useBlackBackground ? ">" : "<"
 

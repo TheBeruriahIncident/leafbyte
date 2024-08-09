@@ -49,8 +49,40 @@
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
 		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
+		C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */ = {isa = PBXBuildFile; fileRef = C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */; };
 		C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		C8A663BC2C664FC600898E92 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.coreimage.metal";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).air",
+			);
+			runOncePerArchitecture = 0;
+			script = "xcrun metal -c $MTL_HEADER_SEARCH_PATHS -fcikernel  \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		C8A663BD2C66508100898E92 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.coreimage.air";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(METAL_LIBRARY_OUTPUT_DIR)/$(INPUT_FILE_BASE).metallib",
+			);
+			runOncePerArchitecture = 0;
+			script = "xcrun metallib -cikernel \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		4621EE4C1FEB70AD004C3011 /* PBXContainerItemProxy */ = {
@@ -122,6 +154,7 @@
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
+		C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ThresholdingFilter.coreimage.metal; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -235,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				4656C6CC1FF82F1900AC6821 /* ThresholdingFilter.swift */,
+				C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */,
 			);
 			path = Filters;
 			sourceTree = "<group>";
@@ -348,6 +382,8 @@
 				C8C01DD12C23315F00A78453 /* ShellScript */,
 			);
 			buildRules = (
+				C8A663BC2C664FC600898E92 /* PBXBuildRule */,
+				C8A663BD2C66508100898E92 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -585,6 +621,7 @@
 				4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */,
 				460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
+				C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */,
 				46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */,
 				460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */,
 				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
