@@ -7,7 +7,6 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 
 Immediate TODOs:
-* Switch from the older UIImagePicker to the newer PHPicker, noting live images and icloud images https://medium.com/@dari.tamim028/ios-swift-phpickerviewcontroller-implementation-real-life-insights-on-advantages-and-ab5f376185b9 https://stackoverflow.com/questions/71954672/how-to-load-image-from-photos-using-new-phpickerviewcontroller-in-ios-programmat
 * Switch settings to using Codable: wrapper at https://stackoverflow.com/questions/48566443/implementing-codable-for-uicolor
 * Thread Performance Checker: -[AVCaptureSession startRunning] should be called from background thread. Calling it on the main thread can lead to UI unresponsiveness
 * Fix the memory leaks!

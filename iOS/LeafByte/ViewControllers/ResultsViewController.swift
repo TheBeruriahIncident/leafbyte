@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import PhotosUI
 import UIKit
 
 final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
@@ -149,27 +150,26 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         completeButton.isEnabled = false
 
         let afterSerialization = {
+            // sourceMode is set during segue and is generally implicitly unwrapped; we just have to manually do it for the switch
+            // swiftlint:disable:next force_unwrapping
             switch self.sourceMode! {
             case .camera:
                 // swiftlint:disable:next trailing_closure
                 requestCameraAccess(self: self, onSuccess: {
                     DispatchQueue.main.async {
-                        self.imagePicker.sourceType = .camera
-
                         if self.settings.useBarcode {
                             DispatchQueue.main.async {
                                 self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                             }
                         } else {
-                            self.present(self.imagePicker, animated: true, completion: nil)
+                            presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
                         }
                     }
                 })
+
             case .photoLibrary:
                 DispatchQueue.main.async {
-                    self.imagePicker.sourceType = .photoLibrary
-
-                    self.present(self.imagePicker, animated: true, completion: nil)
+                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .photoLibrary)
                 }
             }
         }
@@ -434,6 +434,13 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
         dismissNavigationController(self: self)
+    }
+
+    // MARK: - PHPickerViewControllerDelegate overrides
+
+    @available(iOS 14.0, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
     }
 
     // MARK: - UITextFieldDelegate overrides

@@ -7,10 +7,11 @@
 //
 
 import AVFoundation
+import PhotosUI
 import UIKit
 
 // This class controls the main menu view, the first view in the app.
-final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
@@ -83,7 +84,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                 if self.settings.useBarcode {
                     self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                 } else {
-                    self.presentImagePicker(sourceMode: .camera)
+                    self.sourceMode = .camera
+                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
                 }
             }
         }, onFailure: { self.segueEnabled = true })
@@ -95,7 +97,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         segueEnabled = false
 
-        presentImagePicker(sourceMode: .photoLibrary)
+        self.sourceMode = .photoLibrary
+        // beforeShowingPHPicker is a terrible hack. segueEnabled should be reset when the PHPicker completes, but there's a bug in PHPicker such that if you close the PHPicker by swiping it down rather than pressing cancel, the completion callback does not run. This puts you into a state where the app is frozen if we don't reset segueEnabled in advance. Once Apple fixes this bug, we can remove this hack.
+        // swiftlint:disable:next trailing_closure
+        presentImagePickerOrPHPicker(self: self, imagePicker: imagePicker, sourceMode: .photoLibrary, beforeShowingPHPicker: { () in self.segueEnabled = true })
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
@@ -208,19 +213,17 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Helpers
+    // MARK: - PHPickerViewControllerDelegate overrides
 
-    private func presentImagePicker(sourceMode: ImageSourceMode) {
-        self.sourceMode = sourceMode
-        switch sourceMode {
-        case .camera:
-            imagePicker.sourceType = .camera
-        case .photoLibrary:
-            imagePicker.sourceType = .photoLibrary
-        }
+    @available(iOS 14.0, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // When this picker is dismissed, viewDidAppear is not called, unlike when the imagePicker is dismissed, so we can't count on this being reset there.
+        segueEnabled = true
 
-        present(imagePicker, animated: true, completion: nil)
+        finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
     }
+
+    // MARK: - Helpers
 
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {

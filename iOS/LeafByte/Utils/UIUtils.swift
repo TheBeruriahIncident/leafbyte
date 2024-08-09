@@ -7,6 +7,7 @@
 //
 
 import AVFoundation
+import PhotosUI
 import UIKit
 
 // Dismisses the current navigation controller, showing what is beneath.
@@ -14,6 +15,57 @@ func dismissNavigationController(self viewController: UIViewController) {
     DispatchQueue.main.async {
         // Note the ?: if this is nil, I'm guessing it's a weird race condition where the navigation controller has already been dismissed, so there's nothing wrong with just moving on
         viewController.navigationController?.dismiss(animated: true)
+    }
+}
+
+func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
+    imagePicker.delegate = viewController
+    // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
+    // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
+    imagePicker.allowsEditing = false
+}
+
+// viewController must be a PHPickerViewControllerDelegate!
+func presentImagePickerOrPHPicker(self viewController: UIViewController, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode, beforeShowingPHPicker: (() -> Void)? = nil) {
+
+    if sourceMode == .photoLibrary, #available(iOS 14.0, *) {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        // Use the current format to avoid slow conversions
+        configuration.preferredAssetRepresentationMode = .current
+
+        // The picker has been successfully tested with standard photos, bursts, live photos, depth-effect photos, panoramas, and screenshots. It seems like filtering to just .images still includes all of those, but we add all the different types just to make sure sure. Note that we don't include any video types, as they can't be coerced to UIImages.
+        var filters: [PHPickerFilter] = [.images, .livePhotos]
+        if #available(iOS 15.0, *) {
+            filters.append(.panoramas)
+            filters.append(.screenshots)
+        }
+        if #available(iOS 16.0, *) {
+            filters.append(.bursts)
+            filters.append(.depthEffectPhotos)
+        }
+        configuration.filter = PHPickerFilter.any(of: filters)
+
+        let picker = PHPickerViewController(configuration: configuration)
+        // This is a bit of a hack: we can't take viewController as UIViewController & PHPickerViewControllerDelegate or else the compiler forces us to mark the whole method as only available to iOS 14.0 and up. But, the only view controllers that call this are PHPickerViewControllerDelegate, so this hack should work out.
+        guard let delegate = viewController as? PHPickerViewControllerDelegate else {
+            crashGracefully(viewController: viewController, message: "App is misconfigured: view controller is not a PHPicker delegate. Please reach out to leafbyte@zoegp.science so we can fix this.")
+            return
+        }
+        picker.delegate = delegate
+
+        beforeShowingPHPicker?() // This is a hack; see the comment on usage of the beforeShowingPHPicker argument.
+        viewController.present(picker, animated: true, completion: nil)
+    } else {
+        switch sourceMode {
+        case .camera:
+            imagePicker.sourceType = .camera
+
+        case .photoLibrary:
+            imagePicker.sourceType = .photoLibrary
+        }
+
+        viewController.present(imagePicker, animated: true, completion: nil)
     }
 }
 
@@ -53,20 +105,54 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
     viewController.dismiss(animated: false, completion: onDismissingPicker)
 }
 
-// There are various cases that we either think are impossible, or have happened in a crash report but we have no idea how. This allows us to return to the main menu with an error, rather than the whole app crashing.
-func crashGracefully(viewController: UIViewController, message: String) {
-    let mainMenuController = viewController.navigationController?.viewControllers[0]
-    dismissNavigationController(self: viewController)
+@available(iOS 14.0, *)
+func finishWithPHPicker(self viewController: UIViewController, picker: PHPickerViewController, didFinishPicking results: [PHPickerResult], selectImage: @escaping (CGImage) -> Void) {
+    picker.delegate = nil
+    // This logic must be wrapped in the completion callback or you get problems with race conditions. E.g. picker.dismiss seems to also dismiss any view controller that opens before it finishes running, so if the thresholding page opens fast enough, it gets closed.
+    picker.dismiss(animated: true) {
+        if results.isEmpty {
+            // Presumably the user canceled the picker
+            return
+        }
+        // We only allow one image, so we shouldn't be discarding anything
+        let result = results[0]
 
-    guard let mainMenuController else {
-        return
+        // Supposedly iCloud images should be handled transparently by this call, but we don't have access to any iCloud images to test this.
+        result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
+            guard let image = reading as? UIImage, error == nil else {
+                presentAlert(self: viewController, title: nil, message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(String(describing: error))")
+                return
+            }
+
+            // We scale it down to make the following operations happen in tolerable time.
+            guard let resizedImage = resizeImage(image) else {
+                presentAlert(self: viewController, title: nil, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(String(describing: reading))")
+                return
+            }
+            // Save the selectedImage off so that during the segue, we can set it onto the next view.
+            selectImage(resizedImage)
+
+            DispatchQueue.main.async {
+                // Dismissing and then seguing goes from the image picker to the previous view to the next view.
+                // It looks weird to be back at the previous view, so make this transition as short as possible by disabling animation.
+                // Animation is re-renabled in the previous view's viewDidDisappear.
+                UIView.setAnimationsEnabled(false)
+                viewController.performSegue(withIdentifier: "imageChosen", sender: viewController)
+            }
+        }
     }
-    presentAlert(self: mainMenuController, title: nil, message: message)
 }
 
-func presentAlert(self viewController: UIViewController, title: String?, message: String) {
+// There are various cases that we either think are impossible, or have happened in a crash report but we have no idea how. This allows us to return to the main menu with an error, rather than the whole app crashing.
+func crashGracefully(viewController: UIViewController, message: String) {
+    presentAlert(self: viewController, title: nil, message: message) { _ in
+        dismissNavigationController(self: viewController)
+    }
+}
+
+func presentAlert(self viewController: UIViewController, title: String?, message: String, onAcknowledge: ((UIAlertAction) -> Void)? = nil) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm an alert"), style: .default)
+    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Confirm an alert"), style: .default, handler: onAcknowledge)
     alertController.addAction(okAction)
 
     DispatchQueue.main.async {
@@ -99,13 +185,6 @@ func setupScrollView(scrollView: UIScrollView, self viewController: UIScrollView
     scrollView.delegate = viewController
     scrollView.minimumZoomScale = 0.9
     scrollView.maximumZoomScale = 50.0
-}
-
-func setupImagePicker(imagePicker: UIImagePickerController, self viewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
-    imagePicker.delegate = viewController
-    // Allowing editing to get easy cropping is tempting, but cropping in the image picker is broken in various ways on different devices.
-    // For example, on most devices, the crop window will be applied ~10% above where the user chooses, and on some devices, the crop window won't be movable at all.
-    imagePicker.allowsEditing = false
 }
 
 func setupPopoverViewController(_ popoverViewController: UIViewController, self hostingViewController: UIPopoverPresentationControllerDelegate) {
