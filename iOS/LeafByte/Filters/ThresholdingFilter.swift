@@ -41,15 +41,31 @@ final class ThresholdingFilter: CIFilter {
     }
 
     private func getThresholdingKernel() -> CIColorKernel {
-        if #available(iOS 11.0, *) {
-            return getMetalThresholdingKernel()
-        } else {
-            return getLegacyThresholdingKernel()
-        }
+        useBlackBackground
+            ? Self.blackBackgroundThresholdKernel
+            : Self.whiteBackgroundThresholdKernel
     }
 
+    // Static in order to (lazily) compute only once
+    private static let whiteBackgroundThresholdKernel: CIColorKernel = {
+        if #available(iOS 11.0, *) {
+            return getMetalThresholdingKernel(useBlackBackground: false)
+        } else {
+            return getLegacyThresholdingKernel(useBlackBackground: false)
+        }
+    }()
+
+    // Static in order to (lazily) compute only once
+    private static let blackBackgroundThresholdKernel: CIColorKernel = {
+        if #available(iOS 11.0, *) {
+            return getMetalThresholdingKernel(useBlackBackground: true)
+        } else {
+            return getLegacyThresholdingKernel(useBlackBackground: true)
+        }
+    }()
+
     @available(iOS 11.0, *)
-    private func getMetalThresholdingKernel() -> CIColorKernel {
+    private static func getMetalThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
         guard let url = Bundle.main.url(forResource: "ThresholdingFilter", withExtension: "coreimage.metallib") else {
             fatalError("Invalid url for ThresholdingFilter.coreimage.metallib")
         }
@@ -69,7 +85,7 @@ final class ThresholdingFilter: CIFilter {
         }
     }
 
-    private func getLegacyThresholdingKernel() -> CIColorKernel {
+    private static func getLegacyThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
         // Normally a leaf is more intense than the background, but with a black background, it's less intense.
         let comparisonOperator = useBlackBackground ? ">" : "<"
 
