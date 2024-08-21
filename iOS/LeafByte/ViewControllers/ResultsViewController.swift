@@ -10,7 +10,7 @@ import CoreGraphics
 import PhotosUI
 import UIKit
 
-final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
+final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
     // These are passed from the previous view.
