@@ -644,7 +644,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="764"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHP-PA-Tth" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1180"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1238.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Save Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z79-vT-qHF" userLabel="Data Save Location Label">
                                                 <rect key="frame" x="114" y="30" width="147" height="21"/>
@@ -835,7 +835,7 @@
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-yv-Xsk" userLabel="Credits &amp; Version Label">
                                                 <rect key="frame" x="19" y="834" width="337.5" height="304.5"/>
-                                                <mutableString key="text">LeafByte was made by Zoe &amp; Abigail Getman-Pickering.  Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.  version 1.4.0-RC2</mutableString>
+                                                <string key="text">LeafByte was made by Zoe &amp; Abigail Getman-Pickering.  Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.  version 1.4.0-RC2</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -854,7 +854,6 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ReC-JH-DuD" secondAttribute="trailing" id="7oy-Vu-SCi"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" constant="2.5" id="AIw-xZ-1bL"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="PDu-AL-rj6" secondAttribute="trailing" id="BCO-F6-e73"/>
-                                            <constraint firstAttribute="height" constant="1180" id="FdZ-y9-8w5"/>
                                             <constraint firstItem="S9r-LJ-W69" firstAttribute="centerX" secondItem="nnO-ux-tfh" secondAttribute="centerX" id="Fgs-cK-K5a"/>
                                             <constraint firstItem="zyF-9a-8bS" firstAttribute="top" secondItem="GNf-0c-JDv" secondAttribute="bottom" constant="28" id="Fik-7n-oMA"/>
                                             <constraint firstItem="Wep-GW-bl2" firstAttribute="top" secondItem="adf-uG-4TS" secondAttribute="bottom" constant="28" id="GKc-tF-VDF"/>
@@ -897,6 +896,7 @@
                                             <constraint firstItem="GNf-0c-JDv" firstAttribute="top" secondItem="b7d-8V-V4U" secondAttribute="bottom" constant="3" id="wSz-WX-jIz"/>
                                             <constraint firstItem="cPD-yv-Xsk" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="trailing" multiplier="0.05" id="xDE-NQ-Mzt"/>
                                             <constraint firstItem="4hE-lk-Cd3" firstAttribute="leading" secondItem="kHP-PA-Tth" secondAttribute="leadingMargin" id="xOp-zh-d9d"/>
+                                            <constraint firstItem="cPD-yv-Xsk" firstAttribute="bottom" secondItem="kHP-PA-Tth" secondAttribute="bottom" constant="-100" id="xV6-q4-z7m"/>
                                             <constraint firstItem="adf-uG-4TS" firstAttribute="centerX" secondItem="kHP-PA-Tth" secondAttribute="centerX" id="xsn-ia-i54"/>
                                         </constraints>
                                     </view>
