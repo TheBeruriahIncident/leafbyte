@@ -160,6 +160,7 @@ func presentAlert(self viewController: UIViewController, title: String?, message
     }
 }
 
+// swiftlint:disable:next no_empty_body
 func requestCameraAccess(self viewController: UIViewController, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void = {}) {
     AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
         if response {
