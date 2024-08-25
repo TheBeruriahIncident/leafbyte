@@ -19,7 +19,7 @@ class PHPickerPresentationControllerDelegate: NSObject, UIAdaptivePresentationCo
     }
 
     // When the PHPicker is canceled with the cancel button, the picker's completion callback is run. However, it is not run when the picker is canceled by swiping (this inconsistency feels like an iOS bug), so we work around by using this method to see if the PHPicker was canceled with a swipe.
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    func presentationControllerDidDismiss(_: UIPresentationController) {
         dismissNavigationController(self: viewController)
     }
 }

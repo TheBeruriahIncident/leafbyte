@@ -73,8 +73,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     var formattedConsumedAreaInUnits2: String?
 
     let imagePicker = UIImagePickerController()
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate!; // Cannot be initialized immediately as it needs self
+    // This is not weak, because we want to reuse this, but the reference to this class within the delegate is
+    // swiftlint:disable:next implicitly_unwrapped_optional weak_delegate
+    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate! // Cannot be initialized immediately as it needs self
 
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?

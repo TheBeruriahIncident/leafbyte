@@ -21,8 +21,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var settings: Settings!
 
     let imagePicker = UIImagePickerController()
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate!; // Cannot be initialized immediately as it needs self
+    // This is not weak, because we want to reuse this, but the reference to this class within the delegate is
+    // swiftlint:disable:next implicitly_unwrapped_optional weak_delegate
+    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate! // Cannot be initialized immediately as it needs self
 
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
