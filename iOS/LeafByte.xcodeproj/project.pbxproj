@@ -51,6 +51,7 @@
 		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
 		C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */ = {isa = PBXBuildFile; fileRef = C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */; };
 		C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */; };
+		C8FDC77C2C7BE1750033662E /* PHPickerPresentationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FDC77B2C7BE1740033662E /* PHPickerPresentationControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -157,6 +158,7 @@
 		C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ThresholdingFilter.coreimage.metal; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C8FDC77B2C7BE1740033662E /* PHPickerPresentationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerPresentationControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +336,7 @@
 				46528509201EE176004E8864 /* GpsManager.swift */,
 				46DB8A8D1FFF332C00EF59BE /* UIUtils.swift */,
 				4630795320181A95005C548F /* Utils.swift */,
+				C8FDC77B2C7BE1740033662E /* PHPickerPresentationControllerDelegate.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				4652850A201EE176004E8864 /* GpsManager.swift in Sources */,
 				463A28321FEF6D5B008EB1FC /* ResultsViewController.swift in Sources */,
 				4656C6CD1FF82F1900AC6821 /* ThresholdingFilter.swift in Sources */,
+				C8FDC77C2C7BE1750033662E /* PHPickerPresentationControllerDelegate.swift in Sources */,
 				469E3B032013DB4E009C7337 /* FileUtils.swift in Sources */,
 				46F1063B20007D1A000B4B83 /* UnionFind.swift in Sources */,
 				468C432120264D8C003FEECC /* Queue.swift in Sources */,

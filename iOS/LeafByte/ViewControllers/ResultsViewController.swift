@@ -73,6 +73,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     var formattedConsumedAreaInUnits2: String?
 
     let imagePicker = UIImagePickerController()
+    // This is not weak, because we want to reuse this, but the reference to this class within the delegate is
+    // swiftlint:disable:next implicitly_unwrapped_optional weak_delegate
+    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate! // Cannot be initialized immediately as it needs self
 
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
@@ -162,14 +165,14 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                                 self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                             }
                         } else {
-                            presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
+                            presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
                         }
                     }
                 })
 
             case .photoLibrary:
                 DispatchQueue.main.async {
-                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .photoLibrary)
+                    presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .photoLibrary)
                 }
             }
         }
@@ -193,6 +196,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
         setupScrollView(scrollView: scrollView, self: self)
         setupImagePicker(imagePicker: imagePicker, self: self)
+
+        pHPickerPresentationControllerDelegate = PHPickerPresentationControllerDelegate(viewController: self)
 
         baseImageView.contentMode = .scaleAspectFit
         leafHolesView.contentMode = .scaleAspectFit
@@ -440,6 +445,12 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard !results.isEmpty else {
+            // If the phpicker is canceled, go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
+            dismissNavigationController(self: self)
+            return
+        }
+
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
     }
 

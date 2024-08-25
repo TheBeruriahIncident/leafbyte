@@ -26,7 +26,7 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
 }
 
 // viewController must be a PHPickerViewControllerDelegate!
-func presentImagePickerOrPHPicker(self viewController: UIViewController, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode, beforeShowingPHPicker: (() -> Void)? = nil) {
+func presentImagePickerOrPHPicker(self viewController: UIViewController, presentationControllerDelegate: UIAdaptivePresentationControllerDelegate, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode) {
 
     if sourceMode == .photoLibrary, #available(iOS 14.0, *) {
         var configuration = PHPickerConfiguration()
@@ -53,8 +53,8 @@ func presentImagePickerOrPHPicker(self viewController: UIViewController, imagePi
             return
         }
         picker.delegate = delegate
+        picker.presentationController?.delegate = presentationControllerDelegate
 
-        beforeShowingPHPicker?() // This is a hack; see the comment on usage of the beforeShowingPHPicker argument.
         viewController.present(picker, animated: true, completion: nil)
     } else {
         switch sourceMode {
@@ -93,12 +93,12 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
             }
         } else {
             onDismissingPicker = {
-                presentAlert(self: viewController, title: nil, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+                crashGracefully(viewController: viewController, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
             }
         }
     } else {
         onDismissingPicker = {
-            presentAlert(self: viewController, title: nil, message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+            crashGracefully(viewController: viewController, message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
         }
     }
 
