@@ -6,10 +6,10 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We're using CocoaPods for dependencies. The first-class Swift Package Manager now exists and is preferred, and it would be nice to not check in the sources of our AppAuth dependency. However, Swift Package Manager forces packages to have a minimum dependency at the lowest SDK Apple currently recommends, even if the package supports lower and declares that it supports lower. As such, it clashes with our choice to support clients with older devices.
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
 * NSCoding was the preferred serialization method when LeafByte was originally written. It's now deprecated (with no plans to actually remove it), and Codable is preferred, except there isn't a clear migration path between the two or migration tooling on iOS. Thus, we'd have to be able to read from NSCoding and Codable and only write back to Codable. We could never be sure that all NSCoding data was gone, so we'd have to leave these two paths indefinitely. As such, switching to Codable would add indefinite complexity with little benefit and not even ever remove the deprecated usage.
+* The legacy UIImagePickerController required us to request "Privacy - Photo Library Usage" in the plist, while the modern PHPicker runs in a separate process and thus does not require LeafByte to request additional access. We use PHPicker if the device is iOS 14 and thus PHPicker is available, and otherwise fallback on UIImagePickerController. As such, we'd ideally drop that privacy request from the plist in newer iOS versions, but that's not possible. Once our minimum SDK is at least 14, we can delete UIImagePickerController and the privacy request.
 
 Immediate TODOs:
 * Add the experimental images from the paper as test cases
-* Do we need less access with PHPicker
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
