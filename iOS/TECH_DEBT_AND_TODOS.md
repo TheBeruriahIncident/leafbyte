@@ -5,11 +5,11 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * We are using bare-metal AppAuth rather than the Google Sign-In library. We actually originally used the Google Sign-In library, but it's janky and buggy, constantly breaks its API, always requests more access than we need (and the devs won't accept a contribution to allow being more thoughtful about privacy), and requires a higher minimum SDK than we're currently accepting.
 * We're using CocoaPods for dependencies. The first-class Swift Package Manager now exists and is preferred, and it would be nice to not check in the sources of our AppAuth dependency. However, Swift Package Manager forces packages to have a minimum dependency at the lowest SDK Apple currently recommends, even if the package supports lower and declares that it supports lower. As such, it clashes with our choice to support clients with older devices.
 * We cannot use Dependabot to automatically keep our dependencies up to date until we move from CocoaPods to Swift Dependency Manager.
+* NSCoding was the preferred serialization method when LeafByte was originally written. It's now deprecated (with no plans to actually remove it), and Codable is preferred, except there isn't a clear migration path between the two or migration tooling on iOS. Thus, we'd have to be able to read from NSCoding and Codable and only write back to Codable. We could never be sure that all NSCoding data was gone, so we'd have to leave these two paths indefinitely. As such, switching to Codable would add indefinite complexity with little benefit and not even ever remove the deprecated usage.
 
 Immediate TODOs:
-* Switch settings to using Codable: wrapper at https://stackoverflow.com/questions/48566443/implementing-codable-for-uicolor and fix deprecations in Settings
-* Fix the memory leaks!
 * Add the experimental images from the paper as test cases
+* Cancel when picking image on save-and-next should return home I think?
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
 * Test if Metal thresholding is slower, particularly on simulator that is slower

@@ -92,6 +92,12 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
         super.viewDidAppear(animated)
 
         if !viewDidAppearHasRun {
+            // This is very important and prevents a memory leak:
+            // When you use LeafByte for an extended period and process multiple images, naively each set of view controllers would stack up in the navigation controller, even though it would not be possible or desirable to go back to edit an image that was already recorded. This logic clears the view controllers for the previous image from memory.
+            if (navigationController?.viewControllers.count ?? 0) > 1 {
+                navigationController?.viewControllers = [self]
+            }
+
             let lumaHistogram = getLumaHistogram(image: image)
 
             // Guess a good threshold to start at; the user can adjust with the slider later.
