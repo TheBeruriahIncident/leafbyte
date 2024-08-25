@@ -11,7 +11,6 @@ Immediate TODOs:
 * Add the experimental images from the paper as test cases
 * Cancel when picking image on save-and-next should return home I think?
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
-* Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
