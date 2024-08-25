@@ -93,12 +93,12 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
             }
         } else {
             onDismissingPicker = {
-                presentAlert(self: viewController, title: nil, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+                crashGracefully(viewController: viewController, message: "Failed to resize chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
             }
         }
     } else {
         onDismissingPicker = {
-            presentAlert(self: viewController, title: nil, message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
+            crashGracefully(viewController: viewController, message: "Failed to open chosen image. Please reach out to leafbyte@zoegp.science with information about what image you chose so we can fix this issue. Debug info: \(info)")
         }
     }
 
