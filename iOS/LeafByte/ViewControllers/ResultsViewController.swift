@@ -10,7 +10,7 @@ import CoreGraphics
 import PhotosUI
 import UIKit
 
-final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PHPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
+final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
     // These are passed from the previous view.
@@ -73,6 +73,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     var formattedConsumedAreaInUnits2: String?
 
     let imagePicker = UIImagePickerController()
+    // swiftlint:disable:next implicitly_unwrapped_optional
+    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate!; // Cannot be initialized immediately as it needs self
 
     // This is set while choosing the next image and is passed to the next thresholding view.
     var selectedImage: CGImage?
@@ -162,14 +164,14 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                                 self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                             }
                         } else {
-                            presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
+                            presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
                         }
                     }
                 })
 
             case .photoLibrary:
                 DispatchQueue.main.async {
-                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .photoLibrary)
+                    presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .photoLibrary)
                 }
             }
         }
@@ -193,6 +195,8 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
         setupScrollView(scrollView: scrollView, self: self)
         setupImagePicker(imagePicker: imagePicker, self: self)
+
+        pHPickerPresentationControllerDelegate = PHPickerPresentationControllerDelegate(viewController: self)
 
         baseImageView.contentMode = .scaleAspectFit
         leafHolesView.contentMode = .scaleAspectFit
@@ -447,13 +451,6 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
 
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
-    }
-
-    // MARK: - UIAdaptivePresentationControllerDelegate overrides
-
-    // When the PHPicker is canceled with the cancel button, the picker's completion callback is run. However, it is not run when the picker is canceled by swiping (this inconsistency feels like an iOS bug), so we work around by using this method to see if the PHPicker was canceled with a swipe.
-    func presentationControllerDidDismiss(_: UIPresentationController) {
-        dismissNavigationController(self: self)
     }
 
     // MARK: - UITextFieldDelegate overrides

@@ -26,7 +26,7 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
 }
 
 // viewController must be a PHPickerViewControllerDelegate!
-func presentImagePickerOrPHPicker(self viewController: UIViewController & UIAdaptivePresentationControllerDelegate, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode) {
+func presentImagePickerOrPHPicker(self viewController: UIViewController, presentationControllerDelegate: UIAdaptivePresentationControllerDelegate, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode) {
 
     if sourceMode == .photoLibrary, #available(iOS 14.0, *) {
         var configuration = PHPickerConfiguration()
@@ -53,7 +53,7 @@ func presentImagePickerOrPHPicker(self viewController: UIViewController & UIAdap
             return
         }
         picker.delegate = delegate
-        picker.presentationController?.delegate = viewController
+        picker.presentationController?.delegate = presentationControllerDelegate
 
         viewController.present(picker, animated: true, completion: nil)
     } else {

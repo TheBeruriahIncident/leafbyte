@@ -11,7 +11,7 @@ import PhotosUI
 import UIKit
 
 // This class controls the main menu view, the first view in the app.
-final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
+final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
@@ -21,6 +21,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     var settings: Settings!
 
     let imagePicker = UIImagePickerController()
+    // swiftlint:disable:next implicitly_unwrapped_optional
+    var pHPickerPresentationControllerDelegate: PHPickerPresentationControllerDelegate!; // Cannot be initialized immediately as it needs self
 
     // Tracks whether viewDidAppear has run, so that we can initialize only once.
     var viewDidAppearHasRun = false
@@ -85,7 +87,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                     self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
                 } else {
                     self.sourceMode = .camera
-                    presentImagePickerOrPHPicker(self: self, imagePicker: self.imagePicker, sourceMode: .camera)
+                    presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
                 }
             }
         }, onFailure: { self.segueEnabled = true })
@@ -98,7 +100,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         segueEnabled = false
 
         self.sourceMode = .photoLibrary
-        presentImagePickerOrPHPicker(self: self, imagePicker: imagePicker, sourceMode: .photoLibrary)
+        presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: pHPickerPresentationControllerDelegate, imagePicker: imagePicker, sourceMode: .photoLibrary)
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
@@ -112,6 +114,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
         settings = Settings.deserialize()
         setupImagePicker(imagePicker: imagePicker, self: self)
+
+        pHPickerPresentationControllerDelegate = PHPickerPresentationControllerDelegate(viewController: self)
 
         if !isGoogleSignInConfigured() {
             print("************************************************************")
@@ -220,13 +224,6 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         segueEnabled = true
 
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
-    }
-
-    // MARK: - UIAdaptivePresentationControllerDelegate overrides
-
-    // When the PHPicker is canceled with the cancel button, the picker's completion callback is run. However, it is not run when the picker is canceled by swiping (this inconsistency feels like an iOS bug), so we work around by using this method to see if the PHPicker was canceled with a swipe.
-    func presentationControllerDidDismiss(_: UIPresentationController) {
-        segueEnabled = true
     }
 
     // MARK: - Helpers
