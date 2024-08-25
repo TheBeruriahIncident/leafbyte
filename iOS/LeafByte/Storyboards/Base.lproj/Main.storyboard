@@ -832,8 +832,9 @@
                                                     <action selector="chooseUnit:" destination="ayx-Do-FJf" eventType="touchUpInside" id="r10-XR-efi"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="version 1.4.0-RC2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-yv-Xsk" userLabel="Version Label">
-                                                <rect key="frame" x="120.5" y="834" width="134.5" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-yv-Xsk" userLabel="Version Label">
+                                                <rect key="frame" x="-1454" y="834" width="3283" height="61"/>
+                                                <mutableString key="text">LeafByte was made by Zoe &amp; Abigail Getman-Pickering. Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.  version 1.4.0-RC2</mutableString>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
