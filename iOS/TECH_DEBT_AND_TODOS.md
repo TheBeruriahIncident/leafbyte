@@ -8,8 +8,8 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * NSCoding was the preferred serialization method when LeafByte was originally written. It's now deprecated (with no plans to actually remove it), and Codable is preferred, except there isn't a clear migration path between the two or migration tooling on iOS. Thus, we'd have to be able to read from NSCoding and Codable and only write back to Codable. We could never be sure that all NSCoding data was gone, so we'd have to leave these two paths indefinitely. As such, switching to Codable would add indefinite complexity with little benefit and not even ever remove the deprecated usage.
 
 Immediate TODOs:
-* Fix the memory leaks!
 * Add the experimental images from the paper as test cases
+* Cancel when picking image on save-and-next should return home I think?
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Zoe: add credits to settings (aligning across website and android), and fix tutorial spacing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
