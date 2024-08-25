@@ -9,7 +9,7 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 
 Immediate TODOs:
 * Add the experimental images from the paper as test cases
-* Cancel when picking image on save-and-next should return home I think?
+* Do we need less access with PHPicker
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 

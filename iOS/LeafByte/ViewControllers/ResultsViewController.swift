@@ -10,7 +10,7 @@ import CoreGraphics
 import PhotosUI
 import UIKit
 
-final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PHPickerViewControllerDelegate {
+final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, PHPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
     // MARK: - Fields
 
     // These are passed from the previous view.
@@ -440,7 +440,20 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard !results.isEmpty else {
+            // If the phpicker is canceled, go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
+            dismissNavigationController(self: self)
+            return
+        }
+
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
+    }
+
+    // MARK: - UIAdaptivePresentationControllerDelegate overrides
+
+    // When the PHPicker is canceled with the cancel button, the picker's completion callback is run. However, it is not run when the picker is canceled by swiping (this inconsistency feels like an iOS bug), so we work around by using this method to see if the PHPicker was canceled with a swipe.
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        dismissNavigationController(self: self)
     }
 
     // MARK: - UITextFieldDelegate overrides

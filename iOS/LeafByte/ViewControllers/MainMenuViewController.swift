@@ -11,7 +11,7 @@ import PhotosUI
 import UIKit
 
 // This class controls the main menu view, the first view in the app.
-final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
+final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
     // MARK: - Fields
 
     private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
@@ -98,9 +98,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         segueEnabled = false
 
         self.sourceMode = .photoLibrary
-        // beforeShowingPHPicker is a terrible hack. segueEnabled should be reset when the PHPicker completes, but there's a bug in PHPicker such that if you close the PHPicker by swiping it down rather than pressing cancel, the completion callback does not run. This puts you into a state where the app is frozen if we don't reset segueEnabled in advance. Once Apple fixes this bug, we can remove this hack.
-        // swiftlint:disable:next trailing_closure
-        presentImagePickerOrPHPicker(self: self, imagePicker: imagePicker, sourceMode: .photoLibrary, beforeShowingPHPicker: { () in self.segueEnabled = true })
+        presentImagePickerOrPHPicker(self: self, imagePicker: imagePicker, sourceMode: .photoLibrary)
     }
 
     // Despite having no content, this must exist to enable the programmatic segues back to this view.
@@ -218,10 +216,17 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        // When this picker is dismissed, viewDidAppear is not called, unlike when the imagePicker is dismissed, so we can't count on this being reset there.
+        // When this picker is dismissed, viewDidAppear is not called, unlike when the imagePicker is dismissed, so we have to separately re-enable interactions
         segueEnabled = true
 
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results) { self.selectedImage = $0 }
+    }
+
+    // MARK: - UIAdaptivePresentationControllerDelegate overrides
+
+    // When the PHPicker is canceled with the cancel button, the picker's completion callback is run. However, it is not run when the picker is canceled by swiping (this inconsistency feels like an iOS bug), so we work around by using this method to see if the PHPicker was canceled with a swipe.
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        segueEnabled = true
     }
 
     // MARK: - Helpers
