@@ -448,7 +448,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         finishWithPHPicker(self: self, picker: picker, didFinishPicking: results, onCancel: {
             // If the phpicker is canceled, go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
             dismissNavigationController(self: self)
-        }) { self.selectedImage = $0 }
+        }, selectImage: { self.selectedImage = $0 })
     }
 
     // MARK: - UITextFieldDelegate overrides
