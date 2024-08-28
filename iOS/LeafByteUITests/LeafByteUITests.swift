@@ -8,6 +8,7 @@
 
 import XCTest
 
+// swiftlint:disable force_unwrapping
 final class LeafByteUITests: XCTestCase {
 
     override func setUp() {
@@ -70,3 +71,4 @@ func extractValue(source: String, valueName: String) -> Float {
     let stringValue = source[match]
     return Float(stringValue)!
 }
+// swiftlint:enable force_unwrapping
