@@ -37,3 +37,4 @@
 * Fail gracefully rather than crashing when failing to save a file to the Files App (This appears in a crash report, but we don't know the conditions where this actually happens; perhaps no disk space?)
 * Prevent crashing when linking to the LeafByte website on very slow internet
 * Credit collaborators on the settings page. Make the settings page size correctly across different devices
+* More precisely determine the center of oddly-shaped scale marks (previously was only up to about a pixel off)

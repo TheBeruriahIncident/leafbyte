@@ -238,7 +238,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             }
 
             // Since a non-white section in the image was touched, it may be a scale mark.
-            let markFound = measureScaleMark(fromPointInMark: visiblePixel, inImage: indexableImage, withMinimumLength: 1, markNumber: markNumber)
+            let markFound = assessPossibleScaleMark(fromPointInMark: visiblePixel, inImage: indexableImage, withMinimumComponentSize: 1, markNumber: markNumber)
             if markFound {
                 if numberOfValidScaleMarks == 4 {
                     numberOfValidScaleMarks = 0
@@ -309,7 +309,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             // swiftlint:disable:next force_unwrapping
             let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
 
-            let markFound = measureScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumLength: 5, markNumber: markNumber)
+            let markFound = assessPossibleScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumComponentSize: 19, markNumber: markNumber)
             if !markFound {
                 setScaleNotFound()
                 numberOfValidScaleMarks = 0
@@ -322,26 +322,12 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         setScaleFound()
     }
 
-    private func measureScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumLength minimumLength: Int, markNumber: Int) -> Bool {
-        // Find the farthest point in the scale mark away, then the farthest away from that.
-        // This represents the farthest apart two points in the scale mark (where farthest refers to the path through the scale mark).
-        // This definition of farthest will work for us for thin, straight scale marks, which is what we expect.
-        guard let farthestPoint1 = getFarthestPointInComponent(inImage: image, fromPoint: startPoint) else {
-            // If either farthest point is too far away, we get nil.
-            // This allows us to discard objects that are too large and are unlikely to be the scale.
+    private func assessPossibleScaleMark(fromPointInMark startPoint: CGPoint, inImage image: IndexableImage, withMinimumComponentSize minimumComponentSize: Int, markNumber: Int) -> Bool {
+        guard let scaleMark = getCentroidOfComponent(inImage: image, fromPoint: startPoint, minimumComponentSize: minimumComponentSize) else {
+            // If the mark is too big or too small, we get nil.
+            // This allows us to discard noise, as well as objects that are too large and are unlikely to be the scale.
             return false
         }
-        guard let farthestPoint2 = getFarthestPointInComponent(inImage: image, fromPoint: farthestPoint1) else {
-            return false
-        }
-
-        let candidateScaleMarkPixelLength = roundToInt(farthestPoint1.distance(to: farthestPoint2))
-        // If the scale mark is too small, it's probably just noise in the image.
-        if candidateScaleMarkPixelLength < minimumLength {
-            return false
-        }
-
-        let scaleMark = CGPoint(x: (farthestPoint1.x + farthestPoint2.x) / 2, y: (farthestPoint1.y + farthestPoint2.y) / 2)
 
         // If this is a duplicate mark, skip it.
         if markNumber > 0 {
