@@ -14,7 +14,6 @@ Immediate TODOs:
 * switch tutorial image to png, comment that jpg loads differently, and make test more flexible; also document that planar homography varies
 * Excluding data doesn't work now
 * why does topMostMemberPoint change the results
-* actually canceling the save-and-next image picker doesnt take you to the main menu
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
