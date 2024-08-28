@@ -197,11 +197,11 @@ private func createImageFromQuadrilateral(in image: CIImage, bottomLeft: CGPoint
     return perspectiveCorrection.outputImage! // swiftlint:disable:this force_unwrapping
 }
 
-// Find the point farthest away from a point within a connected component.
-// In other words, find the farthest away point reachable along non-white points.
-// Note that farthest away refers to the number of non-white points traversed rather than traditional distance.
+// Find the centroid of a connected component.
+// In other words, find the arithmetic mean of all points reachable along non-white points.
 // Returns nil if the farthest point is too far away, to allow skipping large objects.
-func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint) -> CGPoint? {
+// Also returns nil if the component is too small, as it's probably just noise in the image.
+func getCentroidOfComponent(inImage image: IndexableImage, fromPoint startingPoint: CGPoint, minimumComponentSize: Int) -> CGPoint? {
     let width = image.width
     let height = image.height
 
@@ -209,8 +209,8 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
     var queue = Queue()
     queue.enqueue(startingPoint)
 
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    var farthestPointSoFar: CGPoint!
+    var xRunningTotal = 0
+    var yRunningTotal = 0
 
     while !queue.isEmpty {
         let point = queue.dequeue()! // swiftlint:disable:this force_unwrapping
@@ -220,6 +220,8 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
 
         let x = roundToInt(point.x)
         let y = roundToInt(point.y)
+        xRunningTotal += x
+        yRunningTotal += y
 
         let westPoint = CGPoint(x: x - 1, y: y)
         if x > 0 && image.getPixel(x: x - 1, y: y).isVisible() && !explored.contains(westPoint) {
@@ -239,7 +241,6 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         }
 
         explored.insert(point)
-        farthestPointSoFar = point
 
         // If we've explored too much, return nil.
         // This keeps us from spending a long time dealing with large objects that are unlikely to be the scale anyways.
@@ -248,7 +249,14 @@ func getFarthestPointInComponent(inImage image: IndexableImage, fromPoint starti
         }
     }
 
-    return farthestPointSoFar
+    let count = explored.count
+    // If the component is too small, return nil.
+    // This prevents us from automatically identifying noise as the scale.
+    if count < minimumComponentSize {
+        return nil
+    }
+
+    return CGPoint(x: xRunningTotal / count, y: yRunningTotal / count)
 }
 
 // Starting at a point, searches around to find a non-white point, very roughly bounded in search size by maxPixelsToCheck.

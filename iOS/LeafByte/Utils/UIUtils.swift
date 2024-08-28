@@ -106,12 +106,13 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
 }
 
 @available(iOS 14.0, *)
-func finishWithPHPicker(self viewController: UIViewController, picker: PHPickerViewController, didFinishPicking results: [PHPickerResult], selectImage: @escaping (CGImage) -> Void) {
+func finishWithPHPicker(self viewController: UIViewController, picker: PHPickerViewController, didFinishPicking results: [PHPickerResult], onCancel: @escaping () -> Void = {}, selectImage: @escaping (CGImage) -> Void) { // swiftlint:disable:this no_empty_block
     picker.delegate = nil
     // This logic must be wrapped in the completion callback or you get problems with race conditions. E.g. picker.dismiss seems to also dismiss any view controller that opens before it finishes running, so if the thresholding page opens fast enough, it gets closed.
     picker.dismiss(animated: true) {
         if results.isEmpty {
             // Presumably the user canceled the picker
+            onCancel()
             return
         }
         // We only allow one image, so we shouldn't be discarding anything
