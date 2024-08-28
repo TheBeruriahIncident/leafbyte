@@ -194,6 +194,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // So UI tests can find the results text
+        resultsText.accessibilityIdentifier = "resultsValue"
+
         setupScrollView(scrollView: scrollView, self: self)
         setupImagePicker(imagePicker: imagePicker, self: self)
 

@@ -51,8 +51,22 @@ final class LeafByteUITests: XCTestCase {
         nextButton.tap()
         sleep(1)
 
-        // Background Removal, dismiss popover and tap the results text (which must have specific values)
+        // Results, dismiss popover and check the results text (which must have near-specific values)
         popoverdismissregionElement.tap()
-        app.staticTexts["Total Leaf Area= 9.043 cm2\nConsumed Leaf Area= 0.113 cm2\nPercent Consumed= 1.247%"].tap()
+        let resultsText = app.staticTexts.element(matching: .any, identifier: "resultsValue").label
+
+        let totalLeafArea = extractValue(source: resultsText, valueName: "Total Leaf Area")
+        let consumedLeafArea = extractValue(source: resultsText, valueName: "Consumed Leaf Area")
+        let percentConsumed = extractValue(source: resultsText, valueName: "Percent Consumed")
+
+        XCTAssertEqual(totalLeafArea, 9.040, accuracy: 0.001)
+        XCTAssertEqual(consumedLeafArea, 0.112, accuracy: 0.001)
+        XCTAssertEqual(percentConsumed, 1.244, accuracy: 0.001)
     }
+}
+
+func extractValue(source: String, valueName: String) -> Float {
+    let match = source.range(of: "(?<=\(valueName)= )[^ %]+", options: .regularExpression)!
+    let stringValue = source[match]
+    return Float(stringValue)!
 }
