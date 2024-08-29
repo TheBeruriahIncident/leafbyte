@@ -28,7 +28,7 @@ final class LeafByteTests: XCTestCase {
         XCTAssert(indexableImage.getPixel(x: 5, y: 5).isInvisible())
         XCTAssert(indexableImage.getPixel(x: 1_400, y: 1_400).isVisible())
         XCTAssert(indexableImage.getPixel(x: 1_820, y: 1_690).isVisible())
-        XCTAssert(indexableImage.getPixel(x: 1_660, y: 1_820).isInvisible())
+        XCTAssert(indexableImage.getPixel(x: 1_653, y: 1_833).isInvisible())
         XCTAssert(indexableImage.getPixel(x: 1_740, y: 1_820).isVisible())
     }
 
@@ -67,8 +67,8 @@ final class LeafByteTests: XCTestCase {
         let whiteAreaSizes = connectedComponentsInfo.labelToSize.filter { $0.key < 0 }.map(\.value.standardPart).sorted()
         let nonWhiteAreaSizes = connectedComponentsInfo.labelToSize.filter { $0.key > 0 }.map(\.value.standardPart).sorted()
 
-        XCTAssertEqual([3_360, 970_005], whiteAreaSizes.suffix(2))
-        XCTAssertEqual([1_176, 105_398], nonWhiteAreaSizes.suffix(2))
+        XCTAssertEqual([3_358, 970_002], whiteAreaSizes.suffix(2))
+        XCTAssertEqual([1_178, 105_400], nonWhiteAreaSizes.suffix(2))
     }
 
     func testSettingsSerialization() {
@@ -114,7 +114,7 @@ final class LeafByteTests: XCTestCase {
 
     private func loadImage(named name: String) -> UIImage {
         let bundle = Bundle(for: type(of: self))
-        guard let path = bundle.path(forResource: name, ofType: "jpg") else {
+        guard let path = bundle.path(forResource: name, ofType: "png") else {
             fatalError("Image \(name) not found")
         }
         guard let image = UIImage(contentsOfFile: path) else {
