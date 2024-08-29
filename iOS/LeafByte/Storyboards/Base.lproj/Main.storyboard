@@ -1543,7 +1543,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Camera" width="98" height="94"/>
-        <image name="Example Image" width="4422" height="3648"/>
+        <image name="Example Image" width="1769" height="1460"/>
         <image name="Gallery" width="98" height="98.5"/>
         <image name="Home" width="40" height="35.5"/>
         <image name="Leaf" width="128" height="139.5"/>

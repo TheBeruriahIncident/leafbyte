@@ -60,9 +60,13 @@ final class LeafByteUITests: XCTestCase {
         let consumedLeafArea = extractValue(source: resultsText, valueName: "Consumed Leaf Area")
         let percentConsumed = extractValue(source: resultsText, valueName: "Percent Consumed")
 
-        XCTAssertEqual(totalLeafArea, 9.040, accuracy: 0.001)
+        // Note that there's a slight tolerance given. There are several possible sources of imprecision:
+        // - We've observed that image decompression (at least with JPEGs) can have several slightly different pixels across devices
+        // - This has not been observed, but I wouldn't be surprised if some floating point math could vary across devices, whether because of different precision levels on different CPUs or different orderings of operations
+        // - We've observed that the iOS-provided skew correction can vary across devices, although we have only observed a pixel or two different in the resulting image
+        XCTAssertEqual(totalLeafArea, 9.039, accuracy: 0.001)
         XCTAssertEqual(consumedLeafArea, 0.112, accuracy: 0.001)
-        XCTAssertEqual(percentConsumed, 1.244, accuracy: 0.001)
+        XCTAssertEqual(percentConsumed, 1.245, accuracy: 0.001)
     }
 }
 
