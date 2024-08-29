@@ -584,7 +584,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         drawingManager.context.setLineWidth(2)
         drawingManager.context.setLineCap(.square)
 
-        let results = Self.useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: image, setNoLeafFound: { setNoLeafFound() }, setPointOnLeaf: { pointOnLeaf = $0 }, drawMarkers: { drawMarkers() }, floodFill: { (image, floodStartPoint) in floodFill(image: image, fromPoint: floodStartPoint, drawingTo: drawingManager) }, finishWithDrawingManager: { drawingManager.finish(imageView: leafHolesView) })
+        let results = Self.useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: image, setNoLeafFound: { setNoLeafFound() }, setPointOnLeaf: { pointOnLeaf = $0 }, drawMarkers: { drawMarkers() }, floodFill: { image, floodStartPoint in floodFill(image: image, fromPoint: floodStartPoint, drawingTo: drawingManager) }, finishWithDrawingManager: { drawingManager.finish(imageView: leafHolesView) })
         guard let results else {
             return
         }
