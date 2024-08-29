@@ -578,62 +578,22 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     }
 
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
-        let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
-        // Assume the largest occupied component is the leaf.
-        let leafLabelAndSize = labelsAndSizes.first { $0.key > 0 }
-
-        guard let leafLabelAndSize else {
-            // This is a blank image, and trying to calculate area will crash.
-            setNoLeafFound()
-            return
-        }
-        pointOnLeaf = connectedComponentsInfo.labelToMemberPoint[leafLabelAndSize.key]
-        drawMarkers()
-
-        // swiftlint:disable:next force_unwrapping
-        let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize.key)!
-        let leafAreaInPixels = leafLabelAndSize.value.standardPart
-
-        let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
-
-        if emptyLabelsAndSizes.isEmpty {
-            // This is a solid image, so calculating area is pointless.
-            setNoLeafFound()
-            return
-        }
-
-        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != backgroundLabel }
-
-        // Filter out any areas marked for exclusion.
-        let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize.key }
-        let emptyLabelsToTreatAsConsumed = emptyLabelsWithoutBackground.filter { !labelsToExclude.contains($0.key) }
-
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
         drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
         drawingManager.context.setLineWidth(2)
         drawingManager.context.setLineCap(.square)
 
-        var consumedAreaInPixels = leafLabelAndSize.value.drawingPart
-        for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {
-            // This component is a hole if it neighbors the leaf (since we already filtered out the background).
-            // swiftlint:disable:next force_unwrapping
-            if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.isDisjoint(with: leafLabels) {
-                // Add to the consumed size.
-                consumedAreaInPixels += emptyLabelAndSize.value.standardPart
-
-                // And fill in the consumed area.
-                // swiftlint:disable:next force_unwrapping
-                let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
-                floodFill(image: image, fromPoint: CGPoint(x: floodStartX, y: floodStartY), drawingTo: drawingManager)
-            }
+        let results = Self.useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: image, setNoLeafFound: { setNoLeafFound() }, setPointOnLeaf: { pointOnLeaf = $0 }, drawMarkers: { drawMarkers() }, floodFill: { image, floodStartPoint in floodFill(image: image, fromPoint: floodStartPoint, drawingTo: drawingManager) }, finishWithDrawingManager: { drawingManager.finish(imageView: leafHolesView) })
+        guard let results else {
+            return
         }
 
-        drawingManager.finish(imageView: leafHolesView)
+        let consumedAreaInPixels = results.consumedAreaInPixels
+        let leafAreaIncludingConsumedAreaInPixels = results.leafAreaIncludingConsumedAreaInPixels
+        let percentConsumed = results.percentConsumed
 
         // Set the result of the calculation, giving absolute area if the scale is set.
-        let leafAreaIncludingConsumedAreaInPixels = leafAreaInPixels + consumedAreaInPixels
-        let percentConsumed = Double(consumedAreaInPixels) / Double(leafAreaIncludingConsumedAreaInPixels) * 100
         formattedPercentConsumed = formatDouble(withThreeDecimalPoints: percentConsumed)
         if scaleMarkPixelLength != nil {
             let leafAreaIncludingConsumedAreaInUnits2 = convertPixelsToUnits2(leafAreaIncludingConsumedAreaInPixels)
@@ -652,6 +612,68 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             // swiftlint:disable:next force_unwrapping
             resultsText.text = String.localizedStringWithFormat(NSLocalizedString("Percent Consumed= %@%%", comment: "Results with only relative data"), formattedPercentConsumed!)
         }
+    }
+
+    struct Results {
+        let consumedAreaInPixels: Int
+        let leafAreaIncludingConsumedAreaInPixels: Int
+
+        var percentConsumed: Double {
+            Double(consumedAreaInPixels) / Double(leafAreaIncludingConsumedAreaInPixels) * 100
+        }
+    }
+
+    // This logic is extracted to a static method so that it can be easily tested. This isn't as elegant as it could be if this wasn't retro-fitted, but it's not terrible.
+    static func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage, setNoLeafFound: () -> Void, setPointOnLeaf: ((Int, Int)?) -> Void, drawMarkers: () -> Void, floodFill: (LayeredIndexableImage, CGPoint) -> Void, finishWithDrawingManager: () -> Void) -> Results? {
+        let labelsAndSizes = connectedComponentsInfo.labelToSize.sorted { $0.1.total() > $1.1.total() }
+        // Assume the largest occupied component is the leaf.
+        let leafLabelAndSize = labelsAndSizes.first { $0.key > 0 }
+
+        guard let leafLabelAndSize else {
+            // This is a blank image, and trying to calculate area will crash.
+            setNoLeafFound()
+            return nil
+        }
+        setPointOnLeaf(connectedComponentsInfo.labelToMemberPoint[leafLabelAndSize.key])
+        drawMarkers()
+
+        // swiftlint:disable:next force_unwrapping
+        let leafLabels = connectedComponentsInfo.equivalenceClasses.getElementsInClassWith(leafLabelAndSize.key)!
+        let leafAreaInPixels = leafLabelAndSize.value.standardPart
+
+        let emptyLabelsAndSizes = labelsAndSizes.filter { $0.key < 0 }
+
+        if emptyLabelsAndSizes.isEmpty {
+            // This is a solid image, so calculating area is pointless.
+            setNoLeafFound()
+            return nil
+        }
+
+        let emptyLabelsWithoutBackground = emptyLabelsAndSizes.filter { $0.key != backgroundLabel }
+
+        // Filter out any areas marked for exclusion.
+        let labelsToExclude = connectedComponentsInfo.labelsOfPointsToIdentify.values.filter { $0 != leafLabelAndSize.key }
+        let emptyLabelsToTreatAsConsumed = emptyLabelsWithoutBackground.filter { !labelsToExclude.contains($0.key) }
+
+        var consumedAreaInPixels = leafLabelAndSize.value.drawingPart
+        for emptyLabelAndSize in emptyLabelsToTreatAsConsumed {
+            // This component is a hole if it neighbors the leaf (since we already filtered out the background).
+            // swiftlint:disable:next force_unwrapping
+            if !connectedComponentsInfo.emptyLabelToNeighboringOccupiedLabels[emptyLabelAndSize.key]!.isDisjoint(with: leafLabels) {
+                // Add to the consumed size.
+                consumedAreaInPixels += emptyLabelAndSize.value.standardPart
+
+                // And fill in the consumed area.
+                // swiftlint:disable:next force_unwrapping
+                let (floodStartX, floodStartY) = connectedComponentsInfo.labelToMemberPoint[emptyLabelAndSize.key]!
+
+                floodFill(image, CGPoint(x: floodStartX, y: floodStartY))
+            }
+        }
+
+        finishWithDrawingManager()
+
+        return Results(consumedAreaInPixels: consumedAreaInPixels, leafAreaIncludingConsumedAreaInPixels: leafAreaInPixels + consumedAreaInPixels)
     }
 
     private func convertPixelsToUnits2(_ pixels: Int) -> Double {
