@@ -34,7 +34,7 @@ final class PaperDataTests: XCTestCase {
         let originalConnectedComponentsInfo = labelConnectedComponents(image: layeredThresholdedImage)
         let occupiedLabelsAndSizes: [Int: Size] = originalConnectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
         // Note that these test images all fail to identify the scale, so we use a size heuristic to find the scale
-        let scaleMarks = Array(occupiedLabelsAndSizes).filter {$0.1.standardPart > 300 && $0.1.standardPart < 500 }.map {labelAndSize in
+        let scaleMarks = Array(occupiedLabelsAndSizes).filter { $0.1.standardPart > 300 && $0.1.standardPart < 500 }.map {labelAndSize in
             let memberPoint = originalConnectedComponentsInfo.labelToMemberPoint[labelAndSize.key]!
 
             let scaleMark = getCentroidOfComponent(inImage: indexableThresholdedImage, fromPoint: CGPoint(x: memberPoint.0, y: memberPoint.1), minimumComponentSize: 1)
