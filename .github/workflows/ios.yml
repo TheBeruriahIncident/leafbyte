@@ -30,9 +30,6 @@ jobs:
         uses: tj-actions/changed-files@v45
         with:
           files: iOS/**
-      - name: Stop if iOS files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
-        run: echo "iOS is not affected" && exit 0
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
@@ -40,6 +37,7 @@ jobs:
           echo $default | cat >default
           echo Using default scheme: $default
       - name: Build
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
@@ -80,10 +78,8 @@ jobs:
         uses: tj-actions/changed-files@v45
         with:
           files: iOS/**
-      - name: Stop if iOS files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
-        run: echo "iOS is not affected" && exit 0
       - name: SwiftLint
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: norio-nomura/action-swiftlint@master
         with:
           args: --strict
