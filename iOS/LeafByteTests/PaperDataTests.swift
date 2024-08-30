@@ -34,15 +34,15 @@ final class PaperDataTests: XCTestCase {
         let originalConnectedComponentsInfo = labelConnectedComponents(image: layeredThresholdedImage)
         let occupiedLabelsAndSizes: [Int: Size] = originalConnectedComponentsInfo.labelToSize.filter { $0.0 > 0 }
         // Note that these test images all fail to identify the scale, so we use a size heuristic to find the scale
-        let scaleMarks = occupiedLabelsAndSizes.map({$0}).filter {$0.1.standardPart > 300 && $0.1.standardPart < 500 }.map({labelAndSize in
+        let scaleMarks = Array(occupiedLabelsAndSizes).filter {$0.1.standardPart > 300 && $0.1.standardPart < 500 }.map {labelAndSize in
             let memberPoint = originalConnectedComponentsInfo.labelToMemberPoint[labelAndSize.key]!
 
             let scaleMark = getCentroidOfComponent(inImage: indexableThresholdedImage, fromPoint: CGPoint(x: memberPoint.0, y: memberPoint.1), minimumComponentSize: 1)
-            
+
             XCTAssertNotNil(scaleMark, "No scale mark found for member point \(memberPoint)")
             return scaleMark!
-        })
-        XCTAssert(scaleMarks.count == 4)
+        }
+        XCTAssertEqual(scaleMarks.count, 4)
 
         let correctedImage = ScaleIdentificationViewController.getFixedImage(cgImage: ciToCgImage(thresholdedImage)!, ciImage: thresholdedImage, scaleMarks: scaleMarks)!
         let indexableCorrectedImage = IndexableImage(correctedImage)
@@ -51,7 +51,7 @@ final class PaperDataTests: XCTestCase {
 
         let correctedConnectedComponentsInfo = labelConnectedComponents(image: layeredCorrectedImage)
         // swiftlint:disable:next no_empty_block
-        let results = ResultsViewController.useConnectedComponentsResults(connectedComponentsInfo: correctedConnectedComponentsInfo, image: layeredThresholdedImage, setNoLeafFound: {}, setPointOnLeaf: { _ in }, drawMarkers: {}, floodFill: { _, _ in}, finishWithDrawingManager: {})!
+        let results = ResultsViewController.useConnectedComponentsResults(connectedComponentsInfo: correctedConnectedComponentsInfo, image: layeredThresholdedImage, setNoLeafFound: {}, setPointOnLeaf: { _ in }, drawMarkers: {}, floodFill: { _, _ in }, finishWithDrawingManager: {})!
 
         let scaleMarkPixelLength = (correctedImage.width + correctedImage.height) / 2
         let totalArea = ResultsViewController.convertPixelsToUnits2(pixels: results.leafAreaIncludingConsumedAreaInPixels, scaleMarkPixelLength: scaleMarkPixelLength, scaleMarkLength: scaleMarkLengthCm)
