@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0 # Fetch all history
       - name: Get changed iOS files
         id: changed-files
-        uses: tj-actions/changed-files@v34
+        uses: tj-actions/changed-files@v41
         with:
           files: iOS/**
       - name: Run if any iOS files changed
