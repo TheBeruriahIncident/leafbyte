@@ -50,7 +50,8 @@ final class PaperDataTests: XCTestCase {
         layeredCorrectedImage.addImage(indexableCorrectedImage)
 
         let correctedConnectedComponentsInfo = labelConnectedComponents(image: layeredCorrectedImage)
-        let results = ResultsViewController.useConnectedComponentsResults(connectedComponentsInfo: correctedConnectedComponentsInfo, image: layeredThresholdedImage, setNoLeafFound: {}, setPointOnLeaf: {_ in }, drawMarkers: {}, floodFill: {_, _ in}, finishWithDrawingManager: {})!
+        // swiftlint:disable:next no_empty_block
+        let results = ResultsViewController.useConnectedComponentsResults(connectedComponentsInfo: correctedConnectedComponentsInfo, image: layeredThresholdedImage, setNoLeafFound: {}, setPointOnLeaf: { _ in }, drawMarkers: {}, floodFill: { _, _ in}, finishWithDrawingManager: {})!
 
         let scaleMarkPixelLength = (correctedImage.width + correctedImage.height) / 2
         let totalArea = ResultsViewController.convertPixelsToUnits2(pixels: results.leafAreaIncludingConsumedAreaInPixels, scaleMarkPixelLength: scaleMarkPixelLength, scaleMarkLength: scaleMarkLengthCm)
