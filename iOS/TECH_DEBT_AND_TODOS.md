@@ -9,8 +9,7 @@ Tech debt and things resembling tech debt that we are avoiding changing to avoid
 * The legacy UIImagePickerController required us to request "Privacy - Photo Library Usage" in the plist, while the modern PHPicker runs in a separate process and thus does not require LeafByte to request additional access. We use PHPicker if the device is iOS 14 and thus PHPicker is available, and otherwise fallback on UIImagePickerController. As such, we'd ideally drop that privacy request from the plist in newer iOS versions, but that's not possible. Once our minimum SDK is at least 14, we can delete UIImagePickerController and the privacy request.
 
 Immediate TODOs:
-* Add the experimental images from the paper as test cases with margin for error (use common docs for the variability, make sure matches paper data)
-* Excluding data doesn't work now
+* Add the experimental images from the paper as test cases with margin for error (make sure matches paper data)
 * When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
 * Test if Metal thresholding is slower, particularly on simulator that is slower
 * Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next. 
