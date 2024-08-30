@@ -681,7 +681,12 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
             fatalError("Attempting to calculate absolute area without scale set.")
         }
 
-        let unitsPerPixel = settings.scaleMarkLength / Double(scaleMarkPixelLength)
+        return Self.convertPixelsToUnits2(pixels: pixels, scaleMarkPixelLength: scaleMarkPixelLength, scaleMarkLength: settings.scaleMarkLength)
+    }
+
+    // Used in testing
+    static func convertPixelsToUnits2(pixels: Int, scaleMarkPixelLength: Int, scaleMarkLength: Double) -> Double {
+        let unitsPerPixel = scaleMarkLength / Double(scaleMarkPixelLength)
         return pow(unitsPerPixel, 2) * Double(pixels)
     }
 

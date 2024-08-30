@@ -156,7 +156,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
             destination.originalImage = originalImage
 
             if numberOfValidScaleMarks == 4 {
-                guard let fixedImage = getFixedImage() else {
+                guard let fixedImage = Self.getFixedImage(cgImage: cgImage, ciImage: ciImage, scaleMarks: scaleMarks) else {
                     crashGracefully(viewController: self, message: "Failed to process image. Please reach out to leafbyte@zoegp.science with information about your image so we can fix this issue.")
                     return
                 }
@@ -307,9 +307,9 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
 
             // Get a point in the scale mark.
             // swiftlint:disable:next force_unwrapping
-            let (scaleMarkPointX, scaleMarkPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
+            let (memberPointX, memberPointY) = connectedComponentsInfo.labelToMemberPoint[scaleMarkLabel]!
 
-            let markFound = assessPossibleScaleMark(fromPointInMark: CGPoint(x: scaleMarkPointX, y: scaleMarkPointY), inImage: indexableImage, withMinimumComponentSize: 19, markNumber: markNumber)
+            let markFound = assessPossibleScaleMark(fromPointInMark: CGPoint(x: memberPointX, y: memberPointY), inImage: indexableImage, withMinimumComponentSize: 19, markNumber: markNumber)
             if !markFound {
                 setScaleNotFound()
                 numberOfValidScaleMarks = 0
@@ -360,7 +360,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     }
 
     // Returns nil if the ci image cannot be converted to a cg image. We have no idea why this system libraries sometimes do this, but at least it's very rare.
-    private func getFixedImage() -> CGImage? {
+    static func getFixedImage(cgImage: CGImage, ciImage: CIImage, scaleMarks: [CGPoint]) -> CGImage? {
         // The coordinate space is flipped for CI.
         let adjustedCenters = scaleMarks.map { point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) }
         let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)

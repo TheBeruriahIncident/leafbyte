@@ -49,8 +49,11 @@
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
 		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
+		C85D52782C812E1C0016C2A5 /* PaperDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */; };
+		C85D527A2C81309E0016C2A5 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52792C81309E0016C2A5 /* TestUtils.swift */; };
 		C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */ = {isa = PBXBuildFile; fileRef = C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */; };
 		C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */; };
+		C8D9F3B32C801B6800D4D342 /* TM2.png in Resources */ = {isa = PBXBuildFile; fileRef = C8D9F3B22C801B6800D4D342 /* TM2.png */; };
 		C8FDC77C2C7BE1750033662E /* PHPickerPresentationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FDC77B2C7BE1740033662E /* PHPickerPresentationControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -155,9 +158,12 @@
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
+		C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperDataTests.swift; sourceTree = "<group>"; };
+		C85D52792C81309E0016C2A5 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		C8A663BA2C664B4400898E92 /* ThresholdingFilter.coreimage.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ThresholdingFilter.coreimage.metal; sourceTree = "<group>"; };
 		C8A899482C21366A005A7950 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C8C789052C226A31008D74F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C8D9F3B22C801B6800D4D342 /* TM2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TM2.png; sourceTree = "<group>"; };
 		C8FDC77B2C7BE1740033662E /* PHPickerPresentationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerPresentationControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,7 +244,9 @@
 				46DB8A831FFE91E400EF59BE /* Images */,
 				4621EE511FEB70AD004C3011 /* Info.plist */,
 				4621EE4F1FEB70AD004C3011 /* LeafByteTests.swift */,
+				C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */,
 				46F1063C20007E8A000B4B83 /* DataStructureTests.swift */,
+				C85D52792C81309E0016C2A5 /* TestUtils.swift */,
 			);
 			path = LeafByteTests;
 			sourceTree = "<group>";
@@ -323,6 +331,7 @@
 		46DB8A831FFE91E400EF59BE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C85D527B2C816B290016C2A5 /* Paper Data */,
 				46DB8A811FFE8AE200EF59BE /* leafWithScale.png */,
 			);
 			path = Images;
@@ -368,6 +377,14 @@
 				9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		C85D527B2C816B290016C2A5 /* Paper Data */ = {
+			isa = PBXGroup;
+			children = (
+				C8D9F3B22C801B6800D4D342 /* TM2.png */,
+			);
+			path = "Paper Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -503,6 +520,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8D9F3B32C801B6800D4D342 /* TM2.png in Resources */,
 				46DB8A821FFE8AE200EF59BE /* leafWithScale.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +677,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				46F1063D20007E8A000B4B83 /* DataStructureTests.swift in Sources */,
+				C85D52782C812E1C0016C2A5 /* PaperDataTests.swift in Sources */,
 				4621EE501FEB70AD004C3011 /* LeafByteTests.swift in Sources */,
+				C85D527A2C81309E0016C2A5 /* TestUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
