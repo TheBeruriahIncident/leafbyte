@@ -1,6 +1,6 @@
 name: iOS workflow
 
-# It's tempting to add a path filter here so that this only runs on changes to the iOS folder. However, that only looks at the most recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching iOS. Instead, we use a filter job below.
+# It's tempting to add a path filter here so that this only runs on changes to the iOS folder. However, that only looks at the most recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching iOS. Instead, we use a filter step below.
 on:
   push:
     branches: [ "main" ]
@@ -12,31 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Adapted from https://stackoverflow.com/questions/74772740/run-github-actions-if-branch-has-updated-files-from-a-specific-directory
-  filter:
-    name: Filter to iOS
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch all history
-      - name: Get changed iOS files
-        id: changed-files
-        uses: tj-actions/changed-files@v34
-        with:
-          files: iOS/**
-      - name: Run if any iOS files changed
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: echo "iOS is affected"
-      - name: Stop if iOS files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
-        run: echo "iOS is not affected" && exit 1
   build:
     name: Build and Test iOS
     runs-on: macos-latest
-    needs: [filter]
 
     defaults:
       run:
@@ -45,6 +23,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
+      - name: Get changed iOS files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: iOS/**
+      - name: Note if iOS files not changed
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: echo "iOS is not affected"
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
@@ -52,6 +40,7 @@ jobs:
           echo $default | cat >default
           echo Using default scheme: $default
       - name: Build
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
@@ -63,6 +52,7 @@ jobs:
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
       - name: Test
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
@@ -77,7 +67,6 @@ jobs:
   swiftLint:
     name: SwiftLint iOS
     runs-on: ubuntu-latest
-    needs: [filter]
 
     defaults:
       run:
@@ -85,8 +74,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
+      - name: Get changed iOS files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: iOS/**
+      - name: Note if iOS files not changed
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: echo "iOS is not affected"
       - name: SwiftLint
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: norio-nomura/action-swiftlint@master
         with:
           args: --strict
