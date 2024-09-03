@@ -91,7 +91,7 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVM-rg-EvA" userLabel="Website Link">
                                         <rect key="frame" x="0.0" y="80" width="375" height="30"/>
-                                        <state key="normal" title="zoegp.science/leafbyte"/>
+                                        <state key="normal" title="FAQs, Help, and Bug Reporting"/>
                                         <connections>
                                             <action selector="openWebsite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5Mv-yw-bVs"/>
                                         </connections>

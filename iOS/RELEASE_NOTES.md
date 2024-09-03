@@ -38,3 +38,4 @@
 * Prevent crashing when linking to the LeafByte website on very slow internet
 * Credit collaborators on the settings page. Make the settings page size correctly across different devices
 * More precisely determine the center of oddly-shaped scale marks (previously was only up to about a pixel off)
+* Make FAQs and error reporting more obvious on main page
