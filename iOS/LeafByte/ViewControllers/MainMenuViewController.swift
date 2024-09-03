@@ -118,7 +118,9 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
         pHPickerPresentationControllerDelegate = PHPickerPresentationControllerDelegate(viewController: self)
 
-        if !isGoogleSignInConfigured() {
+        if isGoogleSignInConfigured() {
+            print("Google Sign-In is configured")
+        } else {
             print("************************************************************")
             print("STOP! Please fill in the Secrets.xcconfig file! Google Sign-In is not configured and WILL NOT WORK!")
             print("************************************************************")

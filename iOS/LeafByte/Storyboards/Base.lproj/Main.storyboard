@@ -836,7 +836,7 @@
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-yv-Xsk" userLabel="Credits &amp; Version Label">
                                                 <rect key="frame" x="19" y="834" width="337.5" height="304.5"/>
-                                                <mutableString key="text">LeafByte was made by Zoe &amp; Abigail Getman-Pickering.  Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.  version 1.4.0-RC3</mutableString>
+                                                <mutableString key="text">LeafByte was made by Abigail &amp; Zoe Getman-Pickering.  Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.  version 1.4.0-RC3</mutableString>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -1483,10 +1483,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="210"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctI-y2-dqB" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="206.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="247"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fuzzy pictures are generally caused by bad lighting, motion, or a poor quality camera." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq" userLabel="Tutorial Section 2">
-                                                <rect key="frame" x="13" y="132.5" width="274" height="61"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="13" y="132.5" width="274" height="101.5"/>
+                                                <string key="text">Fuzzy pictures are generally caused by bad lighting, motion, a poor quality camera, or a photo without a clear foreground leaf and background color.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
