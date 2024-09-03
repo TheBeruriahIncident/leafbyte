@@ -1483,10 +1483,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="210"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctI-y2-dqB" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="206.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="247"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fuzzy pictures are generally caused by bad lighting, motion, or a poor quality camera." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq" userLabel="Tutorial Section 2">
-                                                <rect key="frame" x="13" y="132.5" width="274" height="61"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtX-xI-Emq" userLabel="Tutorial Section 2">
+                                                <rect key="frame" x="13" y="132.5" width="274" height="101.5"/>
+                                                <string key="text">Fuzzy pictures are generally caused by bad lighting, motion, a poor quality camera, or a photo without a clear foreground leaf and background color.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
