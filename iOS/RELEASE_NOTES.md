@@ -20,20 +20,19 @@
 1.4.0 (Sept ???, 2024, the big 2024 refresh!) (Unreleased)
 * The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
 * The image selector is now more modern and allows search and zooming in and out of the image list.
-* Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions we weren't even asking for, so we've rewritten the whole login to avoid that) 
-* Text during barcode scanning (e.g. previews of what you scanned) is now easier to read
-* Various typos are fixed
-* Potential very brief unresponsiveness when initiating barcode scanning is removed
+* Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions LeafByte wasn't even asking for, so we've rewritten the whole login to avoid that) 
 * Thresholding may be slightly faster now that it is rewritten to use the modern Metal language
+* Text during barcode scanning (e.g. previews of what you scanned) is now easier to read
+* Potential very brief unresponsiveness when initiating barcode scanning is removed
 * FAQs and error reporting are more obvious on the home page
 * The settings page is now sized correctly across different devices, and it now credits LeafByte collaborators
 * LeafByte more precisely determines the center of oddly-shaped scale marks (it previously could be up to about a pixel off)
-* In some rare situations that previously may have crashed, we no longer crash: 
+* In some rare situations that previously may have crashed, LeafByte no longer crashes: 
     * When linking to the LeafByte website on extremely slow internet
     * When the phone is particularly busy as a new screen finishes sliding out (extremely rare)
     * When you manage to return to the home screen while the app is already returning to the home screen (extremely rare)    
     * When the memory is affected in an odd way while the thresholding screen is prepared (extremely rare and perhaps theoretical)
-* For several rare problematic cases, we now show an error message rather than just crashing: 
+* For several rare problematic cases, LeafByte now shows an error message rather than just crashing: 
     * When using LeafByte with camera access on a newer iOS version, then going to settings and removing camera access, then trying to take a picture in LeafByte 
     * When saving a corrupt image that cannot be converted into a png (this appears once in a crash report, but we don't know the conditions where this actually happens)
     * When failing to save a file to the Files App (this appears once in a crash report, but we don't know the conditions where this actually happens; perhaps if the disk is full?)
@@ -41,3 +40,4 @@
     * When iOS itself cannot process your chosen image (this appears once in a crash report, but we don't know the conditions where this actually happens)
     * When saving data to Google Drive crashes due to malformed responses from Google (this is maybe just theoretical)
     * When the barcode scanner is used on a device with no camera (this is maybe just theoretical)
+* Various typos are fixed
