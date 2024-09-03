@@ -17,25 +17,27 @@
 * When Google Sheets are created, headers are frozen
 * The "Back" button is now more accurately labeled "Save" on the Settings page
 
-1.4.0 (??? ??, 2024, the big 2024 refresh!) (Unreleased)
+1.4.0 (Sept ???, 2024, the big 2024 refresh!) (Unreleased)
 * The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
 * The image selector is now more modern and allows search and zooming in and out of the image list.
 * Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions we weren't even asking for, so we've rewritten the whole login to avoid that) 
-* An issue has been fixed where on newer iOS versions, choosing to take a picture after having removed camera access in the settings would crash instead of displaying an error
-* In a specific situation where saving data to Google Drive crashed, the error is now properly shown
 * Text during barcode scanning (e.g. previews of what you scanned) is now easier to read
 * Various typos are fixed
-* Fix potential brief unresponsiveness when initiating barcode scanning
+* Potential very brief unresponsiveness when initiating barcode scanning is removed
 * Thresholding may be slightly faster now that it is rewritten to use the modern Metal language
-* In a rare situation where the image chosen in the image picker cannot be loaded, fail gracefully rather than crashing. (This has never been reported to us, and only appears in one crash report, so we don't know when this can actually happen)
-* If the barcode scanner is used on a device with no camera, fail gracefully rather than crashing. (We don't know if this can actually ever happen)
-* In rare situations where iOS cannot process your chosen image, fail gracefully rather than crashing. (This appears in a crash report, but we don't know the conditions where this actually happens)
-* Prevent crashing in an extremely rare (perhaps theoretical) situation where the memory is affected in an odd way while the thresholding screen is prepared
-* Prevent crashing in a rare situation where the phone is particularly busy as a new screen finishes sliding out
-* Prevent crashing in a rare situation where you manage to return to home while the app is already returning to home
-* Fail gracefully rather than crashing when saving a corrupt image that cannot be converted into a png (This appears in a crash report, but we don't know the conditions where this actually happens)
-* Fail gracefully rather than crashing when failing to save a file to the Files App (This appears in a crash report, but we don't know the conditions where this actually happens; perhaps no disk space?)
-* Prevent crashing when linking to the LeafByte website on very slow internet
-* Credit collaborators on the settings page. Make the settings page size correctly across different devices
-* More precisely determine the center of oddly-shaped scale marks (previously was only up to about a pixel off)
-* Make FAQs and error reporting more obvious on main page
+* FAQs and error reporting are more obvious on the home page
+* The settings page is now sized correctly across different devices, and it now credits LeafByte collaborators
+* LeafByte more precisely determines the center of oddly-shaped scale marks (it previously could be up to about a pixel off)
+* In some rare situations that previously may have crashed, we no longer crash: 
+    * When linking to the LeafByte website on extremely slow internet
+    * When the phone is particularly busy as a new screen finishes sliding out (extremely rare)
+    * When you manage to return to the home screen while the app is already returning to the home screen (extremely rare)    
+    * When the memory is affected in an odd way while the thresholding screen is prepared (extremely rare and perhaps theoretical)
+* For several rare problematic cases, we now show an error message rather than just crashing: 
+    * When using LeafByte with camera access on a newer iOS version, then going to settings and removing camera access, then trying to take a picture in LeafByte 
+    * When saving a corrupt image that cannot be converted into a png (this appears once in a crash report, but we don't know the conditions where this actually happens)
+    * When failing to save a file to the Files App (this appears once in a crash report, but we don't know the conditions where this actually happens; perhaps if the disk is full?)
+    * When the image chosen in the image picker cannot be loaded (this appears once in a crash report, but we don't know the conditions where this actually happens)
+    * When iOS itself cannot process your chosen image (this appears once in a crash report, but we don't know the conditions where this actually happens)
+    * When saving data to Google Drive crashes due to malformed responses from Google (this is maybe just theoretical)
+    * When the barcode scanner is used on a device with no camera (this is maybe just theoretical)
