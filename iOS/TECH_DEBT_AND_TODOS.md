@@ -11,9 +11,5 @@ Tech debt and things resembling tech debt that we are avoiding changing right no
 
 Immediate TODOs:
 * Add the experimental images from the paper as test cases with margin for error (make sure matches paper data), pending finding the images
-* Consider upping the resolution, perhaps based on phone model, pending testing with higher resolutions
-* When dismissing a view back to the main menu, the title bar elements stay for a moment before disappearing
-* Test if Metal thresholding is slower, particularly on simulator that is slower
-* Check for regressions: Save and next seems weirdly slow. Seeing white when you rotate barcode. Flick when you save and next.
 * Polish release notes and put on the website
 * When ready for 1.4.0 release, update version in settings, put on test flight, extensively test, and run with debugger watching for errors. extensively test on oldest sdk as well
