@@ -1,4 +1,4 @@
-name: iOS workflow
+name: iOS
 
 # It's tempting to add a path filter here so that this only runs on changes to the iOS folder. However, that only looks at the most recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching iOS. Instead, we use a filter step below.
 on:
