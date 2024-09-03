@@ -19,6 +19,7 @@
 
 1.4.0 (Sept ???, 2024, the big 2024 refresh!) (Unreleased)
 * The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
+* LeafByte no longer uses increasing amounts of memory the longer you use it, leading to crashes every few hundred images.
 * The image selector is now more modern and allows search and zooming in and out of the image list.
 * Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions LeafByte wasn't even asking for, so we've rewritten the whole login to avoid that) 
 * Thresholding may be slightly faster now that it is rewritten to use the modern Metal language
@@ -34,10 +35,10 @@
     * When the memory is affected in an odd way while the thresholding screen is prepared (extremely rare and perhaps theoretical)
 * For several rare problematic cases, LeafByte now shows an error message rather than just crashing: 
     * When using LeafByte with camera access on a newer iOS version, then going to settings and removing camera access, then trying to take a picture in LeafByte 
-    * When saving a corrupt image that cannot be converted into a png (this appears once in a crash report, but we don't know the conditions where this actually happens)
-    * When failing to save a file to the Files App (this appears once in a crash report, but we don't know the conditions where this actually happens; perhaps if the disk is full?)
-    * When the image chosen in the image picker cannot be loaded (this appears once in a crash report, but we don't know the conditions where this actually happens)
-    * When iOS itself cannot process your chosen image (this appears once in a crash report, but we don't know the conditions where this actually happens)
-    * When saving data to Google Drive crashes due to malformed responses from Google (this is maybe just theoretical)
+    * When saving a corrupt image that cannot be converted into a png (this appears once in a crash report without clear cause)
+    * When failing to save a file to the Files App (this appears once in a crash report without clear cause; perhaps the disk was full?)
+    * When the image chosen in the image picker cannot be loaded (this appears once in a crash report without clear cause)
+    * When iOS itself cannot process your chosen image (this appears once in a crash report without clear cause)
+    * When saving data to Google Drive crashes due to malformed data from Google (this is maybe just theoretical)
     * When the barcode scanner is used on a device with no camera (this is maybe just theoretical)
 * Various typos are fixed
