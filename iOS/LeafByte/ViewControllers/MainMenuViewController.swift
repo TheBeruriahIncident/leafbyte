@@ -14,7 +14,7 @@ import UIKit
 final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
-    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte")! // swiftlint:disable:this force_unwrapping
+    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte-faqs")! // swiftlint:disable:this force_unwrapping
 
     // This is set in viewDidLoad.
     // swiftlint:disable:next implicitly_unwrapped_optional

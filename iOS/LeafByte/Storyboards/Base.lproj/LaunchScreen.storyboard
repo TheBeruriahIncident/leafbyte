@@ -39,7 +39,6 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v7F-uY-YM4" userLabel="Website Link">
                                         <rect key="frame" x="0.0" y="80" width="375" height="30"/>
-                                        <state key="normal" title="zoegp.science/leafbyte"/>
                                     </button>
                                 </subviews>
                             </stackView>
