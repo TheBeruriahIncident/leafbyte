@@ -19,10 +19,12 @@
 
 1.4.0 (Sept ???, 2024, the big 2024 refresh!) (Unreleased)
 * The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
-* LeafByte no longer uses increasing amounts of memory the longer you use it, leading to crashes every few hundred images.
+* Starting on August 19, 2024, due to changes by Google, Google sign-in stopped working, although existing logins could continue to be used. This version makes Google sign-in work again.
+* LeafByte no longer uses increasing amounts of memory the longer you use it, which previously led to crashes every few hundred images.
 * The image selector is now more modern and allows search and zooming in and out of the image list.
 * Google Sign-In specifically has been updated to get the minimal possible set of permissions to users' Google Drives (previously Google was granting several permissions LeafByte wasn't even asking for, so we've rewritten the whole login to avoid that) 
 * Thresholding may be slightly faster now that it is rewritten to use the modern Metal language
+* A black background is put behind thresholded images when processing images with a black background. Previously these images were thresholded to result in white samples on a white background, which was difficult to work with.
 * Text during barcode scanning (e.g. previews of what you scanned) is now easier to read
 * Potential very brief unresponsiveness when initiating barcode scanning is removed
 * FAQs and error reporting are more obvious on the home page

@@ -109,6 +109,8 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         baseImageView.image = uiImage
         scaleMarkingView.contentMode = .scaleAspectFit
 
+        setImageViewBackground(imageView: baseImageView, settings: settings)
+
         // swiftlint:disable:next force_unwrapping
         baseImageViewToImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         // swiftlint:disable:next force_unwrapping

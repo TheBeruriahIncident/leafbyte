@@ -212,6 +212,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         initializeImage(view: markingsView, size: uiImage.size)
         initializeImage(view: userDrawingView, size: uiImage.size)
 
+        // Note that leafHolesView is the back-most image here, not the base image
+        setImageViewBackground(imageView: leafHolesView, settings: settings)
+
         // swiftlint:disable:next force_unwrapping
         userDrawingToBaseImage = Projection(fromView: baseImageView, toImageInView: baseImageView.image!)
         // swiftlint:disable:next force_unwrapping
