@@ -262,3 +262,9 @@ func presentFailedGoogleSignInAlert(cause: GoogleSignInFailureCause, self viewCo
         presentAlert(self: viewController, title: nil, message: message)
     }
 }
+
+func setImageViewBackground(imageView: UIImageView, settings: Settings) {
+    if settings.useBlackBackground {
+        imageView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+}
