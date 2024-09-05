@@ -17,7 +17,7 @@
 * When Google Sheets are created, headers are frozen
 * The "Back" button is now more accurately labeled "Save" on the Settings page
 
-1.4.0 (Sept ???, 2024, the big 2024 refresh!) (Unreleased)
+1.4.0 (Sept 5, 2024, the big 2024 refresh!)
 * The app code has been broadly refreshed and updated to ensure that everything is 2024-compliant and continues working given changes being made by both Apple and Google
 * Starting on August 19, 2024, due to changes by Google, Google sign-in stopped working, although existing logins could continue to be used. This version makes Google sign-in work again.
 * LeafByte no longer uses increasing amounts of memory the longer you use it, which previously led to crashes every few hundred images.
