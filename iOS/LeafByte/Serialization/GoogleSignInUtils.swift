@@ -28,8 +28,8 @@ private let requiredScopesList = [Scope.getUserId, Scope.writeToGoogleDrive]
 private let requiredScopes = Set(requiredScopesList)
 
 // swiftlint:disable force_cast force_unwrapping
-// DO NOT CHECK THESE IN.
 private let issuerUrl = URL(string: "https://accounts.google.com")!
+// DO NOT CHECK ACTUAL VALUES FOR THESE IN.
 private let clientId = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_CLIENT_ID") as! String
 private let redirectUrl = URL(string: Bundle.main.object(forInfoDictionaryKey: "GOOGLE_SIGN_IN_REDIRECT_URL") as! String)!
 // swiftlint:enable force_cast force_unwrapping
