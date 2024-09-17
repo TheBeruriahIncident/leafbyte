@@ -27,8 +27,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-        buildConfigField("String", "CONSUMER_KEY", secretProperties['clientId'])
-        buildConfigField("String", "CONSUMER_SECRET", secretProperties['clientSecret'])
+//        buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties['googleSignInClientId'])
+//        buildConfigField("String", "GOOGLE_SIGN_IN_REDIRECT_URL", secretProperties['googleSignInRedirectUrl'])
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
