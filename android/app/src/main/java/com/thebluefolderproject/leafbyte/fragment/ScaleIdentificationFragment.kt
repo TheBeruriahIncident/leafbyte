@@ -83,7 +83,7 @@ class ScaleIdentificationFragment : Fragment() {
         // find center of point, draw dot
         val dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
 
-        val bmOverlay = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig())
+        val bmOverlay = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config!!)
         val canvas = Canvas(bmOverlay)
         val paint = Paint()
         paint.setColor(Color.RED)
