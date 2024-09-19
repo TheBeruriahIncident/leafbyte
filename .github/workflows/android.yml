@@ -37,7 +37,7 @@ jobs:
         run: echo "Android is not affected"
       - name: Set up Java
         uses: actions/setup-java@v2
-        if: steps.changed-files.outputs.any_changed != 'true'
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           java-version: 17
           distribution: "temurin"
