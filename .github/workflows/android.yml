@@ -44,3 +44,15 @@ jobs:
       - name: Build and test
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew test
+      - name: 'Upload unit test results'
+        uses: actions/upload-artifact@v4
+        with:
+          name: \testDebugUnitTest
+          path: app\build\reports\tests
+          retention-days: 1
+      - name: 'Upload instrumented test results'
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug
+          path: app\build\reports\androidTests\connected
+          retention-days: 1
