@@ -1,0 +1,40 @@
+name: Android
+
+# It's tempting to add a path filter here so that this only runs on changes to the android folder. However, that only looks at the most recent commit,
+# so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching android. Instead, we use a filter step
+# below.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test Android
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
+      - name: Get changed Android files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: android/**
+      - name: Note if Android files not changed
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: echo "Android is not affected"
+      - name: Build and test
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: ./gradlew test

@@ -27,7 +27,7 @@ android {
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
     compileSdk = 35
     defaultConfig {
-        testInstrumentationRunnerArguments.put("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         applicationId = "com.thebluefolderproject.leafbyte"
         minSdk = 21
         targetSdk = 35
