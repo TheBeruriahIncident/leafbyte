@@ -27,8 +27,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-//        buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties['googleSignInClientId'])
-//        buildConfigField("String", "GOOGLE_SIGN_IN_REDIRECT_URL", secretProperties['googleSignInRedirectUrl'])
+        manifestPlaceholders = [appAuthRedirectScheme: 'com.thebluefolderproject.leafbyte']
+
+        buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties['googleSignInClientId'])
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,7 +41,7 @@ android {
     }
     namespace 'com.thebluefolderproject.leafbyte'
 
-    compileOptions {
+    compileOptions { // maybe get rid of this according to https://stackoverflow.com/questions/75935851/which-java-version-should-i-use-in-android-studio-to-build-an-app
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -85,6 +86,7 @@ dependencies {
     }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':openCVLibrary343')
+    implementation 'net.openid:appauth:0.11.1'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation 'androidx.test:runner:1.6.2'
