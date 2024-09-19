@@ -56,8 +56,8 @@ captures/
 *.keystore
 *.p12
 
-# API keys
-secret.properties
+# Secrets like API keys
+secrets.properties
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
