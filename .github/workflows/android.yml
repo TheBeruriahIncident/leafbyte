@@ -35,6 +35,12 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        if: steps.changed-files.outputs.any_changed != 'true'
+        with:
+          java-version: 17
+          distribution: "temurin"
       - name: Build and test
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew test
