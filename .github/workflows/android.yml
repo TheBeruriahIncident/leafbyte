@@ -17,6 +17,9 @@ jobs:
   build:
     name: Build and test Android
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
 
     defaults:
       run:
@@ -44,15 +47,26 @@ jobs:
       - name: Build and test
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew test
-      - name: 'Upload unit test results'
+      - name: Upload unit test results
         uses: actions/upload-artifact@v4
         with:
           name: unitTestResults
-          path: app/build/reports/tests/testDebugUnitTest/
+          path: app/build/test-results/**/*.xml
           retention-days: 1
-      - name: 'Upload instrumented test results'
+      - name: Upload instrumented test results
         uses: actions/upload-artifact@v4
         with:
           name: instrumentedTestResults
-          path: app/build/reports/androidTests/connected/debug/
+          path: app/build/outputs/androidTest-results/connected/**/*.xml
           retention-days: 1
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
+        with:
+          files: |
+            test-results/**/*.xml
+            unitTestResults/**/*.xml
+            unitTestResults/*.xml
+            instrumentedTestResults/**/*.xml
+            instrumentedTestResults/*.xml
+            connected/**/*.xml

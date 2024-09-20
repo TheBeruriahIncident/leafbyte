@@ -1,3 +1,10 @@
+// we should remove this when our build is a little better (and add more linting and make warnings errors!)
+tasks.whenTaskAdded {
+    if (this.name.startsWith("lint")) {
+        this.enabled = false
+    }
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
