@@ -16,8 +16,7 @@ concurrency:
 jobs:
   build:
     name: Build and test Android
-    # not macos-latest, because Android emulators don't currently work with it https://github.com/ReactiveCircus/android-emulator-runner/issues/386
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     permissions:
       checks: write
       pull-requests: write
