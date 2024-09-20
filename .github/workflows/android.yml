@@ -50,9 +50,11 @@ jobs:
       - name: Run instrumented checks
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 21
-          target: google_apis
+          api-level: 28
           arch: x86_64
+          disk-size: 6000M
+          heap-size: 600M
+          disable-animations: true
           script: ./gradlew connectedCheck
 
       - name: Debug
