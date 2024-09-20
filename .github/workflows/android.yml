@@ -60,7 +60,7 @@ jobs:
           disk-size: 6000M
           heap-size: 600M
           disable-animations: true
-          script: ./android/gradlew connectedCheck
+          script: cd android && ./gradlew connectedCheck
 
       - name: Debug
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
