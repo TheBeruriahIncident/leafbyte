@@ -49,12 +49,13 @@ jobs:
         run: ./gradlew test
       - name: Debug
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: pwd && ls && ls app && ls app/build
+        run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
         with:
           name: unitTestResults
-          path: app/build/test-results/**/*.xml
+          path: app/build/
+          # test-results/**/*.xml
           retention-days: 1
       - name: Upload instrumented test results
         uses: actions/upload-artifact@v4
