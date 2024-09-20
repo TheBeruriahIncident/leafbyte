@@ -47,6 +47,9 @@ jobs:
       - name: Build and test
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew test
+      - name: Debug
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: pwd && ls && ls app && ls app/build
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
         with:
