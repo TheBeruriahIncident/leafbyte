@@ -89,8 +89,6 @@ class PreferencesTest {
             set(R.string.preferences_image_save_location_key, "none")
             assertEquals(Preferences.SaveLocation.NONE, preferences.imageSaveLocation())
         }
-
-        throw UnsupportedOperationException()
     }
 
     @Test
