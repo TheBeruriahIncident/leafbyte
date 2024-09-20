@@ -10,6 +10,9 @@ plugins {
     id("kotlin-android")
     id("de.mannodermaus.android-junit5")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("se.patrikerdes.use-latest-versions")
+    id("com.github.ben-manes.versions").version("0.51.0") // Adds dependencyUpdates command to determinate stale dependencies
+    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
 }
 
 
@@ -82,14 +85,14 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
     implementation("com.google.android.material:material:1.12.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.0") //pull kotlin version back out
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20") //pull kotlin version back out
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-    implementation("com.google.apis:google-api-services-sheets:v4-rev581-1.25.0")
-    implementation("com.google.http-client:google-http-client-gson:1.44.2")
-    implementation("com.google.api-client:google-api-client-android:2.6.0") {
+    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
+    implementation("com.google.http-client:google-http-client-gson:1.45.0")
+    implementation("com.google.api-client:google-api-client-android:2.7.0") {
         exclude(group = "org.apache.httpcomponents")
     }
-    implementation("com.google.apis:google-api-services-drive:v3-rev136-1.25.0") {
+    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
         exclude(group = "org.apache.httpcomponents")
     }
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -98,16 +101,16 @@ dependencies {
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.5.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 
-    androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.4.0")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2") // For testing coroutines (optional)
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2") // For testing Android components with coroutines (optional)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0") // For testing coroutines (optional)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
 }
