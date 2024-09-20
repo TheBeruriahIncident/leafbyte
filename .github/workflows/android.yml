@@ -127,11 +127,11 @@ jobs:
           java-version: 17
           distribution: "temurin"
       - name: Print path
-        run: echo $PATH && pwd
+        run: echo $GITHUB_PATH && pwd
       - name: Add gradlew to path
-        run: export PATH=$PATH:$(pwd)
+        run: export GITHUB_PATH=$GITHUB_PATH:$(pwd)
       - name: Print path
-        run: echo $PATH && pwd
+        run: echo $GITHUB_PATH && pwd
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: MeilCli/gradle-update-check-action@v4
