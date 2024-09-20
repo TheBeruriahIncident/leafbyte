@@ -15,6 +15,10 @@ fun log(o: Any) {
     Log.e("ABIGAIL", o.toString())
 }
 
+fun log(o: Exception) {
+    Log.e("ABIGAIL", Log.getStackTraceString(o))
+}
+
 fun checkState(condition: Boolean, message: String) {
     if (!condition) {
         throw IllegalStateException(message)

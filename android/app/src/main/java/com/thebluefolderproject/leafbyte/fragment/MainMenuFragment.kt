@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +25,6 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
@@ -34,12 +32,21 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.ValueRange
+import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.log
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.AuthorizationServiceConfiguration.RetrieveConfigurationCallback
+import net.openid.appauth.ResponseTypeValues
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Collections
+import java.util.Date
 
 
 class MainMenuFragment : Fragment() {
@@ -91,20 +98,21 @@ class MainMenuFragment : Fragment() {
     var uri: Uri? = null
 
     private fun takeAPhoto() {
-        if (!requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            showAlert(
-                "No camera found",
-                "Could not take a photo: no camera was found. Try selecting an existing image instead."
-            )
-            return
-        }
-
-        uri = MainMenuUtils.createImageUri(requireActivity())
-        startActivity(
-            MainMenuUtils.createCameraIntent(uri!!),
-            MainMenuUtils.CAMERA_REQUEST_CODE,
-            "take a photo"
-        )
+        testGoogleApi()
+//        if (!requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+//            showAlert(
+//                "No camera found",
+//                "Could not take a photo: no camera was found. Try selecting an existing image instead."
+//            )
+//            return
+//        }
+//
+//        uri = MainMenuUtils.createImageUri(requireActivity())
+//        startActivity(
+//            MainMenuUtils.createCameraIntent(uri!!),
+//            MainMenuUtils.CAMERA_REQUEST_CODE,
+//            "take a photo"
+//        )
     }
 
     fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
@@ -144,83 +152,103 @@ class MainMenuFragment : Fragment() {
     }
 
     fun testGoogleApi() {
-        val signInOptions: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
-            .build()
-        val client: GoogleSignInClient = GoogleSignIn.getClient(requireContext(), signInOptions)
+        AuthorizationServiceConfiguration.fetchFromIssuer(
+            Uri.parse("https://accounts.google.com"),
+            RetrieveConfigurationCallback { serviceConfiguration, ex ->
+                if (ex != null) {
+                    Log.e("tag", "failed to fetch configuration")
+                    return@RetrieveConfigurationCallback
+                }
+
+                val config2 = AuthorizationServiceConfiguration(Uri.parse("https://accounts.google.com/o/oauth2/auth"), Uri.parse("https://oauth2.googleapis.com/token"))
 
 
-        val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
-            override protected fun doInBackground(vararg params: Void): Void? {
+                val authRequestBuilder: AuthorizationRequest.Builder =
+                    AuthorizationRequest.Builder(
+                        config2, //serviceConfiguration!!,  // the authorization service configuration
+                        BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID, // from secret.properties
+                        ResponseTypeValues.CODE,  // the response_type value: we want a code
+                        Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // what does the path do
+                        // and pre android m, we maybe need to do something else https://github.com/openid/AppAuth-Android
+                    ) // the redirect URI to which the auth response is sent
+                val authRequest = authRequestBuilder.setScope("openid https://www.googleapis.com/auth/drive.file") // deal with granular permissions?? need to enable it? https://developers.google.com/identity/protocols/oauth2/resources/granular-permissions#test-your-updated-application-on-handling-granular-permissions
+                    //.setCodeVerifier(null)
+                    .build()
 
-                startActivityForResult(
-                    client.getSignInIntent(),
-                    REQUEST_CODE_SIGN_IN
-                )
-                return null;
-            }
-        }
-        task.execute()
+                val authService = AuthorizationService(requireContext())
+                val authIntent = authService.getAuthorizationRequestIntent(authRequest)
+                startActivity(
+                    authIntent,
+                    REQUEST_CODE_SIGN_IN,
+                    "Login with Google Sign-In")
+
+            })
+
+
     }
 
     private fun handleSignInResult(result: Intent) {
-        GoogleSignIn.getSignedInAccountFromIntent(result)
-            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
-                log("Signed in as " + googleAccount.email)
+        val response = AuthorizationResponse.fromIntent(result)!! // there's also an exception from intent??
+        val authCode = response.authorizationCode!!
+        log("auth code ${authCode}")
 
-                // Use the authenticated account to sign in to the Drive service.
-                val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
-                    requireContext(), Collections.singleton(DriveScopes.DRIVE_FILE)
-                )
-                credential.setSelectedAccount(googleAccount.account)
-                val drive: Drive = Drive.Builder(
-                    NetHttpTransport(),
-                    GsonFactory(),
-                    credential
-                ).setApplicationName("LeafByte")
-                    .build()
-                val sheets: Sheets = Sheets.Builder(
-                    NetHttpTransport(),
-                    GsonFactory(),
-                    credential
-                )
-                    .setApplicationName("LeafByte")
-                    .build()
-                log("created clients")
 
-                val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
-                    override protected fun doInBackground(vararg params: Void): Void? {
-
-                        val file = drive.files().create(
-                            com.google.api.services.drive.model.File()
-                                //.setParents(Collections.singletonList("root"))
-                                .setMimeType("application/vnd.google-apps.spreadsheet")
-                                .setName("Kahlo // created from android")
-                        ).execute()
-                            ?: throw IOException("Null result when requesting file creation.")
-                        log("created file " + file.id)
-
-                        sheets.spreadsheets().values().append(
-                            file.id, "Sheet1", ValueRange().setValues(
-                                listOf(listOf("dog"))
-                            )
-                        ).setValueInputOption("USER_ENTERED").setInsertDataOption("INSERT_ROWS").execute()
-                        log("appended")
-                        return null;
-                    }
-                }
-                task.execute()
-            }
-            .addOnFailureListener { exception: Exception? ->
-                log(
-                    "Unable to sign in." +
-                            exception
-                )
-            }
+//        GoogleSignIn.getSignedInAccountFromIntent(result)
+//            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
+//                log("Signed in as " + googleAccount.email)
+//
+//                // Use the authenticated account to sign in to the Drive service.
+//                val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
+//                    requireContext(), Collections.singleton(DriveScopes.DRIVE_FILE)
+//                )
+//                credential.setSelectedAccount(googleAccount.account)
+//                val drive: Drive = Drive.Builder(
+//                    NetHttpTransport(),
+//                    GsonFactory(),
+//                    credential
+//                ).setApplicationName("LeafByte")
+//                    .build()
+//                val sheets: Sheets = Sheets.Builder(
+//                    NetHttpTransport(),
+//                    GsonFactory(),
+//                    credential
+//                )
+//                    .setApplicationName("LeafByte")
+//                    .build()
+//                log("created clients")
+//
+//                val task: AsyncTask<Void, Void, Void> = object : AsyncTask<Void, Void, Void>() {
+//                    override protected fun doInBackground(vararg params: Void): Void? {
+//
+//                        val file = drive.files().create(
+//                            com.google.api.services.drive.model.File()
+//                                //.setParents(Collections.singletonList("root"))
+//                                .setMimeType("application/vnd.google-apps.spreadsheet")
+//                                .setName("Kahlo // created from android")
+//                        ).execute()
+//                            ?: throw IOException("Null result when requesting file creation.")
+//                        log("created file " + file.id)
+//
+//                        sheets.spreadsheets().values().append(
+//                            file.id, "Sheet1", ValueRange().setValues(
+//                                listOf(listOf("dog"))
+//                            )
+//                        ).setValueInputOption("USER_ENTERED").setInsertDataOption("INSERT_ROWS").execute()
+//                        log("appended")
+//                        return null;
+//                    }
+//                }
+//                task.execute()
+//            }
+//            .addOnFailureListener { exception: Exception? ->
+//                log(
+//                    exception!!
+//                )
+//            }
     }
 
     private fun processActivityResultData(requestCode: Int, data: Intent) {
+        log("Request succesful " + requestCode)
         when(requestCode) {
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
                 val imageUri = MainMenuUtils.intentToUri(data)
