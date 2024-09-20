@@ -134,4 +134,4 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: MeilCli/gradle-update-check-action@v4
         with:
-          build_gradle_files: android/build.gradle
+          build_gradle_files: android/build.gradle.kts
