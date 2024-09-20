@@ -69,7 +69,7 @@ class ResultsFragment : Fragment() {
         view.findViewById<Button>(R.id.resultsNext).setOnClickListener { listener!!.doneResults() }
 
         requireActivity().let {
-            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+            model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
         }
 
         val bitmap = model!!.thresholdedImage!!
