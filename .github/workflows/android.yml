@@ -129,7 +129,7 @@ jobs:
       - name: Print path
         run: echo $GITHUB_PATH && pwd
       - name: Add gradlew to path
-        run: export GITHUB_PATH=$GITHUB_PATH:$(pwd)
+        run: echo "$GITHUB_WORKSPACE/android" >> $GITHUB_PATH
       - name: Print path
         run: echo $GITHUB_PATH && pwd
       - name: Check for out-of-date dependencies
