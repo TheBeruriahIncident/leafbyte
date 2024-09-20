@@ -4,16 +4,12 @@
 
 package com.thebluefolderproject.leafbyte
 
-import android.content.Context
-import androidx.preference.PreferenceManager
 import com.thebluefolderproject.leafbyte.activity.LeafByteActivity
 import com.thebluefolderproject.leafbyte.activity.Preferences
-import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.ActivityScenarioExtension
-
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.RegisterExtension
 
 /**

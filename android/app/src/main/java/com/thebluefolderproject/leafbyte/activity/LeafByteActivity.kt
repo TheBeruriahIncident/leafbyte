@@ -13,9 +13,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
-import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.fragment.*
+import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalFragment
+import com.thebluefolderproject.leafbyte.fragment.MainMenuFragment
+import com.thebluefolderproject.leafbyte.fragment.ResultsFragment
+import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationFragment
+import com.thebluefolderproject.leafbyte.fragment.TutorialFragment
+import com.thebluefolderproject.leafbyte.utils.Point
 import org.opencv.android.OpenCVLoader
 
 class LeafByteActivity : AppCompatActivity(),

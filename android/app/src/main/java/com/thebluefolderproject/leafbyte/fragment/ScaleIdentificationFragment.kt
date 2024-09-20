@@ -5,7 +5,11 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +18,10 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.thebluefolderproject.leafbyte.*
-import com.thebluefolderproject.leafbyte.utils.Point
+import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import com.thebluefolderproject.leafbyte.utils.LayeredIndexableImage
+import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.labelConnectedComponents
 import com.thebluefolderproject.leafbyte.utils.log
 
