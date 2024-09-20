@@ -1,3 +1,13 @@
+// we should probably update this library
+
+
+// don't lint their code
+tasks.whenTaskAdded {
+    if (this.name.startsWith("lint")) {
+        this.enabled = false
+    }
+}
+
 plugins {
     id("com.android.library")
 }

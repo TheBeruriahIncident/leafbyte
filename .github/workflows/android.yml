@@ -48,8 +48,15 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew check connectedCheck --continue # Continue so that we can see all failures and not just the first
       - name: Debug
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+      - name: Upload everything
+        uses: actions/upload-artifact@v4
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        with:
+          name: allResults
+          path: android/app/build/
+          retention-days: 1
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
@@ -64,27 +71,20 @@ jobs:
           name: instrumentedTestResults
           path: android/app/build/outputs/androidTest-results/connected/**/*.xml
           retention-days: 1
-      - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
-        with:
-          files: |
-            android/app/build/test-results/**/*.xml
-            android/app/build/outputs/androidTest-results/connected/**/*.xml
-            app/build/outputs/androidTest-results/connected/**/*.xml
       - name: Publish 2 unit test results
         uses: dorny/test-reporter@v1
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           artifact: unitTestResults
-          name: unit-test-results
+          name: Android unit test results
           path: '**/*.xml'
           reporter: java-junit
+      # Warning: may end up on the wrong workflow https://github.com/orgs/community/discussions/24616
       - name: Publish 2 instrumented test results
         uses: dorny/test-reporter@v1
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           artifact: instrumentedTestResults
-          name: instrumented-test-results
+          name: Android instrumented test results
           path: '**/*.xml'
           reporter: java-junit
