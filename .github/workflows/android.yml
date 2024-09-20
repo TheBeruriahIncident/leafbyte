@@ -36,7 +36,7 @@ jobs:
         with:
           files: android/**
       - name: Note if Android files not changed
-        if: steps.changed-files.outputs.any_changed != true
+        if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -46,36 +46,45 @@ jobs:
           distribution: "temurin"
       - name: Build and test
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./gradlew test
+        run: ./gradlew check connectedCheck --continue # Continue so that we can see all failures and not just the first
       - name: Debug
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           name: unitTestResults
           path: android/app/build/test-results/**/*.xml
           retention-days: 1
       - name: Upload instrumented test results
         uses: actions/upload-artifact@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           name: instrumentedTestResults
-          path: android/app/build/ #outputs/androidTest-results/connected/**/*.xml
+          path: android/app/build/outputs/androidTest-results/connected/**/*.xml
           retention-days: 1
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           files: |
             android/app/build/test-results/**/*.xml
             android/app/build/outputs/androidTest-results/connected/**/*.xml
             app/build/outputs/androidTest-results/connected/**/*.xml
-      - uses: dorny/test-reporter@v1
-        if: steps.changed-files.outputs.any_changed == 'true'
+      - name: Publish 2 unit test results
+        uses: dorny/test-reporter@v1
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
         with:
           artifact: unitTestResults
           name: unit-test-results
+          path: '**/*.xml'
+          reporter: java-junit
+      - name: Publish 2 instrumented test results
+        uses: dorny/test-reporter@v1
+        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        with:
+          artifact: instrumentedTestResults
+          name: instrumented-test-results
           path: '**/*.xml'
           reporter: java-junit
