@@ -36,7 +36,7 @@ jobs:
         with:
           files: android/**
       - name: Note if Android files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
+        if: steps.changed-files.outputs.any_changed != true
         run: echo "Android is not affected"
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -62,7 +62,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           name: instrumentedTestResults
-          path: android/app/build/outputs/androidTest-results/connected/**/*.xml
+          path: android/app/build/ #outputs/androidTest-results/connected/**/*.xml
           retention-days: 1
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -70,6 +70,12 @@ jobs:
         with:
           files: |
             android/app/build/test-results/**/*.xml
-            app/build/test-results/**/*.xml
             android/app/build/outputs/androidTest-results/connected/**/*.xml
             app/build/outputs/androidTest-results/connected/**/*.xml
+      - uses: dorny/test-reporter@v1
+        if: steps.changed-files.outputs.any_changed == 'true'
+        with:
+          artifact: unitTestResults
+          name: unit-test-results
+          path: '**/*.xml'
+          reporter: java-junit
