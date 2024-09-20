@@ -129,7 +129,9 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           java-version: 17
-          distribution: "temurin"   
+          distribution: "temurin"
+      - name: Add gradlew to path
+        run: export PATH=$PATH:$(pwd)
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: MeilCli/gradle-update-check-action@v4
