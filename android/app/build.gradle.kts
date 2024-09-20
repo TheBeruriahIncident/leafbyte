@@ -61,10 +61,9 @@ android {
         jvmToolchain(17)
     }
 
-
-
     tasks.withType<Test> {
         useJUnitPlatform()
+        reports.junitXml.required.set(true)
     }
     buildFeatures {
         buildConfig = true
