@@ -16,7 +16,8 @@ concurrency:
 jobs:
   build:
     name: Build and test Android
-    runs-on: macos-latest
+    # not macos-latest, because Android emulators don't currently work with it https://github.com/ReactiveCircus/android-emulator-runner/issues/386
+    runs-on: macos-13
     permissions:
       checks: write
       pull-requests: write
@@ -80,6 +81,7 @@ jobs:
           name: instrumentedTestResults
           path: android/app/build/outputs/androidTest-results/connected/**/*.xml
           retention-days: 1
+      # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
         uses: dorny/test-reporter@v1
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
@@ -88,7 +90,6 @@ jobs:
           name: Android unit test results
           path: '**/*.xml'
           reporter: java-junit
-      # Warning: may end up on the wrong workflow https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
         uses: dorny/test-reporter@v1
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
