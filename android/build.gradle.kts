@@ -23,6 +23,11 @@ allprojects {
     }
 }
 
+plugins {
+    id("com.github.ben-manes.versions").version("0.51.0")
+    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // improves version plugin
+}
+
 tasks.register("clean",Delete::class){
     delete(layout.buildDirectory)
 }
