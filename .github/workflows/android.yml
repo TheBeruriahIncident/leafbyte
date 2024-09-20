@@ -107,10 +107,6 @@ jobs:
       checks: write
       pull-requests: write
 
-    defaults:
-      run:
-        working-directory: android
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -130,9 +126,12 @@ jobs:
         with:
           java-version: 17
           distribution: "temurin"
-      - name: Setup Gradle # Because the checker always runs in the root
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: gradle/actions/setup-gradle@v4
+      - name: Print path
+        run: echo $PATH && pwd
+      - name: Add gradlew to path
+        run: export PATH=$PATH:$(pwd)
+      - name: Print path
+        run: echo $PATH && pwd
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: MeilCli/gradle-update-check-action@v4
