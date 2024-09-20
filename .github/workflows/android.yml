@@ -130,8 +130,9 @@ jobs:
         with:
           java-version: 17
           distribution: "temurin"
-      - name: Add gradlew to path
-        run: export PATH=$PATH:$(pwd)
+      - name: Setup Gradle # Because the checker always runs in the root
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: gradle/actions/setup-gradle@v4
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: MeilCli/gradle-update-check-action@v4
