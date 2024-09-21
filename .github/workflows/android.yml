@@ -132,4 +132,4 @@ jobs:
           distribution: "temurin"
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./gradlew useLatestVersionsCheck
+        run: ./gradlew useLatestVersionsCheck --debug --stacktrace
