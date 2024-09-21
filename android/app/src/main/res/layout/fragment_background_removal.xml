@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="all"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -74,7 +75,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="next"
         android:text="Next"
         android:background="@android:color/transparent"
         android:textColor="#007AFF"

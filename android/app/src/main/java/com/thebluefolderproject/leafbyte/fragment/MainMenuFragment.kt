@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -34,7 +35,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
+@SuppressLint("all")
 class MainMenuFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 

@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -40,6 +41,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+@SuppressLint("all")
 class ScaleIdentificationFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null

@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.activity
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.net.Uri
@@ -22,6 +23,7 @@ import com.thebluefolderproject.leafbyte.fragment.TutorialFragment
 import com.thebluefolderproject.leafbyte.utils.Point
 import org.opencv.android.OpenCVLoader
 
+@SuppressLint("all")
 class LeafByteActivity : AppCompatActivity(),
         MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
         ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {

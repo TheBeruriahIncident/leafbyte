@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.thebluefolderproject.leafbyte.activity.Preferences
  * create an instance of this fragment.
  *
  */
+@SuppressLint("all")
 class SettingsFragment : PreferenceFragmentCompat() {
     private fun setup(preferences: Preferences) {
         for (i in 0 until preferenceScreen.preferenceCount) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"><![CDATA[
 
@@ -51,7 +52,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        android:onClick="next"
         android:text="Change Scale"
         android:textColor="#007AFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +65,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        android:onClick="next"
         android:text="No Scale"
         android:textColor="#007AFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +79,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        android:onClick="next"
         android:text="Next"
         android:textColor="#007AFF"
         app:layout_constraintBottom_toBottomOf="parent"
