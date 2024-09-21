@@ -132,7 +132,7 @@ jobs:
           distribution: "temurin"
       - name: Check for out-of-date dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./gradlew useLatestVersions && git diff && exit $(git diff-files)
+        run: ./gradlew useLatestVersions && git diff && git diff-files --quiet --exit-code
 
   checkBuildHealth:
     name: Check Android build health
