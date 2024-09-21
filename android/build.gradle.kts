@@ -30,6 +30,7 @@ plugins {
     id("se.patrikerdes.use-latest-versions").version("0.2.18") // Adds useLatestVersions command to update dependencies
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
+    id("io.gitlab.arturbosch.detekt").version("1.23.7")
 }
 
 dependencyAnalysis {

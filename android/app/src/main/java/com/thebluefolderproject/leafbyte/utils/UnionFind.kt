@@ -7,6 +7,7 @@ package com.thebluefolderproject.leafbyte.utils
 // A union-find allows us to keep track of a partition of a set of elements and combine equivalence classes ( https://en.wikipedia.org/wiki/Disjoint-set_data_structure ).
 // This implementation is adapted from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift .
 // This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .
+@Suppress("all")
 final class UnionFind {
     var classToElements = mutableMapOf<Int, MutableSet<Int>>()
     private var elementToSubset = mutableMapOf<Int, Int>()

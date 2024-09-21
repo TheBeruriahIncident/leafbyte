@@ -32,6 +32,7 @@ import com.thebluefolderproject.leafbyte.activity.Preferences
  *
  */
 @SuppressLint("all")
+@Suppress("all")
 class SettingsFragment : PreferenceFragmentCompat() {
     private fun setup(preferences: Preferences) {
         for (i in 0 until preferenceScreen.preferenceCount) {

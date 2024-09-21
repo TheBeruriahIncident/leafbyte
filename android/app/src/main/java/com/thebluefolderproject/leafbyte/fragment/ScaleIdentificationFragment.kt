@@ -26,7 +26,7 @@ import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.labelConnectedComponents
 import com.thebluefolderproject.leafbyte.utils.log
 
-// TODO: Rename parameter arguments, choose names that match
+// TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -41,6 +41,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 @SuppressLint("all")
+@Suppress("all")
 class ScaleIdentificationFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null

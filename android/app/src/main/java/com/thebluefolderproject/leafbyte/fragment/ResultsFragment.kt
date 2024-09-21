@@ -30,7 +30,7 @@ import org.opencv.imgproc.Imgproc
 import org.opencv.utils.Converters
 import kotlin.math.atan2
 
-// TODO: Rename parameter arguments, choose names that match
+// TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -45,6 +45,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 @SuppressLint("all")
+@Suppress("all")
 class ResultsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null

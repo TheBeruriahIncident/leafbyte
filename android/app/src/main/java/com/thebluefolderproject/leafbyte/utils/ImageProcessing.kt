@@ -34,6 +34,7 @@ val BACKGROUND_LABEL = -1
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
 // It is assumed that the input layered image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
 // If pointToIdentify is passed in, the label of that point will be returned.
+@Suppress("all")
 fun labelConnectedComponents(
     image: LayeredIndexableImage,
     pointsToIdentify: List<Point> = listOf(),

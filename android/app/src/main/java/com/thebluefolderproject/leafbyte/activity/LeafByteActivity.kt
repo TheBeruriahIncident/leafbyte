@@ -24,6 +24,7 @@ import com.thebluefolderproject.leafbyte.utils.Point
 import org.opencv.android.OpenCVLoader
 
 @SuppressLint("all")
+@Suppress("all")
 class LeafByteActivity :
     AppCompatActivity(),
     MainMenuFragment.OnFragmentInteractionListener,

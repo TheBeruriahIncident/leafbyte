@@ -8,6 +8,7 @@ plugins {
     id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 secrets {

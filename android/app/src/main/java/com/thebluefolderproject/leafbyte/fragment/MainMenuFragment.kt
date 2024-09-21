@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 @SuppressLint("all")
+@Suppress("all")
 class MainMenuFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
@@ -287,6 +288,7 @@ class MainMenuFragment : Fragment() {
     }
 }
 
+@Suppress("all")
 object MainMenuUtils {
     const val IMAGE_PICKER_REQUEST_CODE = 1
     const val CAMERA_REQUEST_CODE = 2
