@@ -39,6 +39,9 @@ dependencyAnalysis {
             }
         }
     }
+    structure {
+        ignoreKtx(true)
+    }
 }
 
 tasks.register("clean",Delete::class){
