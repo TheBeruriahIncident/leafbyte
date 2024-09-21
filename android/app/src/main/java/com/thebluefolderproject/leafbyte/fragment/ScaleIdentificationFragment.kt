@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -25,8 +26,7 @@ import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.labelConnectedComponents
 import com.thebluefolderproject.leafbyte.utils.log
 
-
-// TODO: Rename parameter arguments, choose names that match
+// TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -40,6 +40,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+@SuppressLint("all")
+@Suppress("all")
 class ScaleIdentificationFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -47,7 +49,7 @@ class ScaleIdentificationFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     var model: WorkflowViewModel? = null
 
-    var dotCenters: List<Point>? = null;
+    var dotCenters: List<Point>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +60,9 @@ class ScaleIdentificationFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_scale_identification, container, false)
@@ -71,19 +74,19 @@ class ScaleIdentificationFragment : Fragment() {
         }
 
         val bitmap = model!!.thresholdedImage!!
-        //view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
-
+        // view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
         log("Trying to find centers: " + bitmap.width + " " + bitmap.height)
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
         log("done labeling")
 
-        val dotLabels = info.labelToSize.entries
-            .filter { entry -> entry.key > 0 }
-            .sortedByDescending { entry -> entry.value.total() }
-            .take(5)
-            .drop(1)
-            .map { entry -> entry.key }
+        val dotLabels =
+            info.labelToSize.entries
+                .filter { entry -> entry.key > 0 }
+                .sortedByDescending { entry -> entry.value.total() }
+                .take(5)
+                .drop(1)
+                .map { entry -> entry.key }
         // find center of point, draw dot
         val dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
 
@@ -139,14 +142,16 @@ class ScaleIdentificationFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment ScaleIdentificationFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ScaleIdentificationFragment().apply {
-                arguments = Bundle().apply {
+        @JvmStatic // TODO: Rename and change types and number of parameters
+        fun newInstance(
+            param1: String,
+            param2: String,
+        ) = ScaleIdentificationFragment().apply {
+            arguments =
+                Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
-            }
+        }
     }
 }

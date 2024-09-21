@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.activity
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.net.Uri
@@ -22,9 +23,15 @@ import com.thebluefolderproject.leafbyte.fragment.TutorialFragment
 import com.thebluefolderproject.leafbyte.utils.Point
 import org.opencv.android.OpenCVLoader
 
-class LeafByteActivity : AppCompatActivity(),
-        MainMenuFragment.OnFragmentInteractionListener, BackgroundRemovalFragment.OnFragmentInteractionListener,
-        ScaleIdentificationFragment.OnFragmentInteractionListener, ResultsFragment.OnFragmentInteractionListener, TutorialFragment.OnFragmentInteractionListener {
+@SuppressLint("all")
+@Suppress("all")
+class LeafByteActivity :
+    AppCompatActivity(),
+    MainMenuFragment.OnFragmentInteractionListener,
+    BackgroundRemovalFragment.OnFragmentInteractionListener,
+    ScaleIdentificationFragment.OnFragmentInteractionListener,
+    ResultsFragment.OnFragmentInteractionListener,
+    TutorialFragment.OnFragmentInteractionListener {
     override fun openSettings() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
     }
@@ -71,8 +78,13 @@ class LeafByteActivity : AppCompatActivity(),
 
     override fun doneResults() {
         findNavController(R.id.nav_host_fragment).navigate(
-            R.id.backgroundRemovalFragment, null, NavOptions.Builder().setPopUpTo(
-                R.id.mainMenuFragment, false).build())
+            R.id.backgroundRemovalFragment,
+            null,
+            NavOptions.Builder().setPopUpTo(
+                R.id.mainMenuFragment,
+                false,
+            ).build(),
+        )
     }
 
     override fun doneTutorial() {
@@ -81,12 +93,12 @@ class LeafByteActivity : AppCompatActivity(),
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
-     fun resourceToUri(resID:Int):Uri {
+    fun resourceToUri(resID: Int): Uri {
         return Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-            getResources().getResourcePackageName(resID) + '/'.toString() +
-            getResources().getResourceTypeName(resID) + '/'.toString() +
-            getResources().getResourceEntryName(resID)
+                getResources().getResourcePackageName(resID) + '/'.toString() +
+                getResources().getResourceTypeName(resID) + '/'.toString() +
+                getResources().getResourceEntryName(resID),
         )
     }
 }

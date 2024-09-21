@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -30,6 +31,8 @@ import com.thebluefolderproject.leafbyte.activity.Preferences
  * create an instance of this fragment.
  *
  */
+@SuppressLint("all")
+@Suppress("all")
 class SettingsFragment : PreferenceFragmentCompat() {
     private fun setup(preferences: Preferences) {
         for (i in 0 until preferenceScreen.preferenceCount) {
@@ -54,13 +57,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.layout.preferences_layout, rootKey)
 
         val preferences = Preferences(requireActivity())
         setup(preferences)
-
-
 
         val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.datasetNameKey)!!
         val button: Preference = preferenceManager.findPreference(preferences.usePreviousDatasetKey)!!
@@ -79,8 +83,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val websiteButton: Preference = preferenceManager.findPreference(preferences.websiteKey)!!
         websiteButton.setOnPreferenceClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://zoegp.science/leafbyte-faqs"));
-            startActivity(browserIntent);
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://zoegp.science/leafbyte-faqs"))
+            startActivity(browserIntent)
 
             true
         }
@@ -105,45 +109,59 @@ class SettingsFragment : PreferenceFragmentCompat() {
             try {
                 editText.text.toString().toDouble()
             } catch (e: NumberFormatException) {
-                editText.error = e.localizedMessage;
-    //                        editText.rootView.findViewById(android.R.id.button1)
-    //                            .setEnabled(validationError == null);
+                editText.error = e.localizedMessage
+                //                        editText.rootView.findViewById(android.R.id.button1)
+                //                            .setEnabled(validationError == null);
             }
 
-            editText.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                    try {
-                        p0!!.toString().toDouble()
-                    } catch (e: NumberFormatException) {
-                        editText.error = e.localizedMessage;
+            editText.addTextChangedListener(
+                object : TextWatcher {
+                    override fun afterTextChanged(p0: Editable?) {
+                        try {
+                            p0!!.toString().toDouble()
+                        } catch (e: NumberFormatException) {
+                            editText.error = e.localizedMessage
 
-
-    //                        editText.rootView.findViewById(android.R.id.button1)
-    //                            .setEnabled(validationError == null);
+                            //                        editText.rootView.findViewById(android.R.id.button1)
+                            //                            .setEnabled(validationError == null);
+                        }
                     }
-                }
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+                    override fun beforeTextChanged(
+                        p0: CharSequence?,
+                        p1: Int,
+                        p2: Int,
+                        p3: Int,
+                    ) {
+                    }
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-            })
+                    override fun onTextChanged(
+                        p0: CharSequence?,
+                        p1: Int,
+                        p2: Int,
+                        p3: Int,
+                    ) {
+                    }
+                },
+            )
         }
-        scaleLengthPreference.summary = "Length of one side of the scale square from dot center to dot center\n\n" + scaleLengthPreference.text + " " + scaleLengthUnitPreference.value
-        scaleLengthPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
-            val newValueString: String = newValue as String;
-            // TODO: dont dupe this
-            scaleLengthPreference.summary = newValueString + " " + scaleLengthUnitPreference.value
-            true
-        }
+        scaleLengthPreference.summary = "Length of one side of the scale square from dot center to dot center\n\n" +
+            scaleLengthPreference.text + " " + scaleLengthUnitPreference.value
+        scaleLengthPreference.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
+                val newValueString: String = newValue as String
+                // TODO: dont dupe this
+                scaleLengthPreference.summary = newValueString + " " + scaleLengthUnitPreference.value
+                true
+            }
 
-        scaleLengthUnitPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
-            val newValueString: String = newValue as String;
-            // TODO: dont dupe this
-            scaleLengthPreference.summary = scaleLengthPreference.text + " " + newValueString
-            true
-        }
+        scaleLengthUnitPreference.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
+                val newValueString: String = newValue as String
+                // TODO: dont dupe this
+                scaleLengthPreference.summary = scaleLengthPreference.text + " " + newValueString
+                true
+            }
 
         val versionPreference: Preference = preferenceManager.findPreference(preferences.versionKey)!!
         versionPreference.title = "version " + BuildConfig.VERSION_NAME

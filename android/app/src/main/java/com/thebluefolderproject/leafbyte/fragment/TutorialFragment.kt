@@ -13,8 +13,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 
-
-// TODO: Rename parameter arguments, choose names that match
+// TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -28,6 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+@Suppress("all")
 class TutorialFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -43,8 +43,9 @@ class TutorialFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tutorial, container, false)
@@ -94,14 +95,16 @@ class TutorialFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment TutorialFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TutorialFragment().apply {
-                arguments = Bundle().apply {
+        @JvmStatic // TODO: Rename and change types and number of parameters
+        fun newInstance(
+            param1: String,
+            param2: String,
+        ) = TutorialFragment().apply {
+            arguments =
+                Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
-            }
+        }
     }
 }

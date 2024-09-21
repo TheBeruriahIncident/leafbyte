@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 
-class DataStructureTests {
-
+class UnionFindTests {
     @Test
     fun testUnionFind() {
         val unionFind = UnionFind()
@@ -34,7 +33,10 @@ class DataStructureTests {
         assertIsAPartition(unionFind = unionFind, partition = setOf(4, 5))
     }
 
-    private fun assertIsAPartition(unionFind: UnionFind, partition: Set<Int>) {
+    private fun assertIsAPartition(
+        unionFind: UnionFind,
+        partition: Set<Int>,
+    ) {
         for (element in partition) {
             assertEquals(partition, unionFind.getElementsInClassWith(element)!!)
         }

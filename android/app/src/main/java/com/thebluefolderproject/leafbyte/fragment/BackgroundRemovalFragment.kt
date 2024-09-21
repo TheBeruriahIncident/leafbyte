@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -36,8 +37,7 @@ import org.opencv.imgproc.Imgproc
 import java.util.Arrays
 import kotlin.math.roundToInt
 
-
-// TODO: Rename parameter arguments, choose names that match
+// TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -51,6 +51,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+@SuppressLint("all")
+@Suppress("all")
 class BackgroundRemovalFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -59,8 +61,9 @@ class BackgroundRemovalFragment : Fragment() {
     var model: WorkflowViewModel? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_background_removal, container, false)
@@ -86,22 +89,25 @@ class BackgroundRemovalFragment : Fragment() {
 
         val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
         seekBar.progress = (otsu * 100 / 256).roundToInt()
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(p0: SeekBar?) {
+        seekBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(p0: SeekBar?) {
+                }
 
-            }
+                override fun onStopTrackingTouch(p0: SeekBar?) {
+                }
 
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-
-            }
-
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                val bitmap = threshold(bitmap!!, (p1 * 256 / 100).toDouble())
-                imageView.setImageBitmap(bitmap)
-                model!!.thresholdedImage = bitmap
-            }
-
-        })
+                override fun onProgressChanged(
+                    p0: SeekBar?,
+                    p1: Int,
+                    p2: Boolean,
+                ) {
+                    val bitmap = threshold(bitmap!!, (p1 * 256 / 100).toDouble())
+                    imageView.setImageBitmap(bitmap)
+                    model!!.thresholdedImage = bitmap
+                }
+            },
+        )
 
         val histogram = calculateHistogram(bitmap, histogramView)
 
@@ -110,8 +116,13 @@ class BackgroundRemovalFragment : Fragment() {
         return view
     }
 
-    //https://stackoverflow.com/a/17839597/1092672
-    fun lessResolution(resolver: ContentResolver, uri:Uri, width:Int, height:Int):Bitmap {
+    // https://stackoverflow.com/a/17839597/1092672
+    fun lessResolution(
+        resolver: ContentResolver,
+        uri: Uri,
+        width: Int,
+        height: Int,
+    ): Bitmap {
         val reqHeight = height
         val reqWidth = width
         val options = BitmapFactory.Options()
@@ -124,12 +135,16 @@ class BackgroundRemovalFragment : Fragment() {
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, options)!!
     }
-    private fun calculateInSampleSize(options:BitmapFactory.Options, reqWidth:Int, reqHeight:Int):Int {
+
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int,
+    ): Int {
         val height = options.outHeight
         val width = options.outWidth
         var inSampleSize = 1
-        if (height > reqHeight || width > reqWidth)
-        {
+        if (height > reqHeight || width > reqWidth) {
             // Calculate ratios of height and width to requested height and width
             val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
             val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
@@ -141,27 +156,36 @@ class BackgroundRemovalFragment : Fragment() {
         return inSampleSize
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         val homeButton = menu.add("Home")
         homeButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
         homeButton.setIcon(R.drawable.home)
-        homeButton.setOnMenuItemClickListener { listener!!.goHome(); true }
+        homeButton.setOnMenuItemClickListener {
+            listener!!.goHome()
+            true
+        }
 
         val helpButton = menu.add("Help")
         helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
         helpButton.setIcon(R.drawable.galleryicon)
         helpButton.setOnMenuItemClickListener {
             AlertDialog.Builder(requireActivity())
-                    .setMessage("First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
-                            "\n" +
-                            "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)")
-                    .show()
+                .setMessage(
+                    "First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different " +
+                        "parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
+                        "\n" +
+                        "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're " +
+                        "actually choosing what brightnesses count as background vs foreground)",
+                )
+                .show()
             true
         }
 
         super.onCreateOptionsMenu(menu, inflater)
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -191,117 +215,149 @@ class BackgroundRemovalFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun goHome()
+
         fun doneBackgroundRemoval(bitmap: Bitmap)
     }
 
     fun otsu(bitmap: Bitmap): Double {
         // first convert bitmap into OpenCV mat object
-        val imageMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val imageMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Utils.bitmapToMat(myBitmap, imageMat)
 
         // now convert to gray
-        val grayMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(1.0)
-        )
+        val grayMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(1.0),
+            )
         Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
 
         // get the thresholded image
-        val thresholdMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(1.0)
-        )
+        val thresholdMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(1.0),
+            )
         return Imgproc.threshold(grayMat, thresholdMat, -1.0, 255.0, Imgproc.THRESH_OTSU)
     }
 
-    fun threshold(bitmap: Bitmap, threshold: Double): Bitmap {
+    fun threshold(
+        bitmap: Bitmap,
+        threshold: Double,
+    ): Bitmap {
         // first convert bitmap into OpenCV mat object
-        val imageMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val imageMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Utils.bitmapToMat(myBitmap, imageMat)
 
         // now convert to gray
-        val grayMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(1.0)
-        )
+        val grayMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(1.0),
+            )
         Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
 
         // get the thresholded image
-        val thresholdMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(1.0)
-        )
+        val thresholdMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(1.0),
+            )
         Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY_INV)
 
-        val maskedImageMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val maskedImageMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         imageMat.copyTo(maskedImageMat, thresholdMat)
 
         // convert back to bitmap for displaying
-        val resultBitmap = Bitmap.createBitmap(
-            bitmap.width, bitmap.height,
-            Bitmap.Config.ARGB_8888
-        )
+        val resultBitmap =
+            Bitmap.createBitmap(
+                bitmap.width,
+                bitmap.height,
+                Bitmap.Config.ARGB_8888,
+            )
         thresholdMat.convertTo(thresholdMat, CvType.CV_8UC1)
         Utils.matToBitmap(maskedImageMat, resultBitmap)
 
         return resultBitmap
     }
 
-    fun calculateHistogram(bitmap: Bitmap, histogramView: ImageView) : List<Double> {
+    fun calculateHistogram(
+        bitmap: Bitmap,
+        histogramView: ImageView,
+    ): List<Double> {
         // first convert bitmap into OpenCV mat object
-        val imageMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val imageMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Utils.bitmapToMat(myBitmap, imageMat)
 
         // now convert to gray
-        val grayMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(1.0)
-        )
+        val grayMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(1.0),
+            )
         Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
 
         val histogram = Mat()
 
-
-        Imgproc.calcHist(Arrays.asList(grayMat), MatOfInt(0), Mat(), histogram, MatOfInt(256),   MatOfFloat(0f, 256f))
+        Imgproc.calcHist(Arrays.asList(grayMat), MatOfInt(0), Mat(), histogram, MatOfInt(256), MatOfFloat(0f, 256f))
         val histogramList = (0..255).asIterable().map { bin -> histogram.get(bin, 0)[0] }
         val maxValue = (histogramList.maxOrNull()!! + 1).toInt()
 
         // black
-        val color = Scalar (0.0, 0.0, 0.0, 255.0)
+        val color = Scalar(0.0, 0.0, 0.0, 255.0)
         val graphHeight = 100
         val factor = graphHeight.toDouble() / maxValue.toDouble()
         // create transparent background
         val graphMat = Mat(graphHeight, 256, CvType.CV_8UC4, Scalar(0.0, 0.0, 0.0, 0.0))
 
-        for(i in 0..255) {
-            val bPoint1 = Point(i.toDouble(), graphHeight.toDouble());
-            val bPoint2 = Point(i.toDouble(), graphHeight - histogram.get(i, 0)[0] * factor);
-            Imgproc.line(graphMat, bPoint1, bPoint2, color, 1, 8, 0);
+        for (i in 0..255) {
+            val bPoint1 = Point(i.toDouble(), graphHeight.toDouble())
+            val bPoint2 = Point(i.toDouble(), graphHeight - histogram.get(i, 0)[0] * factor)
+            Imgproc.line(graphMat, bPoint1, bPoint2, color, 1, 8, 0)
         }
-
 
         val graphBitmap = Bitmap.createBitmap(graphMat.cols(), graphMat.rows(), Bitmap.Config.ARGB_8888)
         Utils.matToBitmap(graphMat, graphBitmap)
 
         // show histogram
         histogramView.setImageBitmap(graphBitmap)
-
-
 
         return histogramList
     }
@@ -315,14 +371,16 @@ class BackgroundRemovalFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment BackgroundRemovalFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BackgroundRemovalFragment().apply {
-                arguments = Bundle().apply {
+        @JvmStatic // TODO: Rename and change types and number of parameters
+        fun newInstance(
+            param1: String,
+            param2: String,
+        ) = BackgroundRemovalFragment().apply {
+            arguments =
+                Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
-            }
+        }
     }
 }

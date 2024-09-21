@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -34,15 +35,17 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
+@SuppressLint("all")
+@Suppress("all")
 class MainMenuFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private val REQUEST_CODE_SIGN_IN = 20
+    private val requestCodeSignIn = 20
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         (activity as AppCompatActivity).supportActionBar!!.hide()
 
@@ -52,9 +55,11 @@ class MainMenuFragment : Fragment() {
         view.findViewById<Button>(R.id.takePhotoButton).setOnClickListener { takeAPhoto() }
         view.findViewById<Button>(R.id.start_tutorial).setOnClickListener { listener!!.startTutorial() }
         view.findViewById<Button>(R.id.settings).setOnClickListener { listener!!.openSettings() }
-        view.findViewById<TextView>(R.id.savingSummary).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
+        view.findViewById<TextView>(
+            R.id.savingSummary,
+        ).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
 
-        //testGoogleApi()
+        // testGoogleApi()
 
         return view
     }
@@ -77,7 +82,7 @@ class MainMenuFragment : Fragment() {
         startActivity(
             MainMenuUtils.IMAGE_PICKER_INTENT,
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE,
-            "choose an image"
+            "choose an image",
         )
     }
 
@@ -101,11 +106,15 @@ class MainMenuFragment : Fragment() {
 //        )
     }
 
-    fun startActivity(intent: Intent, requestCode: Int, actionDescription: String) {
+    fun startActivity(
+        intent: Intent,
+        requestCode: Int,
+        actionDescription: String,
+    ) {
         if (intent.resolveActivity(requireActivity().packageManager) == null) {
             showAlert(
                 "Could not $actionDescription",
-                "Could not $actionDescription: no app was found supporting that action."
+                "Could not $actionDescription: no app was found supporting that action.",
             )
             return
         }
@@ -113,7 +122,10 @@ class MainMenuFragment : Fragment() {
         startActivityForResult(intent, requestCode)
     }
 
-    fun showAlert(title: String, message: String) {
+    fun showAlert(
+        title: String,
+        message: String,
+    ) {
         AlertDialog.Builder(requireActivity())
             .setTitle(title)
             .setMessage(message)
@@ -121,9 +133,13 @@ class MainMenuFragment : Fragment() {
             .show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         log("onActivityResult " + resultCode)
-        when(resultCode) {
+        when (resultCode) {
             AppCompatActivity.RESULT_OK -> {
                 if (data == null) {
                     throw IllegalArgumentException("Intent data is null")
@@ -146,38 +162,46 @@ class MainMenuFragment : Fragment() {
                     return@RetrieveConfigurationCallback
                 }
 
-                val config2 = AuthorizationServiceConfiguration(Uri.parse("https://accounts.google.com/o/oauth2/auth"), Uri.parse("https://oauth2.googleapis.com/token"))
-
+                val config2 =
+                    AuthorizationServiceConfiguration(
+                        Uri.parse("https://accounts.google.com/o/oauth2/auth"),
+                        Uri.parse("https://oauth2.googleapis.com/token"),
+                    )
 
                 val authRequestBuilder: AuthorizationRequest.Builder =
                     AuthorizationRequest.Builder(
-                        config2, //serviceConfiguration!!,  // the authorization service configuration
-                        BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID, // from secret.properties
-                        ResponseTypeValues.CODE,  // the response_type value: we want a code
-                        Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // what does the path do
+                        // serviceConfiguration!!,  // the authorization service configuration
+                        config2,
+                        // from secret.properties
+                        BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID,
+                        // the response_type value: we want a code
+                        ResponseTypeValues.CODE,
+                        // what does the path do
+                        Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google"),
                         // and pre android m, we maybe need to do something else https://github.com/openid/AppAuth-Android
                     ) // the redirect URI to which the auth response is sent
-                val authRequest = authRequestBuilder.setScope("openid https://www.googleapis.com/auth/drive.file") // deal with granular permissions?? need to enable it? https://developers.google.com/identity/protocols/oauth2/resources/granular-permissions#test-your-updated-application-on-handling-granular-permissions
-                    //.setCodeVerifier(null)
-                    .build()
+                val authRequest =
+                    authRequestBuilder.setScope(
+                        "openid https://www.googleapis.com/auth/drive.file",
+                    ) // deal with granular permissions?? need to enable it? https://developers.google.com/identity/protocols/oauth2/resources/granular-permissions#test-your-updated-application-on-handling-granular-permissions
+                        // .setCodeVerifier(null)
+                        .build()
 
                 val authService = AuthorizationService(requireContext())
                 val authIntent = authService.getAuthorizationRequestIntent(authRequest)
                 startActivity(
                     authIntent,
-                    REQUEST_CODE_SIGN_IN,
-                    "Login with Google Sign-In")
-
-            })
-
-
+                    requestCodeSignIn,
+                    "Login with Google Sign-In",
+                )
+            },
+        )
     }
 
     private fun handleSignInResult(result: Intent) {
         val response = AuthorizationResponse.fromIntent(result)!! // there's also an exception from intent??
         val authCode = response.authorizationCode!!
-        log("auth code ${authCode}")
-
+        log("auth code $authCode")
 
 //        GoogleSignIn.getSignedInAccountFromIntent(result)
 //            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
@@ -233,9 +257,12 @@ class MainMenuFragment : Fragment() {
 //            }
     }
 
-    private fun processActivityResultData(requestCode: Int, data: Intent) {
+    private fun processActivityResultData(
+        requestCode: Int,
+        data: Intent,
+    ) {
         log("Request succesful " + requestCode)
-        when(requestCode) {
+        when (requestCode) {
             MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
                 val imageUri = MainMenuUtils.intentToUri(data)
 
@@ -245,7 +272,7 @@ class MainMenuFragment : Fragment() {
                 // no meaningful response??
                 listener!!.onImageSelection(uri!!)
             }
-            REQUEST_CODE_SIGN_IN -> {
+            requestCodeSignIn -> {
                 handleSignInResult(data)
             }
             else -> throw IllegalArgumentException("Request code: $requestCode")
@@ -254,11 +281,14 @@ class MainMenuFragment : Fragment() {
 
     interface OnFragmentInteractionListener {
         fun onImageSelection(imageUri: Uri)
+
         fun startTutorial()
+
         fun openSettings()
     }
 }
 
+@Suppress("all")
 object MainMenuUtils {
     const val IMAGE_PICKER_REQUEST_CODE = 1
     const val CAMERA_REQUEST_CODE = 2
@@ -281,13 +311,14 @@ object MainMenuUtils {
 
     private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
     private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
-    private val API_19_ACCEPTED_MIME_TYPES = arrayOf(
-        PRE_API_19_ACCEPTED_MIME_TYPE,
-        "image/png",
-        "image/bmp"
-    )
+    private val API_19_ACCEPTED_MIME_TYPES =
+        arrayOf(
+            PRE_API_19_ACCEPTED_MIME_TYPE,
+            "image/png",
+            "image/bmp",
+        )
 
-    fun intentToUri(data: Intent) : Uri {
+    fun intentToUri(data: Intent): Uri {
         if (data.data == null) {
             throw IllegalStateException("Intent data is null")
         }
@@ -305,7 +336,7 @@ object MainMenuUtils {
         return FileProvider.getUriForFile(
             context,
             "com.thebluefolderproject.leafbyte.fileprovider",
-            imageFile
+            imageFile,
         )
     }
 
@@ -314,4 +345,3 @@ object MainMenuUtils {
         return externalFilesDir.resolve(timestamp).apply { createNewFile() }
     }
 }
-

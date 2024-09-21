@@ -19,7 +19,10 @@ fun log(o: Exception) {
     Log.e("ABIGAIL", Log.getStackTraceString(o))
 }
 
-fun checkState(condition: Boolean, message: String) {
+fun checkState(
+    condition: Boolean,
+    message: String,
+) {
     if (!condition) {
         throw IllegalStateException(message)
     }

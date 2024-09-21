@@ -6,8 +6,8 @@ package com.thebluefolderproject.leafbyte.utils
 
 data class Size(
     var standardPart: Int = 0,
-    var drawingPart: Int = 0) {
-
+    var drawingPart: Int = 0,
+) {
     fun total(): Int {
         return standardPart + drawingPart
     }
@@ -24,7 +24,9 @@ data class ConnectedComponentsInfo(
     val emptyLabelToNeighboringOccupiedLabels: Map<Int, Set<Int>>,
     val labelToSize: Map<Int, Size>,
     val equivalenceClasses: UnionFind,
-    val labelsOfPointsToIdentify: Map<Point, Int>)
+    val labelsOfPointsToIdentify: Map<Point, Int>,
+)
+
 val BACKGROUND_LABEL = -1
 
 // Find all the connected components in an image, that is the contiguous areas that are the same ( https://en.wikipedia.org/wiki/Connected-component_labeling ).
@@ -32,16 +34,20 @@ val BACKGROUND_LABEL = -1
 // E.g. the leaf and scale mark will be occupied connected components, while the holes in the leaf will be "empty" connected components.
 // It is assumed that the input layered image will have the main leaf in the 0th spot and, if present, the user drawing in the 1st spot.
 // If pointToIdentify is passed in, the label of that point will be returned.
-fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: List<Point> = listOf()) : ConnectedComponentsInfo {
+@Suppress("all")
+fun labelConnectedComponents(
+    image: LayeredIndexableImage,
+    pointsToIdentify: List<Point> = listOf(),
+): ConnectedComponentsInfo {
     val width = image.width
     val height = image.height
     // Initialize most structures we'll eventually be returning.
     // Maps a label to a point in that component, allowing us to reconstruct the component later.
     var labelToMemberPoint = mutableMapOf<Int, Point>()
     // Tells what occupied components surround any empty component.
-    var emptyLabelToNeighboringOccupiedLabels = mutableMapOf<Int , MutableSet<Int>>()
+    var emptyLabelToNeighboringOccupiedLabels = mutableMapOf<Int, MutableSet<Int>>()
     // Tells the size of each component.
-    var labelToSize = mutableMapOf<Int , Size>()
+    var labelToSize = mutableMapOf<Int, Size>()
     // A data structure to track what labels actually correspond to the same component (because of the way the algorithm runs, a single blob might get partially marked with one label and partially with another).
     val equivalenceClasses = UnionFind()
     // Negative labels will refer to empty components; positive will refer to occupied components.
@@ -70,15 +76,15 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
             pointsToIdentifyYsToXs[pointToIdentify.y] = pointsToIdentifyXsForY
         }
     }
-    for (y in 0 .. height - 1) {
+    for (y in 0..height - 1) {
         var currentYIsOccupied = mutableListOf<Boolean>()
-        //currentYIsOccupied.reserveCapacity(width)
+        // currentYIsOccupied.reserveCapacity(width)
         var currentYLabels = mutableListOf<Int>()
-        //currentYLabels.reserveCapacity(width)
+        // currentYLabels.reserveCapacity(width)
         // As an optimization (speeds this loop up by another 40%), save off the isOccupied and label value for the previous x for the next loop through.
         var previousXIsOccupied: Boolean? = null
         var previousXLabel: Int? = null
-        for (x in 0 .. width - 1) {
+        for (x in 0..width - 1) {
             val layerWithPixel = image.getLayerWithPixel(x = x, y = y)
             val isOccupied = layerWithPixel > -1
             currentYIsOccupied.add(isOccupied)
@@ -179,7 +185,9 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
     // -1, the label for the outside of the image, has a fake member point.
     // Let's fix that so it can't break any code that uses the result of this function.
     val outsideOfImageClass = equivalenceClasses.getClassOf(BACKGROUND_LABEL)!!
-    val outsideOfImageClassElement = equivalenceClasses.classToElements[outsideOfImageClass]!!.filter { it != BACKGROUND_LABEL }.firstOrNull()
+    val outsideOfImageClassElement =
+        equivalenceClasses.classToElements[outsideOfImageClass]!!
+            .filter { it != BACKGROUND_LABEL }.firstOrNull()
     if (outsideOfImageClassElement != null) {
         labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement!!]!!
     } else {
@@ -201,7 +209,7 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
         val topMostMemberPoint = equivalenceClassElements.map({ labelToMemberPoint[it]!! }).sortedBy { it.y }[0]
         labelToMemberPoint[representative] = topMostMemberPoint
         // Do an initial loop-through including the first element of the class.
-        equivalenceClassElements.forEach { label  ->
+        equivalenceClassElements.forEach { label ->
             // The label of the point to identify would now be obsolete, so save off the new canonical label.
             if (labelsToPointsToIdentify[label] != null) {
                 for (point in labelsToPointsToIdentify[label]!!) {
@@ -210,7 +218,7 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
             }
         }
         // Do a second loop-through without the representative element of the class.
-        equivalenceClassElements.filter { it != representative }.forEach { label  ->
+        equivalenceClassElements.filter { it != representative }.forEach { label ->
             // Normalize labelToSize.
             labelToSize[representative] = labelToSize[representative]!! + labelToSize[label]!!
             labelToSize.remove(label)
@@ -219,5 +227,11 @@ fun labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: Lis
             emptyLabelToNeighboringOccupiedLabels.remove(label)
         }
     }
-    return ConnectedComponentsInfo(labelToMemberPoint = labelToMemberPoint, emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels, labelToSize = labelToSize, equivalenceClasses = equivalenceClasses, labelsOfPointsToIdentify = labelsOfPointsToIdentify)
+    return ConnectedComponentsInfo(
+        labelToMemberPoint = labelToMemberPoint,
+        emptyLabelToNeighboringOccupiedLabels = emptyLabelToNeighboringOccupiedLabels,
+        labelToSize = labelToSize,
+        equivalenceClasses = equivalenceClasses,
+        labelsOfPointsToIdentify = labelsOfPointsToIdentify,
+    )
 }

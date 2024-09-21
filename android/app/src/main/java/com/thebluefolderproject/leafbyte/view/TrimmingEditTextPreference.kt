@@ -8,17 +8,18 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.EditTextPreference
 
+@Suppress("all")
 class TrimmingEditTextPreference : EditTextPreference {
     constructor(
         context: Context,
         attrs: AttributeSet?,
-        defStyle: Int
+        defStyle: Int,
     ) : super(context, attrs, defStyle) {
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(
         context,
-        attrs
+        attrs,
     ) {
     }
 

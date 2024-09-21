@@ -27,36 +27,41 @@ class Preferences(val activity: Activity) {
     val teamKey = activity.getString(R.string.preference_team_key)
     val citationKey = activity.getString(R.string.preference_citation_key)
     val versionKey = activity.getString(R.string.preference_version_key)
+
     // it feels like there should be a better way to get all preferences, and
     //   preferenceScreen.sharedPreferences.all does exist, but it skips any pseudo-preferences
     //   that are classed as plain Preference
-    val allKeys = listOf(
-        dataSaveLocationKey,
-        imageSaveLocationKey,
-        datasetNameKey,
-        usePreviousDatasetKey,
-        scaleLengthKey,
-        scaleLengthUnitsKey,
-        nextSampleNumberKey,
-        scanBarcodesKey,
-        saveGpsLocationKey,
-        useBlackBackgroundKey,
-        signOutOfGoogleKey,
-        websiteKey,
-        teamKey,
-        citationKey,
-        versionKey)
+    val allKeys =
+        listOf(
+            dataSaveLocationKey,
+            imageSaveLocationKey,
+            datasetNameKey,
+            usePreviousDatasetKey,
+            scaleLengthKey,
+            scaleLengthUnitsKey,
+            nextSampleNumberKey,
+            scanBarcodesKey,
+            saveGpsLocationKey,
+            useBlackBackgroundKey,
+            signOutOfGoogleKey,
+            websiteKey,
+            teamKey,
+            citationKey,
+            versionKey,
+        )
 
-    val saveLocationDefault = SaveLocation.fromKey(
-        activity.getString(R.string.preferences_save_location_default_array_key),
-        activity
-    )
+    val saveLocationDefault =
+        SaveLocation.fromKey(
+            activity.getString(R.string.preferences_save_location_default_array_key),
+            activity,
+        )
     val datasetNameDefault = activity.getString(R.string.preferences_dataset_name_default)
     val scaleLengthDefault = activity.getString(R.string.preferences_scale_length_default).toFloat()
-    val scaleLengthUnitsDefault = ScaleLengthUnits.fromKey(
-        activity.getString(R.string.preferences_scale_length_units_default_array_key),
-        activity
-    )
+    val scaleLengthUnitsDefault =
+        ScaleLengthUnits.fromKey(
+            activity.getString(R.string.preferences_scale_length_units_default_array_key),
+            activity,
+        )
     val nextSampleNumberDefault = activity.resources.getInteger(R.integer.preference_next_sample_number_default)
     val scanBarcodesDefault = activity.resources.getBoolean(R.bool.preference_scan_barcodes_default)
     val saveGpsLocationDefault = activity.resources.getBoolean(R.bool.preference_save_gps_location_default)
@@ -69,7 +74,10 @@ class Preferences(val activity: Activity) {
         ;
 
         companion object {
-            fun fromKey(key: String, activity: Activity): SaveLocation {
+            fun fromKey(
+                key: String,
+                activity: Activity,
+            ): SaveLocation {
                 values().forEach { saveLocation ->
                     if (activity.getString(saveLocation.keyId) == key) {
                         return saveLocation
@@ -90,7 +98,10 @@ class Preferences(val activity: Activity) {
         ;
 
         companion object {
-            fun fromKey(key: String, activity: Activity): ScaleLengthUnits {
+            fun fromKey(
+                key: String,
+                activity: Activity,
+            ): ScaleLengthUnits {
                 values().forEach { scaleLengthUnits ->
                     if (activity.getString(scaleLengthUnits.keyId) == key) {
                         return scaleLengthUnits
