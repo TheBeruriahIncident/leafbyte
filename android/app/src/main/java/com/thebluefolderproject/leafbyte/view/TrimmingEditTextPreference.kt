@@ -12,13 +12,13 @@ class TrimmingEditTextPreference : EditTextPreference {
     constructor(
         context: Context,
         attrs: AttributeSet?,
-        defStyle: Int
+        defStyle: Int,
     ) : super(context, attrs, defStyle) {
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(
         context,
-        attrs
+        attrs,
     ) {
     }
 

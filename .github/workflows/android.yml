@@ -1,8 +1,8 @@
 name: Android
 
-# It's tempting to add a path filter here so that this only runs on changes to the android folder. However, that only looks at the most recent commit,
-# so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching android. Instead, we use a filter step
-# below.
+# It's tempting to add a path filter here so that this only runs on changes to the android folder. However, that only looks at the most
+# recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching android.
+# Instead, we use a filter step below.
 on:
   push:
     branches: [ "main" ]
@@ -46,7 +46,8 @@ jobs:
           distribution: "temurin"
       - name: Build and check (no instrumented checks)
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./gradlew check --continue # Continue so that we can see all failures and not just the first; this step still fails if anything fails
+        # Continue so that we can see all failures and not just the first; this step still fails if anything fails
+        run: ./gradlew check --continue
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'

@@ -30,7 +30,6 @@ import org.opencv.imgproc.Imgproc
 import org.opencv.utils.Converters
 import kotlin.math.atan2
 
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -62,8 +61,9 @@ class ResultsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_results, container, false)
@@ -81,34 +81,40 @@ class ResultsFragment : Fragment() {
         view.findViewById<ImageView>(R.id.imageView).setImageBitmap(corrected)
 
         val info = labelConnectedComponents(LayeredIndexableImage(corrected.width, corrected.height, corrected))
-        val pixels = info.labelToSize.entries
-            .filter { entry -> entry.key > 0 }
-            .map { entry -> entry.value }
-            .maxByOrNull { it.total() }
+        val pixels =
+            info.labelToSize.entries
+                .filter { entry -> entry.key > 0 }
+                .map { entry -> entry.value }
+                .maxByOrNull { it.total() }
         log("Number of pixels: " + pixels)
 
         return view
     }
 
-    fun correct(bitmap: Bitmap, dotCenters: List<Point>): Bitmap {
+    fun correct(
+        bitmap: Bitmap,
+        dotCenters: List<Point>,
+    ): Bitmap {
         // first convert bitmap into OpenCV mat object
-        val imageMat = Mat(
-            bitmap.height, bitmap.width,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val imageMat =
+            Mat(
+                bitmap.height,
+                bitmap.width,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Utils.bitmapToMat(myBitmap, imageMat)
 
-
-
         // Find the center as the average of the corners.
-        val center = Point(dotCenters.sumBy { it.x }/4, dotCenters.sumBy { it.y }/4)
+        val center = Point(dotCenters.sumBy { it.x } / 4, dotCenters.sumBy { it.y } / 4)
 
         // Determine the angle from corner to the center.
-        val cornersAndAngles = dotCenters.map { corner ->
-            val angle = atan2((corner.y - center.y).toDouble(), (corner.x - center.x).toDouble())
-            Pair(corner, angle)
-        }
+        val cornersAndAngles =
+            dotCenters.map { corner ->
+                val angle = atan2((corner.y - center.y).toDouble(), (corner.x - center.x).toDouble())
+                Pair(corner, angle)
+            }
 
         // Sort the corners into order around the center so that we know which corner is which.
         val sortedCorners = cornersAndAngles.sortedBy { it.second }.map { it.first }
@@ -117,26 +123,42 @@ class ResultsFragment : Fragment() {
         val size = 1200.0
         val size2 = 1200
 
-        val trans = Imgproc.getPerspectiveTransform(
-            Converters.vector_Point2f_to_Mat(sortedCorners.map { org.opencv.core.Point(
-                it.x.toDouble(),
-                it.y.toDouble()
-            ) }),
-            Converters.vector_Point2f_to_Mat(listOf(org.opencv.core.Point(0.0, size), org.opencv.core.Point(size, size), org.opencv.core.Point(size, 0.0), org.opencv.core.Point(0.0, 0.0)))
-        )
+        val trans =
+            Imgproc.getPerspectiveTransform(
+                Converters.vector_Point2f_to_Mat(
+                    sortedCorners.map {
+                        org.opencv.core.Point(
+                            it.x.toDouble(),
+                            it.y.toDouble(),
+                        )
+                    },
+                ),
+                Converters.vector_Point2f_to_Mat(
+                    listOf(
+                        org.opencv.core.Point(0.0, size),
+                        org.opencv.core.Point(size, size),
+                        org.opencv.core.Point(size, 0.0),
+                        org.opencv.core.Point(0.0, 0.0),
+                    ),
+                ),
+            )
 
-
-        val output = Mat(
-            size2, size2,
-            CvType.CV_8U, Scalar(4.0)
-        )
+        val output =
+            Mat(
+                size2,
+                size2,
+                CvType.CV_8U,
+                Scalar(4.0),
+            )
         Imgproc.warpPerspective(imageMat, output, trans, Size(size, size))
 
         // convert back to bitmap for displaying
-        val resultBitmap = Bitmap.createBitmap(
-            size2, size2,
-            Bitmap.Config.ARGB_8888
-        )
+        val resultBitmap =
+            Bitmap.createBitmap(
+                size2,
+                size2,
+                Bitmap.Config.ARGB_8888,
+            )
         output.convertTo(output, CvType.CV_8UC1)
         Utils.matToBitmap(output, resultBitmap)
 
@@ -181,14 +203,16 @@ class ResultsFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment ResultsFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ResultsFragment().apply {
-                arguments = Bundle().apply {
+        @JvmStatic // TODO: Rename and change types and number of parameters
+        fun newInstance(
+            param1: String,
+            param2: String,
+        ) = ResultsFragment().apply {
+            arguments =
+                Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
-            }
+        }
     }
 }

@@ -8,10 +8,10 @@ package com.thebluefolderproject.leafbyte.utils
 // This implementation is adapted from https://github.com/raywenderlich/swift-algorithm-club/blob/master/Union-Find/UnionFind.playground/Sources/UnionFindWeightedQuickUnionPathCompression.swift .
 // This implementation is explained well at https://github.com/raywenderlich/swift-algorithm-club/tree/master/Union-Find .
 final class UnionFind {
-    var classToElements = mutableMapOf<Int , MutableSet<Int>>()
-    private var elementToSubset = mutableMapOf<Int , Int>()
+    var classToElements = mutableMapOf<Int, MutableSet<Int>>()
+    private var elementToSubset = mutableMapOf<Int, Int>()
     private var subsetToParentSubset = mutableListOf<Int>()
-    private// This is only accurate for the top parent in a tree. It's used to help keep the trees balanced.
+    private // This is only accurate for the top parent in a tree. It's used to help keep the trees balanced.
     var subsetToSize = mutableListOf<Int>()
 
     fun createSubsetWith(element: Int) {
@@ -22,7 +22,7 @@ final class UnionFind {
         classToElements[subsetIndex] = mutableSetOf(element)
     }
 
-    fun getElementsInClassWith(element: Int) : Set<Int>? {
+    fun getElementsInClassWith(element: Int): Set<Int>? {
         val elementClass = getClassOf(element)
         if (elementClass != null) {
             return classToElements[elementClass]
@@ -31,7 +31,7 @@ final class UnionFind {
         }
     }
 
-    fun getClassOf(element: Int) : Int? {
+    fun getClassOf(element: Int): Int? {
         val indexOfElement = elementToSubset[element]
         if (indexOfElement != null) {
             return getClassBySubset(indexOfElement)
@@ -41,7 +41,10 @@ final class UnionFind {
     }
 
     // Note that the smaller set becomes a parent of the larger set to help keep balance.
-    fun combineClassesContaining(firstElement: Int, secondElement: Int) {
+    fun combineClassesContaining(
+        firstElement: Int,
+        secondElement: Int,
+    ) {
         val firstSet = getClassOf(firstElement)
         val secondSet = getClassOf(secondElement)
         if (firstSet != null && secondSet != null) {
@@ -64,7 +67,10 @@ final class UnionFind {
         }
     }
 
-    fun checkIfSameClass(firstElement: Int, secondElement: Int) : Boolean {
+    fun checkIfSameClass(
+        firstElement: Int,
+        secondElement: Int,
+    ): Boolean {
         val firstSet = getClassOf(firstElement)
         val secondSet = getClassOf(secondElement)
         if (firstSet != null && secondSet != null) {
@@ -75,7 +81,7 @@ final class UnionFind {
     }
 
     // This helper incidentally compresses the path from subset to class.
-    private fun getClassBySubset(index: Int) : Int {
+    private fun getClassBySubset(index: Int): Int {
         if (index != subsetToParentSubset[index]) {
             val parentSubsetIndex = subsetToParentSubset[index]
             subsetToParentSubset[index] = getClassBySubset(parentSubsetIndex)

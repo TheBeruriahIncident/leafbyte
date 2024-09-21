@@ -7,8 +7,8 @@ plugins {
     id("com.github.ben-manes.versions").version("0.51.0") // Adds dependencyUpdates command to determinate stale dependencies
     id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("com.autonomousapps.dependency-analysis")
+    id("org.jlleitschuh.gradle.ktlint")
 }
-
 
 secrets {
     // To add your Maps API key to this project:
@@ -22,10 +22,14 @@ secrets {
     defaultPropertiesFileName = "local.defaults.properties"
 }
 
-
 android {
     packaging {
-        resources.excludes.addAll(setOf("META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/license.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt", "META-INF/notice.txt", "META-INF/ASL2.0", "META-INF/*.kotlin_module", "META-INF/*"))
+        resources.excludes.addAll(
+            setOf(
+                "META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/license.txt", "META-INF/NOTICE",
+                "META-INF/NOTICE.txt", "META-INF/notice.txt", "META-INF/ASL2.0", "META-INF/*.kotlin_module", "META-INF/*",
+            ),
+        )
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
@@ -42,7 +46,7 @@ android {
 
         manifestPlaceholders["appAuthRedirectScheme"] = "com.thebluefolderproject.leafbyte"
 
-        //buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties["googleSignInClientId"])
+        // buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties["googleSignInClientId"])
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -71,7 +75,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.13.1")
-    //implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    // implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
@@ -81,8 +85,8 @@ dependencies {
 //    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 //    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
-    //implementation("com.google.android.material:material:1.12.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20") //pull kotlin version back out
+    // implementation("com.google.android.material:material:1.12.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20") // pull kotlin version back out
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 //    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
 //    implementation("com.google.http-client:google-http-client-gson:1.45.0")
@@ -96,20 +100,20 @@ dependencies {
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")
 
-    //androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    //androidTestImplementation("androidx.test:runner:1.6.2")
-    //androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
+    // androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    // androidTestImplementation("androidx.test:runner:1.6.2")
+    // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.5.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
 
     androidTestImplementation("androidx.test:core:1.6.1")
 
-    //androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
-    //debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
+    // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
+    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0") // For testing coroutines (optional)
-    //testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
+    // testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
 }

@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    //ext.kotlin_version = "2.0.0"
+    // ext.kotlin_version = "2.0.0"
     repositories {
         google()
         mavenCentral()
@@ -29,6 +29,7 @@ plugins {
     id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("se.patrikerdes.use-latest-versions").version("0.2.18") // Adds useLatestVersions command to update dependencies
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
+    id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
 }
 
 dependencyAnalysis {
@@ -38,8 +39,13 @@ dependencyAnalysis {
                 severity("fail")
                 // no idea where "de.mannodermaus.junit5:android-test-core:1.5.0" is coming from
                 // androidx.lifecycle:lifecycle-viewmodel and ""-ktx should get ignoreKtx
-                //"androidx.navigation:navigation-fragment-ktx used in xml
-                exclude("de.mannodermaus.junit5:android-test-core", "androidx.lifecycle:lifecycle-viewmodel", "androidx.lifecycle:lifecycle-viewmodel-ktx", "androidx.navigation:navigation-fragment-ktx")
+                // "androidx.navigation:navigation-fragment-ktx used in xml
+                exclude(
+                    "de.mannodermaus.junit5:android-test-core",
+                    "androidx.lifecycle:lifecycle-viewmodel",
+                    "androidx.lifecycle:lifecycle-viewmodel-ktx",
+                    "androidx.navigation:navigation-fragment-ktx",
+                )
             }
         }
     }
@@ -48,6 +54,6 @@ dependencyAnalysis {
     }
 }
 
-tasks.register("clean",Delete::class){
+tasks.register("clean", Delete::class) {
     delete(layout.buildDirectory)
 }
