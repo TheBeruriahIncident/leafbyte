@@ -100,7 +100,7 @@ dependencies {
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.5.0")
