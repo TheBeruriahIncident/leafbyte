@@ -9,15 +9,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.thebluefolderproject.leafbyte.BuildConfig
-import com.thebluefolderproject.leafbyte.activity.Preferences
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.activity.Preferences
 
 /**
  * settings vs preferences
@@ -57,7 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.layout.preferences_layout, rootKey)
 
-        val preferences = Preferences(activity!!)
+        val preferences = Preferences(requireActivity())
         setup(preferences)
 
 
@@ -87,7 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val teamButton: Preference = preferenceManager.findPreference(preferences.teamKey)!!
         teamButton.setOnPreferenceClickListener {
-            val builder = AlertDialog.Builder(context!!)
+            val builder = AlertDialog.Builder(requireContext())
             builder.setTitle(getString(R.string.preference_team_title))
             builder.setMessage(getString(R.string.preference_team_description))
 

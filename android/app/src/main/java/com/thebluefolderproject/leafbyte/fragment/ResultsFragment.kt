@@ -14,7 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.thebluefolderproject.leafbyte.*
+import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import com.thebluefolderproject.leafbyte.utils.LayeredIndexableImage
 import com.thebluefolderproject.leafbyte.utils.Point
@@ -69,7 +69,7 @@ class ResultsFragment : Fragment() {
         view.findViewById<Button>(R.id.resultsNext).setOnClickListener { listener!!.doneResults() }
 
         requireActivity().let {
-            model = ViewModelProviders.of(activity!!).get(WorkflowViewModel::class.java)
+            model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
         }
 
         val bitmap = model!!.thresholdedImage!!

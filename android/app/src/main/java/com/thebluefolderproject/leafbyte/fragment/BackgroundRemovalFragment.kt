@@ -4,7 +4,6 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
-import androidx.appcompat.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,18 +11,29 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import org.opencv.android.Utils
-import org.opencv.core.*
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.core.MatOfFloat
+import org.opencv.core.MatOfInt
+import org.opencv.core.Point
+import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
-import java.util.*
+import java.util.Arrays
 import kotlin.math.roundToInt
 
 
@@ -141,7 +151,7 @@ class BackgroundRemovalFragment : Fragment() {
         helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
         helpButton.setIcon(R.drawable.galleryicon)
         helpButton.setOnMenuItemClickListener {
-            AlertDialog.Builder(activity!!)
+            AlertDialog.Builder(requireActivity())
                     .setMessage("First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
                             "\n" +
                             "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're actually choosing what brightnesses count as background vs foreground)")
