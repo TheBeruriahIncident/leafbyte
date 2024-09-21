@@ -36,6 +36,10 @@ dependencyAnalysis {
         all {
             onAny {
                 severity("fail")
+                // no idea where "de.mannodermaus.junit5:android-test-core:1.5.0" is coming from
+                // androidx.lifecycle:lifecycle-viewmodel and ""-ktx should get ignoreKtx
+                //"androidx.navigation:navigation-fragment-ktx used in xml
+                exclude("de.mannodermaus.junit5:android-test-core", "androidx.lifecycle:lifecycle-viewmodel", "androidx.lifecycle:lifecycle-viewmodel-ktx", "androidx.navigation:navigation-fragment-ktx")
             }
         }
     }

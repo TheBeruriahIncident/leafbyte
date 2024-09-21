@@ -82,7 +82,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.3")
+    implementation("androidx.navigation:navigation-common:2.8.1")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.1")
+//    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 //    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
     //implementation("com.google.android.material:material:1.12.0")
@@ -106,6 +109,8 @@ dependencies {
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.5.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+
+    androidTestImplementation("androidx.test:core:1.6.1")
 
     //androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
     //debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
