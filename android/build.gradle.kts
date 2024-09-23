@@ -31,6 +31,8 @@ plugins {
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
     id("io.gitlab.arturbosch.detekt").version("1.23.7")
+    id("org.jetbrains.kotlin.android") version "1.9.0" apply false
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
 }
 
 dependencyAnalysis {

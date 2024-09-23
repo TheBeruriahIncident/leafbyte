@@ -9,6 +9,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
 }
 
 secrets {
@@ -25,6 +26,9 @@ secrets {
 
 android {
     packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
         resources.excludes.addAll(
             setOf(
                 "META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/license.txt", "META-INF/NOTICE",
@@ -36,6 +40,8 @@ android {
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
     compileSdk = 35
     defaultConfig {
+        manifestPlaceholders += mapOf()
+        testInstrumentationRunnerArguments += mapOf()
         testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         applicationId = "com.thebluefolderproject.leafbyte"
         minSdk = 21
@@ -50,6 +56,9 @@ android {
         // buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties["googleSignInClientId"])
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
     buildTypes {
         release {
@@ -69,6 +78,17 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        compose = true
+    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//    }
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 }
 
@@ -100,6 +120,15 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     // androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
@@ -115,6 +144,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0") // For testing coroutines (optional)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest") // For testing coroutines (optional)
     // testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
 }
