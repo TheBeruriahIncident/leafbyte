@@ -20,6 +20,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.Text
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.BuildConfig
@@ -63,6 +65,18 @@ class MainMenuFragment : Fragment() {
 
         return view
     }
+
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?,
+//    ): View? {
+//        return ComposeView(requireContext()).apply {
+//            setContent {
+//                Text(text = "Hello world.")
+//            }
+//        }
+//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
