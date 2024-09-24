@@ -11,7 +11,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20") // pull this back out
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.0.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.0.2")
+        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.0")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -31,7 +31,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
     id("io.gitlab.arturbosch.detekt").version("1.23.7")
-    id("org.jetbrains.kotlin.android") version "1.9.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.20" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
 }
 
@@ -40,7 +40,7 @@ dependencyAnalysis {
         all {
             onAny {
                 severity("fail")
-                // no idea where "de.mannodermaus.junit5:android-test-core:1.5.0" is coming from
+                // no idea where "de.mannodermaus.junit5:android-test-core:1.5.0" or de.mannodermaus.junit5:android-test-compose:1.5.0 is coming from
                 // androidx.lifecycle:lifecycle-viewmodel and ""-ktx should get ignoreKtx
                 // "androidx.navigation:navigation-fragment-ktx used in xml
                 exclude(
@@ -48,6 +48,7 @@ dependencyAnalysis {
                     "androidx.lifecycle:lifecycle-viewmodel",
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",
+                    "de.mannodermaus.junit5:android-test-compose",
                 )
             }
         }
