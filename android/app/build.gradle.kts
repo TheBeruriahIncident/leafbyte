@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.proto
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -10,6 +12,22 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
+    id("com.google.protobuf")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.28.2"
+    }
+    generateProtoTasks {
+        all().forEach {task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
 
 detekt {
@@ -40,6 +58,14 @@ android {
                 "META-INF/NOTICE.txt", "META-INF/notice.txt", "META-INF/ASL2.0", "META-INF/*.kotlin_module", "META-INF/*",
             ),
         )
+    }
+
+    sourceSets {
+        named("main") {
+            proto {
+                srcDir("src/main/proto")
+            }
+        }
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
@@ -75,6 +101,7 @@ android {
 
     kotlin {
         jvmToolchain(17)
+
     }
 
     tasks.withType<Test> {
@@ -105,6 +132,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation("androidx.datastore:datastore:1.1.1")
     implementation("androidx.fragment:fragment-ktx:1.8.3")
     implementation("androidx.navigation:navigation-common:2.8.1")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.1")
@@ -140,6 +168,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:1.7.2")
     implementation("androidx.compose.ui:ui-text:1.7.2")
     implementation("androidx.compose.ui:ui-unit:1.7.2")
+
+    implementation("com.google.protobuf:protobuf-kotlin-lite:4.28.2")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
 
