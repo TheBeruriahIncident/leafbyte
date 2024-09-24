@@ -46,8 +46,10 @@ jobs:
           distribution: "temurin"
       - name: Build and check (no instrumented checks)
         if: steps.changed-files.outputs.any_changed == 'true'
-        # Continue so that we can see all failures and not just the first; this step still fails if anything fails
-        run: ./gradlew check --continue
+        # Continue so that we can see all failures and not just the first; this step still fails if anything fails.
+        # I have no idea why lintVitalRelease is different from lint and why making check depend on it doesn't make it run:
+        #   https://stackoverflow.com/questions/79009667/how-is-lintvitalrelease-different-from-lint-and-why-isnt-it-running
+        run: ./gradlew check lintVitalRelease --continue
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
         if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
