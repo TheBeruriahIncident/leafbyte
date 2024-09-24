@@ -1,0 +1,5 @@
+config:
+  validation: true
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']

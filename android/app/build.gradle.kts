@@ -12,6 +12,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
 }
 
+detekt {
+    config.setFrom("$rootDir/detekt-config.yml")
+    buildUponDefaultConfig = true
+}
+
 secrets {
     // To add your Maps API key to this project:
     // 1. If the secrets.properties file does not exist, create it in the same folder as the local.properties file.
