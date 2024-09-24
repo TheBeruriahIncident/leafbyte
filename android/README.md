@@ -14,4 +14,4 @@ To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
 Some useful commands:
 - `./gradlew useLatestVersions` to update dependencies
 - `./gradlew buildHealth` to check for dependency issues
-  
+- `./gradlew ktlintFormat` to auto-format

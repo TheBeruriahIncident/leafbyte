@@ -87,12 +87,12 @@ class MainMenuFragment : Fragment() {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 TextButton(
-                    onClick = { listener!!.startTutorial() }
+                    onClick = { listener!!.startTutorial() },
                 ) {
                     Text("Tutorial")
                 }
                 TextButton(
-                    onClick = { listener!!.openSettings() }
+                    onClick = { listener!!.openSettings() },
                 ) {
                     Text("Settings")
                 }
@@ -109,20 +109,26 @@ class MainMenuFragment : Fragment() {
                 Text(text = "LeafByte")
                 Text(text = "Abigail & Zoe")
                 Text(text = "Getman-Pickering")
-                Text(text = buildAnnotatedString {
-                    withLink(
-                        link = LinkAnnotation.Url(
-                            url = "https://zoegp.science/leafbyte-faqs",
-                            styles = TextLinkStyles(
-                                style = SpanStyle(
-                                    color = Color(0xff0000EE),
-                                )
-                            ),
-                        ),
-                    ) {
-                        append("FAQs, Help, and Bug Reporting")
-                    }
-                })
+                Text(
+                    text =
+                        buildAnnotatedString {
+                            withLink(
+                                link =
+                                    LinkAnnotation.Url(
+                                        url = "https://zoegp.science/leafbyte-faqs",
+                                        styles =
+                                            TextLinkStyles(
+                                                style =
+                                                    SpanStyle(
+                                                        color = Color(0xff0000EE),
+                                                    ),
+                                            ),
+                                    ),
+                            ) {
+                                append("FAQs, Help, and Bug Reporting")
+                            }
+                        },
+                )
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -131,8 +137,7 @@ class MainMenuFragment : Fragment() {
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-
-                    ) {
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.galleryicon),
                         contentDescription = "Image gallery icon",
@@ -157,7 +162,6 @@ class MainMenuFragment : Fragment() {
             Text("Data and images are not being saved. Go to settings to change.")
         }
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
