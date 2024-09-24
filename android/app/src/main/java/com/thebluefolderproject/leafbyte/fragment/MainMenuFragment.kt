@@ -16,8 +16,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -27,7 +25,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,23 +32,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.activity.Greeting
-import com.thebluefolderproject.leafbyte.activity.ui.theme.AndroidTheme
 import com.thebluefolderproject.leafbyte.utils.log
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -74,7 +66,7 @@ class MainMenuFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         return ComposeView(requireContext()).apply {
             setContent {
                 MainMenu()
@@ -121,9 +113,11 @@ class MainMenuFragment : Fragment() {
                     withLink(
                         link = LinkAnnotation.Url(
                             url = "https://zoegp.science/leafbyte-faqs",
-                            styles = TextLinkStyles(style = SpanStyle(
-                                color = Color(0xff0000EE),
-                            )),
+                            styles = TextLinkStyles(
+                                style = SpanStyle(
+                                    color = Color(0xff0000EE),
+                                )
+                            ),
                         ),
                     ) {
                         append("FAQs, Help, and Bug Reporting")
@@ -138,7 +132,7 @@ class MainMenuFragment : Fragment() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
 
-                ) {
+                    ) {
                     Image(
                         painter = painterResource(id = R.drawable.galleryicon),
                         contentDescription = "Image gallery icon",
@@ -248,8 +242,10 @@ class MainMenuFragment : Fragment() {
 
                 processActivityResultData(requestCode, data)
             }
+
             AppCompatActivity.RESULT_CANCELED -> {
             }
+
             else -> throw IllegalArgumentException("Result code: $resultCode")
         }
     }
@@ -369,13 +365,16 @@ class MainMenuFragment : Fragment() {
 
                 listener!!.onImageSelection(imageUri)
             }
+
             MainMenuUtils.CAMERA_REQUEST_CODE -> {
                 // no meaningful response??
                 listener!!.onImageSelection(uri!!)
             }
+
             requestCodeSignIn -> {
                 handleSignInResult(data)
             }
+
             else -> throw IllegalArgumentException("Request code: $requestCode")
         }
     }
@@ -433,7 +432,7 @@ object MainMenuUtils {
     }
 
     fun createImageUri(context: Context): Uri {
-        val imageFile = createImageFile(context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+        val imageFile = createImageFile(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
         return FileProvider.getUriForFile(
             context,
             "com.thebluefolderproject.leafbyte.fileprovider",
