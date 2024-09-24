@@ -1,3 +1,4 @@
+import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
 
 plugins {
@@ -20,11 +21,20 @@ protobuf {
         artifact = "com.google.protobuf:protoc:4.28.2"
     }
     generateProtoTasks {
-        all().forEach {task ->
-            task.builtins {
-                create("java") {
+        all().forEach { task ->
+            task.plugins {
+//                id("grpc") {
+//                    option("lite")
+//                }
+//                id("grpckt") {
+//                    option("lite")
+//                }
+                id("java") {
                     option("lite")
                 }
+            }
+            task.builtins {
+                id("kotlin")
             }
         }
     }
