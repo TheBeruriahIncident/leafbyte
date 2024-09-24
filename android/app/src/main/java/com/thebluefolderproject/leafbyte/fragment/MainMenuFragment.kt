@@ -20,12 +20,38 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.activity.Greeting
+import com.thebluefolderproject.leafbyte.activity.ui.theme.AndroidTheme
 import com.thebluefolderproject.leafbyte.utils.log
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -49,34 +75,95 @@ class MainMenuFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        (activity as AppCompatActivity).supportActionBar!!.hide()
-
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_main_menu, container, false)
-        view.findViewById<Button>(R.id.chooseFromGalleryButton).setOnClickListener { chooseImageFromGallery() }
-        view.findViewById<Button>(R.id.takePhotoButton).setOnClickListener { takeAPhoto() }
-        view.findViewById<Button>(R.id.start_tutorial).setOnClickListener { listener!!.startTutorial() }
-        view.findViewById<Button>(R.id.settings).setOnClickListener { listener!!.openSettings() }
-        view.findViewById<TextView>(
-            R.id.savingSummary,
-        ).setText("Dynamically set text about your save location! Potato Potato Potato Potato Potato Potato Potato Potato ")
-
-        // testGoogleApi()
-
-        return view
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MainMenu()
+            }
+        }
     }
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?,
-//    ): View? {
-//        return ComposeView(requireContext()).apply {
-//            setContent {
-//                Text(text = "Hello world.")
-//            }
-//        }
-//    }
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun MainMenu() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                TextButton(
+                    onClick = { listener!!.startTutorial() }
+                ) {
+                    Text("Tutorial")
+                }
+                TextButton(
+                    onClick = { listener!!.openSettings() }
+                ) {
+                    Text("Settings")
+                }
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.leafimage),
+                    contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
+                    Modifier.fillMaxWidth(.3f),
+                )
+                Text(text = "LeafByte")
+                Text(text = "Abigail & Zoe")
+                Text(text = "Getman-Pickering")
+                Text(text = buildAnnotatedString {
+                    withLink(
+                        link = LinkAnnotation.Url(
+                            url = "https://zoegp.science/leafbyte-faqs",
+                            styles = TextLinkStyles(style = SpanStyle(
+                                color = Color(0xff0000EE),
+                            )),
+                        ),
+                    ) {
+                        append("FAQs, Help, and Bug Reporting")
+                    }
+                })
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.galleryicon),
+                        contentDescription = "Image gallery icon",
+                        Modifier
+                            .fillMaxWidth(.3f)
+                            .clickable { chooseImageFromGallery() },
+                    )
+                    Text("Choose from Gallery", modifier = Modifier.clickable { chooseImageFromGallery() })
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.clickable { takeAPhoto() },
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.camera),
+                        contentDescription = "Camera icon",
+                        Modifier.fillMaxWidth(.3f),
+                    )
+                    Text("Take a Photo")
+                }
+            }
+            Text("Data and images are not being saved. Go to settings to change.")
+        }
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
