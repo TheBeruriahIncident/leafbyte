@@ -1,11 +1,14 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Context
+import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 private const val DATA_STORE_FILE_NAME = "settings.pb"
 
@@ -44,42 +47,49 @@ class DataStoreBackedSettings(context: Context) : Settings {
         runBlocking {
             settingsStore.updateData { currentSerializedSettings ->
                 val settingsBuilder = currentSerializedSettings.toBuilder()
-                edit(settingsBuilder).build() }
+                edit(settingsBuilder).build()
+            }
         }
     }
 
     override var dataSaveLocation: SaveLocation
         get() = SaveLocation.fromSerialized(serializedSettings.dataSaveLocation)
         set(newDataSaveLocation) {
-            edit { builder -> builder.setDataSaveLocation(newDataSaveLocation.serialized)}
+            edit { builder -> builder.setDataSaveLocation(newDataSaveLocation.serialized) }
         }
 
     override var imageSaveLocation: SaveLocation
         get() = SaveLocation.fromSerialized(serializedSettings.imageSaveLocation)
         set(newImageSaveLocation) {
-            edit { builder -> builder.setImageSaveLocation(newImageSaveLocation.serialized)}
+            edit { builder -> builder.setImageSaveLocation(newImageSaveLocation.serialized) }
         }
 
     override var datasetName: String
         get() = normalizeDatasetName(serializedSettings.datasetName)
         set(unnormalizedNewDatasetName) {
             val newDatasetName = normalizeDatasetName(unnormalizedNewDatasetName)
-            edit { builder -> builder.setDatasetName(newDatasetName)}
+            edit { builder -> builder.setDatasetName(newDatasetName) }
         }
-    fun normalizeDatasetName(datasetName: String) =
-        datasetName.ifBlank { DEFAULT_DATASET_NAME }
+    fun normalizeDatasetName(datasetName: String) = datasetName.ifBlank { DEFAULT_DATASET_NAME }
 
     override fun noteDatasetUsed() {
-        val epochTimeInSeconds = System.currentTimeMillis() / 1000
-        edit { builder -> builder.putDatasetNameToEpochTimeOfLastUse(datasetName, epochTimeInSeconds)}
+        val epochTimeInSeconds: Long
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            epochTimeInSeconds = Instant.now().epochSecond
+        } else {
+            epochTimeInSeconds = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis())
+        }
+
+        edit { builder -> builder.putDatasetNameToEpochTimeOfLastUse(datasetName, epochTimeInSeconds) }
     }
     override val previousDatasetNames: List<String>
         get() {
             // Sort the dataset names by last use, excluding the current dataset
-            val otherDatasetNames = serializedSettings.datasetNameToEpochTimeOfLastUseMap.toList()
-                .sortedBy { nameToTime -> nameToTime.second }
-                .map { it.first }
-                .filter { it != datasetName }
+            val otherDatasetNames =
+                serializedSettings.datasetNameToEpochTimeOfLastUseMap.toList()
+                    .sortedBy { nameToTime -> nameToTime.second }
+                    .map { it.first }
+                    .filter { it != datasetName }
             // The current dataset is always listed first
             return listOf(datasetName) + otherDatasetNames
         }
@@ -88,24 +98,22 @@ class DataStoreBackedSettings(context: Context) : Settings {
         get() = normalizeScaleMarkLength(serializedSettings.scaleMarkLength)
         set(unnormalizedNewScaleMarkLength) {
             val newScaleMarkLength = normalizeScaleMarkLength(unnormalizedNewScaleMarkLength)
-            edit { builder -> builder.setScaleMarkLength(newScaleMarkLength)}
+            edit { builder -> builder.setScaleMarkLength(newScaleMarkLength) }
         }
-    fun normalizeScaleMarkLength(scaleMarkLength: Float) =
-        if(scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
+    fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
 
     override var unit: String
         get() = normalizeUnit(serializedSettings.getDatasetNameToUnitOrDefault(datasetName, DEFAULT_UNIT))
         set(unnormalizedNewUnit) {
             val newUnit = normalizeUnit(unnormalizedNewUnit)
-            edit { builder -> builder.putDatasetNameToUnit(datasetName, newUnit)}
+            edit { builder -> builder.putDatasetNameToUnit(datasetName, newUnit) }
         }
-    fun normalizeUnit(unit: String) =
-        unit.ifBlank { DEFAULT_UNIT }
+    fun normalizeUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
     override val nextSampleNumber: Int
         get() = serializedSettings.getDatasetNameToNextSampleNumberOrDefault(datasetName, DEFAULT_NEXT_SAMPLE_NUMBER)
     override fun incrementSampleNumber() {
-        edit { builder ->  builder.putDatasetNameToNextSampleNumber(datasetName, nextSampleNumber + 1)}
+        edit { builder -> builder.putDatasetNameToNextSampleNumber(datasetName, nextSampleNumber + 1) }
     }
 
     override var useBarcode: Boolean

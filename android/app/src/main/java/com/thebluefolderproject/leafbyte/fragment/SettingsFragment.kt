@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -69,7 +68,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
     fun Settings(
-        @PreviewParameter(SampleSettingsProvider::class) settings: Settings
+        @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
