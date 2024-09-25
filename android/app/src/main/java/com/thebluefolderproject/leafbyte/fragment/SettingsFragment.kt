@@ -11,6 +11,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.fragment.app.Fragment
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -54,6 +62,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
             } else if (preference is EditTextPreference) {
                 preference.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
             }
+        }
+    }
+
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun Settings(
+        @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Text("Settings")
         }
     }
 

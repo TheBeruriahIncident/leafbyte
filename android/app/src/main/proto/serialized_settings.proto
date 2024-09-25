@@ -1,0 +1,52 @@
+syntax = "proto3"; // TODO: use newest version
+
+option java_package = "com.thebluefolderproject.leafbyte.serializedsettings";
+option java_multiple_files = true;
+
+// These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer
+// and only use ~200 KBs, so it's a truly pathological case where this matters.
+message SerializedSettings {
+  // Defaults to UNSPECIFIED and the proper default is substituted
+  SerializedSaveLocation dataSaveLocation = 1;
+  // Defaults to UNSPECIFIED and the proper default is substituted
+  SerializedSaveLocation imageSaveLocation = 2;
+  // Defaults to empty string and the proper default is substituted
+  string datasetName = 3;
+  // Note that this is int64 https://en.wikipedia.org/wiki/Year_2038_problem
+  map<string, int64> datasetNameToEpochTimeOfLastUse = 4;
+  // Defaults to 0 and the proper default is substituted
+  float scaleMarkLength = 5;
+  map<string, string> datasetNameToUnit = 6;
+  // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
+  map<string, string> datasetNameToUnitInFirstLocalFile = 7;
+  map<string, int32> datasetNameToNextSampleNumber = 8;
+  // Defaults to false
+  bool useBarcode = 9;
+  // Defaults to false
+  bool saveGpsData = 10;
+  // Defaults to false
+  bool useBlackBackground = 11;
+  bytes googleAuthState = 12;
+  map<string, string> userIdToTopLevelGoogleFolderId = 13;
+  map<string, UserIdToGoogleFolderId> datasetNameToUserIdToGoogleFolderId = 14;
+  map<string, UnitToUserIdToGoogleSpreadsheetId> datasetNameToUnitToUserIdToGoogleSpreadsheetId = 15;
+}
+
+enum SerializedSaveLocation { // TODO make this closed
+  UNSPECIFIED = 0;
+  NONE = 1;
+  LOCAL = 2;
+  GOOGLE_DRIVE = 3;
+}
+
+message UserIdToGoogleFolderId {
+  map<string, string> userIdToGoogleFolderId = 1;
+}
+
+message UnitToUserIdToGoogleSpreadsheetId {
+  map<string, UserIdToGoogleSpreadsheetId> userIdToGoogleFolderId = 1;
+}
+
+message UserIdToGoogleSpreadsheetId {
+  map<string, string> userIdToGoogleFolderId = 1;
+}

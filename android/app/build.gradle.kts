@@ -1,3 +1,6 @@
+import com.google.protobuf.gradle.id
+import com.google.protobuf.gradle.proto
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -10,6 +13,31 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
+    id("com.google.protobuf")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.28.2"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins {
+//                id("grpc") {
+//                    option("lite")
+//                }
+//                id("grpckt") {
+//                    option("lite")
+//                }
+                id("java") {
+                    option("lite")
+                }
+            }
+            task.builtins {
+                id("kotlin")
+            }
+        }
+    }
 }
 
 detekt {
@@ -40,6 +68,14 @@ android {
                 "META-INF/NOTICE.txt", "META-INF/notice.txt", "META-INF/ASL2.0", "META-INF/*.kotlin_module", "META-INF/*",
             ),
         )
+    }
+
+    sourceSets {
+        named("main") {
+            proto {
+                srcDir("src/main/proto")
+            }
+        }
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
@@ -105,6 +141,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation("androidx.datastore:datastore:1.1.1")
     implementation("androidx.fragment:fragment-ktx:1.8.3")
     implementation("androidx.navigation:navigation-common:2.8.1")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.1")
@@ -141,6 +178,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-text:1.7.2")
     implementation("androidx.compose.ui:ui-unit:1.7.2")
 
+    implementation("com.google.protobuf:protobuf-kotlin-lite:4.28.2")
+
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
 
     // androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -148,14 +187,18 @@ dependencies {
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.5.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
 
     androidTestImplementation("androidx.test:core:1.6.1")
+
+    implementation("androidx.datastore:datastore-core:1.1.1")
+    implementation("com.google.protobuf:protobuf-javalite:4.28.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
     // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     debugImplementation("androidx.compose.ui:ui-tooling")

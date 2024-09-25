@@ -3,3 +3,6 @@ config:
 naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
+style:
+  MaxLineLength:
+    maxLineLength: 140
