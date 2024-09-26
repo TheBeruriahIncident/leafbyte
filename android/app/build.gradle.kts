@@ -14,7 +14,28 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
     id("com.google.protobuf")
+    id("jacoco")
 }
+
+junitPlatform.jacocoOptions
+// junitPlatform.enableStandardTestTask true
+
+jacoco {
+    toolVersion = "0.8.12"
+//    applyTo(Task)
+//    applyTo(junitPlatformTest)
+}
+jacoco.apply {
+    toolVersion = "0.8.12"
+    reportsDirectory = file("${layout.buildDirectory}/reports")
+}
+
+// jacocoTestReport {
+//    reports {
+//        xml.enabled = true
+//        html.enabled = true
+//    }
+// }
 
 protobuf {
     protoc {
@@ -101,8 +122,32 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+//        java {
+//           testCoverage {
+//               jacocoVersion = "0.8.12"
+//
+//           }
+//        }
+//        debug {
+//            enableUnitTestCoverage true
+//        }
     }
+    testOptions {
+        animationsDisabled = true
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+
+            isMinifyEnabled = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
