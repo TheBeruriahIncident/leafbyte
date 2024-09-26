@@ -25,7 +25,7 @@ class SettingsTest {
     @RegisterExtension
     val activityScenarioExtension = ActivityScenarioExtension.launch<LeafByteActivity>()
 
-    private fun helper(test: (settings: Settings) -> Unit) {
+    private fun helper(test: Settings.() -> Unit) {
         activityScenarioExtension.scenario.onActivity { activity ->
             val settings = DataStoreBackedSettings(activity)
             test(settings)
@@ -41,61 +41,61 @@ class SettingsTest {
 
     @Test
     fun testDefaultValues() {
-        helper { settings ->
-            assertEquals(SaveLocation.LOCAL, settings.dataSaveLocation)
-            assertEquals(SaveLocation.LOCAL, settings.imageSaveLocation)
-            assertEquals("Herbivory Data", settings.datasetName)
-            assertEquals(10f, settings.scaleMarkLength)
-            assertEquals("cm", settings.scaleLengthUnit)
-            assertEquals(1, settings.nextSampleNumber)
-            assertFalse(settings.useBarcode)
-            assertFalse(settings.saveGpsData)
-            assertFalse(settings.useBlackBackground)
+        helper {
+            assertEquals(SaveLocation.LOCAL, dataSaveLocation)
+            assertEquals(SaveLocation.LOCAL, imageSaveLocation)
+            assertEquals("Herbivory Data", datasetName)
+            assertEquals(10f, scaleMarkLength)
+            assertEquals("cm", scaleLengthUnit)
+            assertEquals(1, nextSampleNumber)
+            assertFalse(useBarcode)
+            assertFalse(saveGpsData)
+            assertFalse(useBlackBackground)
         }
     }
 
     @Test
     fun testDataSaveLocation() {
-        helper { settings ->
-            settings.dataSaveLocation = SaveLocation.GOOGLE_DRIVE
-            assertEquals(SaveLocation.GOOGLE_DRIVE, settings.dataSaveLocation)
+        helper {
+            dataSaveLocation = SaveLocation.GOOGLE_DRIVE
+            assertEquals(SaveLocation.GOOGLE_DRIVE, dataSaveLocation)
 
-            settings.dataSaveLocation = SaveLocation.LOCAL
-            assertEquals(SaveLocation.LOCAL, settings.dataSaveLocation)
+            dataSaveLocation = SaveLocation.LOCAL
+            assertEquals(SaveLocation.LOCAL, dataSaveLocation)
 
-            settings.dataSaveLocation = SaveLocation.NONE
-            assertEquals(SaveLocation.NONE, settings.dataSaveLocation)
+            dataSaveLocation = SaveLocation.NONE
+            assertEquals(SaveLocation.NONE, dataSaveLocation)
         }
     }
 
     @Test
     fun testImageSaveLocation() {
-        helper { settings ->
-            settings.imageSaveLocation = SaveLocation.GOOGLE_DRIVE
-            assertEquals(SaveLocation.GOOGLE_DRIVE, settings.imageSaveLocation)
+        helper {
+            imageSaveLocation = SaveLocation.GOOGLE_DRIVE
+            assertEquals(SaveLocation.GOOGLE_DRIVE, imageSaveLocation)
 
-            settings.imageSaveLocation = SaveLocation.LOCAL
-            assertEquals(SaveLocation.LOCAL, settings.imageSaveLocation)
+            imageSaveLocation = SaveLocation.LOCAL
+            assertEquals(SaveLocation.LOCAL, imageSaveLocation)
 
-            settings.imageSaveLocation = SaveLocation.NONE
-            assertEquals(SaveLocation.NONE, settings.imageSaveLocation)
+            imageSaveLocation = SaveLocation.NONE
+            assertEquals(SaveLocation.NONE, imageSaveLocation)
         }
     }
 
     @Test
     fun testDatasetName() {
-        helper { settings ->
-            settings.datasetName = "Potato"
-            assertEquals("Potato", settings.datasetName)
+        helper {
+            datasetName = "Potato"
+            assertEquals("Potato", datasetName)
 
-            settings.datasetName = "Salad"
-            assertEquals("Salad", settings.datasetName)
+            datasetName = "Salad"
+            assertEquals("Salad", datasetName)
 
-            settings.datasetName = ""
-            assertEquals("Herbivory Data", settings.datasetName)
+            datasetName = ""
+            assertEquals("Herbivory Data", datasetName)
 
-            settings.datasetName = "    \n   "
-            assertEquals("Herbivory Data", settings.datasetName)
+            datasetName = "    \n   "
+            assertEquals("Herbivory Data", datasetName)
         }
     }
 
@@ -104,140 +104,140 @@ class SettingsTest {
      */
     @Test
     fun testPreviousDatasetNames() {
-        helper { settings ->
-            assertEquals(listOf("Herbivory Data"), settings.previousDatasetNames)
+        helper {
+            assertEquals(listOf("Herbivory Data"), previousDatasetNames)
 
-            settings.datasetName = "Potato"
-            assertEquals(listOf("Potato"), settings.previousDatasetNames)
+            datasetName = "Potato"
+            assertEquals(listOf("Potato"), previousDatasetNames)
 
-            settings.datasetName = "Salad"
-            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+            datasetName = "Salad"
+            assertEquals(listOf("Salad"), previousDatasetNames)
 
             TimeUnit.SECONDS.sleep(1)
-            settings.noteDatasetUsed()
-            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+            noteDatasetUsed()
+            assertEquals(listOf("Salad"), previousDatasetNames)
 
-            settings.datasetName = "Dill"
-            assertEquals(listOf("Dill", "Salad"), settings.previousDatasetNames)
+            datasetName = "Dill"
+            assertEquals(listOf("Dill", "Salad"), previousDatasetNames)
 
-            settings.datasetName = "Salad"
-            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+            datasetName = "Salad"
+            assertEquals(listOf("Salad"), previousDatasetNames)
 
-            settings.datasetName = "Dill"
+            datasetName = "Dill"
             TimeUnit.SECONDS.sleep(1)
-            settings.noteDatasetUsed()
-            assertEquals(listOf("Dill", "Salad"), settings.previousDatasetNames)
+            noteDatasetUsed()
+            assertEquals(listOf("Dill", "Salad"), previousDatasetNames)
 
-            settings.datasetName = "Salad"
-            assertEquals(listOf("Salad", "Dill"), settings.previousDatasetNames)
+            datasetName = "Salad"
+            assertEquals(listOf("Salad", "Dill"), previousDatasetNames)
 
-            settings.datasetName = "Potato"
-            assertEquals(listOf("Potato", "Dill", "Salad"), settings.previousDatasetNames)
+            datasetName = "Potato"
+            assertEquals(listOf("Potato", "Dill", "Salad"), previousDatasetNames)
 
-            settings.datasetName = "Vinegar"
+            datasetName = "Vinegar"
             TimeUnit.SECONDS.sleep(1)
-            settings.noteDatasetUsed()
-            settings.datasetName = "Dill"
+            noteDatasetUsed()
+            datasetName = "Dill"
             TimeUnit.SECONDS.sleep(1)
-            settings.noteDatasetUsed()
-            settings.datasetName = "Potato"
-            assertEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), settings.previousDatasetNames)
+            noteDatasetUsed()
+            datasetName = "Potato"
+            assertEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), previousDatasetNames)
         }
     }
 
     @Test
     fun testScaleMarkLength() {
-        helper { settings ->
-            settings.scaleMarkLength = 5.3f
-            assertEquals(5.3f, settings.scaleMarkLength)
+        helper {
+            scaleMarkLength = 5.3f
+            assertEquals(5.3f, scaleMarkLength)
 
-            settings.scaleMarkLength = 241.234f
-            assertEquals(241.234f, settings.scaleMarkLength)
+            scaleMarkLength = 241.234f
+            assertEquals(241.234f, scaleMarkLength)
 
-            settings.scaleMarkLength = 0f
-            assertEquals(10f, settings.scaleMarkLength)
+            scaleMarkLength = 0f
+            assertEquals(10f, scaleMarkLength)
 
-            settings.scaleMarkLength = -5f
-            assertEquals(10f, settings.scaleMarkLength)
+            scaleMarkLength = -5f
+            assertEquals(10f, scaleMarkLength)
         }
     }
 
     @Test
     fun testScaleLengthUnit() {
-        helper { settings ->
-            settings.scaleLengthUnit = "mm"
-            assertEquals("mm", settings.scaleLengthUnit)
+        helper {
+            scaleLengthUnit = "mm"
+            assertEquals("mm", scaleLengthUnit)
 
-            settings.scaleLengthUnit = "ft"
-            assertEquals("ft", settings.scaleLengthUnit)
+            scaleLengthUnit = "ft"
+            assertEquals("ft", scaleLengthUnit)
 
-            settings.scaleLengthUnit = " \n "
-            assertEquals("cm", settings.scaleLengthUnit)
+            scaleLengthUnit = " \n "
+            assertEquals("cm", scaleLengthUnit)
         }
     }
 
     @Test
     fun testNextSampleNumber() {
-        helper { settings ->
-            settings.nextSampleNumber = 12
-            assertEquals(12, settings.nextSampleNumber)
+        helper {
+            nextSampleNumber = 12
+            assertEquals(12, nextSampleNumber)
 
-            settings.nextSampleNumber = 0
-            assertEquals(1, settings.nextSampleNumber)
+            nextSampleNumber = 0
+            assertEquals(1, nextSampleNumber)
 
-            settings.nextSampleNumber = -5
-            assertEquals(1, settings.nextSampleNumber)
+            nextSampleNumber = -5
+            assertEquals(1, nextSampleNumber)
 
-            settings.incrementSampleNumber()
-            assertEquals(2, settings.nextSampleNumber)
+            incrementSampleNumber()
+            assertEquals(2, nextSampleNumber)
 
-            settings.nextSampleNumber = 25
-            assertEquals(25, settings.nextSampleNumber)
+            nextSampleNumber = 25
+            assertEquals(25, nextSampleNumber)
 
-            settings.datasetName = "Potato"
-            assertEquals(1, settings.nextSampleNumber)
+            datasetName = "Potato"
+            assertEquals(1, nextSampleNumber)
 
-            settings.nextSampleNumber = 12
-            assertEquals(12, settings.nextSampleNumber)
+            nextSampleNumber = 12
+            assertEquals(12, nextSampleNumber)
 
-            settings.datasetName = "Herbivory Data"
-            assertEquals(25, settings.nextSampleNumber)
+            datasetName = "Herbivory Data"
+            assertEquals(25, nextSampleNumber)
 
-            settings.datasetName = "Potato"
-            assertEquals(12, settings.nextSampleNumber)
+            datasetName = "Potato"
+            assertEquals(12, nextSampleNumber)
         }
     }
 
     @Test
     fun testScanBarcodes() {
-        helper { settings ->
-            settings.useBarcode = true
-            assertEquals(true, settings.useBarcode)
+        helper {
+            useBarcode = true
+            assertEquals(true, useBarcode)
 
-            settings.useBarcode = false
-            assertEquals(false, settings.useBarcode)
+            useBarcode = false
+            assertEquals(false, useBarcode)
         }
     }
 
     @Test
     fun testGpsLocation() {
-        helper { settings ->
-            settings.saveGpsData = true
-            assertEquals(true, settings.saveGpsData)
+        helper {
+            saveGpsData = true
+            assertEquals(true, saveGpsData)
 
-            settings.saveGpsData = false
-            assertEquals(false, settings.saveGpsData)
+            saveGpsData = false
+            assertEquals(false, saveGpsData)
         }
     }
 
     @Test
     fun testUseBlackBackground() {
-        helper { settings ->
-            settings.useBlackBackground = true
-            assertEquals(true, settings.useBlackBackground)
+        helper {
+            useBlackBackground = true
+            assertEquals(true, useBlackBackground)
 
-            settings.useBlackBackground = false
-            assertEquals(false, settings.useBlackBackground)
+            useBlackBackground = false
+            assertEquals(false, useBlackBackground)
         }
     }
 }

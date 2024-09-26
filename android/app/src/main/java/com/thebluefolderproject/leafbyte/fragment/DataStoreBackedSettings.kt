@@ -62,7 +62,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
             return cachedSerializedSettings!!
         }
 
-    private fun edit(editAction: (SerializedSettings.Builder) -> SerializedSettings.Builder) {
+    private fun edit(editAction: SerializedSettings.Builder.() -> SerializedSettings.Builder) {
         runBlocking {
             settingsStore.updateData { currentSerializedSettings ->
                 val settingsBuilder = currentSerializedSettings.toBuilder()
@@ -78,20 +78,20 @@ class DataStoreBackedSettings(context: Context) : Settings {
     override var dataSaveLocation: SaveLocation
         get() = SaveLocation.fromSerialized(serializedSettings.dataSaveLocation)
         set(newDataSaveLocation) {
-            edit { builder -> builder.setDataSaveLocation(newDataSaveLocation.serialized) }
+            edit { setDataSaveLocation(newDataSaveLocation.serialized) }
         }
 
     override var imageSaveLocation: SaveLocation
         get() = SaveLocation.fromSerialized(serializedSettings.imageSaveLocation)
         set(newImageSaveLocation) {
-            edit { builder -> builder.setImageSaveLocation(newImageSaveLocation.serialized) }
+            edit { setImageSaveLocation(newImageSaveLocation.serialized) }
         }
 
     override var datasetName: String
         get() = normalizeDatasetName(serializedSettings.datasetName)
         set(unnormalizedNewDatasetName) {
             val newDatasetName = normalizeDatasetName(unnormalizedNewDatasetName)
-            edit { builder -> builder.setDatasetName(newDatasetName) }
+            edit { setDatasetName(newDatasetName) }
         }
     private fun normalizeDatasetName(datasetName: String) = datasetName.ifBlank { DEFAULT_DATASET_NAME }
 
@@ -103,7 +103,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
             epochTimeInSeconds = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis())
         }
 
-        edit { builder -> builder.putDatasetNameToEpochTimeOfLastUse(datasetName, epochTimeInSeconds) }
+        edit { putDatasetNameToEpochTimeOfLastUse(datasetName, epochTimeInSeconds) }
     }
     override val previousDatasetNames: List<String>
         get() {
@@ -122,7 +122,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
         get() = normalizeScaleMarkLength(serializedSettings.scaleMarkLength)
         set(unnormalizedNewScaleMarkLength) {
             val newScaleMarkLength = normalizeScaleMarkLength(unnormalizedNewScaleMarkLength)
-            edit { builder -> builder.setScaleMarkLength(newScaleMarkLength) }
+            edit { setScaleMarkLength(newScaleMarkLength) }
         }
     private fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
 
@@ -130,7 +130,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
         get() = normalizeScaleLengthUnit(serializedSettings.getDatasetNameToUnitOrDefault(datasetName, DEFAULT_UNIT))
         set(unnormalizedNewScaleLengthUnit) {
             val newScaleLengthUnit = normalizeScaleLengthUnit(unnormalizedNewScaleLengthUnit)
-            edit { builder -> builder.putDatasetNameToUnit(datasetName, newScaleLengthUnit) }
+            edit { putDatasetNameToUnit(datasetName, newScaleLengthUnit) }
         }
     private fun normalizeScaleLengthUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
@@ -138,7 +138,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
         get() = serializedSettings.getDatasetNameToNextSampleNumberOrDefault(datasetName, DEFAULT_NEXT_SAMPLE_NUMBER)
         set(unnormalizedNewNextSampleNumber) {
             val newNextSampleNumber = normalizeNextSampleNumber(unnormalizedNewNextSampleNumber)
-            edit { builder -> builder.putDatasetNameToNextSampleNumber(datasetName, newNextSampleNumber) }
+            edit { putDatasetNameToNextSampleNumber(datasetName, newNextSampleNumber) }
         }
     private fun normalizeNextSampleNumber(nextSampleNumber: Int) =
         if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
@@ -149,18 +149,18 @@ class DataStoreBackedSettings(context: Context) : Settings {
     override var useBarcode: Boolean
         get() = serializedSettings.useBarcode
         set(newUseBarcode) {
-            edit { builder -> builder.setUseBarcode(newUseBarcode) }
+            edit { setUseBarcode(newUseBarcode) }
         }
 
     override var saveGpsData: Boolean
         get() = serializedSettings.saveGpsData
         set(newSaveGpsData) {
-            edit { builder -> builder.setSaveGpsData(newSaveGpsData) }
+            edit { setSaveGpsData(newSaveGpsData) }
         }
 
     override var useBlackBackground: Boolean
         get() = serializedSettings.useBlackBackground
         set(newUseBlackBackground) {
-            edit { builder -> builder.setUseBlackBackground(newUseBlackBackground) }
+            edit { setUseBlackBackground(newUseBlackBackground) }
         }
 }
