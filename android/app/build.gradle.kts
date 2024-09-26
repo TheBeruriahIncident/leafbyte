@@ -44,18 +44,11 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
-//                id("grpc") {
-//                    option("lite")
-//                }
-//                id("grpckt") {
-//                    option("lite")
-//                }
                 id("java") {
                     option("lite")
+                    // Adds @javax.annotation.Generated annotation to the generated code for tooling like Jacoco
+                    option("annotate_code")
                 }
-            }
-            task.builtins {
-                id("kotlin")
             }
         }
     }
@@ -159,6 +152,14 @@ android {
         jvmToolchain(17)
     }
 
+    tasks.withType<JacocoReport> {
+        reports {
+            csv.required = true
+            xml.required = true
+            html.required = true
+        }
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform()
         reports.junitXml.required.set(true)
@@ -205,6 +206,8 @@ dependencies {
 //    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
+
+//    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")

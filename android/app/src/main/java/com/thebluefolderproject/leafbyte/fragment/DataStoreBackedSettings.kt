@@ -28,7 +28,11 @@ private val Context.settingsStore: DataStore<SerializedSettings> by dataStore(
 @VisibleForTesting
 @RequiresApi(Build.VERSION_CODES.O)
 fun clearSettingsStore(context: Context) {
-    runBlocking { context.settingsStore.updateData { current -> current.toBuilder().clear().build() } }
+    runBlocking {
+        context.settingsStore.updateData {
+            current -> current.toBuilder().clear().build()
+        }
+    }
 
     val preexistingSettings = context.dataDir.resolve("files/datastore/settings.pb")
     if (preexistingSettings.exists()) {
