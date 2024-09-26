@@ -9,20 +9,13 @@ import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
-import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertIterableEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
-import java.io.File
-import java.nio.file.Files
 import java.util.concurrent.TimeUnit
-
 
 /**
  * This class intentionally uses some literals and avoids using some constants to be sure everything is working exactly as expected.

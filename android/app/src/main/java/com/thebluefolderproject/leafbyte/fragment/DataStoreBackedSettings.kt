@@ -2,7 +2,6 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Context
 import android.os.Build
-import androidx.annotation.OpenForTesting
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
@@ -25,6 +24,7 @@ private val Context.settingsStore: DataStore<SerializedSettings> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
     serializer = SerializedSettingsSerializer,
 )
+
 @VisibleForTesting
 @RequiresApi(Build.VERSION_CODES.O)
 fun clearSettingsStore(context: Context) {
@@ -136,7 +136,8 @@ class DataStoreBackedSettings(context: Context) : Settings {
             val newNextSampleNumber = normalizeNextSampleNumber(unnormalizedNewNextSampleNumber)
             edit { builder -> builder.putDatasetNameToNextSampleNumber(datasetName, newNextSampleNumber) }
         }
-    private fun normalizeNextSampleNumber(nextSampleNumber: Int) = if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
+    private fun normalizeNextSampleNumber(nextSampleNumber: Int) =
+        if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
     override fun incrementSampleNumber() {
         nextSampleNumber += 1
     }
