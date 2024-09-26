@@ -90,6 +90,7 @@ android {
         versionCode = 1
         versionName = "0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         multiDexEnabled = true
 
         manifestPlaceholders["appAuthRedirectScheme"] = "com.thebluefolderproject.leafbyte"

@@ -9,9 +9,9 @@ interface Settings {
     val previousDatasetNames: List<String>
 
     var scaleMarkLength: Float
-    var unit: String
+    var scaleLengthUnit: String
 
-    val nextSampleNumber: Int
+    var nextSampleNumber: Int
     fun incrementSampleNumber()
 
     var useBarcode: Boolean

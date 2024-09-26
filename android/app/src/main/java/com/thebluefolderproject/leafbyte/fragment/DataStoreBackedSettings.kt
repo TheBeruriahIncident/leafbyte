@@ -2,11 +2,16 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.Context
 import android.os.Build
+import androidx.annotation.OpenForTesting
+import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
+import com.thebluefolderproject.leafbyte.utils.log
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.nio.file.Files
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 
@@ -20,6 +25,17 @@ private val Context.settingsStore: DataStore<SerializedSettings> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
     serializer = SerializedSettingsSerializer,
 )
+@VisibleForTesting
+@RequiresApi(Build.VERSION_CODES.O)
+fun clearSettingsStore(context: Context) {
+    runBlocking { context.settingsStore.updateData { current -> current.toBuilder().clear().build() } }
+
+    val preexistingSettings = context.dataDir.resolve("files/datastore/settings.pb")
+    if (preexistingSettings.exists()) {
+        Files.delete(preexistingSettings.toPath())
+        log("Deleted preexisting settings file")
+    }
+}
 
 private const val DEFAULT_DATASET_NAME = "Herbivory Data"
 private const val DEFAULT_NEXT_SAMPLE_NUMBER = 1
@@ -41,15 +57,18 @@ class DataStoreBackedSettings(context: Context) : Settings {
             }
             return cachedSerializedSettings!!
         }
-    private fun edit(edit: (SerializedSettings.Builder) -> SerializedSettings.Builder) {
-        cachedSerializedSettings = null // invalidate the cache
 
+    private fun edit(editAction: (SerializedSettings.Builder) -> SerializedSettings.Builder) {
         runBlocking {
             settingsStore.updateData { currentSerializedSettings ->
                 val settingsBuilder = currentSerializedSettings.toBuilder()
-                edit(settingsBuilder).build()
+                editAction(settingsBuilder).build()
             }
         }
+
+        // We clear the cache after editing rather than before, because the editAction may itself call a getter and indirectly restore the
+        //   cache, which leads to very cryptic inconsistent data.
+        cachedSerializedSettings = null // invalidate the cache
     }
 
     override var dataSaveLocation: SaveLocation
@@ -70,7 +89,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
             val newDatasetName = normalizeDatasetName(unnormalizedNewDatasetName)
             edit { builder -> builder.setDatasetName(newDatasetName) }
         }
-    fun normalizeDatasetName(datasetName: String) = datasetName.ifBlank { DEFAULT_DATASET_NAME }
+    private fun normalizeDatasetName(datasetName: String) = datasetName.ifBlank { DEFAULT_DATASET_NAME }
 
     override fun noteDatasetUsed() {
         val epochTimeInSeconds: Long
@@ -100,20 +119,25 @@ class DataStoreBackedSettings(context: Context) : Settings {
             val newScaleMarkLength = normalizeScaleMarkLength(unnormalizedNewScaleMarkLength)
             edit { builder -> builder.setScaleMarkLength(newScaleMarkLength) }
         }
-    fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
+    private fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
 
-    override var unit: String
-        get() = normalizeUnit(serializedSettings.getDatasetNameToUnitOrDefault(datasetName, DEFAULT_UNIT))
-        set(unnormalizedNewUnit) {
-            val newUnit = normalizeUnit(unnormalizedNewUnit)
-            edit { builder -> builder.putDatasetNameToUnit(datasetName, newUnit) }
+    override var scaleLengthUnit: String
+        get() = normalizeScaleLengthUnit(serializedSettings.getDatasetNameToUnitOrDefault(datasetName, DEFAULT_UNIT))
+        set(unnormalizedNewScaleLengthUnit) {
+            val newScaleLengthUnit = normalizeScaleLengthUnit(unnormalizedNewScaleLengthUnit)
+            edit { builder -> builder.putDatasetNameToUnit(datasetName, newScaleLengthUnit) }
         }
-    fun normalizeUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
+    private fun normalizeScaleLengthUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
-    override val nextSampleNumber: Int
+    override var nextSampleNumber: Int
         get() = serializedSettings.getDatasetNameToNextSampleNumberOrDefault(datasetName, DEFAULT_NEXT_SAMPLE_NUMBER)
+        set(unnormalizedNewNextSampleNumber) {
+            val newNextSampleNumber = normalizeNextSampleNumber(unnormalizedNewNextSampleNumber)
+            edit { builder -> builder.putDatasetNameToNextSampleNumber(datasetName, newNextSampleNumber) }
+        }
+    private fun normalizeNextSampleNumber(nextSampleNumber: Int) = if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
     override fun incrementSampleNumber() {
-        edit { builder -> builder.putDatasetNameToNextSampleNumber(datasetName, nextSampleNumber + 1) }
+        nextSampleNumber += 1
     }
 
     override var useBarcode: Boolean

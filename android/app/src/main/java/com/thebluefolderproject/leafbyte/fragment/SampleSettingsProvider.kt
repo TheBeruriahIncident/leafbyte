@@ -26,11 +26,12 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                     override var scaleMarkLength: Float
                         get() = TODO("Not yet implemented")
                         set(value) {}
-                    override var unit: String
+                    override var scaleLengthUnit: String
                         get() = TODO("Not yet implemented")
                         set(value) {}
-                    override val nextSampleNumber: Int
+                    override var nextSampleNumber: Int
                         get() = TODO("Not yet implemented")
+                        set(value) {}
 
                     override fun incrementSampleNumber() {
                         TODO("Not yet implemented")
