@@ -16,9 +16,9 @@ package javax.annotation
     AnnotationTarget.PROPERTY_SETTER,
     AnnotationTarget.FILE,
     AnnotationTarget.VALUE_PARAMETER,
-    AnnotationTarget.CLASS
+    AnnotationTarget.CLASS,
 )
 @Retention(
-    AnnotationRetention.RUNTIME
+    AnnotationRetention.RUNTIME,
 )
 annotation class Generated(vararg val value: String, val date: String = "", val comments: String = "")

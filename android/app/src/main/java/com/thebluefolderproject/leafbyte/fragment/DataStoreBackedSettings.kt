@@ -29,8 +29,8 @@ private val Context.settingsStore: DataStore<SerializedSettings> by dataStore(
 @RequiresApi(Build.VERSION_CODES.O)
 fun clearSettingsStore(context: Context) {
     runBlocking {
-        context.settingsStore.updateData {
-            current -> current.toBuilder().clear().build()
+        context.settingsStore.updateData { current ->
+            current.toBuilder().clear().build()
         }
     }
 
