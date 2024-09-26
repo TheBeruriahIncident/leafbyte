@@ -12,11 +12,11 @@ import android.util.Log
 const val UNUSED = "UNUSED_PARAMETER"
 
 fun log(o: Any) {
-    Log.e("ABIGAIL", o.toString())
+    Log.i("LeafByte", o.toString())
 }
 
 fun log(o: Exception) {
-    Log.e("ABIGAIL", Log.getStackTraceString(o))
+    Log.e("LeafByte", Log.getStackTraceString(o))
 }
 
 fun checkState(

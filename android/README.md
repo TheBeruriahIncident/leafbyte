@@ -18,6 +18,7 @@ Some useful commands:
 - `./gradlew detekt` to check for detekt issues
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks
+- `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass
 
 Regarding code coverage reports:
 - To check coverage from unit tests, run `./gradlew jacocoTestReport` and find the report at `- app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec`
