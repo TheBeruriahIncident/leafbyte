@@ -107,6 +107,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
             val otherDatasetNames =
                 serializedSettings.datasetNameToEpochTimeOfLastUseMap.toList()
                     .sortedBy { nameToTime -> nameToTime.second }
+                    .reversed()
                     .map { it.first }
                     .filter { it != datasetName }
             // The current dataset is always listed first

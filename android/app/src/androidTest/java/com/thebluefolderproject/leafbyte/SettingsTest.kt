@@ -14,12 +14,14 @@ import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import java.io.File
 import java.nio.file.Files
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -95,28 +97,89 @@ class SettingsTest {
 
             settings.datasetName = "Salad"
             assertEquals("Salad", settings.datasetName)
+
+            settings.datasetName = ""
+            assertEquals("Herbivory Data", settings.datasetName)
+
+            settings.datasetName = "    \n   "
+            assertEquals("Herbivory Data", settings.datasetName)
+        }
+    }
+
+    /**
+     * We sleep before calling noteDatasetUsed, because epoch time is in seconds, and we want to record a different second.
+     */
+    @Test
+    fun testPreviousDatasetNames() {
+        helper { settings ->
+            assertEquals(listOf("Herbivory Data"), settings.previousDatasetNames)
+
+            settings.datasetName = "Potato"
+            assertEquals(listOf("Potato"), settings.previousDatasetNames)
+
+            settings.datasetName = "Salad"
+            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+
+            TimeUnit.SECONDS.sleep(1)
+            settings.noteDatasetUsed()
+            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+
+            settings.datasetName = "Dill"
+            assertEquals(listOf("Dill", "Salad"), settings.previousDatasetNames)
+
+            settings.datasetName = "Salad"
+            assertEquals(listOf("Salad"), settings.previousDatasetNames)
+
+            settings.datasetName = "Dill"
+            TimeUnit.SECONDS.sleep(1)
+            settings.noteDatasetUsed()
+            assertEquals(listOf("Dill", "Salad"), settings.previousDatasetNames)
+
+            settings.datasetName = "Salad"
+            assertEquals(listOf("Salad", "Dill"), settings.previousDatasetNames)
+
+            settings.datasetName = "Potato"
+            assertEquals(listOf("Potato", "Dill", "Salad"), settings.previousDatasetNames)
+
+            settings.datasetName = "Vinegar"
+            TimeUnit.SECONDS.sleep(1)
+            settings.noteDatasetUsed()
+            settings.datasetName = "Dill"
+            TimeUnit.SECONDS.sleep(1)
+            settings.noteDatasetUsed()
+            settings.datasetName = "Potato"
+            assertEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), settings.previousDatasetNames)
         }
     }
 
     @Test
-    fun testScaleLength() {
+    fun testScaleMarkLength() {
         helper { settings ->
             settings.scaleMarkLength = 5.3f
             assertEquals(5.3f, settings.scaleMarkLength)
 
             settings.scaleMarkLength = 241.234f
             assertEquals(241.234f, settings.scaleMarkLength)
+
+            settings.scaleMarkLength = 0f
+            assertEquals(10f, settings.scaleMarkLength)
+
+            settings.scaleMarkLength = -5f
+            assertEquals(10f, settings.scaleMarkLength)
         }
     }
 
     @Test
-    fun testScaleLengthUnits() {
+    fun testScaleLengthUnit() {
         helper { settings ->
             settings.scaleLengthUnit = "mm"
             assertEquals("mm", settings.scaleLengthUnit)
 
             settings.scaleLengthUnit = "ft"
             assertEquals("ft", settings.scaleLengthUnit)
+
+            settings.scaleLengthUnit = " \n "
+            assertEquals("cm", settings.scaleLengthUnit)
         }
     }
 
@@ -126,8 +189,29 @@ class SettingsTest {
             settings.nextSampleNumber = 12
             assertEquals(12, settings.nextSampleNumber)
 
+            settings.nextSampleNumber = 0
+            assertEquals(1, settings.nextSampleNumber)
+
+            settings.nextSampleNumber = -5
+            assertEquals(1, settings.nextSampleNumber)
+
+            settings.incrementSampleNumber()
+            assertEquals(2, settings.nextSampleNumber)
+
             settings.nextSampleNumber = 25
             assertEquals(25, settings.nextSampleNumber)
+
+            settings.datasetName = "Potato"
+            assertEquals(1, settings.nextSampleNumber)
+
+            settings.nextSampleNumber = 12
+            assertEquals(12, settings.nextSampleNumber)
+
+            settings.datasetName = "Herbivory Data"
+            assertEquals(25, settings.nextSampleNumber)
+
+            settings.datasetName = "Potato"
+            assertEquals(12, settings.nextSampleNumber)
         }
     }
 
