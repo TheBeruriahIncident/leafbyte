@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 enum class TextSize(val fontSize: TextUnit) {
-    MAIN_TITLE(25.sp),
+    MAIN_TITLE(45.sp),
     SCREEN_TITLE(20.sp),
     STANDARD(16.sp),
     IN_BUTTON(14.sp),

@@ -44,6 +44,7 @@ import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.Text
+import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.log
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -106,7 +107,7 @@ class MainMenuFragment : Fragment() {
                     contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
                     Modifier.fillMaxWidth(.3f),
                 )
-                Text(text = "LeafByte")
+                Text(text = "LeafByte", size = TextSize.MAIN_TITLE)
                 Text(text = "Abigail & Zoe")
                 Text(text = "Getman-Pickering")
                 Text(
