@@ -5,26 +5,18 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.drawable.VectorDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,31 +24,26 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.activity.Preferences
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-import org.xmlpull.v1.XmlPullParser
+import com.thebluefolderproject.leafbyte.utils.log
 
 /**
  * settings vs preferences
@@ -71,26 +58,19 @@ import org.xmlpull.v1.XmlPullParser
  */
 @SuppressLint("all")
 @Suppress("all")
-class SettingsFragment : PreferenceFragmentCompat() {
-    private fun setup(preferences: Preferences) {
-        for (i in 0 until preferenceScreen.preferenceCount) {
-            val preference = preferenceScreen.getPreference(i)
+class SettingsFragment : Fragment() {
 
-            preference.isIconSpaceReserved = false
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                // TODO: is it bad to be recreating this on every page?
+                val settings = remember { DataStoreBackedSettings(requireContext()) }
 
-        preferences.allKeys.forEach { key ->
-            val preference: Preference = preferenceManager.findPreference(key)!!
-            // every pref needs this or else it's misaligned
-            preference.isIconSpaceReserved = false
-
-            if (key == preferences.scaleLengthKey) {
-                return@forEach
-            }
-            if (preference is ListPreference) {
-                preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-            } else if (preference is EditTextPreference) {
-                preference.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+                Settings(settings)
             }
         }
     }
@@ -100,7 +80,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     fun Settings(
         @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
     ) {
-        MaterialTheme() {
+        log("top level settings again")
+
+        MaterialTheme() { // TODO: where to put that
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -111,7 +93,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 Text("Settings", size = TextSize.SCREEN_TITLE)
                 SaveLocationSetting("Data", settings.dataSaveLocation) { settings.dataSaveLocation = it }
                 SaveLocationSetting("Image", settings.imageSaveLocation) { settings.imageSaveLocation = it }
-
+                SingleSetting("Dataset Name") {
+                    log("dataset name again")
+                    TextField( // TODO: add ime
+                        value = settings.datasetName,
+                        onValueChange = { settings.datasetName = it },
+                        placeholder = {
+                            Text("placeholder")
+                        },
+                    )
+                }
                 ToggleableSetting("Scan Barcodes?", currentValue = settings.useBarcode) { settings.useBarcode = it }
                 ToggleableSetting("Save GPS Location?", "May slow saving", settings.saveGpsData) { settings.saveGpsData = it }
                 ToggleableSetting(
@@ -125,8 +116,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Composable
     fun SaveLocationSetting(locationSettingName: String, currentLocation: SaveLocation, setNewLocation: (SaveLocation) -> Unit) {
-        SingleSetting {
-            Text("$locationSettingName Save Location")
+        SingleSetting("$locationSettingName Save Location") {
             SingleChoiceSegmentedButtonRow {
                 val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
                 options.forEachIndexed { index, option ->
@@ -155,8 +145,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         currentValue: Boolean,
         setNewValue: (Boolean) -> Unit,
     ) {
-        SingleSetting {
-            Text(title)
+        SingleSetting(title) {
             Switch(
                 checked = currentValue,
                 onCheckedChange = { setNewValue(it) },
@@ -178,6 +167,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Composable
     fun SingleSetting(
+        title: String,
         content: @Composable ColumnScope.() -> Unit
     ) {
         Column(
@@ -185,117 +175,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 .fillMaxWidth()
                 .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            content = content
-        )
+        ) {
+            Text(title)
+            content()
+        }
     }
 
-    override fun onCreatePreferences(
-        savedInstanceState: Bundle?,
-        rootKey: String?,
-    ) {
-        setPreferencesFromResource(R.layout.preferences_layout, rootKey)
-
-        val preferences = Preferences(requireActivity())
-        setup(preferences)
-
-        val datasetName: EditTextPreference = preferenceManager.findPreference(preferences.datasetNameKey)!!
-        val button: Preference = preferenceManager.findPreference(preferences.usePreviousDatasetKey)!!
-        button.setOnPreferenceClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            val options = arrayOf("Hello", "Goodbye")
-            builder.setItems(options) { dialog, which ->
-                datasetName.text = options[which]
-            }
-
-            val dialog = builder.create()
-            dialog.show()
-
-            true
-        }
-
-        val websiteButton: Preference = preferenceManager.findPreference(preferences.websiteKey)!!
-        websiteButton.setOnPreferenceClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://zoegp.science/leafbyte-faqs"))
-            startActivity(browserIntent)
-
-            true
-        }
-
-        val teamButton: Preference = preferenceManager.findPreference(preferences.teamKey)!!
-        teamButton.setOnPreferenceClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle(getString(R.string.preference_team_title))
-            builder.setMessage(getString(R.string.preference_team_description))
-
-            val dialog = builder.create()
-            dialog.show()
-
-            true
-        }
-
-        val scaleLengthUnitPreference: ListPreference = preferenceManager.findPreference(preferences.scaleLengthUnitsKey)!!
-
-        val scaleLengthPreference: EditTextPreference = preferenceManager.findPreference(preferences.scaleLengthKey)!!
-        // derived from https://stackoverflow.com/a/59297100/1092672
-        scaleLengthPreference.setOnBindEditTextListener { editText ->
-            try {
-                editText.text.toString().toDouble()
-            } catch (e: NumberFormatException) {
-                editText.error = e.localizedMessage
-                //                        editText.rootView.findViewById(android.R.id.button1)
-                //                            .setEnabled(validationError == null);
-            }
-
-            editText.addTextChangedListener(
-                object : TextWatcher {
-                    override fun afterTextChanged(p0: Editable?) {
-                        try {
-                            p0!!.toString().toDouble()
-                        } catch (e: NumberFormatException) {
-                            editText.error = e.localizedMessage
-
-                            //                        editText.rootView.findViewById(android.R.id.button1)
-                            //                            .setEnabled(validationError == null);
-                        }
-                    }
-
-                    override fun beforeTextChanged(
-                        p0: CharSequence?,
-                        p1: Int,
-                        p2: Int,
-                        p3: Int,
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        p0: CharSequence?,
-                        p1: Int,
-                        p2: Int,
-                        p3: Int,
-                    ) {
-                    }
-                },
-            )
-        }
-        scaleLengthPreference.summary = "Length of one side of the scale square from dot center to dot center\n\n" +
-            scaleLengthPreference.text + " " + scaleLengthUnitPreference.value
-        scaleLengthPreference.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
-                val newValueString: String = newValue as String
-                // TODO: dont dupe this
-                scaleLengthPreference.summary = newValueString + " " + scaleLengthUnitPreference.value
-                true
-            }
-
-        scaleLengthUnitPreference.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
-                val newValueString: String = newValue as String
-                // TODO: dont dupe this
-                scaleLengthPreference.summary = scaleLengthPreference.text + " " + newValueString
-                true
-            }
-
-        val versionPreference: Preference = preferenceManager.findPreference(preferences.versionKey)!!
-        versionPreference.title = "version " + BuildConfig.VERSION_NAME
-    }
 }
