@@ -6,19 +6,43 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -27,6 +51,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.Preferences
+import org.xmlpull.v1.XmlPullParser
 
 /**
  * settings vs preferences
@@ -70,11 +95,86 @@ class SettingsFragment : PreferenceFragmentCompat() {
     fun Settings(
         @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Text("Settings")
+        MaterialTheme() {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                Text("Settings")
+                SaveLocationSetting("Data", settings.dataSaveLocation) { settings.dataSaveLocation = it }
+                SaveLocationSetting("Image", settings.imageSaveLocation) { settings.imageSaveLocation = it }
+
+                ToggleableSetting("Scan Barcodes?", currentValue = settings.useBarcode) { settings.useBarcode = it }
+                ToggleableSetting("Save GPS Location?", "May slow saving", settings.saveGpsData) { settings.saveGpsData = it }
+                ToggleableSetting(
+                    "Use Black Background?",
+                    "For use with light plant tissue",
+                    settings.useBlackBackground
+                ) { settings.useBlackBackground = it }
+            }
         }
+    }
+
+    @Composable
+    fun SaveLocationSetting(locationSettingName: String, currentLocation: SaveLocation, setNewLocation: (SaveLocation) -> Unit) {
+        SingleSetting {
+            Text("$locationSettingName Save Location")
+            SingleChoiceSegmentedButtonRow {
+                val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
+                options.forEachIndexed { index, option ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                        selected = currentLocation == option,
+                        onClick = { setNewLocation(option) },
+                    ) {
+                        Text(option.userFacingName)
+                    }
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun ToggleableSetting(
+        title: String,
+        explanation: String? = null,
+        currentValue: Boolean,
+        setNewValue: (Boolean) -> Unit,
+    ) {
+        SingleSetting {
+            Text(title)
+            Switch(
+                checked = currentValue,
+                onCheckedChange = { setNewValue(it) },
+                thumbContent = {
+                    if (currentValue) {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_check_24),
+                            tint = { Color(0xFF6750A4) },
+                            contentDescription = null,
+                        )
+                    }
+                }
+            )
+            explanation?.let {
+                Text(it)
+            }
+        }
+    }
+
+    @Composable
+    fun SingleSetting(
+        content: @Composable ColumnScope.() -> Unit
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            content = content
+        )
     }
 
     override fun onCreatePreferences(

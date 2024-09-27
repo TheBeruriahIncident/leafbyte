@@ -8,44 +8,44 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
             val sampleSettings: Settings =
                 object : Settings {
                     override var dataSaveLocation: SaveLocation
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = SaveLocation.GOOGLE_DRIVE
+                        set(_) {}
                     override var imageSaveLocation: SaveLocation
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = SaveLocation.LOCAL
+                        set(_) {}
                     override var datasetName: String
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = "Test data"
+                        set(_) {}
 
                     override fun noteDatasetUsed() {
-                        TODO("Not yet implemented")
+                        throw NotImplementedError()
                     }
 
                     override val previousDatasetNames: List<String>
-                        get() = TODO("Not yet implemented")
+                        get() = listOf("Test data", "Old test", "Herbivory Data")
                     override var scaleMarkLength: Float
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = 20f
+                        set(_) {}
                     override var scaleLengthUnit: String
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = "cm"
+                        set(_) {}
                     override var nextSampleNumber: Int
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = 4
+                        set(_) {}
 
                     override fun incrementSampleNumber() {
-                        TODO("Not yet implemented")
+                        throw NotImplementedError()
                     }
 
                     override var useBarcode: Boolean
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = false
+                        set(_) {}
                     override var saveGpsData: Boolean
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = true
+                        set(_) {}
                     override var useBlackBackground: Boolean
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                        get() = false
+                        set(_) {}
                 }
 
             return sequenceOf(sampleSettings)
