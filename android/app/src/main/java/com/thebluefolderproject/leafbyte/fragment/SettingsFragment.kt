@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,17 +33,19 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -51,6 +54,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.Preferences
+import com.thebluefolderproject.leafbyte.utils.Text
+import com.thebluefolderproject.leafbyte.utils.TextSize
 import org.xmlpull.v1.XmlPullParser
 
 /**
@@ -99,9 +104,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(top = 20.dp, bottom = 20.dp)
                     .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Settings")
+                Text("Settings", size = TextSize.SCREEN_TITLE)
                 SaveLocationSetting("Data", settings.dataSaveLocation) { settings.dataSaveLocation = it }
                 SaveLocationSetting("Image", settings.imageSaveLocation) { settings.imageSaveLocation = it }
 
@@ -123,12 +130,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
             SingleChoiceSegmentedButtonRow {
                 val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
                 options.forEachIndexed { index, option ->
+                    val selected = currentLocation == option
+
                     SegmentedButton(
                         shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                        selected = currentLocation == option,
+                        selected = selected,
                         onClick = { setNewLocation(option) },
+                        icon = {},
+                        modifier = Modifier.width(100.dp),
                     ) {
-                        Text(option.userFacingName)
+                        val fontWeight = if(selected) FontWeight.Bold else null
+                        Text(option.userFacingName, size = TextSize.IN_BUTTON, bold = selected)
                     }
                 }
             }
@@ -159,7 +171,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             )
             explanation?.let {
-                Text(it)
+                Text(it, size = TextSize.FOOTNOTE)
             }
         }
     }
@@ -171,7 +183,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = content
         )

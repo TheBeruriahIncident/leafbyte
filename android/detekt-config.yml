@@ -6,3 +6,7 @@ naming:
 style:
   MaxLineLength:
     maxLineLength: 140
+  ForbiddenImport:
+    active: true
+    imports:
+      - 'androidx.compose.material3.Text' # force going through our own wrapper

@@ -2,6 +2,7 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
+@Suppress("MagicNumber")
 class SampleSettingsProvider : PreviewParameterProvider<Settings> {
     override val values: Sequence<Settings>
         get() {
