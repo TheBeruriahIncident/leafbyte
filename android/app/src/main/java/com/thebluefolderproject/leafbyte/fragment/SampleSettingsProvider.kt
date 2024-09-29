@@ -1,6 +1,9 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @Suppress("MagicNumber")
 class SampleSettingsProvider : PreviewParameterProvider<Settings> {
@@ -8,45 +11,90 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
         get() {
             val sampleSettings: Settings =
                 object : Settings {
-                    override var dataSaveLocation: SaveLocation
-                        get() = SaveLocation.GOOGLE_DRIVE
-                        set(_) {}
-                    override var imageSaveLocation: SaveLocation
-                        get() = SaveLocation.LOCAL
-                        set(_) {}
-                    override var datasetName: String
-                        get() = "Test data"
-                        set(_) {}
+                    override fun getDataSaveLocation(): Flow<SaveLocation> {
+                        return flowOf(SaveLocation.LOCAL)
+                    }
+
+                    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getImageSaveLocation(): Flow<SaveLocation> {
+                        return flowOf(SaveLocation.GOOGLE_DRIVE)
+                    }
+
+                    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getDatasetName(): Flow<String> {
+                        return flowOf("Herbvar collection")
+                    }
+
+                    override fun setDatasetName(newDatasetName: String) {
+                        TODO("Not yet implemented")
+                    }
 
                     override fun noteDatasetUsed() {
-                        throw NotImplementedError()
+                        TODO("Not yet implemented")
                     }
 
-                    override val previousDatasetNames: List<String>
-                        get() = listOf("Test data", "Old test", "Herbivory Data")
-                    override var scaleMarkLength: Float
-                        get() = 20f
-                        set(_) {}
-                    override var scaleLengthUnit: String
-                        get() = "cm"
-                        set(_) {}
-                    override var nextSampleNumber: Int
-                        get() = 4
-                        set(_) {}
+                    override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getScaleMarkLength(): Flow<Float> {
+                        return flowOf(15f)
+                    }
+
+                    override fun setScaleMarkLength(newScaleMarkLength: Float) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getScaleLengthUnit(): Flow<String> {
+                        return flowOf("in")
+                    }
+
+                    override fun setScaleLengthUnit(newScaleLengthUnit: String) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getNextSampleNumber(): Flow<Int> {
+                        return flowOf(12)
+                    }
+
+                    override fun setNextSampleNumber(newNextSampleNumber: Int) {
+                        TODO("Not yet implemented")
+                    }
 
                     override fun incrementSampleNumber() {
-                        throw NotImplementedError()
+                        TODO("Not yet implemented")
                     }
 
-                    override var useBarcode: Boolean
-                        get() = false
-                        set(_) {}
-                    override var saveGpsData: Boolean
-                        get() = true
-                        set(_) {}
-                    override var useBlackBackground: Boolean
-                        get() = false
-                        set(_) {}
+                    override fun getUseBarcode(): Flow<Boolean> {
+                        return flowOf(true)
+                    }
+
+                    override fun setUseBarcode(newUseBarcode: Boolean) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getSaveGpsData(): Flow<Boolean> {
+                        return flowOf(false)
+                    }
+
+                    override fun setSaveGpsData(newSaveGpsData: Boolean) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun getUseBlackBackground(): Flow<Boolean> {
+                        return flowOf(true)
+                    }
+
+                    override fun setUseBlackBackground(newUseBlackBackground: Boolean) {
+                        TODO("Not yet implemented")
+                    }
+
                 }
 
             return sequenceOf(sampleSettings)

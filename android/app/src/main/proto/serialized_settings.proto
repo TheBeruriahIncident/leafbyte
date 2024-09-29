@@ -15,7 +15,7 @@ message SerializedSettings {
   // Note that this is int64 https://en.wikipedia.org/wiki/Year_2038_problem
   map<string, int64> datasetNameToEpochTimeOfLastUse = 4;
   // Defaults to 0 and the proper default is substituted
-  float scaleMarkLength = 5;
+  map<string, float> datasetNameToScaleMarkLength = 5;
   map<string, string> datasetNameToUnit = 6;
   // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
   map<string, string> datasetNameToUnitInFirstLocalFile = 7;

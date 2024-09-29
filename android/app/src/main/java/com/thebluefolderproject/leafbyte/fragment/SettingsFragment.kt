@@ -40,9 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
+import com.thebluefolderproject.leafbyte.utils.compose
 import com.thebluefolderproject.leafbyte.utils.log
 
 /**
@@ -91,25 +93,25 @@ class SettingsFragment : Fragment() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text("Settings", size = TextSize.SCREEN_TITLE)
-                SaveLocationSetting("Data", settings.dataSaveLocation) { settings.dataSaveLocation = it }
-                SaveLocationSetting("Image", settings.imageSaveLocation) { settings.imageSaveLocation = it }
+                SaveLocationSetting("Data", settings.getDataSaveLocation().compose()) { settings.setDataSaveLocation(it) }
+                SaveLocationSetting("Image", settings.getImageSaveLocation().compose()) { settings.setImageSaveLocation(it) }
                 SingleSetting("Dataset Name") {
                     log("dataset name again")
                     TextField( // TODO: add ime
-                        value = settings.datasetName,
-                        onValueChange = { settings.datasetName = it },
+                        value = settings.getDatasetName().compose(),
+                        onValueChange = { settings.setDatasetName(it) },
                         placeholder = {
                             Text("placeholder")
                         },
                     )
                 }
-                ToggleableSetting("Scan Barcodes?", currentValue = settings.useBarcode) { settings.useBarcode = it }
-                ToggleableSetting("Save GPS Location?", "May slow saving", settings.saveGpsData) { settings.saveGpsData = it }
+                ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().compose()) { settings.setUseBarcode(it) }
+                ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().compose()) { settings.setSaveGpsData(it) }
                 ToggleableSetting(
                     "Use Black Background?",
                     "For use with light plant tissue",
-                    settings.useBlackBackground
-                ) { settings.useBlackBackground = it }
+                    settings.getUseBlackBackground().compose()
+                ) { settings.setUseBlackBackground(it) }
             }
         }
     }
@@ -129,7 +131,6 @@ class SettingsFragment : Fragment() {
                         icon = {},
                         modifier = Modifier.width(100.dp),
                     ) {
-                        val fontWeight = if(selected) FontWeight.Bold else null
                         Text(option.userFacingName, size = TextSize.IN_BUTTON, bold = selected)
                     }
                 }
