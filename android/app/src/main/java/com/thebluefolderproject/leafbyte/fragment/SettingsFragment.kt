@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
@@ -35,8 +39,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -76,7 +82,6 @@ class SettingsFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                // TODO: is it bad to be recreating this on every page?
                 val settings = remember { DataStoreBackedSettings(requireContext()) }
 
                 Settings(settings)
@@ -151,9 +156,12 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<String>) {
         val isInvalid = displayValue.value.isBlank()
+        var dropdownIsExpanded by remember { mutableStateOf(false) }
+        val previousDatasetNames = settings.getPreviousDatasetNames().compose()
 
         SingleSetting("Dataset Name") {
             TextField(
@@ -178,6 +186,28 @@ class SettingsFragment : Fragment() {
                 },
                 isError = isInvalid
             )
+            Box(contentAlignment = Alignment.Center) {
+                TextButton(
+                    onClick = { dropdownIsExpanded = !dropdownIsExpanded },
+                ) {
+                    Text("Use previous dataset")
+                }
+                DropdownMenu(
+                    expanded = dropdownIsExpanded,
+                    onDismissRequest = { dropdownIsExpanded = false },
+                ) {
+                    previousDatasetNames.forEach { previousDatasetName ->
+                        DropdownMenuItem(
+                            text = { Text(previousDatasetName) },
+                            onClick = {
+                                settings.setDatasetName(previousDatasetName)
+                                displayValue.value = previousDatasetName
+                                dropdownIsExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 
