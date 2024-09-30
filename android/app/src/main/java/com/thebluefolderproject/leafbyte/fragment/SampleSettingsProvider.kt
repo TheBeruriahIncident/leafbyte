@@ -2,6 +2,7 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -40,7 +41,7 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                     }
 
                     override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> {
-                        TODO("Not yet implemented")
+                        return flowOf(persistentListOf("Herbivory data", "Herbvar"))
                     }
 
                     override fun getScaleMarkLength(): Flow<Float> {

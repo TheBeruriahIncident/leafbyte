@@ -10,11 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -59,10 +63,11 @@ import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.compose
 import com.thebluefolderproject.leafbyte.utils.load
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 
 private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
-//private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9\\.]")
+private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 
 /**
  * settings vs preferences
@@ -100,6 +105,7 @@ class SettingsFragment : Fragment() {
     ) {
         // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
         val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
+        val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
         val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
         val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
 
@@ -114,14 +120,17 @@ class SettingsFragment : Fragment() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 20.dp, bottom = 20.dp)
+                    .padding(horizontal = 60.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
+                Spacer(Modifier.height(20.dp))
                 Text("Settings", size = TextSize.SCREEN_TITLE)
                 SaveLocationSetting("Data", settings.getDataSaveLocation().compose()) { settings.setDataSaveLocation(it) }
                 SaveLocationSetting("Image", settings.getImageSaveLocation().compose()) { settings.setImageSaveLocation(it) }
                 DatasetNameSetting(settings, datasetNameDisplayValue)
+                ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
                 NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
                 ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().compose()) { settings.setUseBarcode(it) }
                 ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().compose()) { settings.setSaveGpsData(it) }
@@ -130,6 +139,13 @@ class SettingsFragment : Fragment() {
                     "For use with light plant tissue",
                     settings.getUseBlackBackground().compose()
                 ) { settings.setUseBlackBackground(it) }
+                TextButton(onClick = {}) {
+                    Text("Sign out of Google")
+                }
+                Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
+                Text("Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.")
+                Text("version .1")
+                Spacer(Modifier.height(20.dp))
             }
         }
     }
@@ -220,6 +236,61 @@ class SettingsFragment : Fragment() {
     }
 
     @Composable
+    private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<String>) {
+        val isInvalid = displayValue.value.isBlank() || displayValue.value.toFloatOrNull() == null
+        var dropdownIsExpanded by remember { mutableStateOf(false) }
+        val scaleLengthUnit = settings.getScaleLengthUnit().compose()
+
+        SingleSetting("Scale Length") {
+            Row {
+                TextField(
+                    value = displayValue.value,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = ImeAction.Done
+                    ),
+                    onValueChange = {
+                        // We strip out everything but numbers and decimals, so it's as if typing other characters doesn't do anything
+                        val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX.replace(it, "")
+                        // fallback to an invalid value that the persistence will replace
+                        val newFloatValue = strippedNewStringValue.toFloatOrNull() ?: -1f
+
+                        displayValue.value = strippedNewStringValue
+                        settings.setScaleMarkLength(newFloatValue)
+                    },
+                    placeholder = {
+                        Text("Your scale length")
+                    },
+                    isError = isInvalid
+                )
+                TextButton(
+                    onClick = { dropdownIsExpanded = !dropdownIsExpanded }
+                ) {
+                    Text(scaleLengthUnit)
+                }
+            }
+            Box(contentAlignment = Alignment.Center) {
+                DropdownMenu(
+                    expanded = dropdownIsExpanded,
+                    onDismissRequest = { dropdownIsExpanded = false },
+                ) {
+                    remember { persistentListOf("mm", "cm", "m", "in", "ft") }.forEach { unit ->
+                        DropdownMenuItem(
+                            text = { Text(unit) },
+                            onClick = {
+                                settings.setScaleLengthUnit(unit)
+                                dropdownIsExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
+            Text("Length of one side of the scale square from dot center to dot center", size = TextSize.FOOTNOTE)
+        }
+    }
+
+    @Composable
     private fun NextSampleNumberSetting(settings: Settings, displayValue: MutableState<String>) {
         val isInvalid = displayValue.value.isBlank() || displayValue.value.toIntOrNull() == null
 
@@ -234,10 +305,11 @@ class SettingsFragment : Fragment() {
                 onValueChange = {
                     // We strip out everything but numbers, so it's as if typing other characters doesn't do anything
                     val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_REGEX.replace(it, "")
-                    val maybeNewIntValue = strippedNewStringValue.toIntOrNull() ?: 1
+                    // fallback to an invalid value that the persistence will replace
+                    val newIntValue = strippedNewStringValue.toIntOrNull() ?: -1
 
                     displayValue.value = strippedNewStringValue
-                    settings.setNextSampleNumber(maybeNewIntValue)
+                    settings.setNextSampleNumber(newIntValue)
                 },
                 isError = isInvalid
             )
