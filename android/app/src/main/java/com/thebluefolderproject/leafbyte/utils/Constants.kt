@@ -17,13 +17,14 @@ import kotlinx.coroutines.runBlocking
  * Useful in suppressing warnings for unused parameters.
  */
 const val UNUSED = "UNUSED_PARAMETER"
+private const val LOG_TAG = "BlueFolder"
 
 fun log(o: Any) {
-    Log.i("LeafByte", o.toString())
+    Log.i(LOG_TAG, o.toString())
 }
 
 fun log(o: Exception) {
-    Log.e("LeafByte", Log.getStackTraceString(o))
+    Log.e(LOG_TAG, Log.getStackTraceString(o))
 }
 
 fun checkState(
