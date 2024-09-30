@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
@@ -21,13 +22,15 @@ fun Text(
     text: String,
     modifier: Modifier = Modifier,
     size: TextSize = TextSize.STANDARD,
-    bold: Boolean = false
+    bold: Boolean = false,
+    textAlign: TextAlign? = null,
 ) {
     androidx.compose.material3.Text(
         text = text,
         modifier = modifier,
         fontSize = size.fontSize,
-        fontWeight = if(bold) FontWeight.Bold else null
+        fontWeight = if(bold) FontWeight.Bold else null,
+        textAlign = textAlign,
     )
 }
 
@@ -36,12 +39,14 @@ fun Text(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     size: TextSize = TextSize.STANDARD,
-    bold: Boolean = false
+    bold: Boolean = false,
+    textAlign: TextAlign? = null,
 ) {
     androidx.compose.material3.Text(
         text = text,
         modifier = modifier,
         fontSize = size.fontSize,
-        fontWeight = if(bold) FontWeight.Bold else null
+        fontWeight = if(bold) FontWeight.Bold else null,
+        textAlign = textAlign,
     )
 }

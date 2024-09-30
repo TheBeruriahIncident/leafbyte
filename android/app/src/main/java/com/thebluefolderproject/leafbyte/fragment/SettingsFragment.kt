@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,10 +53,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.Text
@@ -242,7 +244,11 @@ class SettingsFragment : Fragment() {
         val scaleLengthUnit = settings.getScaleLengthUnit().compose()
 
         SingleSetting("Scale Length") {
-            Row {
+            ConstraintLayout(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val (lengthTextField, unitButton) = createRefs()
+
                 TextField(
                     value = displayValue.value,
                     singleLine = true,
@@ -250,6 +256,7 @@ class SettingsFragment : Fragment() {
                         keyboardType = KeyboardType.Decimal,
                         imeAction = ImeAction.Done
                     ),
+                    modifier = Modifier.constrainAs(lengthTextField) { centerTo(parent) },
                     onValueChange = {
                         // We strip out everything but numbers and decimals, so it's as if typing other characters doesn't do anything
                         val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX.replace(it, "")
@@ -265,9 +272,16 @@ class SettingsFragment : Fragment() {
                     isError = isInvalid
                 )
                 TextButton(
+                    modifier = Modifier
+                        .constrainAs(unitButton) { start.linkTo(lengthTextField.end) }
+                        .width(IntrinsicSize.Min),
                     onClick = { dropdownIsExpanded = !dropdownIsExpanded }
                 ) {
-                    Text(scaleLengthUnit)
+                    Text(
+                        text = scaleLengthUnit,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Left,
+                    )
                 }
             }
             Box(contentAlignment = Alignment.Center) {
@@ -381,5 +395,4 @@ class SettingsFragment : Fragment() {
             content()
         }
     }
-
 }
