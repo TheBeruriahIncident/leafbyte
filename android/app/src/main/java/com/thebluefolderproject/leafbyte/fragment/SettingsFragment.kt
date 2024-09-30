@@ -27,7 +27,6 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
@@ -49,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -59,6 +59,10 @@ import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.compose
 import com.thebluefolderproject.leafbyte.utils.load
+import kotlinx.coroutines.flow.map
+
+private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
+//private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9\\.]")
 
 /**
  * settings vs preferences
@@ -96,6 +100,7 @@ class SettingsFragment : Fragment() {
     ) {
         // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
         val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
+        val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
         val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
 
         MaterialTheme() { // TODO: where to put that
@@ -117,6 +122,7 @@ class SettingsFragment : Fragment() {
                 SaveLocationSetting("Data", settings.getDataSaveLocation().compose()) { settings.setDataSaveLocation(it) }
                 SaveLocationSetting("Image", settings.getImageSaveLocation().compose()) { settings.setImageSaveLocation(it) }
                 DatasetNameSetting(settings, datasetNameDisplayValue)
+                NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
                 ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().compose()) { settings.setUseBarcode(it) }
                 ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().compose()) { settings.setSaveGpsData(it) }
                 ToggleableSetting(
@@ -156,7 +162,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<String>) {
         val isInvalid = displayValue.value.isBlank()
@@ -167,7 +172,10 @@ class SettingsFragment : Fragment() {
             TextField(
                 value = displayValue.value,
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
                 onValueChange = {
                     // This looks straightforward, but there's something subtle:
                     //   if the value is blank, the persistence layer will instead store the default value.
@@ -208,6 +216,31 @@ class SettingsFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun NextSampleNumberSetting(settings: Settings, displayValue: MutableState<String>) {
+        val isInvalid = displayValue.value.isBlank() || displayValue.value.toIntOrNull() == null
+
+        SingleSetting("Next Sample Number") {
+            TextField(
+                value = displayValue.value,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                onValueChange = {
+                    // We strip out everything but numbers, so it's as if typing other characters doesn't do anything
+                    val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_REGEX.replace(it, "")
+                    val maybeNewIntValue = strippedNewStringValue.toIntOrNull() ?: 1
+
+                    displayValue.value = strippedNewStringValue
+                    settings.setNextSampleNumber(maybeNewIntValue)
+                },
+                isError = isInvalid
+            )
         }
     }
 
