@@ -12,3 +12,6 @@ style:
       - 'androidx.compose.material3.Text' # force going through our own wrapper
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.junit.Test' # use Junit 5
+complexity:
+  TooManyFunctions:
+    active: false

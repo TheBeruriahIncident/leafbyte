@@ -86,8 +86,6 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
  * create an instance of this fragment.
  *
  */
-@SuppressLint("all")
-@Suppress("all")
 class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -124,7 +122,7 @@ fun SettingsScreen(
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
     }
 
-    MaterialTheme { // TODO: where to put that
+    MaterialTheme { // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
             blankDatasetNameAlertOpen.value = true
         }
@@ -160,7 +158,10 @@ fun SettingsScreen(
             }
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
             Text(
-                "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.",
+                "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla " +
+                        "Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and " +
+                        "improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took " +
+                        "photos for the website and tutorial respectively.",
             )
             Text("version .1")
             Spacer(Modifier.height(20.dp))
@@ -262,6 +263,7 @@ private fun DatasetNameSetting(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun ScaleLengthSetting(
     settings: Settings,
@@ -399,6 +401,7 @@ fun SaveLocationSetting(
     }
 }
 
+@Suppress("MagicNumber") // once we fiddle with theme colors, the tint should come from a theme constant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToggleableSetting(

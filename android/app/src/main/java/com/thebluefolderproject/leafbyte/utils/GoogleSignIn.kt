@@ -12,7 +12,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.AuthorizationServiceConfiguration.RetrieveConfigurationCallback
 import net.openid.appauth.ResponseTypeValues
 
-val requestCodeSignIn = 20
+//const val requestCodeSignIn = 20
 
 fun signInToGoogle(context: Context) {
     AuthorizationServiceConfiguration.fetchFromIssuer(
