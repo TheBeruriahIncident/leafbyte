@@ -4,7 +4,6 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -159,9 +158,9 @@ fun SettingsScreen(
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
             Text(
                 "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla " +
-                        "Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and " +
-                        "improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took " +
-                        "photos for the website and tutorial respectively.",
+                    "Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and " +
+                    "improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took " +
+                    "photos for the website and tutorial respectively.",
             )
             Text("version .1")
             Spacer(Modifier.height(20.dp))

@@ -57,6 +57,7 @@ private const val DEFAULT_UNIT = "cm"
  * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalized on
  * read, just in case we're reading a value that has never been written.
  */
+@Suppress("ktlint:standard:function-signature")
 class DataStoreBackedSettings(context: Context, private val clock: Clock = SystemClock()) : Settings {
     private val settingsStore = context.settingsStore
 
@@ -83,7 +84,6 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
         fromSettings { SaveLocation.fromSerialized(dataSaveLocation) }
     override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
         edit { setDataSaveLocation(newDataSaveLocation.serialized) }
-
 
     override fun getImageSaveLocation(): Flow<SaveLocation> =
         fromSettings { SaveLocation.fromSerialized(imageSaveLocation) }

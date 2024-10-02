@@ -18,7 +18,8 @@ import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import kotlinx.collections.immutable.persistentListOf
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 
@@ -35,7 +36,7 @@ class SettingsComposeTest {
             var settings: Settings? = null
             setContent {
                 settings = DataStoreBackedSettings(LocalContext.current, clock)
-                SettingsScreen(settings!!)
+                SettingsScreen(settings)
             }
 
             test(this, settings!!)
