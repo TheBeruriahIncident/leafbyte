@@ -50,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -69,6 +70,7 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.compose
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.signInToGoogle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 
@@ -115,6 +117,7 @@ fun SettingsScreen(
     val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
     val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
@@ -154,7 +157,7 @@ fun SettingsScreen(
                 "For use with light plant tissue",
                 settings.getUseBlackBackground().compose()
             ) { settings.setUseBlackBackground(it) }
-            TextButton(onClick = {}) {
+            TextButton(onClick = { signInToGoogle(context) }) {
                 Text("Sign out of Google")
             }
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
