@@ -219,7 +219,7 @@ dependencies {
 //    }
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.2")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -241,7 +241,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-text:1.7.3")
     implementation("androidx.compose.ui:ui-unit:1.7.3")
 
-    implementation("com.google.protobuf:protobuf-kotlin-lite:4.28.2")
+    androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.3")
+    androidTestImplementation("androidx.compose.ui:ui-test:1.7.3")
+    implementation("androidx.annotation:annotation:1.8.1")
+    implementation("androidx.lifecycle:lifecycle-common:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
 
