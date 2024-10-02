@@ -51,7 +51,8 @@ dependencyAnalysis {
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",
                     "de.mannodermaus.junit5:android-test-compose",
-                    "androidx.compose.ui:ui-test-manifest" // needed through some compose magic
+                    // needed through some compose magic
+                    "androidx.compose.ui:ui-test-manifest",
                 )
             }
         }

@@ -45,15 +45,15 @@ class DataStoreBackedSettingsTest {
     @Test
     fun testDefaultValues() {
         runTest {
-            assertEquals(SaveLocation.LOCAL, getDataSaveLocation())
-            assertEquals(SaveLocation.LOCAL, getImageSaveLocation())
-            assertEquals("Herbivory Data", getDatasetName())
-            assertEquals(10f, getScaleMarkLength())
-            assertEquals("cm", getScaleLengthUnit())
-            assertEquals(1, getNextSampleNumber())
-            assertFalse(getUseBarcode())
-            assertFalse(getSaveGpsData())
-            assertFalse(getUseBlackBackground())
+            assertFlowEquals(SaveLocation.LOCAL, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.LOCAL, getImageSaveLocation())
+            assertFlowEquals("Herbivory Data", getDatasetName())
+            assertFlowEquals(10f, getScaleMarkLength())
+            assertFlowEquals("cm", getScaleLengthUnit())
+            assertFlowEquals(1, getNextSampleNumber())
+            assertFlowFalse(getUseBarcode())
+            assertFlowFalse(getSaveGpsData())
+            assertFlowFalse(getUseBlackBackground())
         }
     }
 
@@ -61,13 +61,13 @@ class DataStoreBackedSettingsTest {
     fun testDataSaveLocation() {
         runTest {
             setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
-            assertEquals(SaveLocation.GOOGLE_DRIVE, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getDataSaveLocation())
 
             setDataSaveLocation(SaveLocation.LOCAL)
-            assertEquals(SaveLocation.LOCAL, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.LOCAL, getDataSaveLocation())
 
             setDataSaveLocation(SaveLocation.NONE)
-            assertEquals(SaveLocation.NONE, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.NONE, getDataSaveLocation())
         }
     }
 
@@ -75,13 +75,13 @@ class DataStoreBackedSettingsTest {
     fun testImageSaveLocation() {
         runTest {
             setImageSaveLocation(SaveLocation.GOOGLE_DRIVE)
-            assertEquals(SaveLocation.GOOGLE_DRIVE, getImageSaveLocation())
+            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getImageSaveLocation())
 
             setImageSaveLocation(SaveLocation.LOCAL)
-            assertEquals(SaveLocation.LOCAL, getImageSaveLocation())
+            assertFlowEquals(SaveLocation.LOCAL, getImageSaveLocation())
 
             setImageSaveLocation(SaveLocation.NONE)
-            assertEquals(SaveLocation.NONE, getImageSaveLocation())
+            assertFlowEquals(SaveLocation.NONE, getImageSaveLocation())
         }
     }
 
@@ -89,16 +89,16 @@ class DataStoreBackedSettingsTest {
     fun testDatasetName() {
         runTest {
             setDatasetName("Potato")
-            assertEquals("Potato", getDatasetName())
+            assertFlowEquals("Potato", getDatasetName())
 
             setDatasetName("Salad")
-            assertEquals("Salad", getDatasetName())
+            assertFlowEquals("Salad", getDatasetName())
 
             setDatasetName("")
-            assertEquals("Herbivory Data", getDatasetName())
+            assertFlowEquals("Herbivory Data", getDatasetName())
 
             setDatasetName("    \n   ")
-            assertEquals("Herbivory Data", getDatasetName())
+            assertFlowEquals("Herbivory Data", getDatasetName())
         }
     }
 
@@ -108,34 +108,34 @@ class DataStoreBackedSettingsTest {
     @Test
     fun testPreviousDatasetNames() {
         runTest {
-            assertEquals(listOf("Herbivory Data"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Herbivory Data"), getPreviousDatasetNames())
 
             setDatasetName("Potato")
-            assertEquals(listOf("Potato"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Potato"), getPreviousDatasetNames())
 
             setDatasetName("Salad")
-            assertEquals(listOf("Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Salad"), getPreviousDatasetNames())
 
             waitASecond()
             noteDatasetUsed()
-            assertEquals(listOf("Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Salad"), getPreviousDatasetNames())
 
             setDatasetName("Dill")
-            assertEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
 
             setDatasetName("Salad")
-            assertEquals(listOf("Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Salad"), getPreviousDatasetNames())
 
             setDatasetName("Dill")
             waitASecond()
             noteDatasetUsed()
-            assertEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
 
             setDatasetName("Salad")
-            assertEquals(listOf("Salad", "Dill"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Salad", "Dill"), getPreviousDatasetNames())
 
             setDatasetName("Potato")
-            assertEquals(listOf("Potato", "Dill", "Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Potato", "Dill", "Salad"), getPreviousDatasetNames())
 
             setDatasetName("Vinegar")
             waitASecond()
@@ -144,7 +144,7 @@ class DataStoreBackedSettingsTest {
             waitASecond()
             noteDatasetUsed()
             setDatasetName("Potato")
-            assertEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), getPreviousDatasetNames())
+            assertFlowEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), getPreviousDatasetNames())
         }
     }
 
@@ -152,16 +152,16 @@ class DataStoreBackedSettingsTest {
     fun testScaleMarkLength() {
         runTest {
             setScaleMarkLength(5.3f)
-            assertEquals(5.3f, getScaleMarkLength())
+            assertFlowEquals(5.3f, getScaleMarkLength())
 
             setScaleMarkLength(241.234f)
-            assertEquals(241.234f, getScaleMarkLength())
+            assertFlowEquals(241.234f, getScaleMarkLength())
 
             setScaleMarkLength(0f)
-            assertEquals(10f, getScaleMarkLength())
+            assertFlowEquals(10f, getScaleMarkLength())
 
             setScaleMarkLength(-5f)
-            assertEquals(10f, getScaleMarkLength())
+            assertFlowEquals(10f, getScaleMarkLength())
         }
     }
 
@@ -169,13 +169,13 @@ class DataStoreBackedSettingsTest {
     fun testScaleLengthUnit() {
         runTest {
             setScaleLengthUnit("mm")
-            assertEquals("mm", getScaleLengthUnit())
+            assertFlowEquals("mm", getScaleLengthUnit())
 
             setScaleLengthUnit("ft")
-            assertEquals("ft", getScaleLengthUnit())
+            assertFlowEquals("ft", getScaleLengthUnit())
 
             setScaleLengthUnit(" \n ")
-            assertEquals("cm", getScaleLengthUnit())
+            assertFlowEquals("cm", getScaleLengthUnit())
         }
     }
 
@@ -183,31 +183,31 @@ class DataStoreBackedSettingsTest {
     fun testNextSampleNumber() {
         runTest {
             setNextSampleNumber(12)
-            assertEquals(12, getNextSampleNumber())
+            assertFlowEquals(12, getNextSampleNumber())
 
             setNextSampleNumber(0)
-            assertEquals(1, getNextSampleNumber())
+            assertFlowEquals(1, getNextSampleNumber())
 
             setNextSampleNumber(-5)
-            assertEquals(1, getNextSampleNumber())
+            assertFlowEquals(1, getNextSampleNumber())
 
             incrementSampleNumber()
-            assertEquals(2, getNextSampleNumber())
+            assertFlowEquals(2, getNextSampleNumber())
 
             setNextSampleNumber(25)
-            assertEquals(25, getNextSampleNumber())
+            assertFlowEquals(25, getNextSampleNumber())
 
             setDatasetName("Potato")
-            assertEquals(1, getNextSampleNumber())
+            assertFlowEquals(1, getNextSampleNumber())
 
             setNextSampleNumber(12)
-            assertEquals(12, getNextSampleNumber())
+            assertFlowEquals(12, getNextSampleNumber())
 
             setDatasetName("Herbivory Data")
-            assertEquals(25, getNextSampleNumber())
+            assertFlowEquals(25, getNextSampleNumber())
 
             setDatasetName("Potato")
-            assertEquals(12, getNextSampleNumber())
+            assertFlowEquals(12, getNextSampleNumber())
         }
     }
 
@@ -215,10 +215,10 @@ class DataStoreBackedSettingsTest {
     fun testScanBarcodes() {
         runTest {
             setUseBarcode(true)
-            assertTrue(getUseBarcode())
+            assertFlowTrue(getUseBarcode())
 
             setUseBarcode(false)
-            assertFalse(getUseBarcode())
+            assertFlowFalse(getUseBarcode())
         }
     }
 
@@ -226,10 +226,10 @@ class DataStoreBackedSettingsTest {
     fun testGpsLocation() {
         runTest {
             setSaveGpsData(true)
-            assertTrue(getSaveGpsData())
+            assertFlowTrue(getSaveGpsData())
 
             setSaveGpsData(false)
-            assertFalse(getSaveGpsData())
+            assertFlowFalse(getSaveGpsData())
         }
     }
 
@@ -237,10 +237,10 @@ class DataStoreBackedSettingsTest {
     fun testUseBlackBackground() {
         runTest {
             setUseBlackBackground(true)
-            assertTrue(getUseBlackBackground())
+            assertFlowTrue(getUseBlackBackground())
 
             setUseBlackBackground(false)
-            assertFalse(getUseBlackBackground())
+            assertFlowFalse(getUseBlackBackground())
         }
     }
 }
