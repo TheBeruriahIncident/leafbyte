@@ -282,7 +282,8 @@ private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<St
                 modifier = Modifier
                     .constrainAs(unitButton) { start.linkTo(lengthTextField.end) }
                     .width(IntrinsicSize.Min)
-                    .height(IntrinsicSize.Max),
+                    .height(IntrinsicSize.Max)
+                    .description("Scale length unit selector"),
                 onClick = { dropdownIsExpanded = !dropdownIsExpanded }
             ) {
                 Text(
@@ -374,6 +375,7 @@ fun ToggleableSetting(
 ) {
     SingleSetting(title) {
         Switch(
+            modifier = Modifier.description("$title toggle"),
             checked = currentValue,
             onCheckedChange = { setNewValue(it) },
             thumbContent = {
