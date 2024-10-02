@@ -6,7 +6,6 @@ package com.thebluefolderproject.leafbyte.utils
 
 import android.os.Build
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,7 +56,7 @@ interface Clock {
     fun getEpochTimeInSeconds(): Long
 }
 
-class SystemClock: Clock {
+class SystemClock : Clock {
     override fun getEpochTimeInSeconds(): Long {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return Instant.now().epochSecond

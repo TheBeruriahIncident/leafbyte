@@ -31,7 +31,7 @@ fun Text(
         text = text,
         modifier = modifier,
         fontSize = size.fontSize,
-        fontWeight = if(bold) FontWeight.Bold else null,
+        fontWeight = if (bold) FontWeight.Bold else null,
         textAlign = textAlign,
     )
 }
@@ -48,7 +48,7 @@ fun Text(
         text = text,
         modifier = modifier,
         fontSize = size.fontSize,
-        fontWeight = if(bold) FontWeight.Bold else null,
+        fontWeight = if (bold) FontWeight.Bold else null,
         textAlign = textAlign,
     )
 }

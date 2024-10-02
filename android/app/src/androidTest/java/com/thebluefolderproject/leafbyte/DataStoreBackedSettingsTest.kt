@@ -13,7 +13,6 @@ import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
-import java.util.concurrent.TimeUnit
 
 /**
  * This class intentionally uses some literals and avoids using some constants to be sure everything is working exactly as expected.

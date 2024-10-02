@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Files
-import java.time.Instant
-import java.util.concurrent.TimeUnit
 
 private const val DATA_STORE_FILE_NAME = "settings.pb"
 
@@ -108,7 +106,7 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
         edit { putDatasetNameToEpochTimeOfLastUse(currentDatasetName, epochTimeInSeconds) }
     }
     override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> =
-         fromSettings {
+        fromSettings {
             // Sort the dataset names by last use, excluding the current dataset
             val otherDatasetNames =
                 datasetNameToEpochTimeOfLastUseMap.toList()

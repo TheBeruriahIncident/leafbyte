@@ -95,7 +95,6 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                     override fun setUseBlackBackground(newUseBlackBackground: Boolean) {
                         TODO("Not yet implemented")
                     }
-
                 }
 
             return sequenceOf(sampleSettings)

@@ -51,10 +51,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -91,7 +89,6 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 @SuppressLint("all")
 @Suppress("all")
 class SettingsFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -127,7 +124,7 @@ fun SettingsScreen(
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
     }
 
-    MaterialTheme() { // TODO: where to put that
+    MaterialTheme { // TODO: where to put that
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
             blankDatasetNameAlertOpen.value = true
         }
@@ -136,12 +133,13 @@ fun SettingsScreen(
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 60.dp)
-                .verticalScroll(rememberScrollState()),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 60.dp)
+                    .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+            verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             Spacer(Modifier.height(20.dp))
             Text("Settings", size = TextSize.SCREEN_TITLE)
@@ -155,13 +153,15 @@ fun SettingsScreen(
             ToggleableSetting(
                 "Use Black Background?",
                 "For use with light plant tissue",
-                settings.getUseBlackBackground().compose()
+                settings.getUseBlackBackground().compose(),
             ) { settings.setUseBlackBackground(it) }
             TextButton(onClick = { signInToGoogle(context) }) {
                 Text("Sign out of Google")
             }
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
-            Text("Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.")
+            Text(
+                "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took photos for the website and tutorial respectively.",
+            )
             Text("version .1")
             Spacer(Modifier.height(20.dp))
         }
@@ -172,14 +172,15 @@ fun SettingsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
     BasicAlertDialog(
-        onDismissRequest = { alertOpen.value = false }
+        onDismissRequest = { alertOpen.value = false },
     ) {
         Surface(
-            modifier = Modifier
-                .wrapContentWidth()
-                .wrapContentHeight(),
+            modifier =
+                Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
             shape = MaterialTheme.shapes.large,
-            tonalElevation = AlertDialogDefaults.TonalElevation
+            tonalElevation = AlertDialogDefaults.TonalElevation,
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -187,7 +188,7 @@ private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
                 )
                 TextButton(
                     onClick = { alertOpen.value = false },
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 ) {
                     Text("OK")
                 }
@@ -197,7 +198,11 @@ private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
 }
 
 @Composable
-private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<String>, onDatasetChange: () -> Unit) {
+private fun DatasetNameSetting(
+    settings: Settings,
+    displayValue: MutableState<String>,
+    onDatasetChange: () -> Unit,
+) {
     val isInvalid = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val previousDatasetNames = settings.getPreviousDatasetNames().compose()
@@ -207,10 +212,11 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
             value = displayValue.value,
             singleLine = true,
             modifier = Modifier.description("Dataset name entry"),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                ),
             onValueChange = {
                 // This looks straightforward, but there's something subtle:
                 //   if the value is blank, the persistence layer will instead store the default value.
@@ -228,7 +234,7 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
                 // Even if valid, there's a space here so that the height doesn't change
                 Text(if (isInvalid) "Dataset name is required" else " ")
             },
-            isError = isInvalid
+            isError = isInvalid,
         )
         Box(contentAlignment = Alignment.Center) {
             TextButton(
@@ -248,7 +254,7 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
                             displayValue.value = previousDatasetName
                             dropdownIsExpanded = false
                             onDatasetChange()
-                        }
+                        },
                     )
                 }
             }
@@ -257,26 +263,31 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
 }
 
 @Composable
-private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<String>) {
+private fun ScaleLengthSetting(
+    settings: Settings,
+    displayValue: MutableState<String>,
+) {
     val isInvalid = displayValue.value.isBlank() || displayValue.value.toFloatOrNull() == null
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val scaleLengthUnit = settings.getScaleLengthUnit().compose()
 
     SingleSetting("Scale Length") {
         ConstraintLayout(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             val (lengthTextField, unitButton) = createRefs()
 
             TextField(
                 value = displayValue.value,
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Done
-                ),
-                modifier = Modifier.constrainAs(lengthTextField) { centerTo(parent) }
-                    .description("Scale length entry"),
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = ImeAction.Done,
+                    ),
+                modifier =
+                    Modifier.constrainAs(lengthTextField) { centerTo(parent) }
+                        .description("Scale length entry"),
                 onValueChange = {
                     // We strip out everything but numbers and decimals, so it's as if typing other characters doesn't do anything
                     val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX.replace(it, "")
@@ -289,15 +300,16 @@ private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<St
                 placeholder = {
                     Text("Your scale length")
                 },
-                isError = isInvalid
+                isError = isInvalid,
             )
             TextButton(
-                modifier = Modifier
-                    .constrainAs(unitButton) { start.linkTo(lengthTextField.end) }
-                    .width(IntrinsicSize.Min)
-                    .height(IntrinsicSize.Max)
-                    .description("Scale length unit selector"),
-                onClick = { dropdownIsExpanded = !dropdownIsExpanded }
+                modifier =
+                    Modifier
+                        .constrainAs(unitButton) { start.linkTo(lengthTextField.end) }
+                        .width(IntrinsicSize.Min)
+                        .height(IntrinsicSize.Max)
+                        .description("Scale length unit selector"),
+                onClick = { dropdownIsExpanded = !dropdownIsExpanded },
             ) {
                 Text(
                     text = scaleLengthUnit,
@@ -317,7 +329,7 @@ private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<St
                         onClick = {
                             settings.setScaleLengthUnit(unit)
                             dropdownIsExpanded = false
-                        }
+                        },
                     )
                 }
             }
@@ -327,17 +339,21 @@ private fun ScaleLengthSetting(settings: Settings, displayValue: MutableState<St
 }
 
 @Composable
-private fun NextSampleNumberSetting(settings: Settings, displayValue: MutableState<String>) {
+private fun NextSampleNumberSetting(
+    settings: Settings,
+    displayValue: MutableState<String>,
+) {
     val isInvalid = displayValue.value.isBlank() || displayValue.value.toIntOrNull() == null
 
     SingleSetting("Next Sample Number") {
         TextField(
             value = displayValue.value,
             singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done,
+                ),
             modifier = Modifier.description("Next sample number entry"),
             onValueChange = {
                 // We strip out everything but numbers, so it's as if typing other characters doesn't do anything
@@ -348,13 +364,17 @@ private fun NextSampleNumberSetting(settings: Settings, displayValue: MutableSta
                 displayValue.value = strippedNewStringValue
                 settings.setNextSampleNumber(newIntValue)
             },
-            isError = isInvalid
+            isError = isInvalid,
         )
     }
 }
 
 @Composable
-fun SaveLocationSetting(locationSettingName: String, currentLocation: SaveLocation, setNewLocation: (SaveLocation) -> Unit) {
+fun SaveLocationSetting(
+    locationSettingName: String,
+    currentLocation: SaveLocation,
+    setNewLocation: (SaveLocation) -> Unit,
+) {
     val fullSettingName = remember { "$locationSettingName Save Location" }
 
     SingleSetting(fullSettingName) {
@@ -368,8 +388,9 @@ fun SaveLocationSetting(locationSettingName: String, currentLocation: SaveLocati
                     selected = selected,
                     onClick = { setNewLocation(option) },
                     icon = {},
-                    modifier = Modifier.width(100.dp)
-                        .description("Set $fullSettingName to ${option.userFacingName}"),
+                    modifier =
+                        Modifier.width(100.dp)
+                            .description("Set $fullSettingName to ${option.userFacingName}"),
                 ) {
                     Text(option.userFacingName, size = TextSize.IN_BUTTON, bold = selected)
                 }
@@ -399,7 +420,7 @@ fun ToggleableSetting(
                         contentDescription = null,
                     )
                 }
-            }
+            },
         )
         explanation?.let {
             Text(it, size = TextSize.FOOTNOTE)
@@ -410,12 +431,13 @@ fun ToggleableSetting(
 @Composable
 fun SingleSetting(
     title: String,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(title)

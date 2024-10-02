@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,18 +41,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-import com.thebluefolderproject.leafbyte.utils.handleSignInResult
 import com.thebluefolderproject.leafbyte.utils.log
-import net.openid.appauth.AuthorizationRequest
-import net.openid.appauth.AuthorizationResponse
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.AuthorizationServiceConfiguration
-import net.openid.appauth.AuthorizationServiceConfiguration.RetrieveConfigurationCallback
-import net.openid.appauth.ResponseTypeValues
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -192,7 +183,7 @@ class MainMenuFragment : Fragment() {
         if (!requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             showAlert(
                 "No camera found",
-                "Could not take a photo: no camera was found. Try selecting an existing image instead."
+                "Could not take a photo: no camera was found. Try selecting an existing image instead.",
             )
             return
         }
@@ -201,7 +192,7 @@ class MainMenuFragment : Fragment() {
         startActivity(
             MainMenuUtils.createCameraIntent(uri!!),
             MainMenuUtils.CAMERA_REQUEST_CODE,
-            "take a photo"
+            "take a photo",
         )
     }
 
@@ -253,10 +244,6 @@ class MainMenuFragment : Fragment() {
             else -> throw IllegalArgumentException("Result code: $resultCode")
         }
     }
-
-
-
-
 
     private fun processActivityResultData(
         requestCode: Int,
