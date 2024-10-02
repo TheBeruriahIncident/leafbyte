@@ -180,6 +180,12 @@ android {
     }
 }
 
+configurations {
+    all {
+        exclude(group = "androidx.compose.ui", module = "ui-test-junit4") // use junit 5
+    }
+}
+
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -208,6 +214,9 @@ dependencies {
 //    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))

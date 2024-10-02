@@ -9,13 +9,8 @@ import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
-import com.thebluefolderproject.leafbyte.utils.load
 import de.mannodermaus.junit5.ActivityScenarioExtension
-import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import java.util.concurrent.TimeUnit
@@ -23,16 +18,22 @@ import java.util.concurrent.TimeUnit
 /**
  * This class intentionally uses some literals and avoids using some constants to be sure everything is working exactly as expected.
  */
-class SettingsTest {
+class DataStoreBackedSettingsTest {
     @JvmField
     @RegisterExtension
     val activityScenarioExtension = ActivityScenarioExtension.launch<LeafByteActivity>()
 
-    private fun helper(test: Settings.() -> Unit) {
+    val clock = TestClock()
+
+    private fun runTest(test: Settings.() -> Unit) {
         activityScenarioExtension.scenario.onActivity { activity ->
-            val settings = DataStoreBackedSettings(activity)
+            val settings = DataStoreBackedSettings(activity, clock)
             test(settings)
         }
+    }
+
+    private fun waitASecond() {
+        clock.waitASecond()
     }
 
     @AfterEach
@@ -42,21 +43,9 @@ class SettingsTest {
         }
     }
 
-    private fun <T> assertEquals(expected: T, actual: Flow<T>) {
-        assertEquals(expected, actual.load())
-    }
-
-    private fun assertTrue(actual: Flow<Boolean>) {
-        assertTrue(actual.load())
-    }
-
-    private fun assertFalse(actual: Flow<Boolean>) {
-        assertFalse(actual.load())
-    }
-
     @Test
     fun testDefaultValues() {
-        helper {
+        runTest {
             assertEquals(SaveLocation.LOCAL, getDataSaveLocation())
             assertEquals(SaveLocation.LOCAL, getImageSaveLocation())
             assertEquals("Herbivory Data", getDatasetName())
@@ -71,7 +60,7 @@ class SettingsTest {
 
     @Test
     fun testDataSaveLocation() {
-        helper {
+        runTest {
             setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
             assertEquals(SaveLocation.GOOGLE_DRIVE, getDataSaveLocation())
 
@@ -85,7 +74,7 @@ class SettingsTest {
 
     @Test
     fun testImageSaveLocation() {
-        helper {
+        runTest {
             setImageSaveLocation(SaveLocation.GOOGLE_DRIVE)
             assertEquals(SaveLocation.GOOGLE_DRIVE, getImageSaveLocation())
 
@@ -99,7 +88,7 @@ class SettingsTest {
 
     @Test
     fun testDatasetName() {
-        helper {
+        runTest {
             setDatasetName("Potato")
             assertEquals("Potato", getDatasetName())
 
@@ -119,7 +108,7 @@ class SettingsTest {
      */
     @Test
     fun testPreviousDatasetNames() {
-        helper {
+        runTest {
             assertEquals(listOf("Herbivory Data"), getPreviousDatasetNames())
 
             setDatasetName("Potato")
@@ -128,7 +117,7 @@ class SettingsTest {
             setDatasetName("Salad")
             assertEquals(listOf("Salad"), getPreviousDatasetNames())
 
-            TimeUnit.SECONDS.sleep(1)
+            waitASecond()
             noteDatasetUsed()
             assertEquals(listOf("Salad"), getPreviousDatasetNames())
 
@@ -139,7 +128,7 @@ class SettingsTest {
             assertEquals(listOf("Salad"), getPreviousDatasetNames())
 
             setDatasetName("Dill")
-            TimeUnit.SECONDS.sleep(1)
+            waitASecond()
             noteDatasetUsed()
             assertEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
 
@@ -150,10 +139,10 @@ class SettingsTest {
             assertEquals(listOf("Potato", "Dill", "Salad"), getPreviousDatasetNames())
 
             setDatasetName("Vinegar")
-            TimeUnit.SECONDS.sleep(1)
+            waitASecond()
             noteDatasetUsed()
             setDatasetName("Dill")
-            TimeUnit.SECONDS.sleep(1)
+            waitASecond()
             noteDatasetUsed()
             setDatasetName("Potato")
             assertEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), getPreviousDatasetNames())
@@ -162,7 +151,7 @@ class SettingsTest {
 
     @Test
     fun testScaleMarkLength() {
-        helper {
+        runTest {
             setScaleMarkLength(5.3f)
             assertEquals(5.3f, getScaleMarkLength())
 
@@ -179,7 +168,7 @@ class SettingsTest {
 
     @Test
     fun testScaleLengthUnit() {
-        helper {
+        runTest {
             setScaleLengthUnit("mm")
             assertEquals("mm", getScaleLengthUnit())
 
@@ -193,7 +182,7 @@ class SettingsTest {
 
     @Test
     fun testNextSampleNumber() {
-        helper {
+        runTest {
             setNextSampleNumber(12)
             assertEquals(12, getNextSampleNumber())
 
@@ -225,7 +214,7 @@ class SettingsTest {
 
     @Test
     fun testScanBarcodes() {
-        helper {
+        runTest {
             setUseBarcode(true)
             assertTrue(getUseBarcode())
 
@@ -236,7 +225,7 @@ class SettingsTest {
 
     @Test
     fun testGpsLocation() {
-        helper {
+        runTest {
             setSaveGpsData(true)
             assertTrue(getSaveGpsData())
 
@@ -247,7 +236,7 @@ class SettingsTest {
 
     @Test
     fun testUseBlackBackground() {
-        helper {
+        runTest {
             setUseBlackBackground(true)
             assertTrue(getUseBlackBackground())
 

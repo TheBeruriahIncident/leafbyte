@@ -3,13 +3,15 @@ package com.thebluefolderproject.leafbyte.utils
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
-enum class TextSize(val fontSize: TextUnit) {
+enum class TextSize(internal val fontSize: TextUnit) {
     MAIN_TITLE(45.sp),
     SCREEN_TITLE(20.sp),
     STANDARD(16.sp),
@@ -49,4 +51,8 @@ fun Text(
         fontWeight = if(bold) FontWeight.Bold else null,
         textAlign = textAlign,
     )
+}
+
+fun Modifier.description(description: String): Modifier {
+    return semantics { contentDescription = description }
 }

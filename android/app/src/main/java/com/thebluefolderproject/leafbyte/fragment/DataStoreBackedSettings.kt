@@ -7,6 +7,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
+import com.thebluefolderproject.leafbyte.utils.Clock
+import com.thebluefolderproject.leafbyte.utils.SystemClock
 import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.log
 import kotlinx.collections.immutable.ImmutableList
@@ -57,7 +59,7 @@ private const val DEFAULT_UNIT = "cm"
  * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalized on
  * read, just in case we're reading a value that has never been written.
  */
-class DataStoreBackedSettings(context: Context) : Settings {
+class DataStoreBackedSettings(context: Context, private val clock: Clock = SystemClock()) : Settings {
     private val settingsStore = context.settingsStore
 
     private fun <T> fromSettings(from: SerializedSettings.() -> T): Flow<T> =
@@ -102,13 +104,7 @@ class DataStoreBackedSettings(context: Context) : Settings {
         datasetName.ifBlank { DEFAULT_DATASET_NAME }
 
     override fun noteDatasetUsed() {
-        val epochTimeInSeconds: Long
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            epochTimeInSeconds = Instant.now().epochSecond
-        } else {
-            epochTimeInSeconds = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis())
-        }
-
+        val epochTimeInSeconds = clock.getEpochTimeInSeconds()
         edit { putDatasetNameToEpochTimeOfLastUse(currentDatasetName, epochTimeInSeconds) }
     }
     override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> =
