@@ -269,22 +269,35 @@ class SettingsComposeTest {
     }
 
     @Test
-    fun testToggles() {
+    fun testScanBarcodes() {
         runTest { settings ->
             assertFlowEquals(false, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
+            onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
             assertFlowEquals(false, settings.getUseBarcode())
+        }
+    }
 
+    @Test
+    fun testSaveGps() {
+        runTest { settings ->
             assertFlowEquals(false, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle").performClick()
+            onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle").performClick()
             assertFlowEquals(false, settings.getSaveGpsData())
+        }
+    }
 
+    @Test
+    fun testUseBlackBackground() {
+        runTest { settings ->
             assertFlowEquals(false, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle").performClick()
+            onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle").performClick()
             assertFlowEquals(false, settings.getUseBlackBackground())

@@ -419,7 +419,7 @@ fun ToggleableSetting(
                     Icon(
                         painter = painterResource(R.drawable.baseline_check_24),
                         tint = { Color(0xFF6750A4) },
-                        contentDescription = null,
+                        contentDescription = "Check mark",
                     )
                 }
             },
