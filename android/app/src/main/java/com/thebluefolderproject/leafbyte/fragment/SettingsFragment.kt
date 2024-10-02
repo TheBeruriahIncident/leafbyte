@@ -116,6 +116,14 @@ fun SettingsScreen(
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
     val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
 
+    // Scale length, scale unit, and next sample number are scoped to the particular dataset
+    // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
+    //   to make the editing experience usable and not have the default pop in as soon as you cleared the field
+    val onDatasetChange = {
+        scaleMarkLengthDisplayValue.value = settings.getScaleMarkLength().load().toString()
+        nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
+    }
+
     MaterialTheme() { // TODO: where to put that
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
             blankDatasetNameAlertOpen.value = true
@@ -136,7 +144,7 @@ fun SettingsScreen(
             Text("Settings", size = TextSize.SCREEN_TITLE)
             SaveLocationSetting("Data", settings.getDataSaveLocation().compose()) { settings.setDataSaveLocation(it) }
             SaveLocationSetting("Image", settings.getImageSaveLocation().compose()) { settings.setImageSaveLocation(it) }
-            DatasetNameSetting(settings, datasetNameDisplayValue)
+            DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
             ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
             NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
             ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().compose()) { settings.setUseBarcode(it) }
@@ -186,7 +194,7 @@ private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
 }
 
 @Composable
-private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<String>) {
+private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<String>, onDatasetChange: () -> Unit) {
     val isInvalid = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val previousDatasetNames = settings.getPreviousDatasetNames().compose()
@@ -208,6 +216,7 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
                 //     or the user manages to leave the screen, this divergence ensures that they'll still have a valid dataset name.
                 displayValue.value = it
                 settings.setDatasetName(it)
+                onDatasetChange()
             },
             placeholder = {
                 Text("Your dataset name")
@@ -235,6 +244,7 @@ private fun DatasetNameSetting(settings: Settings, displayValue: MutableState<St
                             settings.setDatasetName(previousDatasetName)
                             displayValue.value = previousDatasetName
                             dropdownIsExpanded = false
+                            onDatasetChange()
                         }
                     )
                 }

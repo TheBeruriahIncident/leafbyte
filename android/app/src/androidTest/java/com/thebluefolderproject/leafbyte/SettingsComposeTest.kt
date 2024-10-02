@@ -260,11 +260,11 @@ class SettingsComposeTest {
             assertEquals("test1", settings.getDatasetName())
             datasetNameField.assert(hasText("test1"))
             assertEquals(100f, settings.getScaleMarkLength())
-//            scaleLengthField.assert(hasText("100"))
+            scaleLengthField.assert(hasText("100.0"))
             assertEquals("ft", settings.getScaleLengthUnit())
             scaleUnitButton.assert(hasText("ft"))
             assertEquals(100, settings.getNextSampleNumber())
-//            nextSampleNumberField.assert(hasText("100"))
+            nextSampleNumberField.assert(hasText("100"))
         }
     }
 
