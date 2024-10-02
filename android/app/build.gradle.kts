@@ -240,7 +240,7 @@ dependencies {
 
     androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.3")
     androidTestImplementation("androidx.compose.ui:ui-test:1.7.3")
-    implementation("androidx.annotation:annotation:1.8.1")
+    implementation("androidx.annotation:annotation:1.8.2")
     implementation("androidx.lifecycle:lifecycle-common:2.8.6")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
