@@ -15,7 +15,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
     id("com.google.protobuf")
     id("jacoco")
-    id("com.android.compose.screenshot").version("0.0.1-alpha07")
 }
 
 junitPlatform.jacocoOptions
@@ -179,7 +178,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 configurations {
@@ -208,7 +206,6 @@ dependencies {
     // implementation("com.google.android.material:material:1.12.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20") // pull kotlin version back out
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-    screenshotTestImplementation("androidx.compose.ui:ui-tooling:1.7.3")
 //    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
 //    implementation("com.google.http-client:google-http-client-gson:1.45.0")
 //    implementation("com.google.api-client:google-api-client-android:2.7.0") {
