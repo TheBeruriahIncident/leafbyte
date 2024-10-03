@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew check lintVitalRelease --continue
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
-        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
         with:
           name: unitTestResults
           path: android/app/build/test-results/**/*.xml
@@ -60,7 +60,7 @@ jobs:
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
         uses: dorny/test-reporter@v1
-        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
         with:
           artifact: unitTestResults
           name: Android unit test results
@@ -99,6 +99,7 @@ jobs:
           distribution: "temurin"
       - name: Run instrumented checks
         uses: ReactiveCircus/android-emulator-runner@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           api-level: 28
           arch: x86_64
@@ -108,7 +109,7 @@ jobs:
           script: cd android && ./gradlew connectedCheck
       - name: Upload instrumented test results
         uses: actions/upload-artifact@v4
-        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
         with:
           name: instrumentedTestResults
           path: android/app/build/outputs/androidTest-results/connected/**/*.xml
@@ -116,7 +117,7 @@ jobs:
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
         uses: dorny/test-reporter@v1
-        if: success() || failure() && steps.changed-files.outputs.any_changed == 'true'
+        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
         with:
           artifact: instrumentedTestResults
           name: Android instrumented test results
