@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
@@ -272,7 +273,9 @@ class SettingsComposeTest {
     fun testScanBarcodes() {
         runTest { settings ->
             assertFlowEquals(false, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
+            onNodeWithContentDescription("Scan Barcodes? toggle")
+                .performScrollTo()
+                .performClick()
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
@@ -284,7 +287,9 @@ class SettingsComposeTest {
     fun testSaveGps() {
         runTest { settings ->
             assertFlowEquals(false, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle").performClick()
+            onNodeWithContentDescription("Save GPS Location? toggle")
+                .performScrollTo()
+                .performClick()
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle").performClick()
@@ -296,7 +301,9 @@ class SettingsComposeTest {
     fun testUseBlackBackground() {
         runTest { settings ->
             assertFlowEquals(false, settings.getUseBlackBackground())
-            onNodeWithContentDescription("Use Black Background? toggle").performClick()
+            onNodeWithContentDescription("Use Black Background? toggle")
+                .performScrollTo()
+                .performClick()
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle").performClick()
