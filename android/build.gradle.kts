@@ -7,11 +7,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.6.1")
+        classpath("com.android.tools.build:gradle:8.7.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20") // pull this back out
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.0.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.0")
+        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.1")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -34,6 +34,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.0.20" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
     id("com.google.protobuf") version "0.9.4" apply false
+    id("jacoco")
 }
 
 dependencyAnalysis {
@@ -50,6 +51,8 @@ dependencyAnalysis {
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",
                     "de.mannodermaus.junit5:android-test-compose",
+                    // needed through some compose magic
+                    "androidx.compose.ui:ui-test-manifest",
                 )
             }
         }

@@ -14,7 +14,28 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
     id("com.google.protobuf")
+    id("jacoco")
 }
+
+junitPlatform.jacocoOptions
+// junitPlatform.enableStandardTestTask true
+
+jacoco {
+    toolVersion = "0.8.12"
+//    applyTo(Task)
+//    applyTo(junitPlatformTest)
+}
+jacoco.apply {
+    toolVersion = "0.8.12"
+    reportsDirectory = file("${layout.buildDirectory}/reports")
+}
+
+// jacocoTestReport {
+//    reports {
+//        xml.enabled = true
+//        html.enabled = true
+//    }
+// }
 
 protobuf {
     protoc {
@@ -23,18 +44,11 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
-//                id("grpc") {
-//                    option("lite")
-//                }
-//                id("grpckt") {
-//                    option("lite")
-//                }
                 id("java") {
                     option("lite")
+                    // Adds @javax.annotation.Generated annotation to the generated code for tooling like Jacoco
+                    option("annotate_code")
                 }
-            }
-            task.builtins {
-                id("kotlin")
             }
         }
     }
@@ -90,6 +104,7 @@ android {
         versionCode = 1
         versionName = "0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         multiDexEnabled = true
 
         manifestPlaceholders["appAuthRedirectScheme"] = "com.thebluefolderproject.leafbyte"
@@ -100,8 +115,32 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+//        java {
+//           testCoverage {
+//               jacocoVersion = "0.8.12"
+//
+//           }
+//        }
+//        debug {
+//            enableUnitTestCoverage true
+//        }
     }
+    testOptions {
+        animationsDisabled = true
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+
+            isMinifyEnabled = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -111,6 +150,14 @@ android {
 
     kotlin {
         jvmToolchain(17)
+    }
+
+    tasks.withType<JacocoReport> {
+        reports {
+            csv.required = true
+            xml.required = true
+            html.required = true
+        }
     }
 
     tasks.withType<Test> {
@@ -129,7 +176,13 @@ android {
 //        jvmTarget = "1.8"
 //    }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
+}
+
+configurations {
+    all {
+        exclude(group = "androidx.compose.ui", module = "ui-test-junit4") // use junit 5
     }
 }
 
@@ -140,11 +193,13 @@ dependencies {
     // implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.datastore:datastore:1.1.1")
-    implementation("androidx.fragment:fragment-ktx:1.8.3")
-    implementation("androidx.navigation:navigation-common:2.8.1")
-    implementation("androidx.navigation:navigation-runtime-ktx:2.8.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.4")
+    implementation("androidx.navigation:navigation-common:2.8.2")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8")
 //    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 //    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
@@ -159,26 +214,35 @@ dependencies {
 //    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
+
+//    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")
     // implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("androidx.activity:activity-compose:1.9.2")
-    implementation(platform("androidx.compose:compose-bom:2024.09.02"))
+    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.02"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     implementation("androidx.activity:activity-ktx:1.9.2")
-    implementation("androidx.compose.foundation:foundation-layout:1.7.2")
-    implementation("androidx.compose.foundation:foundation:1.7.2")
-    implementation("androidx.compose.runtime:runtime:1.7.2")
-    implementation("androidx.compose.ui:ui-text:1.7.2")
-    implementation("androidx.compose.ui:ui-unit:1.7.2")
+    implementation("androidx.compose.foundation:foundation-layout:1.7.3")
+    implementation("androidx.compose.foundation:foundation:1.7.3")
+    implementation("androidx.compose.runtime:runtime:1.7.3")
+    implementation("androidx.compose.ui:ui-text:1.7.3")
+    implementation("androidx.compose.ui:ui-unit:1.7.3")
 
-    implementation("com.google.protobuf:protobuf-kotlin-lite:4.28.2")
+    androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.3")
+    androidTestImplementation("androidx.compose.ui:ui-test:1.7.3")
+    implementation("androidx.annotation:annotation:1.8.2")
+    implementation("androidx.lifecycle:lifecycle-common:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
 
@@ -196,7 +260,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
-    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.2")
+    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
 

@@ -36,6 +36,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "iOS is not affected"
       - name: Set Default Scheme
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")

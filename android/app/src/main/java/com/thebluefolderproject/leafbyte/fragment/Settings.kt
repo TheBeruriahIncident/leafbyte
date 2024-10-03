@@ -1,20 +1,33 @@
 package com.thebluefolderproject.leafbyte.fragment
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.Flow
+
 interface Settings {
-    var dataSaveLocation: SaveLocation
-    var imageSaveLocation: SaveLocation
+    fun getDataSaveLocation(): Flow<SaveLocation>
+    fun setDataSaveLocation(newDataSaveLocation: SaveLocation)
 
-    var datasetName: String
+    fun getImageSaveLocation(): Flow<SaveLocation>
+    fun setImageSaveLocation(newImageSaveLocation: SaveLocation)
+
+    fun getDatasetName(): Flow<String>
+    fun setDatasetName(newDatasetName: String)
     fun noteDatasetUsed()
-    val previousDatasetNames: List<String>
+    fun getPreviousDatasetNames(): Flow<ImmutableList<String>>
 
-    var scaleMarkLength: Float
-    var unit: String
+    fun getScaleMarkLength(): Flow<Float>
+    fun setScaleMarkLength(newScaleMarkLength: Float)
+    fun getScaleLengthUnit(): Flow<String>
+    fun setScaleLengthUnit(newScaleLengthUnit: String)
 
-    val nextSampleNumber: Int
+    fun getNextSampleNumber(): Flow<Int>
+    fun setNextSampleNumber(newNextSampleNumber: Int)
     fun incrementSampleNumber()
 
-    var useBarcode: Boolean
-    var saveGpsData: Boolean
-    var useBlackBackground: Boolean
+    fun getUseBarcode(): Flow<Boolean>
+    fun setUseBarcode(newUseBarcode: Boolean)
+    fun getSaveGpsData(): Flow<Boolean>
+    fun setSaveGpsData(newSaveGpsData: Boolean)
+    fun getUseBlackBackground(): Flow<Boolean>
+    fun setUseBlackBackground(newUseBlackBackground: Boolean)
 }

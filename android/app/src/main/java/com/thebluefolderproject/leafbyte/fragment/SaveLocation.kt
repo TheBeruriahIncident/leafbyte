@@ -2,10 +2,10 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSaveLocation
 
-enum class SaveLocation(val serialized: SerializedSaveLocation) {
-    NONE(SerializedSaveLocation.NONE),
-    LOCAL(SerializedSaveLocation.LOCAL),
-    GOOGLE_DRIVE(SerializedSaveLocation.GOOGLE_DRIVE),
+enum class SaveLocation(val serialized: SerializedSaveLocation, val userFacingName: String) {
+    NONE(SerializedSaveLocation.NONE, "None"),
+    LOCAL(SerializedSaveLocation.LOCAL, "Your Phone"),
+    GOOGLE_DRIVE(SerializedSaveLocation.GOOGLE_DRIVE, "Google Drive"),
     ;
 
     companion object {

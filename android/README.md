@@ -16,3 +16,13 @@ Some useful commands:
 - `./gradlew buildHealth` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
 - `./gradlew detekt` to check for detekt issues
+- `./gradlew check` runs all non-instrumented checks
+- `./gradlew connectedCheck` runs all instrumented checks
+- `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass
+
+Regarding code coverage reports:
+- To check coverage from unit tests, run `./gradlew jacocoTestReport` and find the report at `- app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec`
+- To check coverage from instrumented tests, run `./gradlew connectedCheck` and find the report at `- app/build/reports/coverage/androidTest/debug/connected/report.xml`
+- Either file can be opened in Android Studio with "Import External Coverage Report..."
+- It's not yet clear why Jacoco generates different formats for unit and instrumented or how to combine the two reports
+
