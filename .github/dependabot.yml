@@ -7,4 +7,4 @@ updates:
     directory: "/android/app"
     schedule:
       interval: "weekly"
-# the iOS app currently uses Cocoapods, which is not currently supported
+# the iOS app uses Cocoapods, which is not currently supported
