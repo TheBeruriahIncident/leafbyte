@@ -1,0 +1,10 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/android/app"
+    schedule:
+      interval: "weekly"
+# the iOS app uses Cocoapods, which is not currently supported

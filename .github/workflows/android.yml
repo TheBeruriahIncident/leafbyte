@@ -44,7 +44,7 @@ jobs:
         with:
           java-version: 17
           distribution: "temurin"
-      - name: Build and check (no instrumented checks)
+      - name: Build and check (without instrumented checks)
         if: steps.changed-files.outputs.any_changed == 'true'
         # Continue so that we can see all failures and not just the first; this step still fails if anything fails.
         # I have no idea why lintVitalRelease is different from lint and why making check depend on it doesn't make it run:
@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew check lintVitalRelease --continue
       - name: Upload unit test results
         uses: actions/upload-artifact@v4
-        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
+        if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           name: unitTestResults
           path: android/app/build/test-results/**/*.xml
@@ -60,7 +60,7 @@ jobs:
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
         uses: dorny/test-reporter@v1
-        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
+        if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: unitTestResults
           name: Android unit test results
@@ -109,7 +109,8 @@ jobs:
           script: cd android && ./gradlew connectedCheck
       - name: Upload instrumented test results
         uses: actions/upload-artifact@v4
-        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
+        # This (and certain other steps) uses `!cancelled`, because otherwise there's an implicit `success() &&`, even when tests fails
+        if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           name: instrumentedTestResults
           path: android/app/build/outputs/androidTest-results/connected/**/*.xml
@@ -117,7 +118,7 @@ jobs:
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
         uses: dorny/test-reporter@v1
-        if: (success() || failure()) && steps.changed-files.outputs.any_changed == 'true'
+        if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: instrumentedTestResults
           name: Android instrumented test results
