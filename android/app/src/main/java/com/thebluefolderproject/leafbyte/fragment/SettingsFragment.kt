@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,6 +69,7 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.compose
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.signInToGoogle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
@@ -112,6 +115,9 @@ fun SettingsScreen(
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
     val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { results ->
+        log("got result!! $results")
+    }
 
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
@@ -152,7 +158,7 @@ fun SettingsScreen(
                 "For use with light plant tissue",
                 settings.getUseBlackBackground().compose(),
             ) { settings.setUseBlackBackground(it) }
-            TextButton(onClick = { signInToGoogle(context) }) {
+            TextButton(onClick = { signInToGoogle(context, launcher) }) {
                 Text("Sign out of Google")
             }
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")

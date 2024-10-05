@@ -4,6 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.Composable
 import com.thebluefolderproject.leafbyte.BuildConfig
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -14,7 +19,26 @@ import net.openid.appauth.ResponseTypeValues
 
 // const val requestCodeSignIn = 20
 
-fun signInToGoogle(context: Context) {
+class GoogleSignInContract : ActivityResultContract<String, AuthorizationResponse>() {
+    override fun createIntent(
+        context: Context,
+        input: String,
+    ): Intent {
+        TODO("Not yet implemented")
+    }
+
+    override fun parseResult(
+        resultCode: Int,
+        intent: Intent?,
+    ): AuthorizationResponse {
+        return AuthorizationResponse.fromIntent(intent!!)!! // there's also an exception from intent??
+    }
+}
+
+fun signInToGoogle(context: Context, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+    log("starting sign in")
+//    val launcher = rememberLauncherForActivityResult(GoogleSignInContract()) { }
+    // this needs to not happen on main thread and probably should happen on start up or something
     AuthorizationServiceConfiguration.fetchFromIssuer(
         Uri.parse("https://accounts.google.com"),
         RetrieveConfigurationCallback { serviceConfiguration, ex ->
@@ -50,11 +74,12 @@ fun signInToGoogle(context: Context) {
 
             val authService = AuthorizationService(context)
             val authIntent = authService.getAuthorizationRequestIntent(authRequest)
-            context.startActivity(
-                authIntent,
-//                requestCodeSignIn,
-//                "Login with Google Sign-In",
-            )
+            launcher.launch(authIntent)
+//            context.startActivity(
+//                authIntent,
+////                requestCodeSignIn,
+////                "Login with Google Sign-In",
+//            )
         },
     )
 }
