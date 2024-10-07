@@ -6,5 +6,11 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/android/app"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    groups: 
+      android-dependencies:
+        applies-to: version-updates
+        patterns: 
+         - "*"
+    versioning-strategy: increase
 # the iOS app uses Cocoapods, which is not currently supported
