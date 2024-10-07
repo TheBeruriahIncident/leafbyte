@@ -19,10 +19,10 @@ import net.openid.appauth.ResponseTypeValues
 
 // const val requestCodeSignIn = 20
 
-class GoogleSignInContract : ActivityResultContract<String, AuthorizationResponse>() {
+class GoogleSignInContract : ActivityResultContract<Unit, AuthorizationResponse>() {
     override fun createIntent(
         context: Context,
-        input: String,
+        input: Unit,
     ): Intent {
         TODO("Not yet implemented")
     }
@@ -37,7 +37,7 @@ class GoogleSignInContract : ActivityResultContract<String, AuthorizationRespons
 
 fun signInToGoogle(context: Context, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
     log("starting sign in")
-//    val launcher = rememberLauncherForActivityResult(GoogleSignInContract()) { }
+
     // this needs to not happen on main thread and probably should happen on start up or something
     AuthorizationServiceConfiguration.fetchFromIssuer(
         Uri.parse("https://accounts.google.com"),
@@ -47,16 +47,9 @@ fun signInToGoogle(context: Context, launcher: ManagedActivityResultLauncher<Int
                 return@RetrieveConfigurationCallback
             }
 
-            val config2 =
-                AuthorizationServiceConfiguration(
-                    Uri.parse("https://accounts.google.com/o/oauth2/auth"),
-                    Uri.parse("https://oauth2.googleapis.com/token"),
-                )
-
             val authRequestBuilder: AuthorizationRequest.Builder =
                 AuthorizationRequest.Builder(
-                    // serviceConfiguration!!,  // the authorization service configuration
-                    config2,
+                    serviceConfiguration!!,
                     // from secret.properties
                     BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID,
                     // the response_type value: we want a code
