@@ -7,10 +7,11 @@ updates:
     directory: "/android/app"
     schedule:
       interval: "daily"
+      time: "08:30"
+      timezone: "EST"
     groups: 
       android-dependencies:
         applies-to: version-updates
         patterns: 
          - "*"
-    versioning-strategy: increase
 # the iOS app uses Cocoapods, which is not currently supported
