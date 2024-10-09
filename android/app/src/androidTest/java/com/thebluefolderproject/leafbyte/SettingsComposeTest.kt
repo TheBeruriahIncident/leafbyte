@@ -5,6 +5,10 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isNotSelected
+import androidx.compose.ui.test.isOff
+import androidx.compose.ui.test.isOn
+import androidx.compose.ui.test.isSelected
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -50,23 +54,57 @@ class SettingsComposeTest {
     @Test
     fun testSaveLocations() {
         runTest { settings ->
-            onNodeWithContentDescription("Set Data Save Location to None").performClick()
+            val dataNone = onNodeWithContentDescription("Set Data Save Location to None")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to Your Phone")
+            val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
+            fun dataSelectionIs(node: SemanticsNodeInteraction) {
+                node.assert(isSelected())
+
+                if (node != dataNone) {
+                    dataNone.assert(isNotSelected())
+                }
+                if (node != dataLocal) {
+                    dataLocal.assert(isNotSelected())
+                }
+                if (node != dataGoogle) {
+                    dataGoogle.assert(isNotSelected())
+                }
+            }
+
+            val imageNone = onNodeWithContentDescription("Set Image Save Location to None")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to Your Phone")
+            val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
+            fun imageSelectionIs(node: SemanticsNodeInteraction) {
+                node.assert(isSelected())
+
+                if (node != imageNone) {
+                    imageNone.assert(isNotSelected())
+                }
+                if (node != imageLocal) {
+                    imageLocal.assert(isNotSelected())
+                }
+                if (node != imageGoogle) {
+                    imageGoogle.assert(isNotSelected())
+                }
+            }
+
+            dataNone.performClick()
+            dataSelectionIs(dataNone)
             assertFlowEquals(SaveLocation.NONE, settings.getDataSaveLocation())
 
-            onNodeWithContentDescription("Set Data Save Location to Your Phone").performClick()
+            dataLocal.performClick()
+            dataSelectionIs(dataLocal)
             assertFlowEquals(SaveLocation.LOCAL, settings.getDataSaveLocation())
 
-            onNodeWithContentDescription("Set Data Save Location to Google Drive").performClick()
-            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, settings.getDataSaveLocation())
-
-            onNodeWithContentDescription("Set Image Save Location to None").performClick()
+            imageNone.performClick()
+            imageSelectionIs(imageNone)
             assertFlowEquals(SaveLocation.NONE, settings.getImageSaveLocation())
 
-            onNodeWithContentDescription("Set Image Save Location to Your Phone").performClick()
+            imageLocal.performClick()
+            imageSelectionIs(imageLocal)
             assertFlowEquals(SaveLocation.LOCAL, settings.getImageSaveLocation())
 
-            onNodeWithContentDescription("Set Image Save Location to Google Drive").performClick()
-            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, settings.getImageSaveLocation())
+            // we do not select Google Drive here, as testing Google Drive is complex and done elsewhere
         }
     }
 
@@ -274,11 +312,15 @@ class SettingsComposeTest {
         runTest { settings ->
             assertFlowEquals(false, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
+            onNodeWithContentDescription("Scan Barcodes? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getUseBarcode())
         }
     }
@@ -288,11 +330,15 @@ class SettingsComposeTest {
         runTest { settings ->
             assertFlowEquals(false, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle").performClick()
+            onNodeWithContentDescription("Save GPS Location? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getSaveGpsData())
         }
     }
@@ -302,11 +348,15 @@ class SettingsComposeTest {
         runTest { settings ->
             assertFlowEquals(false, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBlackBackground())
-            onNodeWithContentDescription("Use Black Background? toggle").performClick()
+            onNodeWithContentDescription("Use Black Background? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getUseBlackBackground())
         }
     }
