@@ -127,6 +127,7 @@ private enum class AlertType {
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
+@Suppress("detekt:complexity:LongMethod")
 @Composable
 fun SettingsScreen(
     @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
@@ -172,7 +173,7 @@ fun SettingsScreen(
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
 
-    // TODO: block back during google sign in??
+    // TODO block back during google sign in??
 
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order

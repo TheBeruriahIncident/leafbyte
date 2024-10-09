@@ -178,6 +178,7 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
         edit { setUseBlackBackground(newUseBlackBackground) }
     }
 
+    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
     override var authState: AuthState
         get() {
             val authStateString = fromSettings { googleAuthState }.load()

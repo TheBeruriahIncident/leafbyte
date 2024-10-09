@@ -1,4 +1,4 @@
-@file:Suppress("ktlint:standard:no-wildcard-imports")
+@file:Suppress("ktlint:standard:no-wildcard-imports", "detekt:style:WildcardImport")
 
 package com.thebluefolderproject.leafbyte.utils
 
@@ -26,7 +26,7 @@ import net.openid.appauth.ResponseTypeValues
 import kotlin.coroutines.suspendCoroutine
 
 private val GOOGLE_OPENID_CONNECT_ISSUER_URI = Uri.parse("https://accounts.google.com")
-private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // TODO: what does the path do
+private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // TODO what does the path do
 private const val GET_USER_ID_SCOPE = "openid"
 private const val WRITE_TO_GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
 private val ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT = mapOf(Pair("enable_granular_consent", "true"))
@@ -37,6 +37,7 @@ fun isGoogleSignInConfigured(): Boolean {
     return !BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID.contains("FILL_THIS_IN")
 }
 
+@Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
 private class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, AuthorizationResponse?>() {
     override fun createIntent(
         context: Context,
@@ -61,6 +62,7 @@ private class GoogleSignInContract : ActivityResultContract<GoogleSignInContract
         return authService.getAuthorizationRequestIntent(authRequest)
     }
 
+    @Suppress("detekt:style:ReturnCount")
     override fun parseResult(
         resultCode: Int,
         intent: Intent?,
@@ -115,6 +117,7 @@ enum class GoogleSignInFailureType {
 }
 
 // TODO make it possible to inject mock sign in manager for testing, make sure we're testing which field is actually selected
+@Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
 class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: Context, private val settings: Settings) {
     private var deferredServiceConfig: Deferred<AuthorizationServiceConfiguration?> = getDeferredServiceConfig()
     private val authService = AuthorizationService(context)
@@ -170,6 +173,7 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
         }
     }
 
+    @Suppress("detekt:style:ReturnCount")
     private fun processAuthResponse(
         authResponse: AuthorizationResponse?,
         onSuccess: () -> Unit,
@@ -223,6 +227,7 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
         }
     }
 
+    @Suppress("detekt:style:ReturnCount")
     private suspend fun getServiceConfigWithRetry(): AuthorizationServiceConfiguration? {
         log("Awaiting deferred service config")
         var serviceConfig = deferredServiceConfig.await()
