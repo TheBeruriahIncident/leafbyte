@@ -68,6 +68,7 @@ import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
@@ -185,9 +186,10 @@ fun SettingsScreen(
 
     MaterialTheme { // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
+            log("back handler")
             currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
         }
-        BlankDatasetNameAlert(currentAlert)
+        Alert(currentAlert)
 
         Column(
             modifier =
@@ -265,7 +267,8 @@ fun SettingsScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun BlankDatasetNameAlert(currentAlert: MutableState<AlertType?>) {
+private fun Alert(currentAlert: MutableState<AlertType?>) {
+    log("alert $currentAlert")
     if (currentAlert.value == null) {
         return
     }

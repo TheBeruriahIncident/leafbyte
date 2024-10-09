@@ -134,6 +134,44 @@ class SettingsComposeTest {
         }
     }
 
+    // TODO test the dataset name alert once we have multiple screens
+//    @Test
+//    fun testBlankDatasetNameAlert() {
+//        runTest { settings ->
+//            // first we test that normally, you can press back to leave the screen
+//            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+//                Espresso.pressBack()
+//            }
+//        }
+//    }
+//    @Test
+//    fun testBlankDatasetNameAlert2() {
+//        runTest { settings ->
+//            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+//            datasetNameField.performTextClearance()
+//            val mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+//            mDevice.pressBack(); Espresso.pressBack()
+//
+//            println(onRoot().printToString())
+//
+//            val errorMessage = onNodeWithText("A dataset name is required. Please enter a dataset name.")
+//            errorMessage.assertExists()
+//            onNodeWithText("OK").performClick()
+////            errorMessage.assertDoesNotExist()
+//
+//            Espresso.pressBack()
+////            errorMessage.assertExists()
+//            onNodeWithText("OK").performClick()
+////            errorMessage.assertDoesNotExist()
+//
+//            datasetNameField.performTextReplacement("non-empty")
+//            // first we test that normally, you can press back to leave the screen
+//            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+//                Espresso.pressBack()
+//            }
+//        }
+//    }
+
     @Test
     fun testUsePreviousDataset() {
         runTest { settings ->

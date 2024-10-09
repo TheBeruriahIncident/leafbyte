@@ -246,7 +246,8 @@ dependencies {
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
 
-    // androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+//    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.2")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.6.0")
