@@ -7,6 +7,8 @@ updates:
     directory: "/android/app"
     schedule:
       interval: "daily"
+      time: "06:00"
+      timezone: "EST"
     groups: 
       android-dependencies:
         applies-to: version-updates
@@ -14,3 +16,4 @@ updates:
          - "*"
     versioning-strategy: increase
 # the iOS app uses Cocoapods, which is not currently supported
+# additionally, the iOS minimum version model makes bumping often undesirable

@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +44,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +52,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -64,13 +62,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-import com.thebluefolderproject.leafbyte.utils.compose
+import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
-import com.thebluefolderproject.leafbyte.utils.log
-import com.thebluefolderproject.leafbyte.utils.signInToGoogle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 
@@ -104,6 +102,30 @@ class SettingsFragment : Fragment() {
     }
 }
 
+private enum class AlertType {
+    BACK_WITHOUT_DATASET_NAME,
+    GOOGLE_SIGN_IN_UNCONFIGURED,
+    GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
+    GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
+    GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
+    GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
+    GOOGLE_SIGN_IN_NEITHER_SCOPE,
+    ;
+
+    companion object {
+        fun from(signInFailureType: GoogleSignInFailureType): AlertType {
+            return when (signInFailureType) {
+                GoogleSignInFailureType.UNCONFIGURED -> GOOGLE_SIGN_IN_UNCONFIGURED
+                GoogleSignInFailureType.NON_INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE
+                GoogleSignInFailureType.INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE
+                GoogleSignInFailureType.NO_GET_USER_ID_SCOPE -> GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE
+                GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE -> GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE
+                GoogleSignInFailureType.NEITHER_SCOPE -> GOOGLE_SIGN_IN_NEITHER_SCOPE
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun SettingsScreen(
@@ -113,11 +135,44 @@ fun SettingsScreen(
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
     val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
-    val blankDatasetNameAlertOpen = remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { results ->
-        log("got result!! $results")
+
+    val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(null) }
+
+    val dataSaveLocationDisplayValue = remember { mutableStateOf(settings.getDataSaveLocation().load()) }
+    val imageSaveLocationDisplayValue = remember { mutableStateOf(settings.getDataSaveLocation().load()) }
+    fun fullySetDataSaveLocation(newSaveLocation: SaveLocation) {
+        dataSaveLocationDisplayValue.value = newSaveLocation
+        settings.setDataSaveLocation(newSaveLocation)
     }
+    fun fullySetImageSaveLocation(newSaveLocation: SaveLocation) {
+        imageSaveLocationDisplayValue.value = newSaveLocation
+        settings.setImageSaveLocation(newSaveLocation)
+    }
+
+    val dataSaveToGoogleSuccess = {
+        fullySetDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
+    }
+    val dataSaveToGoogleFailure = { failure: GoogleSignInFailureType ->
+        // fallback to local so that someone who intended to save doesn't accidentally not save at all
+        fullySetDataSaveLocation(SaveLocation.LOCAL)
+        currentAlert.value = AlertType.from(failure)
+    }
+    val imageSaveToGoogleSuccess = {
+        fullySetImageSaveLocation(SaveLocation.GOOGLE_DRIVE)
+    }
+    val imageSaveToGoogleFailure = { failure: GoogleSignInFailureType ->
+        // fallback to local so that someone who intended to save doesn't accidentally not save at all
+        fullySetImageSaveLocation(SaveLocation.LOCAL)
+        currentAlert.value = AlertType.from(failure)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val googleSignInManager = remember { GoogleSignInManager(coroutineScope, context, settings) }
+    val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
+    val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
+
+    // TODO: block back during google sign in??
 
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
@@ -129,11 +184,9 @@ fun SettingsScreen(
 
     MaterialTheme { // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
-            blankDatasetNameAlertOpen.value = true
+            currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
         }
-        if (blankDatasetNameAlertOpen.value) {
-            BlankDatasetNameAlert(blankDatasetNameAlertOpen)
-        }
+        BlankDatasetNameAlert(currentAlert)
 
         Column(
             modifier =
@@ -146,19 +199,50 @@ fun SettingsScreen(
         ) {
             Spacer(Modifier.height(20.dp))
             Text("Settings", size = TextSize.SCREEN_TITLE)
-            SaveLocationSetting("Data", settings.getDataSaveLocation().compose()) { settings.setDataSaveLocation(it) }
-            SaveLocationSetting("Image", settings.getImageSaveLocation().compose()) { settings.setImageSaveLocation(it) }
+            SaveLocationSetting(
+                "Data",
+                dataSaveLocationDisplayValue,
+                setNonGoogleLocation = {
+                    fullySetDataSaveLocation(it)
+                },
+                setLocationToGoogle = {
+                    dataSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
+                    googleSignInManager.signIn(dataSaveToGoogleLauncher, dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
+                }
+            )
+            SaveLocationSetting(
+                "Image",
+                imageSaveLocationDisplayValue,
+                setNonGoogleLocation = {
+                    fullySetImageSaveLocation(it)
+                },
+                setLocationToGoogle = {
+                    imageSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
+                    googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
+                }
+            )
             DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
             ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
             NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
-            ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().compose()) { settings.setUseBarcode(it) }
-            ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().compose()) { settings.setSaveGpsData(it) }
+            ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().valueForCompose()) { settings.setUseBarcode(it) }
+            ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().valueForCompose()) { settings.setSaveGpsData(it) }
             ToggleableSetting(
                 "Use Black Background?",
                 "For use with light plant tissue",
-                settings.getUseBlackBackground().compose(),
+                settings.getUseBlackBackground().valueForCompose(),
             ) { settings.setUseBlackBackground(it) }
-            TextButton(onClick = { signInToGoogle(context, launcher) }) {
+            TextButton(
+                onClick = {
+                    if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+                        fullySetDataSaveLocation(SaveLocation.LOCAL)
+                    }
+                    if (imageSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+                        fullySetImageSaveLocation(SaveLocation.LOCAL)
+                    }
+
+                    googleSignInManager.signOut()
+                }
+            ) {
                 Text("Sign out of Google")
             }
             Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
@@ -176,9 +260,13 @@ fun SettingsScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
+private fun BlankDatasetNameAlert(currentAlert: MutableState<AlertType?>) {
+    if (currentAlert.value == null) {
+        return
+    }
+
     BasicAlertDialog(
-        onDismissRequest = { alertOpen.value = false },
+        onDismissRequest = { currentAlert.value = null },
     ) {
         Surface(
             modifier =
@@ -190,16 +278,41 @@ private fun BlankDatasetNameAlert(alertOpen: MutableState<Boolean>) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "A dataset name is required. Please enter a dataset name.",
+                    text = getAlertMessage(currentAlert.value),
                 )
                 TextButton(
-                    onClick = { alertOpen.value = false },
+                    onClick = { currentAlert.value = null },
                     modifier = Modifier.align(Alignment.End),
                 ) {
                     Text("OK")
                 }
             }
         }
+    }
+}
+
+private fun getAlertMessage(alertType: AlertType?): String {
+    return when(alertType) {
+        AlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
+        AlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
+            "Google sign-in is not configured. Please reach out to leafbyte@zoegp.science so we can fix this."
+        AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE ->
+            "Failed to communicate with Google. Please confirm that you are online and LeafByte has access to the internet."
+        AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE ->
+            "Did not successfully sign in to Google. LeafByte cannot save to Google Drive without a successful sign-in."
+        AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE ->
+            "We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you " +
+                    "so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with " +
+                    "multiple Google accounts. To save to Google Drive, sign in again and grant access."
+        AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE ->
+            "We must be authorized to write to Google Drive in order to save to Google Drive. To save to Google Drive, sign in again and " +
+                    "grant access."
+        AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE ->
+            "We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need " +
+                    "the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions " +
+                    "or to even use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access."
+        // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
+        null -> ""
     }
 }
 
@@ -211,7 +324,7 @@ private fun DatasetNameSetting(
 ) {
     val isInvalid = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
-    val previousDatasetNames = settings.getPreviousDatasetNames().compose()
+    val previousDatasetNames = settings.getPreviousDatasetNames().valueForCompose()
 
     SingleSetting("Dataset Name") {
         TextField(
@@ -276,7 +389,7 @@ private fun ScaleLengthSetting(
 ) {
     val isInvalid = displayValue.value.isBlank() || displayValue.value.toFloatOrNull() == null
     var dropdownIsExpanded by remember { mutableStateOf(false) }
-    val scaleLengthUnit = settings.getScaleLengthUnit().compose()
+    val scaleLengthUnit = settings.getScaleLengthUnit().valueForCompose()
 
     SingleSetting("Scale Length") {
         ConstraintLayout(
@@ -379,8 +492,9 @@ private fun NextSampleNumberSetting(
 @Composable
 fun SaveLocationSetting(
     locationSettingName: String,
-    currentLocation: SaveLocation,
-    setNewLocation: (SaveLocation) -> Unit,
+    currentLocation: MutableState<SaveLocation>,
+    setNonGoogleLocation: (SaveLocation) -> Unit,
+    setLocationToGoogle: () -> Unit,
 ) {
     val fullSettingName = remember { "$locationSettingName Save Location" }
 
@@ -388,12 +502,18 @@ fun SaveLocationSetting(
         SingleChoiceSegmentedButtonRow {
             val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
             options.forEachIndexed { index, option ->
-                val selected = currentLocation == option
+                val selected = currentLocation.value == option
 
                 SegmentedButton(
                     shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
                     selected = selected,
-                    onClick = { setNewLocation(option) },
+                    onClick = {
+                        if (option == SaveLocation.GOOGLE_DRIVE) {
+                            setLocationToGoogle()
+                        } else {
+                            setNonGoogleLocation(option)
+                        }
+                    },
                     icon = {},
                     modifier =
                         Modifier.width(100.dp)

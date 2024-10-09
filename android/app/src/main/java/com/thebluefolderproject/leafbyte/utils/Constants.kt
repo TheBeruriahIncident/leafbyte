@@ -9,9 +9,11 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.thebluefolderproject.leafbyte.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import net.openid.appauth.AuthState
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 
@@ -21,12 +23,26 @@ import java.util.concurrent.TimeUnit
 const val UNUSED = "UNUSED_PARAMETER"
 private const val LOG_TAG = "BlueFolder"
 
-fun log(o: Any) {
-    Log.i(LOG_TAG, o.toString())
+fun log(logData: Any) {
+    logAnyType(Log.INFO, logData)
 }
 
-fun log(o: Exception) {
-    Log.e(LOG_TAG, Log.getStackTraceString(o))
+fun logError(logData: Any) {
+    logAnyType(Log.ERROR, logData)
+}
+
+private fun logAnyType(priority: Int, logData: Any) {
+    if (logData is Throwable) {
+        // if logData is an exception, we override priority, both for ease, as println doesn't directly take a throwable, and because an
+        //   exception seems like an error
+        Log.e(LOG_TAG, "An undescribed error occurred", logData)
+    } else {
+        Log.println(priority, LOG_TAG, logData.toString())
+    }
+}
+
+fun logError(message: String, exception: Exception) {
+    Log.e(LOG_TAG, message, exception)
 }
 
 fun checkState(
@@ -44,7 +60,7 @@ fun <T> Flow<T>.load(): T {
 }
 
 @Composable
-fun <T> Flow<T>.compose(): T {
+fun <T> Flow<T>.valueForCompose(): T {
     val initialValue = remember { load() }
     val state = collectAsStateWithLifecycle(initialValue)
     // It may seem silly that we bother to make a state and immediately unwrap the state, but that's actually critical for the Compose
@@ -65,3 +81,6 @@ class SystemClock : Clock {
         }
     }
 }
+
+// this is a provider so that the "const" here can't be changed
+val DEFAULT_AUTH_STATE = { AuthState() }

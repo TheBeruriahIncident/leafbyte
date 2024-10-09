@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import net.openid.appauth.AuthState
 
 @Suppress("MagicNumber")
 class SampleSettingsProvider : PreviewParameterProvider<Settings> {
@@ -95,6 +96,10 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                     override fun setUseBlackBackground(newUseBlackBackground: Boolean) {
                         TODO("Not yet implemented")
                     }
+
+                    override var authState: AuthState
+                        get() = TODO("Not yet implemented")
+                        set(value) {}
                 }
 
             return sequenceOf(sampleSettings)

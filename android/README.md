@@ -7,6 +7,12 @@ Open the android folder in Android Studio.
 You'll need to install the development kit (NDK) within Android Studio.
 You should then be able to run the app in a simulator.
 
+Before the app can run with Google Sign-In/Google Drive, you must copy local.defaults.properties to secrets.properties and fill in GOOGLE_SIGN_IN_CLIENT_ID.
+(You can skip this process if you're not building a release, and you're ok with Google Sign-In not working during development)
+If you're part of the core LeafByte development team, replace the whole file with the version from leafbyte.app@gmail.com's Google Drive.
+If you're an outside contributor (welcome! 😊), you can generate an Android-type client id using [Google's guide](https://support.google.com/cloud/answer/6158849?hl=en) .
+If you run into any issues, reach out to <leafbyte@zoegp.science>, and we'd be happy to help!
+
 In order to be able to publish releases, you must add a keystore.
 You can follow [Google's guide](https://developer.android.com/studio/publish/app-signing#generate-key) or manually run `keytool -genkey -v -keystore keystore.p12 -alias LeafByte -keyalg RSA -keysize 3072 -validity 365000`.
 To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
