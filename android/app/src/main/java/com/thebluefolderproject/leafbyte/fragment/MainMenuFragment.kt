@@ -64,9 +64,11 @@ class MainMenuFragment : Fragment() {
         if (isGoogleSignInConfigured()) {
             log("Google Sign-In is configured")
         } else {
-            logError("************************************************************\n" +
+            logError(
+                "************************************************************\n" +
                     "STOP! Please fill in the secrets.properties file! Google Sign-In is not configured and WILL NOT WORK!\n" +
-                    "************************************************************")
+                    "************************************************************",
+            )
         }
 
         return ComposeView(requireContext()).apply {

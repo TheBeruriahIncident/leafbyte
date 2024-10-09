@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.thebluefolderproject.leafbyte.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -31,7 +30,10 @@ fun logError(logData: Any) {
     logAnyType(Log.ERROR, logData)
 }
 
-private fun logAnyType(priority: Int, logData: Any) {
+private fun logAnyType(
+    priority: Int,
+    logData: Any,
+) {
     if (logData is Throwable) {
         // if logData is an exception, we override priority, both for ease, as println doesn't directly take a throwable, and because an
         //   exception seems like an error
@@ -41,7 +43,10 @@ private fun logAnyType(priority: Int, logData: Any) {
     }
 }
 
-fun logError(message: String, exception: Exception) {
+fun logError(
+    message: String,
+    exception: Exception,
+) {
     Log.e(LOG_TAG, message, exception)
 }
 

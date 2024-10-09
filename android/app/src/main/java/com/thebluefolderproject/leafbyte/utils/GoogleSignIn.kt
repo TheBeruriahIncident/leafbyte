@@ -1,6 +1,7 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package com.thebluefolderproject.leafbyte.utils
 
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType.*
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,11 +12,11 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.Composable
 import com.thebluefolderproject.leafbyte.BuildConfig
 import com.thebluefolderproject.leafbyte.fragment.Settings
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -25,11 +26,9 @@ import net.openid.appauth.ResponseTypeValues
 import kotlin.coroutines.suspendCoroutine
 
 private val GOOGLE_OPENID_CONNECT_ISSUER_URI = Uri.parse("https://accounts.google.com")
-// TODO: what does the path do
-private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google")
+private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // TODO: what does the path do
 private const val GET_USER_ID_SCOPE = "openid"
 private const val WRITE_TO_GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
-// we do actually require both scopes we request, but we enable granular consent to get ahead of Google enabling it for us in the future
 private val ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT = mapOf(Pair("enable_granular_consent", "true"))
 
 class GoogleSignInContractInput(val serviceConfig: AuthorizationServiceConfiguration, val authService: AuthorizationService)
@@ -52,6 +51,8 @@ private class GoogleSignInContract : ActivityResultContract<GoogleSignInContract
                 LEAFBYTE_REDIRECT_URI,
             )
                 .setScopes(GET_USER_ID_SCOPE, WRITE_TO_GOOGLE_DRIVE_SCOPE)
+                // we do actually require both scopes we request, but we enable granular consent to get ahead of Google enabling it for us
+                //   in the future
                 .setAdditionalParameters(ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT)
                 .build()
 
@@ -123,8 +124,7 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
         launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
         onSuccess: () -> Unit,
         onFailure: (GoogleSignInFailureType) -> Unit,
-        ) {
-
+    ) {
         if (!isGoogleSignInConfigured()) {
             logError("Attempting to use Google sign-in when it's unconfigured")
             onFailure(UNCONFIGURED)
@@ -212,8 +212,10 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
                 return@performTokenRequest
             }
 
-            log("Successfully requested token from Google Sign-In. " +
-                    "Id token: ${tokenResponse.idToken}, access token: ${tokenResponse.accessToken}")
+            log(
+                "Successfully requested token from Google Sign-In. " +
+                    "Id token: ${tokenResponse.idToken}, access token: ${tokenResponse.accessToken}",
+            )
             authState.update(tokenResponse, null)
             settings.authState = authState
 
@@ -254,23 +256,21 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
         return suspendCoroutine<AuthorizationServiceConfiguration?> { continuation ->
             log("Attempting to fetch Google auth config")
 
-            AuthorizationServiceConfiguration.fetchFromIssuer(GOOGLE_OPENID_CONNECT_ISSUER_URI)
-                { serviceConfiguration, exception ->
-                    if (exception != null) {
-                        logError("Failed to fetch Google auth config", exception)
+            AuthorizationServiceConfiguration.fetchFromIssuer(GOOGLE_OPENID_CONNECT_ISSUER_URI) { serviceConfiguration, exception ->
+                if (exception != null) {
+                    logError("Failed to fetch Google auth config", exception)
+
+                    continuation.resumeWith(Result.success(null))
+                } else {
+                    if (serviceConfiguration == null) {
+                        logError("Fetching Google auth config returned neither a config nor an exception")
 
                         continuation.resumeWith(Result.success(null))
                     } else {
-                        if (serviceConfiguration == null) {
-                            logError("Fetching Google auth config returned neither a config nor an exception")
-
-                            continuation.resumeWith(Result.success(null))
-                        } else {
-                            continuation.resumeWith(Result.success(serviceConfiguration))
-                        }
+                        continuation.resumeWith(Result.success(serviceConfiguration))
                     }
                 }
-
+            }
         }
     }
 }

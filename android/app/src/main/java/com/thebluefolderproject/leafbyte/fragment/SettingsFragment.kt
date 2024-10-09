@@ -62,13 +62,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 
@@ -208,7 +208,7 @@ fun SettingsScreen(
                 setLocationToGoogle = {
                     dataSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
                     googleSignInManager.signIn(dataSaveToGoogleLauncher, dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
-                }
+                },
             )
             SaveLocationSetting(
                 "Image",
@@ -219,13 +219,17 @@ fun SettingsScreen(
                 setLocationToGoogle = {
                     imageSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
                     googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
-                }
+                },
             )
             DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
             ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
             NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
             ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().valueForCompose()) { settings.setUseBarcode(it) }
-            ToggleableSetting("Save GPS Location?", "May slow saving", settings.getSaveGpsData().valueForCompose()) { settings.setSaveGpsData(it) }
+            ToggleableSetting(
+                "Save GPS Location?",
+                "May slow saving",
+                settings.getSaveGpsData().valueForCompose(),
+            ) { settings.setSaveGpsData(it) }
             ToggleableSetting(
                 "Use Black Background?",
                 "For use with light plant tissue",
@@ -241,7 +245,7 @@ fun SettingsScreen(
                     }
 
                     googleSignInManager.signOut()
-                }
+                },
             ) {
                 Text("Sign out of Google")
             }
@@ -292,7 +296,7 @@ private fun BlankDatasetNameAlert(currentAlert: MutableState<AlertType?>) {
 }
 
 private fun getAlertMessage(alertType: AlertType?): String {
-    return when(alertType) {
+    return when (alertType) {
         AlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
         AlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
             "Google sign-in is not configured. Please reach out to leafbyte@zoegp.science so we can fix this."
@@ -302,15 +306,15 @@ private fun getAlertMessage(alertType: AlertType?): String {
             "Did not successfully sign in to Google. LeafByte cannot save to Google Drive without a successful sign-in."
         AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE ->
             "We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you " +
-                    "so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with " +
-                    "multiple Google accounts. To save to Google Drive, sign in again and grant access."
+                "so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with " +
+                "multiple Google accounts. To save to Google Drive, sign in again and grant access."
         AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE ->
             "We must be authorized to write to Google Drive in order to save to Google Drive. To save to Google Drive, sign in again and " +
-                    "grant access."
+                "grant access."
         AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE ->
             "We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need " +
-                    "the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions " +
-                    "or to even use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access."
+                "the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions " +
+                "or to even use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access."
         // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
         null -> ""
     }
