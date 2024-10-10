@@ -154,7 +154,7 @@ fun SettingsScreen(
     val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(null) }
 
     val dataSaveLocationDisplayValue = remember { mutableStateOf(settings.getDataSaveLocation().load()) }
-    val imageSaveLocationDisplayValue = remember { mutableStateOf(settings.getDataSaveLocation().load()) }
+    val imageSaveLocationDisplayValue = remember { mutableStateOf(settings.getImageSaveLocation().load()) }
     fun fullySetDataSaveLocation(newSaveLocation: SaveLocation) {
         dataSaveLocationDisplayValue.value = newSaveLocation
         settings.setDataSaveLocation(newSaveLocation)

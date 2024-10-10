@@ -47,13 +47,17 @@ class SettingsComposeTest {
 
     val clock = TestClock()
 
-    private fun runTest(test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit) {
+    private fun runTest(
+        initializeSettings: (Settings) -> Unit = {},
+        test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
+    ) {
         extension.use {
             var settings: Settings? = null
             val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
 
             setContent {
                 settings = DataStoreBackedSettings(LocalContext.current, clock)
+                initializeSettings(settings)
                 SettingsScreen(settings, googleSignInManager)
             }
 
@@ -63,6 +67,31 @@ class SettingsComposeTest {
 
     private fun waitASecond() {
         clock.waitASecond()
+    }
+
+    @Test
+    fun testInitialState() {
+        runTest({ settings ->
+            settings.setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
+            settings.setImageSaveLocation(SaveLocation.LOCAL)
+            settings.setDatasetName("unique dataset name")
+            settings.setScaleMarkLength(26f)
+            settings.setScaleLengthUnit("ft")
+            settings.setNextSampleNumber(63)
+            settings.setUseBarcode(true)
+            settings.setSaveGpsData(false)
+            settings.setUseBlackBackground(true)
+        }) { settings, googleSignInManager ->
+            onNodeWithContentDescription("Set Data Save Location to Google Drive").assert(isSelected())
+            onNodeWithContentDescription("Set Image Save Location to Your Phone").assert(isSelected())
+            onNodeWithText("unique dataset name").assertExists()
+            onNodeWithText("26.0").assertExists()
+            onNodeWithText("ft").assertExists()
+            onNodeWithText("63").assertExists()
+            onNodeWithContentDescription("Scan Barcodes? toggle").assert(isOn())
+            onNodeWithContentDescription("Save GPS Location? toggle").assert(isOff())
+            onNodeWithContentDescription("Use Black Background? toggle").assert(isOn())
+        }
     }
 
     @Test
@@ -503,7 +532,9 @@ class SettingsComposeTest {
     fun testSignOutOfGoogle() {
         runTest { settings, googleSignInManager ->
             verify(exactly = 0) { googleSignInManager.signOut() }
-            onNodeWithText("Sign out of Google").performClick()
+            onNodeWithText("Sign out of Google")
+                .performScrollTo()
+                .performClick()
             verify(exactly = 1) { googleSignInManager.signOut() }
         }
     }
