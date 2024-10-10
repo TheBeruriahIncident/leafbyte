@@ -184,9 +184,7 @@ fun SettingsScreen(
 
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
-
-    // TODO block back during google sign in??
-
+    
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
     //   to make the editing experience usable and not have the default pop in as soon as you cleared the field
@@ -197,7 +195,6 @@ fun SettingsScreen(
 
     MaterialTheme { // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
-            log("back handler")
             currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
         }
         Alert(currentAlert)

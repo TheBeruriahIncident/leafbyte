@@ -16,6 +16,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.NoActivityResumedException
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.thebluefolderproject.leafbyte.fragment.AlertType
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
@@ -24,6 +28,7 @@ import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.every
@@ -34,6 +39,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @OptIn(ExperimentalTestApi::class)
@@ -211,42 +217,42 @@ class SettingsComposeTest {
     }
 
     // TODO test the dataset name alert once we have multiple screens
-//    @Test
-//    fun testBlankDatasetNameAlert() {
-//        runTest { settings, googleSignInManager ->
-//            // first we test that normally, you can press back to leave the screen
-//            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
-//                Espresso.pressBack()
-//            }
-//        }
-//    }
-//    @Test
-//    fun testBlankDatasetNameAlert2() {
-//        runTest { settings, googleSignInManager ->
-//            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
-//            datasetNameField.performTextClearance()
-//            val mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-//            mDevice.pressBack(); Espresso.pressBack()
-//
-//            println(onRoot().printToString())
-//
-//            val errorMessage = onNodeWithText("A dataset name is required. Please enter a dataset name.")
-//            errorMessage.assertExists()
-//            onNodeWithText("OK").performClick()
-////            errorMessage.assertDoesNotExist()
-//
-//            Espresso.pressBack()
-////            errorMessage.assertExists()
-//            onNodeWithText("OK").performClick()
-////            errorMessage.assertDoesNotExist()
-//
-//            datasetNameField.performTextReplacement("non-empty")
-//            // first we test that normally, you can press back to leave the screen
-//            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
-//                Espresso.pressBack()
-//            }
-//        }
-//    }
+    @Test
+    fun testBackButtonWorksNormally() {
+        runTest { settings, googleSignInManager ->
+            // you can press back to leave the screen
+            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+                Espresso.pressBack()
+            }
+        }
+    }
+    @Test
+    fun testBackButtonBlockedByEmptyDatasetName() {
+        runTest { settings, googleSignInManager ->
+            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
+
+            Espresso.pressBack() // one back to close the keyboard
+            Espresso.pressBack() // and one to actually go back
+
+            val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
+            errorMessage.assertExists()
+            onNodeWithText("OK").performClick()
+            errorMessage.assertDoesNotExist()
+
+            // Confirm that the alert returns if we keep pressing back
+            Espresso.pressBack()
+            errorMessage.assertExists()
+            onNodeWithText("OK").performClick()
+            errorMessage.assertDoesNotExist()
+
+            datasetNameField.performTextReplacement("non-empty")
+            // and now we can leave
+            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+                Espresso.pressBack()
+            }
+        }
+    }
 
     @Test
     fun testUsePreviousDataset() {
