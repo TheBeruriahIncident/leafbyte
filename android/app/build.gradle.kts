@@ -231,6 +231,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("io.mockk:mockk-dsl:1.13.13")
+    androidTestImplementation("io.mockk:mockk:1.13.13")
     implementation("androidx.activity:activity-ktx:1.9.2")
     implementation("androidx.compose.foundation:foundation-layout:1.7.3")
     implementation("androidx.compose.foundation:foundation:1.7.3")
@@ -245,7 +247,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestImplementation("io.mockk:mockk-android:1.13.13")
+    androidTestRuntimeOnly("io.mockk:mockk-android:1.13.13")
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
