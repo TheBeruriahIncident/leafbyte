@@ -16,13 +16,22 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
+import com.thebluefolderproject.leafbyte.fragment.AlertType
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
+import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -35,15 +44,17 @@ class SettingsComposeTest {
 
     val clock = TestClock()
 
-    private fun runTest(test: ComposeContext.(settings: Settings) -> Unit) {
+    private fun runTest(test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit) {
         extension.use {
             var settings: Settings? = null
+            val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
+
             setContent {
                 settings = DataStoreBackedSettings(LocalContext.current, clock)
-                SettingsScreen(settings)
+                SettingsScreen(settings, googleSignInManager)
             }
 
-            test(this, settings!!)
+            test(this, settings!!, googleSignInManager)
         }
     }
 
@@ -53,7 +64,7 @@ class SettingsComposeTest {
 
     @Test
     fun testSaveLocations() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val dataNone = onNodeWithContentDescription("Set Data Save Location to None")
             val dataLocal = onNodeWithContentDescription("Set Data Save Location to Your Phone")
             val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
@@ -88,29 +99,94 @@ class SettingsComposeTest {
                 }
             }
 
-            dataNone.performClick()
-            dataSelectionIs(dataNone)
-            assertFlowEquals(SaveLocation.NONE, settings.getDataSaveLocation())
-
-            dataLocal.performClick()
-            dataSelectionIs(dataLocal)
-            assertFlowEquals(SaveLocation.LOCAL, settings.getDataSaveLocation())
-
-            imageNone.performClick()
-            imageSelectionIs(imageNone)
-            assertFlowEquals(SaveLocation.NONE, settings.getImageSaveLocation())
-
-            imageLocal.performClick()
-            imageSelectionIs(imageLocal)
-            assertFlowEquals(SaveLocation.LOCAL, settings.getImageSaveLocation())
-
-            // we do not select Google Drive here, as testing Google Drive is complex and done elsewhere
+            testSaveLocation(
+                getSaveLocationInSettings = settings::getDataSaveLocation,
+                googleSignInManager = googleSignInManager,
+                noneButton = dataNone,
+                localButton = dataLocal,
+                googleButton = dataGoogle,
+                selectionIs = ::dataSelectionIs,
+                howManyTimesSignInHasBeenCalled = 0,
+            )
+            testSaveLocation(
+                getSaveLocationInSettings = settings::getImageSaveLocation,
+                googleSignInManager = googleSignInManager,
+                noneButton = imageNone,
+                localButton = imageLocal,
+                googleButton = imageGoogle,
+                selectionIs = ::imageSelectionIs,
+                howManyTimesSignInHasBeenCalled = 1,
+            )
         }
+    }
+
+    /**
+     * This abstracts out the logic for testing both data and image save locations
+     */
+    fun ComposeContext.testSaveLocation(
+        getSaveLocationInSettings: () -> Flow<SaveLocation>,
+        googleSignInManager: GoogleSignInManager,
+        noneButton: SemanticsNodeInteraction,
+        localButton: SemanticsNodeInteraction,
+        googleButton: SemanticsNodeInteraction,
+        selectionIs: (SemanticsNodeInteraction) -> Unit,
+        howManyTimesSignInHasBeenCalled: Int,
+    ) {
+        // *********** First we test the non-Google options ***************
+        localButton.performClick()
+        selectionIs(localButton)
+        assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
+
+        noneButton.performClick()
+        selectionIs(noneButton)
+        assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+        // *********** And now Google ***************
+        // precondition is set above, but just in case of refactors
+        selectionIs(noneButton)
+
+        val onSuccessSlot = slot<() -> Unit>()
+        val onFailureSlot = slot<(GoogleSignInFailureType) -> Unit>()
+        every { googleSignInManager.signIn(any(), onSuccess = capture(onSuccessSlot), onFailure = capture(onFailureSlot)) } returns Unit
+
+        // click to save to Google and see that the UI shows that you've done that, but the persistence layer hasn't updated yet
+        verify(exactly = howManyTimesSignInHasBeenCalled) { googleSignInManager.signIn(any(), any(), any()) }
+        googleButton.performClick()
+        verify(exactly = howManyTimesSignInHasBeenCalled + 1) { googleSignInManager.signIn(any(), any(), any()) }
+        selectionIs(googleButton)
+        assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+        fun testGoogleFailure(googleSignInFailureType: GoogleSignInFailureType, alertType: AlertType) {
+            // this doesn't make sense in the flow, but we reset the UI and settings to NONE in order to validate the failure callbacks
+            noneButton.performClick()
+            selectionIs(noneButton)
+            assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+            onFailureSlot.captured(googleSignInFailureType)
+
+            // Check and dismiss the alert, then validate the new state
+            onNodeWithText(getAlertMessage(alertType)).assertExists()
+            onNodeWithText("OK").performClick()
+            onNodeWithText(getAlertMessage(alertType)).assertDoesNotExist()
+            selectionIs(localButton)
+            assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
+        }
+        testGoogleFailure(GoogleSignInFailureType.UNCONFIGURED, AlertType.GOOGLE_SIGN_IN_UNCONFIGURED)
+        testGoogleFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.NEITHER_SCOPE, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
+
+        // only now do we test the happy path
+        onSuccessSlot.captured()
+        selectionIs(googleButton)
+        assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getSaveLocationInSettings())
     }
 
     @Test
     fun testDatasetName() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
 
             datasetNameField.performTextReplacement("test dataset 123")
@@ -137,7 +213,7 @@ class SettingsComposeTest {
     // TODO test the dataset name alert once we have multiple screens
 //    @Test
 //    fun testBlankDatasetNameAlert() {
-//        runTest { settings ->
+//        runTest { settings, googleSignInManager ->
 //            // first we test that normally, you can press back to leave the screen
 //            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
 //                Espresso.pressBack()
@@ -146,7 +222,7 @@ class SettingsComposeTest {
 //    }
 //    @Test
 //    fun testBlankDatasetNameAlert2() {
-//        runTest { settings ->
+//        runTest { settings, googleSignInManager ->
 //            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
 //            datasetNameField.performTextClearance()
 //            val mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
@@ -174,7 +250,7 @@ class SettingsComposeTest {
 
     @Test
     fun testUsePreviousDataset() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
 
             datasetNameField.performTextReplacement("test1")
@@ -225,7 +301,7 @@ class SettingsComposeTest {
 
     @Test
     fun testScaleLength() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val scaleLengthEntry = onNodeWithContentDescription("Scale length entry")
 
             scaleLengthEntry.performTextReplacement("15")
@@ -257,7 +333,7 @@ class SettingsComposeTest {
 
     @Test
     fun testScaleLengthUnit() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals("cm", settings.getScaleLengthUnit())
 
             onNodeWithText("cm").performClick()
@@ -272,7 +348,7 @@ class SettingsComposeTest {
 
     @Test
     fun testNextSampleNumber() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val nextSampleNumberEntry = onNodeWithContentDescription("Next sample number entry")
 
             nextSampleNumberEntry.performTextReplacement("15")
@@ -302,7 +378,7 @@ class SettingsComposeTest {
 
     @Test
     fun testChangingDatasetChangesOtherSettings() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
             val scaleLengthField = onNodeWithContentDescription("Scale length entry")
             val scaleUnitButton = onNodeWithContentDescription("Scale length unit selector")
@@ -347,7 +423,7 @@ class SettingsComposeTest {
 
     @Test
     fun testScanBarcodes() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle")
                 .assert(isOff())
@@ -365,7 +441,7 @@ class SettingsComposeTest {
 
     @Test
     fun testSaveGps() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle")
                 .assert(isOff())
@@ -383,7 +459,7 @@ class SettingsComposeTest {
 
     @Test
     fun testUseBlackBackground() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle")
                 .assert(isOff())
@@ -396,6 +472,15 @@ class SettingsComposeTest {
                 .performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getUseBlackBackground())
+        }
+    }
+
+    @Test
+    fun testSignOutOfGoogle() {
+        runTest { settings, googleSignInManager ->
+            verify(exactly = 0) { googleSignInManager.signOut() }
+            onNodeWithText("Sign out of Google").performClick()
+            verify(exactly = 1) { googleSignInManager.signOut() }
         }
     }
 }

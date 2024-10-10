@@ -245,6 +245,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
+    androidTestImplementation("io.mockk:mockk-android:1.13.13")
+
 
 //    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.2")
 //    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

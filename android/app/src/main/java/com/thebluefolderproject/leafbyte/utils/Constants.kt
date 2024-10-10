@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * Useful in suppressing warnings for unused parameters.
  */
 const val UNUSED = "UNUSED_PARAMETER"
-private const val LOG_TAG = "BlueFolder"
+const val LOG_TAG = "BlueFolder"
 
 fun log(logData: Any) {
     logAnyType(Log.INFO, logData)
@@ -89,3 +90,7 @@ class SystemClock : Clock {
 
 // this is a provider so that the "const" here can't be changed
 val DEFAULT_AUTH_STATE = { AuthState() }
+
+fun<T> PreviewParameterProvider<T>.value(): T {
+    return values.first()
+}

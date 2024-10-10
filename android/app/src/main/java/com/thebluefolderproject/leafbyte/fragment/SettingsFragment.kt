@@ -64,11 +64,13 @@ import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManagerImpl
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.log
+import com.thebluefolderproject.leafbyte.utils.value
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
@@ -96,14 +98,17 @@ class SettingsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val settings = remember { DataStoreBackedSettings(requireContext()) }
+                val coroutineScope = rememberCoroutineScope()
+                val context = LocalContext.current
+                val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
-                SettingsScreen(settings)
+                SettingsScreen(settings, googleSignInManager)
             }
         }
     }
 }
 
-private enum class AlertType {
+enum class AlertType {
     BACK_WITHOUT_DATASET_NAME,
     GOOGLE_SIGN_IN_UNCONFIGURED,
     GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
@@ -127,11 +132,20 @@ private enum class AlertType {
     }
 }
 
+@Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
 @Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun SettingsScreenPreview() {
+    val settings = SampleSettingsProvider().value()
+    val googleSignInManager = SampleGoogleSignInManagerProvider().value()
+    SettingsScreen(settings, googleSignInManager)
+}
+
 @Suppress("detekt:complexity:LongMethod")
 @Composable
 fun SettingsScreen(
-    @PreviewParameter(SampleSettingsProvider::class) settings: Settings,
+    settings: Settings,
+    googleSignInManager: GoogleSignInManager,
 ) {
     // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
@@ -168,9 +182,6 @@ fun SettingsScreen(
         currentAlert.value = AlertType.from(failure)
     }
 
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val googleSignInManager = remember { GoogleSignInManager(coroutineScope, context, settings) }
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
 
@@ -268,10 +279,10 @@ fun SettingsScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Alert(currentAlert: MutableState<AlertType?>) {
-    log("alert $currentAlert")
     if (currentAlert.value == null) {
         return
     }
+    log("Displaying settings screen alert for ${currentAlert.value}")
 
     BasicAlertDialog(
         onDismissRequest = { currentAlert.value = null },
@@ -284,7 +295,7 @@ private fun Alert(currentAlert: MutableState<AlertType?>) {
             shape = MaterialTheme.shapes.large,
             tonalElevation = AlertDialogDefaults.TonalElevation,
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = getAlertMessage(currentAlert.value),
                 )
@@ -299,7 +310,7 @@ private fun Alert(currentAlert: MutableState<AlertType?>) {
     }
 }
 
-private fun getAlertMessage(alertType: AlertType?): String {
+fun getAlertMessage(alertType: AlertType?): String {
     return when (alertType) {
         AlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
         AlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
@@ -307,7 +318,7 @@ private fun getAlertMessage(alertType: AlertType?): String {
         AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE ->
             "Failed to communicate with Google. Please confirm that you are online and LeafByte has access to the internet."
         AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE ->
-            "Did not successfully sign in to Google. LeafByte cannot save to Google Drive without a successful sign-in."
+            "Sign-in to Google was not successful. LeafByte cannot save to Google Drive without a successful sign-in."
         AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE ->
             "We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you " +
                 "so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with " +

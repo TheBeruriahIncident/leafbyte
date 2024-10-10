@@ -7,13 +7,13 @@ updates:
     directory: "/android/app"
     schedule:
       interval: "daily"
-      time: "06:00"
+      time: "04:00"
       timezone: "EST"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-      time: "06:00"
+      time: "04:00"
       timezone: "EST"
 # the iOS app uses Cocoapods, which is not currently supported
 # additionally, the iOS minimum version model makes bumping often undesirable

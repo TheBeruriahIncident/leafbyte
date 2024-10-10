@@ -38,7 +38,7 @@ fun isGoogleSignInConfigured(): Boolean {
 }
 
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
-private class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, AuthorizationResponse?>() {
+class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, AuthorizationResponse?>() {
     override fun createIntent(
         context: Context,
         input: GoogleSignInContractInput,
@@ -116,14 +116,30 @@ enum class GoogleSignInFailureType {
     NEITHER_SCOPE,
 }
 
+interface GoogleSignInManager {
+    fun signIn(
+        launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
+        onSuccess: () -> Unit,
+        onFailure: (GoogleSignInFailureType) -> Unit,
+    )
+
+    fun signOut()
+
+    @Composable
+    fun getLauncher(
+        onSuccess: () -> Unit,
+        onFailure: (GoogleSignInFailureType) -> Unit,
+    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>
+}
+
 // TODO make it possible to inject mock sign in manager for testing, make sure we're testing which field is actually selected
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
-class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: Context, private val settings: Settings) {
+class GoogleSignInManagerImpl(private val coroutineScope: CoroutineScope, context: Context, private val settings: Settings): GoogleSignInManager {
     private var deferredServiceConfig: Deferred<AuthorizationServiceConfiguration?> = getDeferredServiceConfig()
     private val authService = AuthorizationService(context)
     private var authState = settings.authState
 
-    fun signIn(
+    override fun signIn(
         launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
         onSuccess: () -> Unit,
         onFailure: (GoogleSignInFailureType) -> Unit,
@@ -156,7 +172,7 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
         return authState.isAuthorized
     }
 
-    fun signOut() {
+    override fun signOut() {
         // just forgetting our auth state is enough to effectively log the user out from LeafByte's perspective.
         // we actually likely don't want to go any further, because logging them out properly would affect them across the device.
         settings.authState = DEFAULT_AUTH_STATE()
@@ -164,7 +180,7 @@ class GoogleSignInManager(private val coroutineScope: CoroutineScope, context: C
     }
 
     @Composable
-    fun getLauncher(
+    override fun getLauncher(
         onSuccess: () -> Unit,
         onFailure: (GoogleSignInFailureType) -> Unit,
     ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> {
