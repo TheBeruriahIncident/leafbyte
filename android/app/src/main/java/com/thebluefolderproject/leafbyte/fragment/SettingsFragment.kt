@@ -171,6 +171,11 @@ fun SettingsScreen(
     val dataSaveToGoogleFailure = { failure: GoogleSignInFailureType ->
         // fallback to local so that someone who intended to save doesn't accidentally not save at all
         fullySetDataSaveLocation(SaveLocation.LOCAL)
+        // and if Google isn't usable for data, it's not usable for images either
+        if (imageSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+            fullySetImageSaveLocation(SaveLocation.LOCAL)
+        }
+
         currentAlert.value = AlertType.from(failure)
     }
     val imageSaveToGoogleSuccess = {
@@ -179,12 +184,17 @@ fun SettingsScreen(
     val imageSaveToGoogleFailure = { failure: GoogleSignInFailureType ->
         // fallback to local so that someone who intended to save doesn't accidentally not save at all
         fullySetImageSaveLocation(SaveLocation.LOCAL)
+        // and if Google isn't usable for images, it's not usable for data either
+        if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+            fullySetDataSaveLocation(SaveLocation.LOCAL)
+        }
+
         currentAlert.value = AlertType.from(failure)
     }
 
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
-    
+
     // Scale length, scale unit, and next sample number are scoped to the particular dataset
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
     //   to make the editing experience usable and not have the default pop in as soon as you cleared the field

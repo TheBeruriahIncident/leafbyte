@@ -18,8 +18,6 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.NoActivityResumedException
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
 import com.thebluefolderproject.leafbyte.fragment.AlertType
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
@@ -28,7 +26,6 @@ import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.every
@@ -106,22 +103,28 @@ class SettingsComposeTest {
             }
 
             testSaveLocation(
-                getSaveLocationInSettings = settings::getDataSaveLocation,
                 googleSignInManager = googleSignInManager,
                 noneButton = dataNone,
                 localButton = dataLocal,
                 googleButton = dataGoogle,
                 selectionIs = ::dataSelectionIs,
-                howManyTimesSignInHasBeenCalled = 0,
+                getSaveLocationInSettings = settings::getDataSaveLocation,
+                otherLocalButton = imageLocal,
+                otherGoogleButton = imageGoogle,
+                otherSelectionIs = ::imageSelectionIs,
+                getOtherSaveLocationInSettings = settings::getImageSaveLocation,
             )
             testSaveLocation(
-                getSaveLocationInSettings = settings::getImageSaveLocation,
                 googleSignInManager = googleSignInManager,
                 noneButton = imageNone,
                 localButton = imageLocal,
                 googleButton = imageGoogle,
                 selectionIs = ::imageSelectionIs,
-                howManyTimesSignInHasBeenCalled = 1,
+                getSaveLocationInSettings = settings::getImageSaveLocation,
+                otherLocalButton = dataLocal,
+                otherGoogleButton = dataGoogle,
+                otherSelectionIs = ::dataSelectionIs,
+                getOtherSaveLocationInSettings = settings::getDataSaveLocation,
             )
         }
     }
@@ -130,13 +133,16 @@ class SettingsComposeTest {
      * This abstracts out the logic for testing both data and image save locations
      */
     fun ComposeContext.testSaveLocation(
-        getSaveLocationInSettings: () -> Flow<SaveLocation>,
         googleSignInManager: GoogleSignInManager,
         noneButton: SemanticsNodeInteraction,
         localButton: SemanticsNodeInteraction,
         googleButton: SemanticsNodeInteraction,
         selectionIs: (SemanticsNodeInteraction) -> Unit,
-        howManyTimesSignInHasBeenCalled: Int,
+        getSaveLocationInSettings: () -> Flow<SaveLocation>,
+        otherLocalButton: SemanticsNodeInteraction,
+        otherGoogleButton: SemanticsNodeInteraction,
+        otherSelectionIs: (SemanticsNodeInteraction) -> Unit,
+        getOtherSaveLocationInSettings: () -> Flow<SaveLocation>,
     ) {
         // *********** First we test the non-Google options ***************
         localButton.performClick()
@@ -156,19 +162,26 @@ class SettingsComposeTest {
         every { googleSignInManager.signIn(any(), onSuccess = capture(onSuccessSlot), onFailure = capture(onFailureSlot)) } returns Unit
 
         // click to save to Google and see that the UI shows that you've done that, but the persistence layer hasn't updated yet
-        verify(exactly = howManyTimesSignInHasBeenCalled) { googleSignInManager.signIn(any(), any(), any()) }
+        clearMockedMethodCallCounts(googleSignInManager)
+        verify(exactly = 0) { googleSignInManager.signIn(any(), any(), any()) }
         googleButton.performClick()
-        verify(exactly = howManyTimesSignInHasBeenCalled + 1) { googleSignInManager.signIn(any(), any(), any()) }
+        verify(exactly = 1) { googleSignInManager.signIn(any(), any(), any()) }
         selectionIs(googleButton)
         assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+        // save these so that new captures don't override them (when we click the otherGoogleButton)
+        val onSuccess = onSuccessSlot.captured
+        val onFailure = onFailureSlot.captured
 
         fun testGoogleFailure(googleSignInFailureType: GoogleSignInFailureType, alertType: AlertType) {
             // this doesn't make sense in the flow, but we reset the UI and settings to NONE in order to validate the failure callbacks
             noneButton.performClick()
             selectionIs(noneButton)
             assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+            // and we set the other save location setting to GOOGLE to see that it gets switched as well
+            otherGoogleButton.performClick()
 
-            onFailureSlot.captured(googleSignInFailureType)
+            onFailure(googleSignInFailureType)
 
             // Check and dismiss the alert, then validate the new state
             onNodeWithText(getAlertMessage(alertType)).assertExists()
@@ -176,6 +189,8 @@ class SettingsComposeTest {
             onNodeWithText(getAlertMessage(alertType)).assertDoesNotExist()
             selectionIs(localButton)
             assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
+            otherSelectionIs(otherLocalButton)
+            assertFlowEquals(SaveLocation.LOCAL, getOtherSaveLocationInSettings())
         }
         testGoogleFailure(GoogleSignInFailureType.UNCONFIGURED, AlertType.GOOGLE_SIGN_IN_UNCONFIGURED)
         testGoogleFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE)
@@ -185,7 +200,7 @@ class SettingsComposeTest {
         testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
 
         // only now do we test the happy path
-        onSuccessSlot.captured()
+        onSuccess()
         selectionIs(googleButton)
         assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getSaveLocationInSettings())
     }
@@ -216,7 +231,6 @@ class SettingsComposeTest {
         }
     }
 
-    // TODO test the dataset name alert once we have multiple screens
     @Test
     fun testBackButtonWorksNormally() {
         runTest { settings, googleSignInManager ->

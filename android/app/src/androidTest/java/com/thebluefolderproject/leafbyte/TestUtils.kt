@@ -8,6 +8,8 @@ import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.LOG_TAG
 import com.thebluefolderproject.leafbyte.utils.load
 import de.mannodermaus.junit5.compose.ComposeContext
+import io.mockk.clearAllMocks
+import io.mockk.clearMocks
 import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions
 
@@ -40,4 +42,15 @@ class TestClock : Clock {
 
 fun ComposeContext.printScreen() {
     onAllNodes(isRoot()).printToLog(tag = LOG_TAG, maxDepth = 100)
+}
+
+fun clearMockedMethodCallCounts(mock: Any) {
+    clearMocks(
+        mock,
+        answers = false,
+        recordedCalls = true,
+        childMocks = false,
+        verificationMarks = true,  // set this to true to have verifyAll be reset as well
+        exclusionRules = false
+    )
 }
