@@ -134,7 +134,11 @@ interface GoogleSignInManager {
 
 // TODO make it possible to inject mock sign in manager for testing, make sure we're testing which field is actually selected
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
-class GoogleSignInManagerImpl(private val coroutineScope: CoroutineScope, context: Context, private val settings: Settings): GoogleSignInManager {
+class GoogleSignInManagerImpl(
+    private val coroutineScope: CoroutineScope,
+    context: Context,
+    private val settings: Settings,
+) : GoogleSignInManager {
     private var deferredServiceConfig: Deferred<AuthorizationServiceConfiguration?> = getDeferredServiceConfig()
     private val authService = AuthorizationService(context)
     private var authState = settings.authState

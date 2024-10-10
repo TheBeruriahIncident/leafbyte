@@ -91,6 +91,6 @@ class SystemClock : Clock {
 // this is a provider so that the "const" here can't be changed
 val DEFAULT_AUTH_STATE = { AuthState() }
 
-fun<T> PreviewParameterProvider<T>.value(): T {
+fun <T> PreviewParameterProvider<T>.value(): T {
     return values.first()
 }

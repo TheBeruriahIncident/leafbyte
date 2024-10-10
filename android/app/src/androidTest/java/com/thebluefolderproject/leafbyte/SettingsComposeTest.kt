@@ -173,7 +173,10 @@ class SettingsComposeTest {
         val onSuccess = onSuccessSlot.captured
         val onFailure = onFailureSlot.captured
 
-        fun testGoogleFailure(googleSignInFailureType: GoogleSignInFailureType, alertType: AlertType) {
+        fun testGoogleFailure(
+            googleSignInFailureType: GoogleSignInFailureType,
+            alertType: AlertType,
+        ) {
             // this doesn't make sense in the flow, but we reset the UI and settings to NONE in order to validate the failure callbacks
             noneButton.performClick()
             selectionIs(noneButton)
@@ -240,6 +243,7 @@ class SettingsComposeTest {
             }
         }
     }
+
     @Test
     fun testBackButtonBlockedByEmptyDatasetName() {
         runTest { settings, googleSignInManager ->

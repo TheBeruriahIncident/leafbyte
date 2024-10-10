@@ -1,14 +1,11 @@
 package com.thebluefolderproject.leafbyte
 
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.isRoot
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.LOG_TAG
 import com.thebluefolderproject.leafbyte.utils.load
 import de.mannodermaus.junit5.compose.ComposeContext
-import io.mockk.clearAllMocks
 import io.mockk.clearMocks
 import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions
@@ -50,7 +47,7 @@ fun clearMockedMethodCallCounts(mock: Any) {
         answers = false,
         recordedCalls = true,
         childMocks = false,
-        verificationMarks = true,  // set this to true to have verifyAll be reset as well
-        exclusionRules = false
+        verificationMarks = false,
+        exclusionRules = false,
     )
 }

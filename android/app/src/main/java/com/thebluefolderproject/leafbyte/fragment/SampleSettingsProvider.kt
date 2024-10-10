@@ -122,7 +122,7 @@ class SampleGoogleSignInManagerProvider : PreviewParameterProvider<GoogleSignInM
                     override fun signIn(
                         launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
                         onSuccess: () -> Unit,
-                        onFailure: (GoogleSignInFailureType) -> Unit
+                        onFailure: (GoogleSignInFailureType) -> Unit,
                     ) {}
 
                     override fun signOut() {}
@@ -130,11 +130,10 @@ class SampleGoogleSignInManagerProvider : PreviewParameterProvider<GoogleSignInM
                     @Composable
                     override fun getLauncher(
                         onSuccess: () -> Unit,
-                        onFailure: (GoogleSignInFailureType) -> Unit
+                        onFailure: (GoogleSignInFailureType) -> Unit,
                     ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> {
                         return rememberLauncherForActivityResult(GoogleSignInContract()) {}
                     }
-
                 }
 
             return sequenceOf(sampleGoogleSignInManager)
