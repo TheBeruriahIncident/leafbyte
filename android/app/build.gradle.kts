@@ -215,7 +215,7 @@ dependencies {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.3")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
@@ -249,7 +249,7 @@ dependencies {
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
     androidTestRuntimeOnly("io.mockk:mockk-android:1.13.13")
 
-    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.2")
+    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
