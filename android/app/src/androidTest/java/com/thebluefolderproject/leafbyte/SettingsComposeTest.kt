@@ -23,6 +23,7 @@ import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
+import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
@@ -56,6 +57,9 @@ class SettingsComposeTest {
             val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
 
             setContent {
+                // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
+                clearSettingsStore(LocalContext.current)
+
                 settings = DataStoreBackedSettings(LocalContext.current, clock)
                 initializeSettings(settings)
                 SettingsScreen(settings, googleSignInManager)
