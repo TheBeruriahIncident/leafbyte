@@ -452,8 +452,7 @@ private fun ScaleLengthSetting(
                     Modifier
                         .constrainAs(unitButton) {
                             start.linkTo(lengthTextField.end)
-                            top.linkTo(lengthTextField.top)
-                            bottom.linkTo(lengthTextField.bottom)
+                            baseline.linkTo(lengthTextField.baseline)
                         }
                         .width(IntrinsicSize.Min)
                         .height(IntrinsicSize.Max)
