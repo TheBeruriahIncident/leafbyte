@@ -249,13 +249,13 @@ func presentFailedGoogleSignInAlert(cause: GoogleSignInFailureCause, self viewCo
             NSLocalizedString("Google sign-in is required for saving to Google Drive", comment: "Shown if Google sign-in fails after choosing to save to Google Drive")
 
         case .noGetUserIdScope:
-            NSLocalizedString("We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access.", comment: "Shown if Google sign-in fails specifically because the user rejected LeafByte access to their user id")
+            NSLocalizedString("We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access.", comment: "Shown if Google sign-in fails specifically because the user rejected LeafByte access to their user id")
 
         case .noWriteToGoogleDriveScope:
             NSLocalizedString("We must be authorized to write to Google Drive in order to save to Google Drive. To save to Google Drive, sign in again and grant access.", comment: "Shown if Google sign-in fails specifically because the user rejected LeafByte access to Google Drive")
 
         case .neitherScope:
-            NSLocalizedString("We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to even use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access.", comment: "Shown if Google sign-in fails specifically because the user rejected all access for LeafByte")
+            NSLocalizedString("We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions or to use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access.", comment: "Shown if Google sign-in fails specifically because the user rejected all access for LeafByte")
         }
 
     DispatchQueue.main.async {
