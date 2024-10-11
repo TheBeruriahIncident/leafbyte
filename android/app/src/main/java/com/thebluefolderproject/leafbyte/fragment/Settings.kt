@@ -1,5 +1,6 @@
 package com.thebluefolderproject.leafbyte.fragment
 
+import com.google.android.gms.auth.api.Auth
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthState
@@ -32,5 +33,6 @@ interface Settings {
     fun getUseBlackBackground(): Flow<Boolean>
     fun setUseBlackBackground(newUseBlackBackground: Boolean)
 
-    var authState: AuthState
+    fun getAuthState(): Flow<AuthState>
+    fun setAuthState(newAuthState: AuthState)
 }

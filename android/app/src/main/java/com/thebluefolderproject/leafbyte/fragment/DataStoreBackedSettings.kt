@@ -179,29 +179,31 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
     }
 
     @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
-    override var authState: AuthState
-        get() {
-            val authStateString = fromSettings { googleAuthState }.load()
+    override fun getAuthState(): Flow<AuthState> {
+        val rawAuthState = fromSettings { googleAuthState }
+        return rawAuthState.map { authStateString ->
             if (authStateString.isBlank()) {
-                return DEFAULT_AUTH_STATE()
+                return@map DEFAULT_AUTH_STATE()
             }
 
             try {
-                return AuthState.jsonDeserialize(authStateString)
+                return@map AuthState.jsonDeserialize(authStateString)
             } catch (exception: Exception) {
                 logError("Failed to deserialize auth state $authStateString", exception)
-                return DEFAULT_AUTH_STATE()
+                return@map DEFAULT_AUTH_STATE()
             }
         }
-        set(newAuthState) {
-            val newAuthStateString: String
-            try {
-                newAuthStateString = newAuthState.jsonSerializeString()
-            } catch (exception: Exception) {
-                logError("Failed to serialize new auth state $newAuthState", exception)
-                return
-            }
+    }
+    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
+    override fun setAuthState(newAuthState: AuthState) {
+        val newAuthStateString: String
+        try {
+            newAuthStateString = newAuthState.jsonSerializeString()
+        } catch (exception: Exception) {
+            logError("Failed to serialize new auth state $newAuthState", exception)
+            return
+        }
 
-            edit { setGoogleAuthState(newAuthStateString) }
-        }
+        edit { setGoogleAuthState(newAuthStateString) }
+    }
 }

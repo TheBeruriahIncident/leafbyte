@@ -105,9 +105,13 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                         TODO("Not yet implemented")
                     }
 
-                    override var authState: AuthState
-                        get() = TODO("Not yet implemented")
-                        set(value) {}
+                    override fun getAuthState(): Flow<AuthState> {
+                        return flowOf(AuthState())
+                    }
+
+                    override fun setAuthState(newAuthState: AuthState) {
+                        TODO("Not yet implemented")
+                    }
                 }
 
             return sequenceOf(sampleSettings)

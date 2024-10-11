@@ -76,6 +76,7 @@ import com.thebluefolderproject.leafbyte.utils.value
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
+import net.openid.appauth.AuthState
 
 private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
 private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
@@ -267,6 +268,9 @@ fun SettingsScreen(
                 settings.getUseBlackBackground().valueForCompose(),
             ) { settings.setUseBlackBackground(it) }
             TextButton(
+                enabled = settings.getAuthState()
+                    .map(AuthState::isAuthorized)
+                    .valueForCompose(),
                 onClick = {
                     if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
                         fullySetDataSaveLocation(SaveLocation.LOCAL)

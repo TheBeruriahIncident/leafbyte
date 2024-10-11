@@ -141,7 +141,7 @@ class GoogleSignInManagerImpl(
 ) : GoogleSignInManager {
     private var deferredServiceConfig: Deferred<AuthorizationServiceConfiguration?> = getDeferredServiceConfig()
     private val authService = AuthorizationService(context)
-    private var authState = settings.authState
+    private var authState = settings.getAuthState().load()
 
     override fun signIn(
         launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
@@ -179,7 +179,7 @@ class GoogleSignInManagerImpl(
     override fun signOut() {
         // just forgetting our auth state is enough to effectively log the user out from LeafByte's perspective.
         // we actually likely don't want to go any further, because logging them out properly would affect them across the device.
-        settings.authState = DEFAULT_AUTH_STATE()
+        settings.setAuthState(DEFAULT_AUTH_STATE())
         authState = DEFAULT_AUTH_STATE()
     }
 
@@ -221,7 +221,7 @@ class GoogleSignInManagerImpl(
         }
 
         authState.update(authResponse, null)
-        settings.authState = authState
+        settings.setAuthState(authState)
 
         val tokenRequest = authResponse.createTokenExchangeRequest()
         authService.performTokenRequest(tokenRequest) { tokenResponse, exception ->
@@ -241,7 +241,7 @@ class GoogleSignInManagerImpl(
                     "Id token: ${tokenResponse.idToken}, access token: ${tokenResponse.accessToken}",
             )
             authState.update(tokenResponse, null)
-            settings.authState = authState
+            settings.setAuthState(authState)
 
             onSuccess()
         }
