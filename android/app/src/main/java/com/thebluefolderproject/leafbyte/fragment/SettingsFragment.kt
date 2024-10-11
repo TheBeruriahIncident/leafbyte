@@ -450,7 +450,11 @@ private fun ScaleLengthSetting(
             TextButton(
                 modifier =
                     Modifier
-                        .constrainAs(unitButton) { start.linkTo(lengthTextField.end) }
+                        .constrainAs(unitButton) {
+                            start.linkTo(lengthTextField.end)
+                            top.linkTo(lengthTextField.top)
+                            bottom.linkTo(lengthTextField.bottom)
+                        }
                         .width(IntrinsicSize.Min)
                         .height(IntrinsicSize.Max)
                         .description("Scale length unit selector"),
