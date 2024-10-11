@@ -1,10 +1,13 @@
 package com.thebluefolderproject.leafbyte
 
+import android.net.Uri
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isEnabled
+import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.isNotSelected
 import androidx.compose.ui.test.isOff
 import androidx.compose.ui.test.isOn
@@ -35,6 +38,12 @@ import io.mockk.slot
 import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.TokenRequest
+import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -535,10 +544,29 @@ class SettingsComposeTest {
     @Test
     fun testSignOutOfGoogle() {
         runTest { settings, googleSignInManager ->
+            val button = onNodeWithText("Sign out of Google").performScrollTo()
+
+            button.assert(isNotEnabled())
+            button.performClick()
             verify(exactly = 0) { googleSignInManager.signOut() }
-            onNodeWithText("Sign out of Google")
-                .performScrollTo()
-                .performClick()
+
+            val config = AuthorizationServiceConfiguration(Uri.parse("auth endpoint"), Uri.parse("token endpoint"))
+            val authRequest = AuthorizationRequest.Builder(config, "client id", "code", Uri.parse("redirect"))
+                .build()
+            val authResponse = AuthorizationResponse.Builder(authRequest)
+                .build()
+            val tokenRequest = TokenRequest.Builder(config, "client id")
+                .setGrantType("grant")
+                .build()
+            val tokenResponse = TokenResponse.Builder(tokenRequest)
+                .setAccessToken("access")
+                .setIdToken("id")
+                .build()
+            val authState = AuthState(authResponse, tokenResponse, null)
+            settings.setAuthState(authState)
+
+            button.assert(isEnabled())
+            button.performClick()
             verify(exactly = 1) { googleSignInManager.signOut() }
         }
     }
