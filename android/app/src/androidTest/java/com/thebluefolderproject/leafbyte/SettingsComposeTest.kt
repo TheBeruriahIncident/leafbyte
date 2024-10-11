@@ -490,16 +490,27 @@ class SettingsComposeTest {
     @Test
     fun testScanBarcodes() {
         runTest { settings, googleSignInManager ->
-            assertFlowEquals(false, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle")
-                .assert(isOff())
+            val toggle = onNodeWithContentDescription("Scan Barcodes? toggle")
                 .performScrollTo()
+            assertFlowEquals(false, settings.getUseBarcode())
+            toggle.assert(isOff())
+
+            onNodeWithContentDescription("Set Data Save Location to None")
                 .performClick()
+            settings.setDataSaveLocation(SaveLocation.NONE)
+            toggle.assert(isNotEnabled())
+                .performClick()
+                .assert(isOff())
+            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+                .performClick()
+            toggle.assert(isEnabled())
+
+            assertFlowEquals(false, settings.getUseBarcode())
+            toggle.performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle")
-                .performClick()
+            toggle.performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getUseBarcode())
         }
@@ -508,16 +519,27 @@ class SettingsComposeTest {
     @Test
     fun testSaveGps() {
         runTest { settings, googleSignInManager ->
-            assertFlowEquals(false, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle")
-                .assert(isOff())
+            val toggle = onNodeWithContentDescription("Save GPS Location? toggle")
                 .performScrollTo()
+            assertFlowEquals(false, settings.getSaveGpsData())
+            toggle.assert(isOff())
+
+            onNodeWithContentDescription("Set Data Save Location to None")
                 .performClick()
+            settings.setDataSaveLocation(SaveLocation.NONE)
+            toggle.assert(isNotEnabled())
+                .performClick()
+                .assert(isOff())
+            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+                .performClick()
+            toggle.assert(isEnabled())
+
+            assertFlowEquals(false, settings.getSaveGpsData())
+            toggle.performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle")
-                .performClick()
+            toggle.performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getSaveGpsData())
         }

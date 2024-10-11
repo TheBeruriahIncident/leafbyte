@@ -2,6 +2,8 @@ package com.thebluefolderproject.leafbyte.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -13,6 +15,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Text(
     text: String,
+    color: Color = Color.Unspecified,
     modifier: Modifier = Modifier,
     size: TextSize = TextSize.STANDARD,
     bold: Boolean = false,
@@ -20,6 +23,7 @@ fun Text(
 ) {
     Text(
         text = AnnotatedString(text),
+        color = color,
         modifier = modifier,
         size = size,
         bold = bold,
@@ -30,6 +34,7 @@ fun Text(
 @Composable
 fun Text(
     text: AnnotatedString,
+    color: Color = Color.Unspecified,
     modifier: Modifier = Modifier,
     size: TextSize = TextSize.STANDARD,
     bold: Boolean = false,
@@ -37,6 +42,7 @@ fun Text(
 ) {
     androidx.compose.material3.Text(
         text = text,
+        color = color,
         modifier = modifier,
         fontSize = size.fontSize,
         fontWeight = if (bold) FontWeight.Bold else null,

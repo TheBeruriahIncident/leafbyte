@@ -256,16 +256,21 @@ fun SettingsScreen(
             DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
             ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
             NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
-            ToggleableSetting("Scan Barcodes?", currentValue = settings.getUseBarcode().valueForCompose()) { settings.setUseBarcode(it) }
             ToggleableSetting(
-                "Save GPS Location?",
-                "May slow saving",
-                settings.getSaveGpsData().valueForCompose(),
+                title = "Scan Barcodes?",
+                enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                currentValue = settings.getUseBarcode().valueForCompose()
+            ) { settings.setUseBarcode(it) }
+            ToggleableSetting(
+                title = "Save GPS Location?",
+                enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                explanation = "May slow saving",
+                currentValue = settings.getSaveGpsData().valueForCompose(),
             ) { settings.setSaveGpsData(it) }
             ToggleableSetting(
-                "Use Black Background?",
-                "For use with light plant tissue",
-                settings.getUseBlackBackground().valueForCompose(),
+                title = "Use Black Background?",
+                explanation = "For use with light plant tissue",
+                currentValue = settings.getUseBlackBackground().valueForCompose(),
             ) { settings.setUseBlackBackground(it) }
             TextButton(
                 enabled = settings.getAuthState()
@@ -602,18 +607,20 @@ fun SaveLocationSetting(
     }
 }
 
-@Suppress("MagicNumber") // once we fiddle with theme colors, the tint should come from a theme constant
+@Suppress("MagicNumber") // once we fiddle with theme colors, the colors should come from a theme constant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToggleableSetting(
     title: String,
-    explanation: String? = null,
+    enabled: Boolean = true,
+    explanation: String = " ", // non-empty to ensure size doesn't change when a warning is swapped in
     currentValue: Boolean,
     setNewValue: (Boolean) -> Unit,
 ) {
     SingleSetting(title) {
         Switch(
             modifier = Modifier.description("$title toggle"),
+            enabled = enabled,
             checked = currentValue,
             onCheckedChange = { setNewValue(it) },
             thumbContent = {
@@ -626,9 +633,11 @@ fun ToggleableSetting(
                 }
             },
         )
-        explanation?.let {
-            Text(it, size = TextSize.FOOTNOTE)
-        }
+        Text(
+            text = if (enabled) explanation else "Data is not currently being saved",
+            color = if (enabled) Color.Unspecified else Color(0xFFB3261E),
+            size = TextSize.FOOTNOTE
+        )
     }
 }
 
