@@ -8,14 +8,17 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
 import com.thebluefolderproject.leafbyte.utils.Clock
+import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
 import com.thebluefolderproject.leafbyte.utils.SystemClock
 import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.log
+import com.thebluefolderproject.leafbyte.utils.logError
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import net.openid.appauth.AuthState
 import java.nio.file.Files
 
 private const val DATA_STORE_FILE_NAME = "settings.pb"
@@ -174,4 +177,31 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
     override fun setUseBlackBackground(newUseBlackBackground: Boolean) {
         edit { setUseBlackBackground(newUseBlackBackground) }
     }
+
+    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
+    override var authState: AuthState
+        get() {
+            val authStateString = fromSettings { googleAuthState }.load()
+            if (authStateString.isBlank()) {
+                return DEFAULT_AUTH_STATE()
+            }
+
+            try {
+                return AuthState.jsonDeserialize(authStateString)
+            } catch (exception: Exception) {
+                logError("Failed to deserialize auth state $authStateString", exception)
+                return DEFAULT_AUTH_STATE()
+            }
+        }
+        set(newAuthState) {
+            val newAuthStateString: String
+            try {
+                newAuthStateString = newAuthState.jsonSerializeString()
+            } catch (exception: Exception) {
+                logError("Failed to serialize new auth state $newAuthState", exception)
+                return
+            }
+
+            edit { setGoogleAuthState(newAuthStateString) }
+        }
 }

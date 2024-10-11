@@ -8,10 +8,10 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20") // pull this back out
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.0.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21") // pull this back out
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.2.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.1")
+        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.4")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -31,8 +31,8 @@ plugins {
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
     id("io.gitlab.arturbosch.detekt").version("1.23.7")
-    id("org.jetbrains.kotlin.android") version "2.0.20" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.21" apply false
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
     id("com.google.protobuf") version "0.9.4" apply false
     id("jacoco")
 }
@@ -42,7 +42,7 @@ dependencyAnalysis {
         all {
             onAny {
                 severity("fail")
-                // no idea where "de.mannodermaus.junit5:android-test-core:1.5.0" or de.mannodermaus.junit5:android-test-compose:1.5.0 is coming from
+                // no idea where "de.mannodermaus.junit5:android-test-core:1.6.0" or de.mannodermaus.junit5:android-test-compose:1.5.0 is coming from
                 // androidx.lifecycle:lifecycle-viewmodel and ""-ktx should get ignoreKtx
                 // "androidx.navigation:navigation-fragment-ktx used in xml
                 exclude(

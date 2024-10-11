@@ -26,7 +26,7 @@ message SerializedSettings {
   bool saveGpsData = 10;
   // Defaults to false
   bool useBlackBackground = 11;
-  bytes googleAuthState = 12;
+  string googleAuthState = 12;
   map<string, string> userIdToTopLevelGoogleFolderId = 13;
   map<string, UserIdToGoogleFolderId> datasetNameToUserIdToGoogleFolderId = 14;
   map<string, UnitToUserIdToGoogleSpreadsheetId> datasetNameToUnitToUserIdToGoogleSpreadsheetId = 15;

@@ -12,7 +12,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
     id("com.google.protobuf")
     id("jacoco")
 }
@@ -215,7 +215,7 @@ dependencies {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.3")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
@@ -231,6 +231,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("io.mockk:mockk-dsl:1.13.13")
+    androidTestImplementation("io.mockk:mockk:1.13.13")
     implementation("androidx.activity:activity-ktx:1.9.2")
     implementation("androidx.compose.foundation:foundation-layout:1.7.3")
     implementation("androidx.compose.foundation:foundation:1.7.3")
@@ -245,10 +247,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
+    androidTestRuntimeOnly("io.mockk:mockk-android:1.13.13")
 
-    // androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
-    // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.5.0")
+    // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.6.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
@@ -259,7 +263,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-javalite:4.28.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
-    // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.5.0")
+    // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
     // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")

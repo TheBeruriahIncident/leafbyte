@@ -5,6 +5,10 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isNotSelected
+import androidx.compose.ui.test.isOff
+import androidx.compose.ui.test.isOn
+import androidx.compose.ui.test.isSelected
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -12,15 +16,28 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.NoActivityResumedException
+import com.thebluefolderproject.leafbyte.fragment.AlertType
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
+import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
+import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @OptIn(ExperimentalTestApi::class)
@@ -31,15 +48,24 @@ class SettingsComposeTest {
 
     val clock = TestClock()
 
-    private fun runTest(test: ComposeContext.(settings: Settings) -> Unit) {
+    private fun runTest(
+        initializeSettings: (Settings) -> Unit = {},
+        test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
+    ) {
         extension.use {
             var settings: Settings? = null
+            val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
+
             setContent {
+                // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
+                clearSettingsStore(LocalContext.current)
+
                 settings = DataStoreBackedSettings(LocalContext.current, clock)
-                SettingsScreen(settings)
+                initializeSettings(settings)
+                SettingsScreen(settings, googleSignInManager)
             }
 
-            test(this, settings!!)
+            test(this, settings!!, googleSignInManager)
         }
     }
 
@@ -48,31 +74,176 @@ class SettingsComposeTest {
     }
 
     @Test
-    fun testSaveLocations() {
-        runTest { settings ->
-            onNodeWithContentDescription("Set Data Save Location to None").performClick()
-            assertFlowEquals(SaveLocation.NONE, settings.getDataSaveLocation())
-
-            onNodeWithContentDescription("Set Data Save Location to Your Phone").performClick()
-            assertFlowEquals(SaveLocation.LOCAL, settings.getDataSaveLocation())
-
-            onNodeWithContentDescription("Set Data Save Location to Google Drive").performClick()
-            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, settings.getDataSaveLocation())
-
-            onNodeWithContentDescription("Set Image Save Location to None").performClick()
-            assertFlowEquals(SaveLocation.NONE, settings.getImageSaveLocation())
-
-            onNodeWithContentDescription("Set Image Save Location to Your Phone").performClick()
-            assertFlowEquals(SaveLocation.LOCAL, settings.getImageSaveLocation())
-
-            onNodeWithContentDescription("Set Image Save Location to Google Drive").performClick()
-            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, settings.getImageSaveLocation())
+    fun testInitialState() {
+        runTest({ settings ->
+            settings.setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
+            settings.setImageSaveLocation(SaveLocation.LOCAL)
+            settings.setDatasetName("unique dataset name")
+            settings.setScaleMarkLength(26f)
+            settings.setScaleLengthUnit("ft")
+            settings.setNextSampleNumber(63)
+            settings.setUseBarcode(true)
+            settings.setSaveGpsData(false)
+            settings.setUseBlackBackground(true)
+        }) { settings, googleSignInManager ->
+            onNodeWithContentDescription("Set Data Save Location to Google Drive").assert(isSelected())
+            onNodeWithContentDescription("Set Image Save Location to Your Phone").assert(isSelected())
+            onNodeWithText("unique dataset name").assertExists()
+            onNodeWithText("26.0").assertExists()
+            onNodeWithText("ft").assertExists()
+            onNodeWithText("63").assertExists()
+            onNodeWithContentDescription("Scan Barcodes? toggle").assert(isOn())
+            onNodeWithContentDescription("Save GPS Location? toggle").assert(isOff())
+            onNodeWithContentDescription("Use Black Background? toggle").assert(isOn())
         }
     }
 
     @Test
+    fun testSaveLocations() {
+        runTest { settings, googleSignInManager ->
+            val dataNone = onNodeWithContentDescription("Set Data Save Location to None")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to Your Phone")
+            val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
+            fun dataSelectionIs(node: SemanticsNodeInteraction) {
+                node.assert(isSelected())
+
+                if (node != dataNone) {
+                    dataNone.assert(isNotSelected())
+                }
+                if (node != dataLocal) {
+                    dataLocal.assert(isNotSelected())
+                }
+                if (node != dataGoogle) {
+                    dataGoogle.assert(isNotSelected())
+                }
+            }
+
+            val imageNone = onNodeWithContentDescription("Set Image Save Location to None")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to Your Phone")
+            val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
+            fun imageSelectionIs(node: SemanticsNodeInteraction) {
+                node.assert(isSelected())
+
+                if (node != imageNone) {
+                    imageNone.assert(isNotSelected())
+                }
+                if (node != imageLocal) {
+                    imageLocal.assert(isNotSelected())
+                }
+                if (node != imageGoogle) {
+                    imageGoogle.assert(isNotSelected())
+                }
+            }
+
+            testSaveLocation(
+                googleSignInManager = googleSignInManager,
+                noneButton = dataNone,
+                localButton = dataLocal,
+                googleButton = dataGoogle,
+                selectionIs = ::dataSelectionIs,
+                getSaveLocationInSettings = settings::getDataSaveLocation,
+                otherLocalButton = imageLocal,
+                otherGoogleButton = imageGoogle,
+                otherSelectionIs = ::imageSelectionIs,
+                getOtherSaveLocationInSettings = settings::getImageSaveLocation,
+            )
+            testSaveLocation(
+                googleSignInManager = googleSignInManager,
+                noneButton = imageNone,
+                localButton = imageLocal,
+                googleButton = imageGoogle,
+                selectionIs = ::imageSelectionIs,
+                getSaveLocationInSettings = settings::getImageSaveLocation,
+                otherLocalButton = dataLocal,
+                otherGoogleButton = dataGoogle,
+                otherSelectionIs = ::dataSelectionIs,
+                getOtherSaveLocationInSettings = settings::getDataSaveLocation,
+            )
+        }
+    }
+
+    /**
+     * This abstracts out the logic for testing both data and image save locations
+     */
+    fun ComposeContext.testSaveLocation(
+        googleSignInManager: GoogleSignInManager,
+        noneButton: SemanticsNodeInteraction,
+        localButton: SemanticsNodeInteraction,
+        googleButton: SemanticsNodeInteraction,
+        selectionIs: (SemanticsNodeInteraction) -> Unit,
+        getSaveLocationInSettings: () -> Flow<SaveLocation>,
+        otherLocalButton: SemanticsNodeInteraction,
+        otherGoogleButton: SemanticsNodeInteraction,
+        otherSelectionIs: (SemanticsNodeInteraction) -> Unit,
+        getOtherSaveLocationInSettings: () -> Flow<SaveLocation>,
+    ) {
+        // *********** First we test the non-Google options ***************
+        localButton.performClick()
+        selectionIs(localButton)
+        assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
+
+        noneButton.performClick()
+        selectionIs(noneButton)
+        assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+        // *********** And now Google ***************
+        // precondition is set above, but just in case of refactors
+        selectionIs(noneButton)
+
+        val onSuccessSlot = slot<() -> Unit>()
+        val onFailureSlot = slot<(GoogleSignInFailureType) -> Unit>()
+        every { googleSignInManager.signIn(any(), onSuccess = capture(onSuccessSlot), onFailure = capture(onFailureSlot)) } returns Unit
+
+        // click to save to Google and see that the UI shows that you've done that, but the persistence layer hasn't updated yet
+        clearMockedMethodCallCounts(googleSignInManager)
+        verify(exactly = 0) { googleSignInManager.signIn(any(), any(), any()) }
+        googleButton.performClick()
+        verify(exactly = 1) { googleSignInManager.signIn(any(), any(), any()) }
+        selectionIs(googleButton)
+        assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+
+        // save these so that new captures don't override them (when we click the otherGoogleButton)
+        val onSuccess = onSuccessSlot.captured
+        val onFailure = onFailureSlot.captured
+
+        fun testGoogleFailure(
+            googleSignInFailureType: GoogleSignInFailureType,
+            alertType: AlertType,
+        ) {
+            // this doesn't make sense in the flow, but we reset the UI and settings to NONE in order to validate the failure callbacks
+            noneButton.performClick()
+            selectionIs(noneButton)
+            assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
+            // and we set the other save location setting to GOOGLE to see that it gets switched as well
+            otherGoogleButton.performClick()
+
+            onFailure(googleSignInFailureType)
+
+            // Check and dismiss the alert, then validate the new state
+            onNodeWithText(getAlertMessage(alertType)).assertExists()
+            onNodeWithText("OK").performClick()
+            onNodeWithText(getAlertMessage(alertType)).assertDoesNotExist()
+            selectionIs(localButton)
+            assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
+            otherSelectionIs(otherLocalButton)
+            assertFlowEquals(SaveLocation.LOCAL, getOtherSaveLocationInSettings())
+        }
+        testGoogleFailure(GoogleSignInFailureType.UNCONFIGURED, AlertType.GOOGLE_SIGN_IN_UNCONFIGURED)
+        testGoogleFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.NEITHER_SCOPE, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
+
+        // only now do we test the happy path
+        onSuccess()
+        selectionIs(googleButton)
+        assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getSaveLocationInSettings())
+    }
+
+    @Test
     fun testDatasetName() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
 
             datasetNameField.performTextReplacement("test dataset 123")
@@ -97,8 +268,46 @@ class SettingsComposeTest {
     }
 
     @Test
+    fun testBackButtonWorksNormally() {
+        runTest { settings, googleSignInManager ->
+            // you can press back to leave the screen
+            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+                Espresso.pressBack()
+            }
+        }
+    }
+
+    @Test
+    fun testBackButtonBlockedByEmptyDatasetName() {
+        runTest { settings, googleSignInManager ->
+            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
+
+            Espresso.pressBack() // one back to close the keyboard
+            Espresso.pressBack() // and one to actually go back
+
+            val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
+            errorMessage.assertExists()
+            onNodeWithText("OK").performClick()
+            errorMessage.assertDoesNotExist()
+
+            // Confirm that the alert returns if we keep pressing back
+            Espresso.pressBack()
+            errorMessage.assertExists()
+            onNodeWithText("OK").performClick()
+            errorMessage.assertDoesNotExist()
+
+            datasetNameField.performTextReplacement("non-empty")
+            // and now we can leave
+            assertThrows<NoActivityResumedException>("Pressed back and killed the app") {
+                Espresso.pressBack()
+            }
+        }
+    }
+
+    @Test
     fun testUsePreviousDataset() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
 
             datasetNameField.performTextReplacement("test1")
@@ -149,7 +358,7 @@ class SettingsComposeTest {
 
     @Test
     fun testScaleLength() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val scaleLengthEntry = onNodeWithContentDescription("Scale length entry")
 
             scaleLengthEntry.performTextReplacement("15")
@@ -181,7 +390,7 @@ class SettingsComposeTest {
 
     @Test
     fun testScaleLengthUnit() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals("cm", settings.getScaleLengthUnit())
 
             onNodeWithText("cm").performClick()
@@ -196,7 +405,7 @@ class SettingsComposeTest {
 
     @Test
     fun testNextSampleNumber() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val nextSampleNumberEntry = onNodeWithContentDescription("Next sample number entry")
 
             nextSampleNumberEntry.performTextReplacement("15")
@@ -226,7 +435,7 @@ class SettingsComposeTest {
 
     @Test
     fun testChangingDatasetChangesOtherSettings() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
             val scaleLengthField = onNodeWithContentDescription("Scale length entry")
             val scaleUnitButton = onNodeWithContentDescription("Scale length unit selector")
@@ -271,43 +480,66 @@ class SettingsComposeTest {
 
     @Test
     fun testScanBarcodes() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getUseBarcode())
             onNodeWithContentDescription("Scan Barcodes? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle").performClick()
+            onNodeWithContentDescription("Scan Barcodes? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getUseBarcode())
         }
     }
 
     @Test
     fun testSaveGps() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getSaveGpsData())
             onNodeWithContentDescription("Save GPS Location? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle").performClick()
+            onNodeWithContentDescription("Save GPS Location? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getSaveGpsData())
         }
     }
 
     @Test
     fun testUseBlackBackground() {
-        runTest { settings ->
+        runTest { settings, googleSignInManager ->
             assertFlowEquals(false, settings.getUseBlackBackground())
             onNodeWithContentDescription("Use Black Background? toggle")
+                .assert(isOff())
                 .performScrollTo()
                 .performClick()
+                .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBlackBackground())
-            onNodeWithContentDescription("Use Black Background? toggle").performClick()
+            onNodeWithContentDescription("Use Black Background? toggle")
+                .performClick()
+                .assert(isOff())
             assertFlowEquals(false, settings.getUseBlackBackground())
+        }
+    }
+
+    @Test
+    fun testSignOutOfGoogle() {
+        runTest { settings, googleSignInManager ->
+            verify(exactly = 0) { googleSignInManager.signOut() }
+            onNodeWithText("Sign out of Google")
+                .performScrollTo()
+                .performClick()
+            verify(exactly = 1) { googleSignInManager.signOut() }
         }
     }
 }

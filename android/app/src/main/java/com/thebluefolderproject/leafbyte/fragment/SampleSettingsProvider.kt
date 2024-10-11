@@ -1,10 +1,19 @@
 package com.thebluefolderproject.leafbyte.fragment
 
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInContract
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInContractInput
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationResponse
 
 @Suppress("MagicNumber")
 class SampleSettingsProvider : PreviewParameterProvider<Settings> {
@@ -95,8 +104,38 @@ class SampleSettingsProvider : PreviewParameterProvider<Settings> {
                     override fun setUseBlackBackground(newUseBlackBackground: Boolean) {
                         TODO("Not yet implemented")
                     }
+
+                    override var authState: AuthState
+                        get() = TODO("Not yet implemented")
+                        set(value) {}
                 }
 
             return sequenceOf(sampleSettings)
+        }
+}
+
+class SampleGoogleSignInManagerProvider : PreviewParameterProvider<GoogleSignInManager> {
+    override val values: Sequence<GoogleSignInManager>
+        get() {
+            val sampleGoogleSignInManager: GoogleSignInManager =
+                object : GoogleSignInManager {
+                    override fun signIn(
+                        launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
+                        onSuccess: () -> Unit,
+                        onFailure: (GoogleSignInFailureType) -> Unit,
+                    ) {}
+
+                    override fun signOut() {}
+
+                    @Composable
+                    override fun getLauncher(
+                        onSuccess: () -> Unit,
+                        onFailure: (GoogleSignInFailureType) -> Unit,
+                    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> {
+                        return rememberLauncherForActivityResult(GoogleSignInContract()) {}
+                    }
+                }
+
+            return sequenceOf(sampleGoogleSignInManager)
         }
 }

@@ -1,17 +1,24 @@
+complexity:
+  TooManyFunctions:
+    active: false
 config:
   validation: true
+empty-blocks:
+  EmptyFunctionBlock:
+    ignoreOverridden: true
 naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
 style:
-  MaxLineLength:
-    maxLineLength: 140
   ForbiddenImport:
     active: true
     imports:
       - 'androidx.compose.material3.Text' # force going through our own wrapper
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.junit.Test' # use Junit 5
-complexity:
-  TooManyFunctions:
-    active: false
+  MaxLineLength:
+    maxLineLength: 140
+  UnusedPrivateMember:
+    ignoreAnnotated:
+      - 'Preview'
+# TODO make ForbiddenComment detect TODO without a colon

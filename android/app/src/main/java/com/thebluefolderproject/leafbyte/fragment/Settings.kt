@@ -2,6 +2,7 @@ package com.thebluefolderproject.leafbyte.fragment
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
+import net.openid.appauth.AuthState
 
 interface Settings {
     fun getDataSaveLocation(): Flow<SaveLocation>
@@ -30,4 +31,6 @@ interface Settings {
     fun setSaveGpsData(newSaveGpsData: Boolean)
     fun getUseBlackBackground(): Flow<Boolean>
     fun setUseBlackBackground(newUseBlackBackground: Boolean)
+
+    var authState: AuthState
 }

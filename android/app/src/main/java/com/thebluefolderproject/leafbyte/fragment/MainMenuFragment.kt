@@ -44,7 +44,9 @@ import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
+import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
+import com.thebluefolderproject.leafbyte.utils.logError
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -59,6 +61,16 @@ class MainMenuFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        if (isGoogleSignInConfigured()) {
+            log("Google Sign-In is configured")
+        } else {
+            logError(
+                "************************************************************\n" +
+                    "STOP! Please fill in the secrets.properties file! Google Sign-In is not configured and WILL NOT WORK!\n" +
+                    "************************************************************",
+            )
+        }
+
         return ComposeView(requireContext()).apply {
             setContent {
                 MainMenu()
