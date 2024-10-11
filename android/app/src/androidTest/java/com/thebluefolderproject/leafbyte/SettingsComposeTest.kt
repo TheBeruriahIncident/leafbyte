@@ -273,6 +273,11 @@ class SettingsComposeTest {
             datasetNameField.performTextReplacement("valid")
             assertFlowEquals("valid", settings.getDatasetName())
             datasetNameField.assert(hasText("valid"))
+
+            // confirm unicode works properly
+            datasetNameField.performTextReplacement("שלום jalapeño 你好 ")
+            assertFlowEquals("שלום jalapeño 你好 ", settings.getDatasetName())
+            datasetNameField.assert(hasText("שלום jalapeño 你好 "))
         }
     }
 
