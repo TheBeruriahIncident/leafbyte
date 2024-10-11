@@ -2,3 +2,4 @@
 ktlint_code_style = ktlint_official
 ktlint_function_naming_ignore_when_annotated_with = Composable
 ktlint_standard_blank-line-before-declaration = disabled
+ktlint_standard_spacing-between-declarations-with-annotations = disabled

@@ -59,14 +59,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManagerImpl
-import com.thebluefolderproject.leafbyte.utils.Size
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
@@ -156,7 +154,8 @@ private fun SettingsScreenAlertPreview() {
 fun SettingsScreen(
     settings: Settings,
     googleSignInManager: GoogleSignInManager,
-    initialAlert: AlertType? = null, // exposed for @Previews
+    // exposed for @Previews
+    initialAlert: AlertType? = null,
 ) {
     // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
@@ -259,7 +258,7 @@ fun SettingsScreen(
             ToggleableSetting(
                 title = "Scan Barcodes?",
                 enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
-                currentValue = settings.getUseBarcode().valueForCompose()
+                currentValue = settings.getUseBarcode().valueForCompose(),
             ) { settings.setUseBarcode(it) }
             ToggleableSetting(
                 title = "Save GPS Location?",
@@ -273,9 +272,10 @@ fun SettingsScreen(
                 currentValue = settings.getUseBlackBackground().valueForCompose(),
             ) { settings.setUseBlackBackground(it) }
             TextButton(
-                enabled = settings.getAuthState()
-                    .map(AuthState::isAuthorized)
-                    .valueForCompose(),
+                enabled =
+                    settings.getAuthState()
+                        .map(AuthState::isAuthorized)
+                        .valueForCompose(),
                 onClick = {
                     if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
                         fullySetDataSaveLocation(SaveLocation.LOCAL)
@@ -349,11 +349,13 @@ fun getAlertTitle(alertType: AlertType?): String {
             "Dataset name missing"
         AlertType.GOOGLE_SIGN_IN_UNCONFIGURED,
         AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
-        AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE ->
+        AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
+        ->
             "Google sign-in unsuccessful"
         AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
         AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
-        AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE ->
+        AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE,
+        ->
             "LeafByte not granted access"
         // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
         null -> ""
@@ -572,17 +574,18 @@ fun SaveLocationSetting(
 
     SingleSetting(fullSettingName) {
         SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.height(IntrinsicSize.Min)
+            modifier = Modifier.height(IntrinsicSize.Min),
         ) {
             val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
             options.forEachIndexed { index, option ->
                 val selected = currentLocation.value == option
 
                 SegmentedButton(
-                    shape = SegmentedButtonDefaults.itemShape(
-                        index = index,
-                        count = options.size
-                    ),
+                    shape =
+                        SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = options.size,
+                        ),
                     selected = selected,
                     onClick = {
                         if (option == SaveLocation.GOOGLE_DRIVE) {
@@ -613,7 +616,8 @@ fun SaveLocationSetting(
 fun ToggleableSetting(
     title: String,
     enabled: Boolean = true,
-    explanation: String = " ", // non-empty to ensure size doesn't change when a warning is swapped in
+    // default is non-empty to ensure size doesn't change when a warning is swapped in
+    explanation: String = " ",
     currentValue: Boolean,
     setNewValue: (Boolean) -> Unit,
 ) {
@@ -636,7 +640,7 @@ fun ToggleableSetting(
         Text(
             text = if (enabled) explanation else "Data is not currently being saved",
             color = if (enabled) Color.Unspecified else Color(0xFFB3261E),
-            size = TextSize.FOOTNOTE
+            size = TextSize.FOOTNOTE,
         )
     }
 }

@@ -495,8 +495,9 @@ class SettingsComposeTest {
     @Test
     fun testScanBarcodes() {
         runTest { settings, googleSignInManager ->
-            val toggle = onNodeWithContentDescription("Scan Barcodes? toggle")
-                .performScrollTo()
+            val toggle =
+                onNodeWithContentDescription("Scan Barcodes? toggle")
+                    .performScrollTo()
             assertFlowEquals(false, settings.getUseBarcode())
             toggle.assert(isOff())
 
@@ -524,8 +525,9 @@ class SettingsComposeTest {
     @Test
     fun testSaveGps() {
         runTest { settings, googleSignInManager ->
-            val toggle = onNodeWithContentDescription("Save GPS Location? toggle")
-                .performScrollTo()
+            val toggle =
+                onNodeWithContentDescription("Save GPS Location? toggle")
+                    .performScrollTo()
             assertFlowEquals(false, settings.getSaveGpsData())
             toggle.assert(isOff())
 
@@ -578,17 +580,21 @@ class SettingsComposeTest {
             verify(exactly = 0) { googleSignInManager.signOut() }
 
             val config = AuthorizationServiceConfiguration(Uri.parse("auth endpoint"), Uri.parse("token endpoint"))
-            val authRequest = AuthorizationRequest.Builder(config, "client id", "code", Uri.parse("redirect"))
-                .build()
-            val authResponse = AuthorizationResponse.Builder(authRequest)
-                .build()
-            val tokenRequest = TokenRequest.Builder(config, "client id")
-                .setGrantType("grant")
-                .build()
-            val tokenResponse = TokenResponse.Builder(tokenRequest)
-                .setAccessToken("access")
-                .setIdToken("id")
-                .build()
+            val authRequest =
+                AuthorizationRequest.Builder(config, "client id", "code", Uri.parse("redirect"))
+                    .build()
+            val authResponse =
+                AuthorizationResponse.Builder(authRequest)
+                    .build()
+            val tokenRequest =
+                TokenRequest.Builder(config, "client id")
+                    .setGrantType("grant")
+                    .build()
+            val tokenResponse =
+                TokenResponse.Builder(tokenRequest)
+                    .setAccessToken("access")
+                    .setIdToken("id")
+                    .build()
             val authState = AuthState(authResponse, tokenResponse, null)
             settings.setAuthState(authState)
 

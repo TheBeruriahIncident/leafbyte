@@ -1,6 +1,5 @@
 package com.thebluefolderproject.leafbyte.fragment
 
-import com.google.android.gms.auth.api.Auth
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthState
