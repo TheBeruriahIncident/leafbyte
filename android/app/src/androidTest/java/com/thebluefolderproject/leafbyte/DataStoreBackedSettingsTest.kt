@@ -99,6 +99,10 @@ class DataStoreBackedSettingsTest {
 
             setDatasetName("    \n   ")
             assertFlowEquals("Herbivory Data", getDatasetName())
+
+            // confirm unicode roundtrips properly
+            setDatasetName("שלום jalapeño 你好 ")
+            assertFlowEquals("שלום jalapeño 你好 ", getDatasetName())
         }
     }
 

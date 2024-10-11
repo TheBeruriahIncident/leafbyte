@@ -1,10 +1,13 @@
 package com.thebluefolderproject.leafbyte
 
+import android.net.Uri
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isEnabled
+import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.isNotSelected
 import androidx.compose.ui.test.isOff
 import androidx.compose.ui.test.isOn
@@ -35,6 +38,12 @@ import io.mockk.slot
 import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.TokenRequest
+import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -264,6 +273,11 @@ class SettingsComposeTest {
             datasetNameField.performTextReplacement("valid")
             assertFlowEquals("valid", settings.getDatasetName())
             datasetNameField.assert(hasText("valid"))
+
+            // confirm unicode works properly
+            datasetNameField.performTextReplacement("שלום jalapeño 你好 ")
+            assertFlowEquals("שלום jalapeño 你好 ", settings.getDatasetName())
+            datasetNameField.assert(hasText("שלום jalapeño 你好 "))
         }
     }
 
@@ -481,16 +495,31 @@ class SettingsComposeTest {
     @Test
     fun testScanBarcodes() {
         runTest { settings, googleSignInManager ->
+            val toggle =
+                onNodeWithContentDescription("Scan Barcodes? toggle")
+                    .performScrollTo()
             assertFlowEquals(false, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle")
-                .assert(isOff())
+            toggle.assert(isOff())
+
+            onNodeWithContentDescription("Set Data Save Location to None")
                 .performScrollTo()
                 .performClick()
+            toggle.performScrollTo()
+                .assert(isNotEnabled())
+                .performClick()
+                .assert(isOff())
+            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+                .performScrollTo()
+                .performClick()
+            toggle.performScrollTo()
+                .assert(isEnabled())
+
+            assertFlowEquals(false, settings.getUseBarcode())
+            toggle.performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
-            onNodeWithContentDescription("Scan Barcodes? toggle")
-                .performClick()
+            toggle.performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getUseBarcode())
         }
@@ -499,16 +528,31 @@ class SettingsComposeTest {
     @Test
     fun testSaveGps() {
         runTest { settings, googleSignInManager ->
+            val toggle =
+                onNodeWithContentDescription("Save GPS Location? toggle")
+                    .performScrollTo()
             assertFlowEquals(false, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle")
-                .assert(isOff())
+            toggle.assert(isOff())
+
+            onNodeWithContentDescription("Set Data Save Location to None")
                 .performScrollTo()
                 .performClick()
+            toggle.performScrollTo()
+                .assert(isNotEnabled())
+                .performClick()
+                .assert(isOff())
+            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+                .performScrollTo()
+                .performClick()
+            toggle.performScrollTo()
+                .assert(isEnabled())
+
+            assertFlowEquals(false, settings.getSaveGpsData())
+            toggle.performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
-            onNodeWithContentDescription("Save GPS Location? toggle")
-                .performClick()
+            toggle.performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getSaveGpsData())
         }
@@ -535,10 +579,33 @@ class SettingsComposeTest {
     @Test
     fun testSignOutOfGoogle() {
         runTest { settings, googleSignInManager ->
+            val button = onNodeWithText("Sign out of Google").performScrollTo()
+
+            button.assert(isNotEnabled())
+            button.performClick()
             verify(exactly = 0) { googleSignInManager.signOut() }
-            onNodeWithText("Sign out of Google")
-                .performScrollTo()
-                .performClick()
+
+            val config = AuthorizationServiceConfiguration(Uri.parse("auth endpoint"), Uri.parse("token endpoint"))
+            val authRequest =
+                AuthorizationRequest.Builder(config, "client id", "code", Uri.parse("redirect"))
+                    .build()
+            val authResponse =
+                AuthorizationResponse.Builder(authRequest)
+                    .build()
+            val tokenRequest =
+                TokenRequest.Builder(config, "client id")
+                    .setGrantType("grant")
+                    .build()
+            val tokenResponse =
+                TokenResponse.Builder(tokenRequest)
+                    .setAccessToken("access")
+                    .setIdToken("id")
+                    .build()
+            val authState = AuthState(authResponse, tokenResponse, null)
+            settings.setAuthState(authState)
+
+            button.assert(isEnabled())
+            button.performClick()
             verify(exactly = 1) { googleSignInManager.signOut() }
         }
     }

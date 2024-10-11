@@ -32,5 +32,6 @@ interface Settings {
     fun getUseBlackBackground(): Flow<Boolean>
     fun setUseBlackBackground(newUseBlackBackground: Boolean)
 
-    var authState: AuthState
+    fun getAuthState(): Flow<AuthState>
+    fun setAuthState(newAuthState: AuthState)
 }
