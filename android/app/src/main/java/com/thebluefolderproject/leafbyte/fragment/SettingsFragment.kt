@@ -213,6 +213,8 @@ fun SettingsScreen(
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
     }
 
+    val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
+
     MaterialTheme { // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
             currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
@@ -272,10 +274,7 @@ fun SettingsScreen(
                 currentValue = settings.getUseBlackBackground().valueForCompose(),
             ) { settings.setUseBlackBackground(it) }
             TextButton(
-                enabled =
-                    settings.getAuthState()
-                        .map(AuthState::isAuthorized)
-                        .valueForCompose(),
+                enabled = isGoogleSignedIn.valueForCompose(),
                 onClick = {
                     if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
                         fullySetDataSaveLocation(SaveLocation.LOCAL)
