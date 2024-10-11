@@ -18,11 +18,11 @@ fun Text(
     bold: Boolean = false,
     textAlign: TextAlign? = null,
 ) {
-    androidx.compose.material3.Text(
-        text = text,
+    Text(
+        text = AnnotatedString(text),
         modifier = modifier,
-        fontSize = size.fontSize,
-        fontWeight = if (bold) FontWeight.Bold else null,
+        size = size,
+        bold = bold,
         textAlign = textAlign,
     )
 }

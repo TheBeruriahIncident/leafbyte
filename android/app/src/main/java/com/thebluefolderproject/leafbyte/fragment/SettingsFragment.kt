@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,6 +59,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
@@ -527,7 +529,9 @@ fun SaveLocationSetting(
     val fullSettingName = remember { "$locationSettingName Save Location" }
 
     SingleSetting(fullSettingName) {
-        SingleChoiceSegmentedButtonRow {
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.height(IntrinsicSize.Min)
+        ) {
             val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
             options.forEachIndexed { index, option ->
                 val selected = currentLocation.value == option
@@ -544,10 +548,14 @@ fun SaveLocationSetting(
                     },
                     icon = {},
                     modifier =
-                        Modifier.width(100.dp)
+                        Modifier.fillMaxHeight()
                             .description("Set $fullSettingName to ${option.userFacingName}"),
                 ) {
-                    Text(option.userFacingName, size = TextSize.IN_BUTTON, bold = selected)
+                    Text(
+                        text = option.userFacingName,
+                        size = TextSize.IN_BUTTON,
+                        bold = selected,
+                    )
                 }
             }
         }
