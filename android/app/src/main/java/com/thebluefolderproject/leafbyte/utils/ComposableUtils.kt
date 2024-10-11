@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 @Composable
+@Suppress("detekt:complexity:LongParameterList")
 fun Text(
     text: String,
     color: Color = Color.Unspecified,
@@ -31,6 +32,7 @@ fun Text(
 }
 
 @Composable
+@Suppress("detekt:complexity:LongParameterList")
 fun Text(
     text: AnnotatedString,
     color: Color = Color.Unspecified,
