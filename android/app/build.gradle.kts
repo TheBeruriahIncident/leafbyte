@@ -39,7 +39,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.28.2"
+        artifact = "com.google.protobuf:protoc:4.28.3"
     }
     generateProtoTasks {
         all().forEach { task ->
