@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,9 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
+import com.thebluefolderproject.leafbyte.utils.value
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -73,14 +77,72 @@ class MainMenuFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                MainMenu()
+                val settings = remember { DataStoreBackedSettings(requireContext()) }
+
+                MainMenu(settings)
             }
         }
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
-    fun MainMenu() {
+    fun MainMenuPreview() {
+        val settings = object: SampleSettings() {
+            override fun getDataSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.GOOGLE_DRIVE)
+            }
+
+            override fun getImageSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.LOCAL)
+            }
+
+            override fun getUseBarcode(): Flow<Boolean> {
+                return flowOf(false)
+            }
+        }
+        MainMenu(settings)
+    }
+
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun MainMenuWithBarcodesPreview() {
+        val settings = object: SampleSettings() {
+            override fun getDataSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.LOCAL)
+            }
+
+            override fun getImageSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.NONE)
+            }
+
+            override fun getUseBarcode(): Flow<Boolean> {
+                return flowOf(true)
+            }
+        }
+        MainMenu(settings)
+    }
+
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun MainMenuWithoutSavingPreview() {
+        val settings = object: SampleSettings() {
+            override fun getDataSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.NONE)
+            }
+
+            override fun getImageSaveLocation(): Flow<SaveLocation> {
+                return flowOf(SaveLocation.NONE)
+            }
+
+            override fun getUseBarcode(): Flow<Boolean> {
+                return flowOf(false)
+            }
+        }
+        MainMenu(settings)
+    }
+
+    @Composable
+    fun MainMenu(settings: Settings) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,

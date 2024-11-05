@@ -136,16 +136,16 @@ enum class AlertType {
 @Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
 @Composable
 private fun SettingsScreenPreview() {
-    val settings = SampleSettingsProvider().value()
-    val googleSignInManager = SampleGoogleSignInManagerProvider().value()
+    val settings = SampleSettings()
+    val googleSignInManager = SampleGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
-private fun SettingsScreenAlertPreview() {
-    val settings = SampleSettingsProvider().value()
-    val googleSignInManager = SampleGoogleSignInManagerProvider().value()
+private fun SettingsScreenWithAlertPreview() {
+    val settings = SampleSettings()
+    val googleSignInManager = SampleGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
 }
 
