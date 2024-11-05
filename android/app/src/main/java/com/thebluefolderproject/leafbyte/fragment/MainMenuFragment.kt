@@ -288,7 +288,7 @@ class MainMenuFragment : Fragment() {
     fun saveLocationToDescription(saveLocation: SaveLocation): String {
         return when (saveLocation) {
             SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
-            SaveLocation.LOCAL -> "your phone"
+            SaveLocation.LOCAL -> "My Files"
             SaveLocation.GOOGLE_DRIVE -> "Google Drive"
         }
     }

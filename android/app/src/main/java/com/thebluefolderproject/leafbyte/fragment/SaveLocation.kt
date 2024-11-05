@@ -4,7 +4,7 @@ import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSaveLocati
 
 enum class SaveLocation(val serialized: SerializedSaveLocation, val userFacingName: String) {
     NONE(SerializedSaveLocation.NONE, "None"),
-    LOCAL(SerializedSaveLocation.LOCAL, "Your Phone"),
+    LOCAL(SerializedSaveLocation.LOCAL, "My Files"),
     GOOGLE_DRIVE(SerializedSaveLocation.GOOGLE_DRIVE, "Google Drive"),
     ;
 
