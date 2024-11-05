@@ -93,66 +93,70 @@ class MainMenuFragment : Fragment() {
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
     fun MainMenuPreview() {
-        val settings = object: SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.GOOGLE_DRIVE)
-            }
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.GOOGLE_DRIVE)
+                }
 
-            override fun getImageSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.LOCAL)
-            }
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.LOCAL)
+                }
 
-            override fun getUseBarcode(): Flow<Boolean> {
-                return flowOf(false)
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(false)
+                }
             }
-        }
         MainMenu(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
     fun MainMenuWithBarcodesPreview() {
-        val settings = object: SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.LOCAL)
-            }
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.LOCAL)
+                }
 
-            override fun getImageSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.NONE)
-            }
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
 
-            override fun getUseBarcode(): Flow<Boolean> {
-                return flowOf(true)
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(true)
+                }
             }
-        }
         MainMenu(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
     fun MainMenuWithoutSavingPreview() {
-        val settings = object: SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.NONE)
-            }
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
 
-            override fun getImageSaveLocation(): Flow<SaveLocation> {
-                return flowOf(SaveLocation.NONE)
-            }
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
 
-            override fun getUseBarcode(): Flow<Boolean> {
-                return flowOf(false)
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(false)
+                }
             }
-        }
         MainMenu(settings)
     }
 
     @Composable
     fun MainMenu(settings: Settings) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
@@ -373,7 +377,7 @@ class MainMenuFragment : Fragment() {
         fun getSaveLocationsDescription(
             dataSaveLocation: SaveLocation,
             imageSaveLocation: SaveLocation,
-            datasetName: String
+            datasetName: String,
         ): AnnotatedString {
             if (dataSaveLocation == imageSaveLocation) {
                 if (dataSaveLocation == SaveLocation.NONE) {
@@ -385,7 +389,9 @@ class MainMenuFragment : Fragment() {
                         append(". Go to Settings to change.")
                     }
                 } else {
-                    return AnnotatedString("Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+                    return AnnotatedString(
+                        "Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.",
+                    )
                 }
             } else {
                 if (dataSaveLocation == SaveLocation.NONE) {
@@ -393,18 +399,22 @@ class MainMenuFragment : Fragment() {
                         append("Data is ")
                         appendNotBeingSaved()
                         append('\n')
-                        append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+                        append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.")
                     }
                 } else if (imageSaveLocation == SaveLocation.NONE) {
                     return buildAnnotatedString {
-                        append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+                        append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.")
                         append('\n')
                         append("Images are ")
                         appendNotBeingSaved()
                     }
                 }
 
-                return AnnotatedString("Saving data to ${saveLocationToDescription(dataSaveLocation)} and images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+                return AnnotatedString(
+                    "Saving data to ${saveLocationToDescription(
+                        dataSaveLocation,
+                    )} and images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.",
+                )
             }
         }
 

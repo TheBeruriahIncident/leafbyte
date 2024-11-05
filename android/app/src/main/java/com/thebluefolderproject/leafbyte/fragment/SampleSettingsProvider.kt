@@ -3,7 +3,6 @@ package com.thebluefolderproject.leafbyte.fragment
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInContract
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInContractInput
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
@@ -16,7 +15,7 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationResponse
 
 @Suppress("MagicNumber")
-open class SampleSettings: Settings {
+open class SampleSettings : Settings {
     override fun getDataSaveLocation(): Flow<SaveLocation> {
         return flowOf(SaveLocation.LOCAL)
     }
