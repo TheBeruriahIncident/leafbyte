@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -33,13 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
@@ -48,7 +53,7 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
-import com.thebluefolderproject.leafbyte.utils.value
+import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.io.File
@@ -144,7 +149,9 @@ class MainMenuFragment : Fragment() {
     @Composable
     fun MainMenu(settings: Settings) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
@@ -225,7 +232,64 @@ class MainMenuFragment : Fragment() {
                     Text("Take a Photo")
                 }
             }
-            Text("Data and images are not being saved. Go to settings to change.")
+            Text(
+                text = getSaveLocationsDescription(settings),
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+
+    @Composable
+    fun getSaveLocationsDescription(settings: Settings): AnnotatedString {
+        val dataSaveLocation = settings.getDataSaveLocation().valueForCompose()
+        val imageSaveLocation = settings.getImageSaveLocation().valueForCompose()
+        val datasetName = settings.getDatasetName().valueForCompose()
+
+        if (dataSaveLocation == imageSaveLocation) {
+            if (dataSaveLocation == SaveLocation.NONE) {
+                return buildAnnotatedString {
+                    append("Data and images are ")
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append("not being saved")
+                    }
+                    append(". Go to Settings to change.")
+                }
+            } else {
+                return AnnotatedString("Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+            }
+        } else {
+            if (dataSaveLocation == SaveLocation.NONE) {
+                return buildAnnotatedString {
+                    append("Data is ")
+                    appendNotBeingSaved()
+                    append('\n')
+                    append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+                }
+            } else if (imageSaveLocation == SaveLocation.NONE) {
+                return buildAnnotatedString {
+                    append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+                    append('\n')
+                    append("Images are ")
+                    appendNotBeingSaved()
+                }
+            }
+
+            return AnnotatedString("Saving data to ${saveLocationToDescription(dataSaveLocation)} and images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+        }
+    }
+
+    fun AnnotatedString.Builder.appendNotBeingSaved() {
+        withStyle(style = SpanStyle(color = Color.Red)) {
+            append("not being saved")
+        }
+        append(". Go to Settings to change.")
+    }
+
+    fun saveLocationToDescription(saveLocation: SaveLocation): String {
+        return when (saveLocation) {
+            SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
+            SaveLocation.LOCAL -> "your phone"
+            SaveLocation.GOOGLE_DRIVE -> "Google Drive"
         }
     }
 
