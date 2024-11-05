@@ -20,8 +20,6 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.NoActivityResumedException
-import androidx.test.espresso.base.RootViewPicker
 import com.thebluefolderproject.leafbyte.fragment.AlertType
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
@@ -47,9 +45,7 @@ import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
-import org.junit.jupiter.api.fail
 
 @OptIn(ExperimentalTestApi::class)
 class SettingsComposeTest {
