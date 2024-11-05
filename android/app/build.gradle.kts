@@ -266,8 +266,11 @@ dependencies {
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
     // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.5")
 
+    implementation("androidx.compose.animation:animation-core:1.7.5")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.0.21")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
+    //testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
