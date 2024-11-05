@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -239,60 +240,6 @@ class MainMenuFragment : Fragment() {
         }
     }
 
-    @Composable
-    fun getSaveLocationsDescription(settings: Settings): AnnotatedString {
-        val dataSaveLocation = settings.getDataSaveLocation().valueForCompose()
-        val imageSaveLocation = settings.getImageSaveLocation().valueForCompose()
-        val datasetName = settings.getDatasetName().valueForCompose()
-
-        if (dataSaveLocation == imageSaveLocation) {
-            if (dataSaveLocation == SaveLocation.NONE) {
-                return buildAnnotatedString {
-                    append("Data and images are ")
-                    withStyle(style = SpanStyle(color = Color.Red)) {
-                        append("not being saved")
-                    }
-                    append(". Go to Settings to change.")
-                }
-            } else {
-                return AnnotatedString("Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
-            }
-        } else {
-            if (dataSaveLocation == SaveLocation.NONE) {
-                return buildAnnotatedString {
-                    append("Data is ")
-                    appendNotBeingSaved()
-                    append('\n')
-                    append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
-                }
-            } else if (imageSaveLocation == SaveLocation.NONE) {
-                return buildAnnotatedString {
-                    append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
-                    append('\n')
-                    append("Images are ")
-                    appendNotBeingSaved()
-                }
-            }
-
-            return AnnotatedString("Saving data to ${saveLocationToDescription(dataSaveLocation)} and images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
-        }
-    }
-
-    fun AnnotatedString.Builder.appendNotBeingSaved() {
-        withStyle(style = SpanStyle(color = Color.Red)) {
-            append("not being saved")
-        }
-        append(". Go to Settings to change.")
-    }
-
-    fun saveLocationToDescription(saveLocation: SaveLocation): String {
-        return when (saveLocation) {
-            SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
-            SaveLocation.LOCAL -> "My Files"
-            SaveLocation.GOOGLE_DRIVE -> "Google Drive"
-        }
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -410,6 +357,71 @@ class MainMenuFragment : Fragment() {
         fun startTutorial()
 
         fun openSettings()
+    }
+
+    companion object {
+        @Composable
+        private fun getSaveLocationsDescription(settings: Settings): AnnotatedString {
+            return getSaveLocationsDescription(
+                dataSaveLocation = settings.getDataSaveLocation().valueForCompose(),
+                imageSaveLocation = settings.getImageSaveLocation().valueForCompose(),
+                datasetName = settings.getDatasetName().valueForCompose(),
+            )
+        }
+
+        @VisibleForTesting(VisibleForTesting.PRIVATE)
+        fun getSaveLocationsDescription(
+            dataSaveLocation: SaveLocation,
+            imageSaveLocation: SaveLocation,
+            datasetName: String
+        ): AnnotatedString {
+            if (dataSaveLocation == imageSaveLocation) {
+                if (dataSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Data and images are ")
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append("not being saved")
+                        }
+                        append(". Go to Settings to change.")
+                    }
+                } else {
+                    return AnnotatedString("Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+                }
+            } else {
+                if (dataSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Data is ")
+                        appendNotBeingSaved()
+                        append('\n')
+                        append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+                    }
+                } else if (imageSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name ${datasetName}.")
+                        append('\n')
+                        append("Images are ")
+                        appendNotBeingSaved()
+                    }
+                }
+
+                return AnnotatedString("Saving data to ${saveLocationToDescription(dataSaveLocation)} and images to ${saveLocationToDescription(imageSaveLocation)} under the name ${datasetName}.")
+            }
+        }
+
+        private fun AnnotatedString.Builder.appendNotBeingSaved() {
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append("not being saved")
+            }
+            append(". Go to Settings to change.")
+        }
+
+        private fun saveLocationToDescription(saveLocation: SaveLocation): String {
+            return when (saveLocation) {
+                SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
+                SaveLocation.LOCAL -> "My Files"
+                SaveLocation.GOOGLE_DRIVE -> "Google Drive"
+            }
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package com.thebluefolderproject.leafbyte.fragment
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
@@ -32,7 +33,8 @@ private val Context.settingsStore: DataStore<SerializedSettings> by dataStore(
     serializer = SerializedSettingsSerializer,
 )
 
-@VisibleForTesting
+@VisibleForTesting(VisibleForTesting.NONE)
+@RestrictTo(RestrictTo.Scope.TESTS)
 @RequiresApi(Build.VERSION_CODES.O)
 fun clearSettingsStore(context: Context) {
     runBlocking {
