@@ -6,14 +6,8 @@ package com.thebluefolderproject.leafbyte
 
 import com.thebluefolderproject.leafbyte.fragment.MainMenuFragment
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.utils.UnionFind
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-import kotlin.math.exp
 import kotlin.test.assertContains
-
-private const val DATASET_NAME = "Test dataset name"
 
 class SaveLocationsDescriptionTests {
     @Test
@@ -45,7 +39,7 @@ class SaveLocationsDescriptionTests {
         val description = MainMenuFragment.getSaveLocationsDescription(
             dataSaveLocation = dataSaveLocation,
             imageSaveLocation = imageSaveLocation,
-            datasetName = DATASET_NAME,
+            datasetName = "Test dataset name",
         ).text
         assertContains(description, expectedDescription)
     }
