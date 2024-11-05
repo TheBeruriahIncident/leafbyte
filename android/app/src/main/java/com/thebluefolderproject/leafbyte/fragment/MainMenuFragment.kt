@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -25,20 +26,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
@@ -47,6 +54,9 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
+import com.thebluefolderproject.leafbyte.utils.valueForCompose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -73,16 +83,80 @@ class MainMenuFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                MainMenu()
+                val settings = remember { DataStoreBackedSettings(requireContext()) }
+
+                MainMenu(settings)
             }
         }
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
     @Composable
-    fun MainMenu() {
+    fun MainMenuPreview() {
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.GOOGLE_DRIVE)
+                }
+
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.LOCAL)
+                }
+
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(false)
+                }
+            }
+        MainMenu(settings)
+    }
+
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun MainMenuWithBarcodesPreview() {
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.LOCAL)
+                }
+
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
+
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(true)
+                }
+            }
+        MainMenu(settings)
+    }
+
+    @Preview(showBackground = true, device = Devices.PIXEL)
+    @Composable
+    fun MainMenuWithoutSavingPreview() {
+        val settings =
+            object : SampleSettings() {
+                override fun getDataSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
+
+                override fun getImageSaveLocation(): Flow<SaveLocation> {
+                    return flowOf(SaveLocation.NONE)
+                }
+
+                override fun getUseBarcode(): Flow<Boolean> {
+                    return flowOf(false)
+                }
+            }
+        MainMenu(settings)
+    }
+
+    @Composable
+    fun MainMenu(settings: Settings) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
@@ -163,7 +237,10 @@ class MainMenuFragment : Fragment() {
                     Text("Take a Photo")
                 }
             }
-            Text("Data and images are not being saved. Go to settings to change.")
+            Text(
+                text = getSaveLocationsDescription(settings),
+                textAlign = TextAlign.Center,
+            )
         }
     }
 
@@ -284,6 +361,77 @@ class MainMenuFragment : Fragment() {
         fun startTutorial()
 
         fun openSettings()
+    }
+
+    companion object {
+        @Composable
+        private fun getSaveLocationsDescription(settings: Settings): AnnotatedString {
+            return getSaveLocationsDescription(
+                dataSaveLocation = settings.getDataSaveLocation().valueForCompose(),
+                imageSaveLocation = settings.getImageSaveLocation().valueForCompose(),
+                datasetName = settings.getDatasetName().valueForCompose(),
+            )
+        }
+
+        @VisibleForTesting(VisibleForTesting.PRIVATE)
+        fun getSaveLocationsDescription(
+            dataSaveLocation: SaveLocation,
+            imageSaveLocation: SaveLocation,
+            datasetName: String,
+        ): AnnotatedString {
+            if (dataSaveLocation == imageSaveLocation) {
+                if (dataSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Data and images are ")
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append("not being saved")
+                        }
+                        append(". Go to Settings to change.")
+                    }
+                } else {
+                    return AnnotatedString(
+                        "Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.",
+                    )
+                }
+            } else {
+                if (dataSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Data is ")
+                        appendNotBeingSaved()
+                        append('\n')
+                        append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.")
+                    }
+                } else if (imageSaveLocation == SaveLocation.NONE) {
+                    return buildAnnotatedString {
+                        append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.")
+                        append('\n')
+                        append("Images are ")
+                        appendNotBeingSaved()
+                    }
+                }
+
+                return AnnotatedString(
+                    "Saving data to ${saveLocationToDescription(
+                        dataSaveLocation,
+                    )} and images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.",
+                )
+            }
+        }
+
+        private fun AnnotatedString.Builder.appendNotBeingSaved() {
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append("not being saved")
+            }
+            append(". Go to Settings to change.")
+        }
+
+        private fun saveLocationToDescription(saveLocation: SaveLocation): String {
+            return when (saveLocation) {
+                SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
+                SaveLocation.LOCAL -> "My Files"
+                SaveLocation.GOOGLE_DRIVE -> "Google Drive"
+            }
+        }
     }
 }
 

@@ -39,7 +39,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.28.2"
+        artifact = "com.google.protobuf:protoc:4.28.3"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -188,17 +188,17 @@ configurations {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.core:core-ktx:1.15.0")
     // implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
     implementation("androidx.datastore:datastore:1.1.1")
-    implementation("androidx.fragment:fragment-ktx:1.8.4")
-    implementation("androidx.navigation:navigation-common:2.8.2")
-    implementation("androidx.navigation:navigation-runtime-ktx:2.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.navigation:navigation-common:2.8.3")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.3")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8")
 //    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
@@ -216,35 +216,35 @@ dependencies {
 //    }
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.5")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(path = ":openCVLibrary343"))
     implementation("net.openid:appauth:0.11.1")
     // implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-    implementation("androidx.activity:activity-compose:1.9.2")
-    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation(platform("androidx.compose:compose-bom:2024.10.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.01"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("io.mockk:mockk-dsl:1.13.13")
     androidTestImplementation("io.mockk:mockk:1.13.13")
-    implementation("androidx.activity:activity-ktx:1.9.2")
-    implementation("androidx.compose.foundation:foundation-layout:1.7.3")
-    implementation("androidx.compose.foundation:foundation:1.7.3")
-    implementation("androidx.compose.runtime:runtime:1.7.3")
-    implementation("androidx.compose.ui:ui-text:1.7.3")
-    implementation("androidx.compose.ui:ui-unit:1.7.3")
+    implementation("androidx.activity:activity-ktx:1.9.3")
+    implementation("androidx.compose.foundation:foundation-layout:1.7.5")
+    implementation("androidx.compose.foundation:foundation:1.7.5")
+    implementation("androidx.compose.runtime:runtime:1.7.5")
+    implementation("androidx.compose.ui:ui-text:1.7.5")
+    implementation("androidx.compose.ui:ui-unit:1.7.5")
 
-    androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.3")
-    androidTestImplementation("androidx.compose.ui:ui-test:1.7.3")
-    implementation("androidx.annotation:annotation:1.8.2")
-    implementation("androidx.lifecycle:lifecycle-common:2.8.6")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
+    androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.5")
+    androidTestImplementation("androidx.compose.ui:ui-test:1.7.5")
+    implementation("androidx.annotation:annotation:1.9.1")
+    implementation("androidx.lifecycle:lifecycle-common:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
     androidTestRuntimeOnly("io.mockk:mockk-android:1.13.13")
@@ -255,18 +255,23 @@ dependencies {
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.6.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
 
     androidTestImplementation("androidx.test:core:1.6.1")
 
     implementation("androidx.datastore:datastore-core:1.1.1")
-    implementation("com.google.protobuf:protobuf-javalite:4.28.2")
+    implementation("com.google.protobuf:protobuf-javalite:4.28.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
-    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.3")
+    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.5")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
+    implementation("androidx.compose.animation:animation-core:1.7.5")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.0.21")
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:2.0.21")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
