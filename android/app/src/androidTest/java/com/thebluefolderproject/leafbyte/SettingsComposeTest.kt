@@ -96,7 +96,7 @@ class SettingsComposeTest {
             settings.setUseBlackBackground(true)
         }) { settings, googleSignInManager ->
             onNodeWithContentDescription("Set Data Save Location to Google Drive").assert(isSelected())
-            onNodeWithContentDescription("Set Image Save Location to Your Phone").assert(isSelected())
+            onNodeWithContentDescription("Set Image Save Location to My Files").assert(isSelected())
             onNodeWithText("unique dataset name").assertExists()
             onNodeWithText("26.0").assertExists()
             onNodeWithText("ft").assertExists()
@@ -111,7 +111,7 @@ class SettingsComposeTest {
     fun testSaveLocations() {
         runTest { settings, googleSignInManager ->
             val dataNone = onNodeWithContentDescription("Set Data Save Location to None")
-            val dataLocal = onNodeWithContentDescription("Set Data Save Location to Your Phone")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to My Files")
             val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
             fun dataSelectionIs(node: SemanticsNodeInteraction) {
                 node.assert(isSelected())
@@ -128,7 +128,7 @@ class SettingsComposeTest {
             }
 
             val imageNone = onNodeWithContentDescription("Set Image Save Location to None")
-            val imageLocal = onNodeWithContentDescription("Set Image Save Location to Your Phone")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to My Files")
             val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
             fun imageSelectionIs(node: SemanticsNodeInteraction) {
                 node.assert(isSelected())
@@ -508,7 +508,7 @@ class SettingsComposeTest {
                 .assert(isNotEnabled())
                 .performClick()
                 .assert(isOff())
-            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+            onNodeWithContentDescription("Set Data Save Location to My Files")
                 .performScrollTo()
                 .performClick()
             toggle.performScrollTo()
@@ -541,7 +541,7 @@ class SettingsComposeTest {
                 .assert(isNotEnabled())
                 .performClick()
                 .assert(isOff())
-            onNodeWithContentDescription("Set Data Save Location to Your Phone")
+            onNodeWithContentDescription("Set Data Save Location to My Files")
                 .performScrollTo()
                 .performClick()
             toggle.performScrollTo()
