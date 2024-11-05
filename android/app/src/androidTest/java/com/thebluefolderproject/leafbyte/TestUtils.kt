@@ -2,6 +2,8 @@ package com.thebluefolderproject.leafbyte
 
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.printToLog
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.NoActivityResumedException
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.LOG_TAG
 import com.thebluefolderproject.leafbyte.utils.load
@@ -9,6 +11,8 @@ import de.mannodermaus.junit5.compose.ComposeContext
 import io.mockk.clearMocks
 import kotlinx.coroutines.flow.Flow
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.fail
+import kotlin.test.assertContains
 
 fun <T> assertFlowEquals(
     expected: T,
@@ -50,4 +54,24 @@ fun clearMockedMethodCallCounts(mock: Any) {
         verificationMarks = false,
         exclusionRules = false,
     )
+}
+
+fun assertClosesApp(actionThatShouldCloseApp: () -> Unit) {
+    try {
+        actionThatShouldCloseApp()
+        fail("Test did not crash") // This line should not be reached
+    } catch (exception: Exception) {
+        when(exception) { // Kotlin does not have multi-catch, so this is the workaround
+            // This is the exception we see locally
+            is NoActivityResumedException -> {
+                assertContains(exception.message!!, "Pressed back and killed the app")
+            }
+            else -> {
+                // For unknown reasons, sometimes this exception is what's thrown in CI. However, it's private, so we do this workaround
+                if(!exception::class.simpleName!!.contains("RootViewWithoutFocusException", ignoreCase = true)) {
+                    throw exception
+                }
+            }
+        }
+    }
 }
