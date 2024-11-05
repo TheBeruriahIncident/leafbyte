@@ -7,11 +7,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.7.0")
+        classpath("com.android.tools.build:gradle:8.7.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21") // pull this back out
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.2.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.1.4")
+        classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.4.2")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
