@@ -299,13 +299,13 @@ class SettingsComposeTest {
             Espresso.pressBack() // and one to actually go back
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
-            errorMessage.assertExists()
+            errorMessage.assertExists("Actual nodes: " + printScreen())
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
 
             // Confirm that the alert returns if we keep pressing back
             Espresso.pressBack()
-            errorMessage.assertExists()
+            errorMessage.assertExists("Actual nodes: " + printScreen())
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
 

@@ -2,6 +2,7 @@ package com.thebluefolderproject.leafbyte
 
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.test.printToString
 import androidx.test.espresso.NoActivityResumedException
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.LOG_TAG
@@ -40,8 +41,13 @@ class TestClock : Clock {
     }
 }
 
-fun ComposeContext.printScreen() {
+/**
+ * This both prints to the log and returns as a string to be more versatile
+ */
+fun ComposeContext.printScreen(): String {
     onAllNodes(isRoot()).printToLog(tag = LOG_TAG, maxDepth = 100)
+
+    return onAllNodes(isRoot()).printToString(maxDepth = 100)
 }
 
 fun clearMockedMethodCallCounts(mock: Any) {
