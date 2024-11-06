@@ -59,6 +59,8 @@ class SettingsComposeTest {
         initializeSettings: (Settings) -> Unit = {},
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
+        // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
+        //   probably doesn't make sense to do until the dust settles on moving nav over to compose
         extension.use {
             var settings: Settings? = null
             val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
@@ -72,7 +74,11 @@ class SettingsComposeTest {
                 SettingsScreen(settings, googleSignInManager)
             }
 
-            test(this, settings!!, googleSignInManager)
+            try {
+                test(this, settings!!, googleSignInManager)
+            } catch (e: Exception) {
+                throw AssertionError("Current nodes at time of failure: " + printScreen(), e)
+            }
         }
     }
 
@@ -299,13 +305,13 @@ class SettingsComposeTest {
             Espresso.pressBack() // and one to actually go back
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
-            errorMessage.assertExists("Actual nodes: " + printScreen())
+            errorMessage.assertExists()
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
 
             // Confirm that the alert returns if we keep pressing back
             Espresso.pressBack()
-            errorMessage.assertExists("Actual nodes: " + printScreen())
+            errorMessage.assertExists()
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
 
