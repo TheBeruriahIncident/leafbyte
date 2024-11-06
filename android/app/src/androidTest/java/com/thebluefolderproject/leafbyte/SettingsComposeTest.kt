@@ -302,7 +302,10 @@ class SettingsComposeTest {
             datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
 
             Espresso.pressBack() // one back to close the keyboard
+            val state1 = printScreen()
             Espresso.pressBack() // and one to actually go back
+            val state2 = printScreen()
+            throw AssertionError("After first back press:\n $state1 \n after second back press $state2")
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
