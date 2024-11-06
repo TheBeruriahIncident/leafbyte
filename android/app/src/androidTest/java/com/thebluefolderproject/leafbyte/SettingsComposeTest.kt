@@ -76,8 +76,8 @@ class SettingsComposeTest {
 
             try {
                 test(this, settings!!, googleSignInManager)
-            } catch (e: Exception) {
-                throw AssertionError("Current nodes at time of failure: " + printScreen(), e)
+            } catch (throwable: Throwable) {
+                throw AssertionError("Current nodes at time of failure: " + printScreen(), throwable)
             }
         }
     }
