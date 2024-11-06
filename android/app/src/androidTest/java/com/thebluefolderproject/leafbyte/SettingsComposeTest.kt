@@ -77,7 +77,7 @@ class SettingsComposeTest {
             try {
                 test(this, settings!!, googleSignInManager)
             } catch (throwable: Throwable) {
-                throw AssertionError("Current nodes at time of failure: " + printScreen(), throwable)
+                throw ComposeTestFailureException(this, throwable)
             }
         }
     }
@@ -305,7 +305,9 @@ class SettingsComposeTest {
             val state1 = printScreen()
             Espresso.pressBack() // and one to actually go back
             val state2 = printScreen()
-            throw AssertionError("After first back press:\n $state1 \n after second back press $state2")
+            Espresso.pressBack() // and why not again...
+            val state3 = printScreen()
+            throw AssertionError("After first back press:\n $state1 \n after second back press \n $state2 \n after extraneous third \n $state3")
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
