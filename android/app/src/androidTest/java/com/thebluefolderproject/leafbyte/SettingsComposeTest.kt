@@ -307,7 +307,9 @@ class SettingsComposeTest {
             val state2 = printScreen()
             Espresso.pressBack() // and why not again...
             val state3 = printScreen()
-            throw AssertionError("After first back press:\n $state1 \n after second back press \n $state2 \n after extraneous third \n $state3")
+            throw AssertionError(
+                "After first back press:\n $state1 \n after second back press \n $state2 \n after extraneous third \n $state3",
+            )
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()

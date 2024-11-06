@@ -81,5 +81,5 @@ fun assertClosesApp(actionThatShouldCloseApp: () -> Unit) {
     }
 }
 
-class ComposeTestFailureException(context: ComposeContext, cause: Throwable):
+class ComposeTestFailureException(context: ComposeContext, cause: Throwable) :
     Exception("Current UI nodes at time of failure:\n" + context.printScreen(), cause)
