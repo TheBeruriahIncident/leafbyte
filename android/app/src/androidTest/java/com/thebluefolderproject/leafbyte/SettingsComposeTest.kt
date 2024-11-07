@@ -44,6 +44,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 
@@ -298,6 +299,7 @@ class SettingsComposeTest {
         }
     }
 
+    @Disabled("https://github.com/TheBeruriahIncident/leafbyte/issues/74")
     @Test
     fun testBackButtonBlockedByEmptyDatasetName() {
         runTest { settings, googleSignInManager ->
