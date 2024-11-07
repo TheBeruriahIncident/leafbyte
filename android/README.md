@@ -21,10 +21,14 @@ Some useful commands:
 - `./gradlew useLatestVersions` to update dependencies
 - `./gradlew buildHealth` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
-- `./gradlew detekt` to check for detekt issues
+- `./gradlew detektMain detektTest detektDebugAndroidTest` to check for detekt issues (running just `./gradlew detekt` is not 
+    classpath-aware and thus can't run some checks)
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks
-- `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass
+- `./gradlew useLatestVersions ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest` to quickly apply automated fixes and
+   do fast checking (does not run any tests)
+- `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
+    caught something that normal lint didn't)
 
 Regarding code coverage reports:
 - To check coverage from unit tests, run `./gradlew jacocoTestReport` and find the report at `- app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec`

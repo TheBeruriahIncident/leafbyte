@@ -13,11 +13,23 @@ style:
   ForbiddenImport:
     active: true
     imports:
-      - 'android.util.Log' # force going through our own wrapper
       - 'androidx.compose.material3.Text' # force going through our own wrapper
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.jetbrains.annotations.VisibleForTesting' # standardize on Android's version that lets you specify the "proper" visibility
       - 'org.junit.Test' # use Junit 5
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      # all of these should instead use our log wrapper
+      - 'kotlin.io.print'
+      - 'kotlin.io.println'
+      - 'android.util.Log.v'
+      - 'android.util.Log.d'
+      - 'android.util.Log.i'
+      - 'android.util.Log.w'
+      - 'android.util.Log.e'
+      - 'android.util.Log.wtf'
+      - 'android.util.Log.println'
   MaxLineLength:
     maxLineLength: 140
   UnusedPrivateMember:

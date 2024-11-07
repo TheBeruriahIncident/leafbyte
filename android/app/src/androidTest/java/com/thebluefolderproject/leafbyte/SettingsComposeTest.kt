@@ -1,7 +1,6 @@
 package com.thebluefolderproject.leafbyte
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
@@ -30,7 +29,6 @@ import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.every
@@ -46,9 +44,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @OptIn(ExperimentalTestApi::class)
@@ -184,6 +180,7 @@ class SettingsComposeTest {
     /**
      * This abstracts out the logic for testing both data and image save locations
      */
+    @Suppress("detekt:complexity:LongParameterList")
     fun ComposeContext.testSaveLocation(
         googleSignInManager: GoogleSignInManager,
         noneButton: SemanticsNodeInteraction,

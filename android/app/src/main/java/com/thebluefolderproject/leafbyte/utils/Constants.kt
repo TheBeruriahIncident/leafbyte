@@ -5,8 +5,7 @@
 package com.thebluefolderproject.leafbyte.utils
 
 import android.os.Build
-import android.util.Log.ERROR
-import android.util.Log.INFO
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -34,18 +33,18 @@ fun registerLogInterceptor(newLogInterceptor: (String) -> Unit) {
 }
 
 fun log(logData: Any) {
-    logAnyType(INFO, logData)
+    logAnyType(Log.INFO, logData)
 }
 
 fun logError(logData: Any) {
-    logAnyType(ERROR, logData)
+    logAnyType(Log.ERROR, logData)
 }
 
 fun logError(
     message: String,
     throwable: Throwable,
 ) {
-    logThrowable(ERROR, message, throwable)
+    logThrowable(Log.ERROR, message, throwable)
 }
 
 private fun logAnyType(
@@ -70,24 +69,28 @@ private fun logThrowable(
 /**
  * All log calls must use this method.
  */
-private fun logCoreImplementation(priority: Int, log: String) {
+private fun logCoreImplementation(
+    priority: Int,
+    log: String,
+) {
     if (logInterceptor != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
         val priorityDescription = priorityToDescription(priority)
         logInterceptor?.invoke("$timestamp $priorityDescription $log")
     }
 
-    android.util.Log.println(priority, LOG_TAG, log)
+    @Suppress("detekt:style:ForbiddenMethodCall")
+    Log.println(priority, LOG_TAG, log)
 }
 
 private fun priorityToDescription(priority: Int): String {
-    return when(priority) {
-        2 -> "VERBOSE"
-        3 -> "DEBUG  "
-        4 -> "INFO   "
-        5 -> "WARN   "
-        6 -> "ERROR  "
-        7 -> "ASSERT "
+    return when (priority) {
+        Log.VERBOSE -> "VERBOSE"
+        Log.DEBUG -> "DEBUG  "
+        Log.INFO -> "INFO   "
+        Log.WARN -> "WARN   "
+        Log.ERROR -> "ERROR  "
+        Log.ASSERT -> "ASSERT "
         else -> "UNKNOWN"
     }
 }

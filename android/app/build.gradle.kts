@@ -168,6 +168,13 @@ android {
             exceptionFormat = TestExceptionFormat.FULL
         }
     }
+
+    tasks.named("check") {
+        dependsOn("detektMain")
+        dependsOn("detektTest")
+        dependsOn("detektDebugAndroidTest")
+    }
+
     buildFeatures {
         buildConfig = true
         compose = true

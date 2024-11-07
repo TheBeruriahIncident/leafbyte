@@ -81,11 +81,11 @@ fun assertClosesApp(actionThatShouldCloseApp: () -> Unit) {
     }
 }
 
-
 /**
  * Ideally we would have done something like https://www.braze.com/resources/articles/logcat-junit-android-tests and drawn logs directly
  *   from logcat, but I've had no success execing logcat from here. That approach may no longer be possible with Android's security model
  */
+@Suppress("detekt:potential-bugs:DoubleMutabilityForCollection")
 var interceptedLogs = mutableListOf<String>()
 fun initializeLogInterception() {
     interceptedLogs = mutableListOf()
@@ -95,24 +95,24 @@ fun initializeLogInterception() {
 private fun gatherInterceptedLogs(): String {
     if (interceptedLogs.isEmpty()) {
         return "No logs\n"
-    } else {
-        val builder = StringBuilder()
+    }
 
-        interceptedLogs.forEach { log ->
-            var firstLineWithinLog = true
-            log.split('\n').forEach { lineWithinLog ->
-                if (firstLineWithinLog) {
-                    builder.append("$lineWithinLog\n")
+    val builder = StringBuilder()
 
-                    firstLineWithinLog = false
-                } else {
-                    builder.append("                                    $lineWithinLog\n")
-                }
+    interceptedLogs.forEach { log ->
+        var firstLineWithinLog = true
+        log.split('\n').forEach { lineWithinLog ->
+            if (firstLineWithinLog) {
+                builder.append("$lineWithinLog\n")
+
+                firstLineWithinLog = false
+            } else {
+                builder.append("                                    $lineWithinLog\n")
             }
         }
-
-        return builder.toString()
     }
+
+    return builder.toString()
 }
 
 // inspired by https://www.braze.com/resources/articles/logcat-junit-android-tests
@@ -123,15 +123,18 @@ class ComposeTestFailureException(context: ComposeContext, cause: Throwable) : E
     }
 
     companion object {
-        private fun createMessage(context: ComposeContext, cause: Throwable): String {
+        private fun createMessage(
+            context: ComposeContext,
+            cause: Throwable,
+        ): String {
             return cause.message +
-                    "\nOriginal class: " +
-                    cause.javaClass.name +
-                    "\n\n================================ Logcat Output ================================\n" +
-                    gatherInterceptedLogs() +
-                    "================================ Current UI Nodes ================================\n" +
-                    context.getScreenState() +
-                    "\n\n================================ Stacktrace ================================"
+                "\nOriginal class: " +
+                cause.javaClass.name +
+                "\n\n================================ Logcat Output ================================\n" +
+                gatherInterceptedLogs() +
+                "================================ Current UI Nodes ================================\n" +
+                context.getScreenState() +
+                "\n\n================================ Stacktrace ================================"
         }
     }
 }
