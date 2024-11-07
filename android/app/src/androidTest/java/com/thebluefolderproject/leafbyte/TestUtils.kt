@@ -107,7 +107,9 @@ private fun gatherInterceptedLogs(): String {
 
                 firstLineWithinLog = false
             } else {
-                builder.append("                                    $lineWithinLog\n")
+                // this line is prepended with a braille blank character that is not recognized as whitespace so that the indenting is not
+                //   pruned by Junit reporting
+                builder.append("\u2800                                     $lineWithinLog\n")
             }
         }
     }
@@ -127,14 +129,11 @@ class ComposeTestFailureException(context: ComposeContext, cause: Throwable) : E
             context: ComposeContext,
             cause: Throwable,
         ): String {
-            return cause.message +
-                "\nOriginal class: " +
-                cause.javaClass.name +
-                "\n\n================================ Logcat Output ================================\n" +
-                gatherInterceptedLogs() +
-                "================================ Current UI Nodes ================================\n" +
-                context.getScreenState() +
-                "\n\n================================ Stacktrace ================================"
+            return "\nMessage: ${cause.message}" +
+                "\nOriginal class: ${cause.javaClass.name}\n\n" +
+                "================================ Logcat Output ================================\n${gatherInterceptedLogs()}\n" +
+                "================================ Current UI Nodes ================================\n${context.getScreenState()}\n\n" +
+                "================================ Stacktrace ================================"
         }
     }
 }
