@@ -5,7 +5,8 @@
 package com.thebluefolderproject.leafbyte.utils
 
 import android.os.Build
-import android.util.Log
+import android.util.Log.ERROR
+import android.util.Log.INFO
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import net.openid.appauth.AuthState
 import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 /**
@@ -23,12 +25,27 @@ import java.util.concurrent.TimeUnit
 const val UNUSED = "UNUSED_PARAMETER"
 const val LOG_TAG = "BlueFolder"
 
+/**
+ * The intended use is to capture test logs to make CI failures easier to debug.
+ */
+private var logInterceptor: ((String) -> Unit)? = null
+fun registerLogInterceptor(newLogInterceptor: (String) -> Unit) {
+    logInterceptor = newLogInterceptor
+}
+
 fun log(logData: Any) {
-    logAnyType(Log.INFO, logData)
+    logAnyType(INFO, logData)
 }
 
 fun logError(logData: Any) {
-    logAnyType(Log.ERROR, logData)
+    logAnyType(ERROR, logData)
+}
+
+fun logError(
+    message: String,
+    throwable: Throwable,
+) {
+    logThrowable(ERROR, message, throwable)
 }
 
 private fun logAnyType(
@@ -36,27 +53,42 @@ private fun logAnyType(
     logData: Any,
 ) {
     if (logData is Throwable) {
-        // if logData is an exception, we override priority, both for ease, as println doesn't directly take a throwable, and because an
-        //   exception seems like an error
-        Log.e(LOG_TAG, "An undescribed error occurred", logData)
+        logThrowable(priority, "An undescribed error occurred", logData)
     } else {
-        Log.println(priority, LOG_TAG, logData.toString())
+        logCoreImplementation(priority, logData.toString())
     }
 }
 
-fun logError(
-    message: String,
-    exception: Exception,
+private fun logThrowable(
+    priority: Int,
+    description: String,
+    throwable: Throwable,
 ) {
-    Log.e(LOG_TAG, message, exception)
+    logCoreImplementation(priority, "${description}\n${throwable.stackTraceToString()}")
 }
 
-fun checkState(
-    condition: Boolean,
-    message: String,
-) {
-    if (!condition) {
-        throw IllegalStateException(message)
+/**
+ * All log calls must use this method.
+ */
+private fun logCoreImplementation(priority: Int, log: String) {
+    if (logInterceptor != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+        val priorityDescription = priorityToDescription(priority)
+        logInterceptor?.invoke("$timestamp $priorityDescription $log")
+    }
+
+    android.util.Log.println(priority, LOG_TAG, log)
+}
+
+private fun priorityToDescription(priority: Int): String {
+    return when(priority) {
+        2 -> "VERBOSE"
+        3 -> "DEBUG  "
+        4 -> "INFO   "
+        5 -> "WARN   "
+        6 -> "ERROR  "
+        7 -> "ASSERT "
+        else -> "UNKNOWN"
     }
 }
 

@@ -1,6 +1,7 @@
 package com.thebluefolderproject.leafbyte
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
@@ -29,6 +30,7 @@ import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.every
@@ -44,7 +46,9 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @OptIn(ExperimentalTestApi::class)
@@ -61,6 +65,8 @@ class SettingsComposeTest {
     ) {
         // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
         //   probably doesn't make sense to do until the dust settles on moving nav over to compose
+        initializeLogInterception()
+
         extension.use {
             var settings: Settings? = null
             val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
@@ -302,14 +308,7 @@ class SettingsComposeTest {
             datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
 
             Espresso.pressBack() // one back to close the keyboard
-            val state1 = printScreen()
             Espresso.pressBack() // and one to actually go back
-            val state2 = printScreen()
-            Espresso.pressBack() // and why not again...
-            val state3 = printScreen()
-            throw AssertionError(
-                "After first back press:\n $state1 \n after second back press \n $state2 \n after extraneous third \n $state3",
-            )
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()

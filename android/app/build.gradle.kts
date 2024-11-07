@@ -1,5 +1,6 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     id("com.android.application")
@@ -163,6 +164,9 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
         reports.junitXml.required.set(true)
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
     }
     buildFeatures {
         buildConfig = true
