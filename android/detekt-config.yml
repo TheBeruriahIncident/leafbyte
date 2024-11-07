@@ -13,7 +13,9 @@ style:
   ForbiddenImport:
     active: true
     imports:
-      - 'androidx.compose.material3.Text' # force going through our own wrapper
+      - 'android.app.main.IconButton' # should use our fork
+      - 'androidx.compose.material3.Text' # should use our wrapper
+      - 'androidx.compose.material3.IconButton' # should use our fork
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.jetbrains.annotations.VisibleForTesting' # standardize on Android's version that lets you specify the "proper" visibility
       - 'org.junit.Test' # use Junit 5
