@@ -44,6 +44,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 
@@ -59,6 +60,10 @@ class SettingsComposeTest {
         initializeSettings: (Settings) -> Unit = {},
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
+        // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
+        //   probably doesn't make sense to do until the dust settles on moving nav over to compose
+        initializeLogInterception()
+
         extension.use {
             var settings: Settings? = null
             val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
@@ -72,7 +77,11 @@ class SettingsComposeTest {
                 SettingsScreen(settings, googleSignInManager)
             }
 
-            test(this, settings!!, googleSignInManager)
+            try {
+                test(this, settings!!, googleSignInManager)
+            } catch (throwable: Throwable) {
+                throw ComposeTestFailureException(this, throwable)
+            }
         }
     }
 
@@ -172,6 +181,7 @@ class SettingsComposeTest {
     /**
      * This abstracts out the logic for testing both data and image save locations
      */
+    @Suppress("detekt:complexity:LongParameterList")
     fun ComposeContext.testSaveLocation(
         googleSignInManager: GoogleSignInManager,
         noneButton: SemanticsNodeInteraction,
@@ -289,6 +299,7 @@ class SettingsComposeTest {
         }
     }
 
+    @Disabled("https://github.com/TheBeruriahIncident/leafbyte/issues/74")
     @Test
     fun testBackButtonBlockedByEmptyDatasetName() {
         runTest { settings, googleSignInManager ->
