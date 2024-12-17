@@ -266,7 +266,7 @@ dependencies {
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.6.0")
     androidTestImplementation("com.android.support.test:rules:1.0.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
 
     androidTestImplementation("androidx.test:core:1.6.1")
 
@@ -281,7 +281,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.0")
     androidTestImplementation("org.jetbrains.kotlin:kotlin-test:2.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
     // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
