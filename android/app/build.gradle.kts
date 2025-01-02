@@ -13,7 +13,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
     id("com.google.protobuf")
     id("jacoco")
 }
@@ -282,7 +282,7 @@ dependencies {
     androidTestImplementation("org.jetbrains.kotlin:kotlin-test:2.1.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
+    // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
     debugImplementation("androidx.compose.ui:ui-tooling")
