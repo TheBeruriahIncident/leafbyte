@@ -242,7 +242,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.01"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("io.mockk:mockk-dsl:1.13.14")
+    androidTestImplementation("io.mockk:mockk-dsl:1.13.16")
     androidTestImplementation("io.mockk:mockk:1.13.14")
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.compose.foundation:foundation-layout:1.7.5")
