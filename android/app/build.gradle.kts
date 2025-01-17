@@ -40,7 +40,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.29.2"
+        artifact = "com.google.protobuf:protoc:4.29.3"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -242,8 +242,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.01"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("io.mockk:mockk-dsl:1.13.14")
-    androidTestImplementation("io.mockk:mockk:1.13.14")
+    androidTestImplementation("io.mockk:mockk-dsl:1.13.16")
+    androidTestImplementation("io.mockk:mockk:1.13.16")
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.compose.foundation:foundation-layout:1.7.5")
     implementation("androidx.compose.foundation:foundation:1.7.5")
@@ -258,7 +258,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestRuntimeOnly("io.mockk:mockk-android:1.13.14")
+    androidTestRuntimeOnly("io.mockk:mockk-android:1.13.16")
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     implementation("me.saket.telephoto:zoomable:0.13.0")
@@ -272,7 +272,7 @@ dependencies {
     androidTestImplementation("androidx.test:core:1.6.1")
 
     implementation("androidx.datastore:datastore-core:1.1.1")
-    implementation("com.google.protobuf:protobuf-javalite:4.29.2")
+    implementation("com.google.protobuf:protobuf-javalite:4.29.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
