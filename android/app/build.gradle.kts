@@ -261,7 +261,7 @@ dependencies {
     androidTestRuntimeOnly("io.mockk:mockk-android:1.13.16")
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
-    implementation("me.saket.telephoto:zoomable:0.13.0")
+    implementation("me.saket.telephoto:zoomable:0.14.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")

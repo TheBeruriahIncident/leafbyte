@@ -44,6 +44,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import com.thebluefolderproject.leafbyte.utils.log
+import me.saket.telephoto.zoomable.DoubleClickToZoomListener
+import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.zoomable
 import org.opencv.android.Utils
@@ -409,18 +411,20 @@ class BackgroundRemovalFragment : Fragment() {
     }
 }
 
+private const val MAX_ZOOM = 50f
+private const val DOUBLE_TAP_ZOOM = 4f
+
 @Composable
 fun BackgroundRemovalScreen(image: Bitmap) {
-    var zoomScale by remember { mutableFloatStateOf(1f) }
-    var zoomTranslationX by remember { mutableFloatStateOf(0f) }
-    var zoomTranslationY by remember { mutableFloatStateOf(0f) }
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         Image(
             bitmap = image.asImageBitmap(),
-            modifier = Modifier.zoomable(rememberZoomableState()),
+            modifier = Modifier.zoomable(
+                state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM)
+            ),
             contentDescription = "The  leaf with background being removed"
         )
     }
