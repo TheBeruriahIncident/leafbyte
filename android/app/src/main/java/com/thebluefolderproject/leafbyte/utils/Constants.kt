@@ -131,4 +131,5 @@ fun <T> PreviewParameterProvider<T>.value(): T {
     return values.first()
 }
 
+@Suppress("detekt:style:MagicNumber")
 val BUTTON_COLOR = Color(0xFF007AFF)

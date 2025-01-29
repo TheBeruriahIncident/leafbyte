@@ -85,28 +85,27 @@ fun IconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
         modifier =
-        modifier
-            .minimumInteractiveComponentSize()
-            .size(40.0.dp)
-            .background(color = Color.Transparent)
-            .clickable(
-                onClick = onClick,
-                enabled = enabled,
-                role = Role.Button,
-                interactionSource = interactionSource,
-                indication =
-                ripple(
-                    bounded = false,
-                    radius = 40.dp / 2
-                )
-            ),
-        contentAlignment = Alignment.Center
+            modifier
+                .minimumInteractiveComponentSize()
+                .size(40.0.dp)
+                .background(color = Color.Transparent)
+                .clickable(
+                    onClick = onClick,
+                    enabled = enabled,
+                    role = Role.Button,
+                    interactionSource = interactionSource,
+                    indication =
+                        ripple(
+                            bounded = false,
+                            radius = 40.dp / 2,
+                        ),
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         CompositionLocalProvider(LocalContentColor provides BUTTON_COLOR, content = content)
     }
 }
-

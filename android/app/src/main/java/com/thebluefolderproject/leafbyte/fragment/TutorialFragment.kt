@@ -140,6 +140,7 @@ private fun TutorialScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("detekt:complexity:LongMethod")
 @Composable
 fun TutorialScreen(onPressingNext: () -> Unit) {
     Column(
@@ -179,10 +180,13 @@ fun TutorialScreen(onPressingNext: () -> Unit) {
         Image(
             painter = painterResource(id = R.drawable.example_leaf),
             contentDescription = "Camera icon",
+            @Suppress("detekt:style:MagicNumber")
             Modifier.fillMaxWidth(.7f),
         )
         Text(
-            text = "Note that the leaf is within four dots that form a square of known size (the \"scale\"). This lets us correct for the angle the image was taken at and determine absolute sizes.*",
+            text =
+                "Note that the leaf is within four dots that form a square of known size (the \"scale\"). This lets us correct for " +
+                    "the angle the image was taken at and determine absolute sizes.*",
             modifier = Modifier.fillMaxWidth(),
         )
         Text(
@@ -191,9 +195,10 @@ fun TutorialScreen(onPressingNext: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
-            text = "*See the website for a printout with a scale and other details and tips.", // TODO link this and iphone
+            // TODO link this and iphone
+            text = "*See the website for a printout with a scale and other details and tips.",
             modifier = Modifier.fillMaxWidth(),
-            size = TextSize.FOOTNOTE
+            size = TextSize.FOOTNOTE,
         )
         Row(
             horizontalArrangement = Arrangement.End,

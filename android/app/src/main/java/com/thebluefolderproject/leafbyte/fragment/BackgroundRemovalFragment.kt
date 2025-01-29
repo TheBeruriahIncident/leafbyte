@@ -4,7 +4,6 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
-import androidx.compose.runtime.getValue
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
@@ -24,26 +23,18 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
-import com.thebluefolderproject.leafbyte.utils.log
 import me.saket.telephoto.zoomable.DoubleClickToZoomListener
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
@@ -417,15 +408,16 @@ private const val DOUBLE_TAP_ZOOM = 4f
 @Composable
 fun BackgroundRemovalScreen(image: Bitmap) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Image(
             bitmap = image.asImageBitmap(),
-            modifier = Modifier.zoomable(
-                state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
-                onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM)
-            ),
-            contentDescription = "The  leaf with background being removed"
+            modifier =
+                Modifier.zoomable(
+                    state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                    onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+                ),
+            contentDescription = "The  leaf with background being removed",
         )
     }
 }

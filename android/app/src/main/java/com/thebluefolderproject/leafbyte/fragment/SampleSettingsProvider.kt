@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOf
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationResponse
 
-@Suppress("MagicNumber")
+@Suppress("detekt:style:MagicNumber")
 open class SampleSettings : Settings {
     override fun getDataSaveLocation(): Flow<SaveLocation> {
         return flowOf(SaveLocation.LOCAL)
