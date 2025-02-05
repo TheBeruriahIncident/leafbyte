@@ -23,21 +23,28 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
+import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
+import com.thebluefolderproject.leafbyte.utils.Text
 import me.saket.telephoto.zoomable.DoubleClickToZoomListener
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
@@ -130,7 +137,7 @@ class BackgroundRemovalFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                BackgroundRemovalScreen(bitmap)
+                BackgroundRemovalScreen(bitmap) { listener!!.doneBackgroundRemoval(it) }
             }
         }
     }
@@ -405,7 +412,7 @@ private const val DOUBLE_TAP_ZOOM = 4f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackgroundRemovalScreen(originalImage: Bitmap) {
+fun BackgroundRemovalScreen(originalImage: Bitmap, onPressingNext: (Bitmap) -> Unit) {
     val histogram = remember { createHistogram(originalImage) }
 
     val otsu = remember { otsu(originalImage) }
@@ -431,13 +438,26 @@ fun BackgroundRemovalScreen(originalImage: Bitmap) {
         )
         Image(
             bitmap = histogram.asImageBitmap(),
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillBounds,
             contentDescription = "A histogram representing intensity values in the image"
         )
         Slider(
             value = threshold.floatValue,
+            modifier = Modifier.fillMaxWidth(),
             // TODO maybe limit frequency somehow
             onValueChange = { threshold.floatValue = it.toFloat() },
             valueRange = 0f..255f,
         )
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButton(
+                onClick = { onPressingNext(thresholdedImage) },
+            ) {
+                Text("Next", color = BUTTON_COLOR)
+            }
+        }
     }
 }
