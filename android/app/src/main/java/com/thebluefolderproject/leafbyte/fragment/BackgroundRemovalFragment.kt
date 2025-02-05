@@ -29,10 +29,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
@@ -53,7 +51,6 @@ import org.opencv.core.Point
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import java.util.Arrays
-import kotlin.math.log
 import kotlin.math.roundToInt
 
 // TO DO: Rename parameter arguments, choose names that match
@@ -128,8 +125,6 @@ class BackgroundRemovalFragment : Fragment() {
                 }
             },
         )
-
-        val histogram = calculateHistogram(bitmap, histogramView)
 
         setHasOptionsMenu(true)
 
@@ -323,10 +318,9 @@ fun threshold(
     return resultBitmap
 }
 
-fun calculateHistogram(
+fun createHistogram(
     bitmap: Bitmap,
-    histogramView: ImageView,
-): List<Double> {
+): Bitmap {
     // first convert bitmap into OpenCV mat object
     val imageMat =
         Mat(
@@ -370,10 +364,7 @@ fun calculateHistogram(
     val graphBitmap = Bitmap.createBitmap(graphMat.cols(), graphMat.rows(), Bitmap.Config.ARGB_8888)
     Utils.matToBitmap(graphMat, graphBitmap)
 
-    // show histogram
-    histogramView.setImageBitmap(graphBitmap)
-
-    return histogramList
+    return graphBitmap
 }
 
 fun otsu(bitmap: Bitmap): Double {
@@ -415,6 +406,8 @@ private const val DOUBLE_TAP_ZOOM = 4f
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BackgroundRemovalScreen(originalImage: Bitmap) {
+    val histogram = remember { createHistogram(originalImage) }
+
     val otsu = remember { otsu(originalImage) }
     val threshold = remember { mutableFloatStateOf(otsu.toFloat()) } // threshold is from 0 to 255
     // rounding to re-threshold less often
@@ -435,6 +428,10 @@ fun BackgroundRemovalScreen(originalImage: Bitmap) {
                     onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
                 ),
             contentDescription = "The  leaf with background being removed",
+        )
+        Image(
+            bitmap = histogram.asImageBitmap(),
+            contentDescription = "A histogram representing intensity values in the image"
         )
         Slider(
             value = threshold.floatValue,
