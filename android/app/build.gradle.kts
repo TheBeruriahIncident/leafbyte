@@ -13,7 +13,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.10"
     id("com.google.protobuf")
     id("jacoco")
 }
@@ -226,7 +226,7 @@ dependencies {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.7")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.7")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
