@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
@@ -85,7 +86,7 @@ class MainMenuFragment : Fragment() {
             setContent {
                 val settings = remember { DataStoreBackedSettings(requireContext()) }
 
-                MainMenu(settings)
+                MainMenuScreen(settings)
             }
         }
     }
@@ -107,7 +108,7 @@ class MainMenuFragment : Fragment() {
                     return flowOf(false)
                 }
             }
-        MainMenu(settings)
+        MainMenuScreen(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
@@ -127,7 +128,7 @@ class MainMenuFragment : Fragment() {
                     return flowOf(true)
                 }
             }
-        MainMenu(settings)
+        MainMenuScreen(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
@@ -147,11 +148,11 @@ class MainMenuFragment : Fragment() {
                     return flowOf(false)
                 }
             }
-        MainMenu(settings)
+        MainMenuScreen(settings)
     }
 
     @Composable
-    fun MainMenu(settings: Settings) {
+    fun MainMenuScreen(settings: Settings) {
         Column(
             modifier =
                 Modifier
@@ -167,12 +168,12 @@ class MainMenuFragment : Fragment() {
                 TextButton(
                     onClick = { listener!!.startTutorial() },
                 ) {
-                    Text("Tutorial")
+                    Text("Tutorial", color = BUTTON_COLOR)
                 }
                 TextButton(
                     onClick = { listener!!.openSettings() },
                 ) {
-                    Text("Settings")
+                    Text("Settings", color = BUTTON_COLOR)
                 }
             }
             Column(
@@ -198,7 +199,7 @@ class MainMenuFragment : Fragment() {
                                             TextLinkStyles(
                                                 style =
                                                     SpanStyle(
-                                                        color = Color(0xff0000EE),
+                                                        color = BUTTON_COLOR,
                                                     ),
                                             ),
                                     ),
@@ -240,6 +241,7 @@ class MainMenuFragment : Fragment() {
             Text(
                 text = getSaveLocationsDescription(settings),
                 textAlign = TextAlign.Center,
+                size = TextSize.FOOTNOTE,
             )
         }
     }

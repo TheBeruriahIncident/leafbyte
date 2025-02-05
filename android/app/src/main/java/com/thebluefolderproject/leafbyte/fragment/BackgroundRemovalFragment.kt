@@ -22,10 +22,33 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Slider
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
+import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
+import com.thebluefolderproject.leafbyte.utils.Text
+import me.saket.telephoto.zoomable.DoubleClickToZoomListener
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.zoomable
 import org.opencv.android.Utils
 import org.opencv.core.CvType
 import org.opencv.core.Mat
@@ -82,13 +105,14 @@ class BackgroundRemovalFragment : Fragment() {
             listener!!.doneBackgroundRemoval((imageView.drawable as BitmapDrawable).bitmap)
         }
 
-        val otsu = otsu(bitmap!!)
+        val otsu = otsu(bitmap)
 
-        val thresholdedImage = threshold(bitmap!!, otsu)
+        val thresholdedImage = threshold(bitmap, otsu)
         imageView.setImageBitmap(thresholdedImage)
 
         val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
-        seekBar.progress = (otsu * 100 / 256).roundToInt()
+        seekBar.progress = otsu.roundToInt()
+        seekBar.max = 255
         seekBar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
                 override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -102,18 +126,20 @@ class BackgroundRemovalFragment : Fragment() {
                     p1: Int,
                     p2: Boolean,
                 ) {
-                    val bitmap = threshold(bitmap!!, (p1 * 256 / 100).toDouble())
+                    val bitmap = threshold(bitmap, p1.toDouble())
                     imageView.setImageBitmap(bitmap)
                     model!!.thresholdedImage = bitmap
                 }
             },
         )
 
-        val histogram = calculateHistogram(bitmap, histogramView)
-
         setHasOptionsMenu(true)
 
-        return view
+        return ComposeView(requireContext()).apply {
+            setContent {
+                BackgroundRemovalScreen(bitmap) { listener!!.doneBackgroundRemoval(it) }
+            }
+        }
     }
 
     // https://stackoverflow.com/a/17839597/1092672
@@ -219,149 +245,6 @@ class BackgroundRemovalFragment : Fragment() {
         fun doneBackgroundRemoval(bitmap: Bitmap)
     }
 
-    fun otsu(bitmap: Bitmap): Double {
-        // first convert bitmap into OpenCV mat object
-        val imageMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(4.0),
-            )
-        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        Utils.bitmapToMat(myBitmap, imageMat)
-
-        // now convert to gray
-        val grayMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(1.0),
-            )
-        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
-
-        // get the thresholded image
-        val thresholdMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(1.0),
-            )
-        return Imgproc.threshold(grayMat, thresholdMat, -1.0, 255.0, Imgproc.THRESH_OTSU)
-    }
-
-    fun threshold(
-        bitmap: Bitmap,
-        threshold: Double,
-    ): Bitmap {
-        // first convert bitmap into OpenCV mat object
-        val imageMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(4.0),
-            )
-        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        Utils.bitmapToMat(myBitmap, imageMat)
-
-        // now convert to gray
-        val grayMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(1.0),
-            )
-        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
-
-        // get the thresholded image
-        val thresholdMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(1.0),
-            )
-        Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY_INV)
-
-        val maskedImageMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(4.0),
-            )
-        imageMat.copyTo(maskedImageMat, thresholdMat)
-
-        // convert back to bitmap for displaying
-        val resultBitmap =
-            Bitmap.createBitmap(
-                bitmap.width,
-                bitmap.height,
-                Bitmap.Config.ARGB_8888,
-            )
-        thresholdMat.convertTo(thresholdMat, CvType.CV_8UC1)
-        Utils.matToBitmap(maskedImageMat, resultBitmap)
-
-        return resultBitmap
-    }
-
-    fun calculateHistogram(
-        bitmap: Bitmap,
-        histogramView: ImageView,
-    ): List<Double> {
-        // first convert bitmap into OpenCV mat object
-        val imageMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(4.0),
-            )
-        val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        Utils.bitmapToMat(myBitmap, imageMat)
-
-        // now convert to gray
-        val grayMat =
-            Mat(
-                bitmap.height,
-                bitmap.width,
-                CvType.CV_8U,
-                Scalar(1.0),
-            )
-        Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
-
-        val histogram = Mat()
-
-        Imgproc.calcHist(Arrays.asList(grayMat), MatOfInt(0), Mat(), histogram, MatOfInt(256), MatOfFloat(0f, 256f))
-        val histogramList = (0..255).asIterable().map { bin -> histogram.get(bin, 0)[0] }
-        val maxValue = (histogramList.maxOrNull()!! + 1).toInt()
-
-        // black
-        val color = Scalar(0.0, 0.0, 0.0, 255.0)
-        val graphHeight = 100
-        val factor = graphHeight.toDouble() / maxValue.toDouble()
-        // create transparent background
-        val graphMat = Mat(graphHeight, 256, CvType.CV_8UC4, Scalar(0.0, 0.0, 0.0, 0.0))
-
-        for (i in 0..255) {
-            val bPoint1 = Point(i.toDouble(), graphHeight.toDouble())
-            val bPoint2 = Point(i.toDouble(), graphHeight - histogram.get(i, 0)[0] * factor)
-            Imgproc.line(graphMat, bPoint1, bPoint2, color, 1, 8, 0)
-        }
-
-        val graphBitmap = Bitmap.createBitmap(graphMat.cols(), graphMat.rows(), Bitmap.Config.ARGB_8888)
-        Utils.matToBitmap(graphMat, graphBitmap)
-
-        // show histogram
-        histogramView.setImageBitmap(graphBitmap)
-
-        return histogramList
-    }
-
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -381,6 +264,204 @@ class BackgroundRemovalFragment : Fragment() {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
+        }
+    }
+}
+
+@Suppress("MagicNumber")
+fun threshold(
+    bitmap: Bitmap,
+    threshold: Double,
+): Bitmap {
+    // first convert bitmap into OpenCV mat object
+    val imageMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(4.0),
+        )
+    val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+    Utils.bitmapToMat(myBitmap, imageMat)
+
+    // now convert to gray
+    val grayMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(1.0),
+        )
+    Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
+
+    // get the thresholded image
+    val thresholdMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(1.0),
+        )
+    Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY_INV)
+
+    val maskedImageMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(4.0),
+        )
+    imageMat.copyTo(maskedImageMat, thresholdMat)
+
+    // convert back to bitmap for displaying
+    val resultBitmap =
+        Bitmap.createBitmap(
+            bitmap.width,
+            bitmap.height,
+            Bitmap.Config.ARGB_8888,
+        )
+    thresholdMat.convertTo(thresholdMat, CvType.CV_8UC1)
+    Utils.matToBitmap(maskedImageMat, resultBitmap)
+
+    return resultBitmap
+}
+
+@Suppress("MagicNumber", "UnsafeCallOnNullableType")
+fun createHistogram(bitmap: Bitmap): Bitmap {
+    // first convert bitmap into OpenCV mat object
+    val imageMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(4.0),
+        )
+    val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+    Utils.bitmapToMat(myBitmap, imageMat)
+
+    // now convert to gray
+    val grayMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(1.0),
+        )
+    Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
+
+    val histogram = Mat()
+
+    Imgproc.calcHist(Arrays.asList(grayMat), MatOfInt(0), Mat(), histogram, MatOfInt(256), MatOfFloat(0f, 255f))
+    val histogramList = (0..255).asIterable().map { bin -> histogram.get(bin, 0)[0] }
+    val maxValue = (histogramList.maxOrNull()!! + 1).toInt()
+
+    // black
+    val color = Scalar(0.0, 0.0, 0.0, 255.0)
+    val graphHeight = 100
+    val factor = graphHeight.toDouble() / maxValue.toDouble()
+    // create transparent background
+    val graphMat = Mat(graphHeight, 256, CvType.CV_8UC4, Scalar(0.0, 0.0, 0.0, 0.0))
+
+    for (i in 0..255) {
+        val bPoint1 = Point(i.toDouble(), graphHeight.toDouble())
+        val bPoint2 = Point(i.toDouble(), graphHeight - histogram.get(i, 0)[0] * factor)
+        Imgproc.line(graphMat, bPoint1, bPoint2, color, 1, 8, 0)
+    }
+
+    val graphBitmap = Bitmap.createBitmap(graphMat.cols(), graphMat.rows(), Bitmap.Config.ARGB_8888)
+    Utils.matToBitmap(graphMat, graphBitmap)
+
+    return graphBitmap
+}
+
+@Suppress("MagicNumber")
+fun otsu(bitmap: Bitmap): Double {
+    // first convert bitmap into OpenCV mat object
+    val imageMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(4.0),
+        )
+    val myBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+    Utils.bitmapToMat(myBitmap, imageMat)
+
+    // now convert to gray
+    val grayMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(1.0),
+        )
+    Imgproc.cvtColor(imageMat, grayMat, Imgproc.COLOR_RGB2GRAY, 1)
+
+    // get the thresholded image
+    val thresholdMat =
+        Mat(
+            bitmap.height,
+            bitmap.width,
+            CvType.CV_8U,
+            Scalar(1.0),
+        )
+    return Imgproc.threshold(grayMat, thresholdMat, -1.0, 255.0, Imgproc.THRESH_OTSU)
+}
+
+private const val MAX_ZOOM = 50f
+private const val DOUBLE_TAP_ZOOM = 4f
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BackgroundRemovalScreen(
+    originalImage: Bitmap,
+    onPressingNext: (Bitmap) -> Unit,
+) {
+    val histogram = remember { createHistogram(originalImage) }
+
+    val otsu = remember { otsu(originalImage) }
+    val threshold = remember { mutableFloatStateOf(otsu.toFloat()) } // threshold is from 0 to 255
+    // rounding to re-threshold less often
+    val roundedThreshold = remember { derivedStateOf { ((threshold.floatValue * 2).roundToInt()).toFloat() / 2 } }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        com.thebluefolderproject.leafbyte.utils.log("thresholding ${roundedThreshold.value}")
+        // TODO should we also spin this off the main thresh
+        val thresholdedImage = threshold(originalImage, roundedThreshold.value.toDouble())
+
+        Image(
+            bitmap = thresholdedImage.asImageBitmap(),
+            modifier =
+                Modifier.zoomable(
+                    state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                    onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+                ),
+            contentDescription = "The  leaf with background being removed",
+        )
+        Image(
+            bitmap = histogram.asImageBitmap(),
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillBounds,
+            contentDescription = "A histogram representing intensity values in the image",
+        )
+        Slider(
+            value = threshold.floatValue,
+            modifier = Modifier.fillMaxWidth(),
+            // TODO maybe limit frequency somehow
+            onValueChange = { threshold.floatValue = it.toFloat() },
+            valueRange = 0f..255f,
+        )
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButton(
+                onClick = { onPressingNext(thresholdedImage) },
+            ) {
+                Text("Next", color = BUTTON_COLOR)
+            }
         }
     }
 }

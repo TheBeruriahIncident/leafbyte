@@ -609,7 +609,7 @@ fun SaveLocationSetting(
     }
 }
 
-@Suppress("MagicNumber") // once we fiddle with theme colors, the colors should come from a theme constant
+@Suppress("detekt:style:MagicNumber") // once we fiddle with theme colors, the colors should come from a theme constant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToggleableSetting(
