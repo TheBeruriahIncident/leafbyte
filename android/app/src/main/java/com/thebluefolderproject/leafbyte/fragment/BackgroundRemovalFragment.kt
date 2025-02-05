@@ -268,6 +268,7 @@ class BackgroundRemovalFragment : Fragment() {
     }
 }
 
+@Suppress("MagicNumber")
 fun threshold(
     bitmap: Bitmap,
     threshold: Double,
@@ -325,9 +326,8 @@ fun threshold(
     return resultBitmap
 }
 
-fun createHistogram(
-    bitmap: Bitmap,
-): Bitmap {
+@Suppress("MagicNumber", "UnsafeCallOnNullableType")
+fun createHistogram(bitmap: Bitmap): Bitmap {
     // first convert bitmap into OpenCV mat object
     val imageMat =
         Mat(
@@ -374,6 +374,7 @@ fun createHistogram(
     return graphBitmap
 }
 
+@Suppress("MagicNumber")
 fun otsu(bitmap: Bitmap): Double {
     // first convert bitmap into OpenCV mat object
     val imageMat =
@@ -412,7 +413,10 @@ private const val DOUBLE_TAP_ZOOM = 4f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackgroundRemovalScreen(originalImage: Bitmap, onPressingNext: (Bitmap) -> Unit) {
+fun BackgroundRemovalScreen(
+    originalImage: Bitmap,
+    onPressingNext: (Bitmap) -> Unit,
+) {
     val histogram = remember { createHistogram(originalImage) }
 
     val otsu = remember { otsu(originalImage) }
@@ -440,7 +444,7 @@ fun BackgroundRemovalScreen(originalImage: Bitmap, onPressingNext: (Bitmap) -> U
             bitmap = histogram.asImageBitmap(),
             modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.FillBounds,
-            contentDescription = "A histogram representing intensity values in the image"
+            contentDescription = "A histogram representing intensity values in the image",
         )
         Slider(
             value = threshold.floatValue,
