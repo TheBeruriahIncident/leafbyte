@@ -421,8 +421,8 @@ fun otsu(bitmap: Bitmap): Double {
     return Imgproc.threshold(grayMat, thresholdMat, -1.0, 255.0, Imgproc.THRESH_OTSU)
 }
 
-private const val MAX_ZOOM = 50f
-private const val DOUBLE_TAP_ZOOM = 4f
+const val MAX_ZOOM = 50f
+const val DOUBLE_TAP_ZOOM = 4f
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, device = Devices.PIXEL)

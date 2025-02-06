@@ -17,14 +17,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Slider
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.State
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
+import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.LayeredIndexableImage
 import com.thebluefolderproject.leafbyte.utils.Point
+import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.labelConnectedComponents
 import com.thebluefolderproject.leafbyte.utils.log
+import me.saket.telephoto.zoomable.DoubleClickToZoomListener
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.zoomable
 
 // TO DO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,7 +97,7 @@ class ScaleIdentificationFragment : Fragment() {
         val bitmap = model!!.thresholdedImage!!
         // view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
-        log("Trying to find centers: " + bitmap.width + " " + bitmap.height)
+        log("Trying to find centers: " + bitmap.width + " " + bitmap.height) // TODO swap to center of dots
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
         log("done labeling")
 
@@ -100,7 +121,12 @@ class ScaleIdentificationFragment : Fragment() {
 
         log("Found centers: " + dotCenters)
         this.dotCenters = dotCenters
-        return view
+
+        return ComposeView(requireContext()).apply {
+            setContent {
+                ScaleIdentificationScreen(bmOverlay) { listener!!.doneScaleIdentification(dotCenters) }
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -152,6 +178,36 @@ class ScaleIdentificationFragment : Fragment() {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
+        }
+    }
+}
+
+@Composable
+fun ScaleIdentificationScreen(
+    image: Bitmap,
+    onPressingNext: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Image(
+            bitmap = image.asImageBitmap(),
+            modifier =
+            Modifier.zoomable(
+                state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+            ),
+            contentDescription = "The  leaf with background being removed",
+        )
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButton(
+                onClick = { onPressingNext() },
+            ) {
+                Text("Next", color = BUTTON_COLOR)
+            }
         }
     }
 }
