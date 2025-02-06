@@ -67,4 +67,3 @@ tasks.register("clean", Delete::class) {
 }
 
 tasks.register("testClasses") // https://stackoverflow.com/questions/36465824/android-studio-task-testclasses-not-found-in-project
-

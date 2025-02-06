@@ -28,7 +28,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
@@ -55,7 +53,6 @@ import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.createExampleImage
 import com.thebluefolderproject.leafbyte.utils.createHistogram
-import com.thebluefolderproject.leafbyte.utils.log
 import me.saket.telephoto.zoomable.DoubleClickToZoomListener
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
@@ -68,8 +65,6 @@ import org.opencv.core.MatOfInt
 import org.opencv.core.Point
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
-import java.net.URL
-import java.nio.file.Paths
 import java.util.Arrays
 import kotlin.math.roundToInt
 
@@ -428,12 +423,11 @@ const val DOUBLE_TAP_ZOOM = 4f
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun preview() {
-
     val bitmap = createExampleImage()
     LogiclessBackgroundRemovalScreen(
         thresholdedImage = remember { derivedStateOf { bitmap } },
         histogram = createHistogram(),
-        thresoldVal = remember { mutableFloatStateOf (100f) }
+        thresoldVal = remember { mutableFloatStateOf(100f) },
     ) {}
 }
 
@@ -470,10 +464,10 @@ fun LogiclessBackgroundRemovalScreen(
         Image(
             bitmap = thresholdedImage.value.asImageBitmap(),
             modifier =
-            Modifier.zoomable(
-                state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
-                onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
-            ),
+                Modifier.zoomable(
+                    state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                    onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+                ),
             contentDescription = "The  leaf with background being removed",
         )
         Image(
