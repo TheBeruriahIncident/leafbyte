@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,17 +22,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -39,12 +44,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
+import com.thebluefolderproject.leafbyte.utils.createExampleImage
+import com.thebluefolderproject.leafbyte.utils.createHistogram
+import com.thebluefolderproject.leafbyte.utils.log
 import me.saket.telephoto.zoomable.DoubleClickToZoomListener
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
@@ -57,6 +68,8 @@ import org.opencv.core.MatOfInt
 import org.opencv.core.Point
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
+import java.net.URL
+import java.nio.file.Paths
 import java.util.Arrays
 import kotlin.math.roundToInt
 
@@ -411,6 +424,19 @@ fun otsu(bitmap: Bitmap): Double {
 private const val MAX_ZOOM = 50f
 private const val DOUBLE_TAP_ZOOM = 4f
 
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+fun preview() {
+
+    val bitmap = createExampleImage()
+    LogiclessBackgroundRemovalScreen(
+        thresholdedImage = remember { derivedStateOf { bitmap } },
+        histogram = createHistogram(),
+        thresoldVal = remember { mutableFloatStateOf (100f) }
+    ) {}
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BackgroundRemovalScreen(
@@ -424,20 +450,30 @@ fun BackgroundRemovalScreen(
     // rounding to re-threshold less often
     val roundedThreshold = remember { derivedStateOf { ((threshold.floatValue * 2).roundToInt()).toFloat() / 2 } }
 
+    // TODO should we also spin this off the main thresh
+    val thresholdedImage = remember { derivedStateOf { threshold(originalImage, roundedThreshold.value.toDouble()) } }
+
+    LogiclessBackgroundRemovalScreen(thresholdedImage, histogram, threshold, onPressingNext)
+}
+
+// Pulled out since compose preview can't handle linked libraries, like opencv
+@Composable
+fun LogiclessBackgroundRemovalScreen(
+    thresholdedImage: State<Bitmap>,
+    histogram: Bitmap,
+    thresoldVal: MutableFloatState,
+    onPressingNext: (Bitmap) -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        com.thebluefolderproject.leafbyte.utils.log("thresholding ${roundedThreshold.value}")
-        // TODO should we also spin this off the main thresh
-        val thresholdedImage = threshold(originalImage, roundedThreshold.value.toDouble())
-
         Image(
-            bitmap = thresholdedImage.asImageBitmap(),
+            bitmap = thresholdedImage.value.asImageBitmap(),
             modifier =
-                Modifier.zoomable(
-                    state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
-                    onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
-                ),
+            Modifier.zoomable(
+                state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+            ),
             contentDescription = "The  leaf with background being removed",
         )
         Image(
@@ -447,10 +483,10 @@ fun BackgroundRemovalScreen(
             contentDescription = "A histogram representing intensity values in the image",
         )
         Slider(
-            value = threshold.floatValue,
+            value = thresoldVal.floatValue,
             modifier = Modifier.fillMaxWidth(),
             // TODO maybe limit frequency somehow
-            onValueChange = { threshold.floatValue = it.toFloat() },
+            onValueChange = { thresoldVal.floatValue = it.toFloat() },
             valueRange = 0f..255f,
         )
         Row(
@@ -458,7 +494,7 @@ fun BackgroundRemovalScreen(
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButton(
-                onClick = { onPressingNext(thresholdedImage) },
+                onClick = { onPressingNext(thresholdedImage.value) },
             ) {
                 Text("Next", color = BUTTON_COLOR)
             }

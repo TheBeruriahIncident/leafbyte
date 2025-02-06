@@ -70,7 +70,6 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.log
-import com.thebluefolderproject.leafbyte.utils.value
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
