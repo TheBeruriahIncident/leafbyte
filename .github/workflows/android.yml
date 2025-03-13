@@ -59,7 +59,7 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: unitTestResults
@@ -117,7 +117,7 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: instrumentedTestResults
