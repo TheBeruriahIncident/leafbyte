@@ -32,7 +32,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
       - name: Get changed Android files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: android/**
       - name: Note if Android files not changed
@@ -85,7 +85,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
       - name: Get changed Android files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: android/**
       - name: Note if Android files not changed
@@ -143,7 +143,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
       - name: Get changed Android files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: android/**
       - name: Note if Android files not changed
@@ -177,7 +177,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
       - name: Get changed Android files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: android/**
       - name: Note if Android files not changed
