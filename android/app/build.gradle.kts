@@ -13,7 +13,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.10"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.20"
     id("com.google.protobuf")
     id("jacoco")
 }
