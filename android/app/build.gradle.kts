@@ -285,7 +285,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
     // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     debugImplementation("androidx.compose.ui:ui-tooling")
     // debugImplementation("androidx.compose.ui:ui-test-manifest") // For testing coroutines (optional)
     // testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
