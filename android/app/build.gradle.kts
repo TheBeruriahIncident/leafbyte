@@ -273,7 +273,7 @@ dependencies {
 
     implementation("androidx.datastore:datastore-core:1.1.2")
     implementation("com.google.protobuf:protobuf-javalite:4.30.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
     // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.7")
