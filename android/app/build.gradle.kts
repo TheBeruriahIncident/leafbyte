@@ -258,7 +258,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestRuntimeOnly("io.mockk:mockk-android:1.14.0")
+    androidTestRuntimeOnly("io.mockk:mockk-android:1.14.2")
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     implementation("me.saket.telephoto:zoomable:0.15.1")
