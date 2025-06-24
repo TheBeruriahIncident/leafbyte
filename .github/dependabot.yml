@@ -9,6 +9,13 @@ updates:
       interval: "daily"
       time: "04:00"
       timezone: "EST"
+    groups:
+      junit:
+        patterns:
+          - "*junit*"
+      mockk:
+        patterns:
+          - "*mockk*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
