@@ -226,8 +226,8 @@ dependencies {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.7")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.7")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.8.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.8.3")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -248,11 +248,11 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:1.7.7")
     implementation("androidx.compose.foundation:foundation:1.7.7")
     implementation("androidx.compose.runtime:runtime:1.7.7")
-    implementation("androidx.compose.ui:ui-text:1.7.7")
-    implementation("androidx.compose.ui:ui-unit:1.7.7")
+    implementation("androidx.compose.ui:ui-text:1.8.3")
+    implementation("androidx.compose.ui:ui-unit:1.8.3")
 
-    androidTestImplementation("androidx.compose.ui:ui-geometry:1.7.7")
-    androidTestImplementation("androidx.compose.ui:ui-test:1.7.7")
+    androidTestImplementation("androidx.compose.ui:ui-geometry:1.8.3")
+    androidTestImplementation("androidx.compose.ui:ui-test:1.8.3")
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.lifecycle:lifecycle-common:2.9.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.1")
