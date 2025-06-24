@@ -2,9 +2,22 @@
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
+# HACKHACK: This should be automatically determined from the gradle files, but Dependabot was not checking Google's Maven.
+#   It appears that this used to be a known bug: https://github.com/dependabot/dependabot-core/issues/6888
+#   It's not clear why fixing that didn't fix the behavior for us.
+registries:
+  google:
+    type: maven-repository
+    url: "https://dl.google.com/dl/android/maven2/"
+  maven-central:
+    type: maven-repository
+    url: "https://repo.maven.apache.org/maven2/"
 updates:
   - package-ecosystem: "gradle"
     directory: "/android/app"
+    registries:
+      - google
+      - maven-central
     schedule:
       interval: "daily"
       time: "04:00"
