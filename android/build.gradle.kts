@@ -8,7 +8,6 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.11.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10") // pull this back out
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.11.3.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
         classpath("com.autonomousapps:dependency-analysis-gradle-plugin:2.8.0")
@@ -31,8 +30,8 @@ plugins {
     id("com.autonomousapps.dependency-analysis").version("2.0.2")
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
     id("io.gitlab.arturbosch.detekt").version("1.23.7")
-    id("org.jetbrains.kotlin.android") version "2.1.10" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.10" apply false
+    alias(libs.plugins.kotlin.gradle) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     id("com.google.protobuf") version "0.9.4" apply false
     id("jacoco")
 }
