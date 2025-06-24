@@ -12,10 +12,15 @@ updates:
     groups:
       junit:
         patterns:
-          - "*junit*"
+          - "org.junit.jupiter:*"
+          - "de.mannodermaus.junit5:*"
+      kotlin:
+        patterns:
+          - "org.jetbrains.kotlin.plugin.compose"
+          - "org.jetbrains.kotlin:*"
       mockk:
         patterns:
-          - "*mockk*"
+          - "io.mockk:mockk*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
