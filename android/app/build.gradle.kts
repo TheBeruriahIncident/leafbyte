@@ -242,8 +242,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.06.01"))
     // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("io.mockk:mockk-dsl:1.14.2")
-    androidTestImplementation("io.mockk:mockk:1.14.2")
+    androidTestImplementation("io.mockk:mockk-dsl:1.14.4")
+    androidTestImplementation("io.mockk:mockk:1.14.4")
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("androidx.compose.foundation:foundation-layout:1.8.3")
     implementation("androidx.compose.foundation:foundation:1.8.3")
@@ -258,7 +258,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.1")
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestRuntimeOnly("io.mockk:mockk-android:1.14.2")
+    androidTestRuntimeOnly("io.mockk:mockk-android:1.14.4")
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     implementation("me.saket.telephoto:zoomable:0.16.0")
