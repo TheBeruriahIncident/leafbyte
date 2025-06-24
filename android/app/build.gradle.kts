@@ -278,7 +278,7 @@ dependencies {
     // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
     // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.7")
 
-    implementation("androidx.compose.animation:animation-core:1.7.7")
+    implementation("androidx.compose.animation:animation-core:1.8.3")
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.21")
     androidTestImplementation("org.jetbrains.kotlin:kotlin-test:2.1.21")
 
