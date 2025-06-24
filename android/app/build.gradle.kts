@@ -205,7 +205,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.6")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
     implementation("androidx.datastore:datastore:1.1.2")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation("androidx.navigation:navigation-common:2.8.6")
