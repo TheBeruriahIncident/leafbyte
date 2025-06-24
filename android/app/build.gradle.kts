@@ -206,7 +206,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.6")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
-    implementation("androidx.datastore:datastore:1.1.2")
+    implementation("androidx.datastore:datastore:1.1.7")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation("androidx.navigation:navigation-common:2.8.6")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.6")
@@ -271,7 +271,7 @@ dependencies {
 
     androidTestImplementation("androidx.test:core:1.6.1")
 
-    implementation("androidx.datastore:datastore-core:1.1.2")
+    implementation("androidx.datastore:datastore-core:1.1.7")
     implementation("com.google.protobuf:protobuf-javalite:4.31.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
