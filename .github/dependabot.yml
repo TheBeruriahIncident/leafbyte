@@ -35,6 +35,9 @@ updates:
       mockk:
         patterns:
           - "io.mockk:mockk*"
+      navigation:
+        patterns:
+          - "androidx.navigation:*"
   - package-ecosystem: "github-actions"
     directory: "/"
     open-pull-requests-limit: 30
