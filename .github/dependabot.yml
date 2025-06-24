@@ -28,10 +28,6 @@ updates:
         patterns:
           - "org.junit.jupiter:*"
           - "de.mannodermaus.junit5:*"
-      kotlin:
-        patterns:
-          - "org.jetbrains.kotlin.plugin.compose"
-          - "org.jetbrains.kotlin:*"
       mockk:
         patterns:
           - "io.mockk:mockk*"
