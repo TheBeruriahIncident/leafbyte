@@ -207,7 +207,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.6")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
     implementation("androidx.datastore:datastore:1.1.7")
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.fragment:fragment-ktx:1.8.8")
     implementation("androidx.navigation:navigation-common:2.8.6")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.6")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
