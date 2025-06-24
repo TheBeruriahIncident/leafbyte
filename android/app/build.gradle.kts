@@ -247,7 +247,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("androidx.compose.foundation:foundation-layout:1.8.3")
     implementation("androidx.compose.foundation:foundation:1.8.3")
-    implementation("androidx.compose.runtime:runtime:1.7.7")
+    implementation("androidx.compose.runtime:runtime:1.8.3")
     implementation("androidx.compose.ui:ui-text:1.8.3")
     implementation("androidx.compose.ui:ui-unit:1.8.3")
 
