@@ -18,7 +18,7 @@ You can follow [Google's guide](https://developer.android.com/studio/publish/app
 To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
 
 Some useful commands:
-- `./gradlew useLatestVersions` to update dependencies
+- `./gradlew useLatestVersions versionCatalogUpdate` to update dependencies
 - `./gradlew dependencies :app:dependencies --write-locks ` updates the lock file after changing dependencies.
 - `./gradlew buildHealth` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
@@ -26,7 +26,7 @@ Some useful commands:
     classpath-aware and thus can't run some checks)
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks
-- `./gradlew useLatestVersions ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest` to quickly apply automated fixes and
+- `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest` to quickly apply automated fixes and
    do fast checking (does not run any tests)
 - `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
     caught something that normal lint didn't)
