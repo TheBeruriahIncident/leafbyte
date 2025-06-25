@@ -52,7 +52,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-version" }
 play-auth = { group = "com.google.android.gms", name = "play-services-auth", version = "21.3.0" }
 preference = { group = "androidx.preference", name = "preference-ktx", version = "1.2.1" }
-protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version = "4.31.1" }
+protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version = "4.31.0" }
 telephoto-zoomable = { group = "me.saket.telephoto", name = "zoomable", version = "0.16.0" }
 
 [plugins]
