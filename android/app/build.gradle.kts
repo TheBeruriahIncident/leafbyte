@@ -262,7 +262,7 @@ dependencies {
     implementation(libs.lifecycle.runtimeCompose)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestRuntimeOnly(libs.mockk)
+    androidTestRuntimeOnly(libs.mockk.android)
 
     androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     implementation(libs.telephoto.zoomable)

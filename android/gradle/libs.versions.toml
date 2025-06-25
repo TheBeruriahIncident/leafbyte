@@ -31,8 +31,8 @@ compose-uiUnit = { group = "androidx.compose.ui", name = "ui-unit" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.2.1" }
 constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.1" }
 core = { group = "androidx.core", name = "core-ktx", version = "1.16.0" }
-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "coroutines-version" }
-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "coroutines-version" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines-version" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-version" }
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore-version" }
 datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastore-version" }
 fragment = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.8" }
@@ -40,13 +40,13 @@ junit5-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version 
 junit5-test = { group = "de.mannodermaus.junit5", name = "android-test-core", version = "1.6.0" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin-version" }
-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version = "lifecycle-version" }
+lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycle-version" }
 lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version = "2.2.0" } # DEPRECATED? REMOVE!
-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version = "lifecycle-version" }
-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version = "lifecycle-version" }
-mockk = { group = "io.mockk", name = "mockk", version = "mockk-version" }
-mockk-android = { group = "io.mockk", name = "mockk-android", version = "mockk-version" }
-mockk-dsl = { group = "io.mockk", name = "mockk-dsl", version = "mockk-version" }
+lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-version" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-version" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk-version" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk-version" }
+mockk-dsl = { group = "io.mockk", name = "mockk-dsl", version.ref = "mockk-version" }
 navigation-common = { group = "androidx.navigation", name = "navigation-common", version.ref = "navigation-version" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-version" }
 navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-version" }
@@ -56,5 +56,6 @@ protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite",
 telephoto-zoomable = { group = "me.saket.telephoto", name = "zoomable", version = "0.16.0" }
 
 [plugins]
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "2.8.0" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
