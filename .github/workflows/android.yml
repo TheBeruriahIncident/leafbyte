@@ -1,7 +1,7 @@
 name: Android
 
 # It's tempting to add a path filter here so that this only runs on changes to the android folder. However, that only looks at the most
-# recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching android.
+# recent commit, so tests are incorrectly bypassed if several commits editing android are pushed with the latest one not touching android.
 # Instead, we use a filter step below.
 on:
   push:
