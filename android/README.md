@@ -19,6 +19,7 @@ To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
 
 Some useful commands:
 - `./gradlew useLatestVersions` to update dependencies
+- `./gradlew dependencies :app:dependencies --write-locks ` updates the lock file after changing dependencies.
 - `./gradlew buildHealth` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
 - `./gradlew detektMain detektTest detektDebugAndroidTest` to check for detekt issues (running just `./gradlew detekt` is not 
