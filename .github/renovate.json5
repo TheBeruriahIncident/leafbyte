@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "abandonmentThreshold": "2 years",
+  "addLabels": ["Renovate Bot"],
+  "assignees": [
+    "TheBeruriahIncident",
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "dependencyDashboardReportAbandonment": true,
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+  ],
+  "reviewers": [
+    "TheBeruriahIncident",
+  ],
+}
