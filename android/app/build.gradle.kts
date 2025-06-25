@@ -269,7 +269,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // androidTestImplementation("androidx.test:runner:1.6.2")
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
-    //androidTestRuntimeOnly(libs.junit5.test)
+    // androidTestRuntimeOnly(libs.junit5.test)
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.8.0") // TODO: why does using libs.junit5.test resolve differently
     androidTestImplementation("com.android.support.test:rules:1.0.2")
     androidTestImplementation(libs.junit5.api)
