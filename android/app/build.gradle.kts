@@ -22,12 +22,12 @@ junitPlatform.jacocoOptions
 // junitPlatform.enableStandardTestTask true
 
 jacoco {
-    toolVersion = "0.8.13"
+    toolVersion = "0.8.13" // N.B. Android Gradle Plugin overrides our version, unclear if that's a bug on them
 //    applyTo(Task)
 //    applyTo(junitPlatformTest)
 }
 jacoco.apply {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.13"
     reportsDirectory = file("${layout.buildDirectory}/reports")
 }
 
@@ -119,7 +119,7 @@ android {
 
 //        java {
 //           testCoverage {
-//               jacocoVersion = "0.8.12"
+//               jacocoVersion = "0.8.13"
 //
 //           }
 //        }
