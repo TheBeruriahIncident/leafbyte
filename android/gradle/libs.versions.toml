@@ -2,7 +2,7 @@
 activity-version = "1.10.1"
 coroutines-version = "1.10.2"
 datastore-version = "1.1.7"
-kotlin-version = "2.1.21"
+kotlin-version = "2.2.0"
 lifecycle-version = "2.9.1"
 mockk-version = "1.14.2"
 navigation-version = "2.8.6"
