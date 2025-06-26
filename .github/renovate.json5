@@ -13,9 +13,15 @@
     "config:recommended"
   ],
   "packageRules": [
+    // {
+    //   "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+    //   "automerge": true
+    // },
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      # iOS AppAuth 2.0.0 requires iOS 12, which we are not ready to require
+      "matchManagers": ["swift", "cocoapods"],
+      "matchPackageNames": ["AppAuth"],
+      "allowedVersions": "<2.0.0"
     },
   ],
   "reviewers": [
