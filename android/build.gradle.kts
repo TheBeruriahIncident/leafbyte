@@ -38,7 +38,7 @@ plugins {
     id("nl.littlerobots.version-catalog-update").version("1.0.0")
     alias(libs.plugins.dependencyAnalysis)
     id("org.jlleitschuh.gradle.ktlint").version("12.1.1")
-    id("io.gitlab.arturbosch.detekt").version("1.23.7")
+    id("io.gitlab.arturbosch.detekt").version("1.23.8")
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
     id("com.google.protobuf") version "0.9.5" apply false
