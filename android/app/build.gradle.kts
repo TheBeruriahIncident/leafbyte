@@ -150,7 +150,9 @@ android {
     namespace = "com.thebluefolderproject.leafbyte"
 
     kotlin {
-        jvmToolchain(17)
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 
     tasks.withType<JacocoReport> {
