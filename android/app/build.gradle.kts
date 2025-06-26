@@ -22,7 +22,7 @@ junitPlatform.jacocoOptions
 // junitPlatform.enableStandardTestTask true
 
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.13"
 //    applyTo(Task)
 //    applyTo(junitPlatformTest)
 }
