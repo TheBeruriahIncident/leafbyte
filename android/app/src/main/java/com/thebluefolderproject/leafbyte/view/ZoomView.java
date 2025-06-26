@@ -201,7 +201,7 @@ public class ZoomView extends FrameLayout {
 
     @Override
     protected void dispatchDraw(final Canvas canvas) {
-        ConstantsKt.log("x "+ currentXOffset + " y "+ currentYOffset);
+        //ConstantsKt.log("x "+ currentXOffset + " y "+ currentYOffset);
         // do zoom
         currentZoom = lerp(bias(currentZoom, targetZoom, 0.05f), targetZoom, 0.2f);
         targetXOffset = clamp(0.5f * getWidth() / targetZoom, targetXOffset, getWidth() - 0.5f * getWidth() / targetZoom);
