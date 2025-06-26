@@ -32,7 +32,7 @@ Some useful commands:
     caught something that normal lint didn't)
 
 Regarding Renovate Bot:
-- See the dashboard as a GitHub issue at https://github.com/TheBeruriahIncident/leafbyte/issues/186
+- See the dashboard as a GitHub issue at https://github.com/TheBeruriahIncident/leafbyte/issues/195
 - See the dashboard on Mend's website, including Renovate logs, at https://developer.mend.io/github/TheBeruriahIncident/leafbyte
 - We switched from Dependabot to Renovate Bot because Dependabot became unusable
   (It incorrectly accumulated dependencies in its persistent list of dependencies to ignore with no way to clear the list.
