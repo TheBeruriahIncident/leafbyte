@@ -5,7 +5,7 @@ datastore-version = "1.1.7"
 kotlin-version = "2.2.0"
 lifecycle-version = "2.9.1"
 mockk-version = "1.14.2"
-navigation-version = "2.8.6"
+navigation-version = "2.9.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-version" }
@@ -49,7 +49,7 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-versio
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "navigation-version" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-version" }
-navigation-runtime = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigation-version" }
+navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation-version" }
 play-auth = "com.google.android.gms:play-services-auth:21.3.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.31.1"
