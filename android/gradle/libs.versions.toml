@@ -56,7 +56,7 @@ protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.31.1"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.16.0"
 
 [plugins]
-dependencyAnalysis = "com.autonomousapps.dependency-analysis:2.8.0"
+dependencyAnalysis = "com.autonomousapps.dependency-analysis:2.19.0"
 # javaResolver = "org.gradle.toolchains.foojay-resolver-convention:1.0.0"
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
