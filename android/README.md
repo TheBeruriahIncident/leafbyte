@@ -31,6 +31,13 @@ Some useful commands:
 - `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
     caught something that normal lint didn't)
 
+Regarding Renovate Bot:
+- See the dashboard as a GitHub issue at https://github.com/TheBeruriahIncident/leafbyte/issues/186
+- See the dashboard on Mend's website, including Renovate logs, at https://developer.mend.io/github/TheBeruriahIncident/leafbyte
+- We switched from Dependabot to Renovate Bot because Dependabot became unusable
+  (It incorrectly accumulated dependencies in its persistent list of dependencies to ignore with no way to clear the list.
+   There are various open tickets about this, e.g. https://github.com/dependabot/dependabot-core/issues/9920)
+
 Regarding code coverage reports:
 - To check coverage from unit tests, run `./gradlew jacocoTestReport` and find the report at `- app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec`
 - To check coverage from instrumented tests, run `./gradlew connectedCheck` and find the report at `- app/build/reports/coverage/androidTest/debug/connected/report.xml`
