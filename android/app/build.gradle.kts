@@ -150,7 +150,7 @@ android {
     namespace = "com.thebluefolderproject.leafbyte"
 
     kotlin {
-        toolchain {
+        jvmToolchain {
             languageVersion = JavaLanguageVersion.of(17)
         }
     }
