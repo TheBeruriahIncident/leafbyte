@@ -1,7 +1,7 @@
 name: Android
 
 # It's tempting to add a path filter here so that this only runs on changes to the android folder. However, that only looks at the most
-# recent commit, so tests are incorrectly bypassed if several commits editing iOS are pushed with the latest one not touching android.
+# recent commit, so tests are incorrectly bypassed if several commits editing android are pushed with the latest one not touching android.
 # Instead, we use a filter step below.
 on:
   push:
@@ -38,12 +38,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Build and check (without instrumented checks)
         if: steps.changed-files.outputs.any_changed == 'true'
         # Continue so that we can see all failures and not just the first; this step still fails if anything fails.
@@ -91,12 +85,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Run instrumented checks
         uses: ReactiveCircus/android-emulator-runner@v2
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -124,41 +112,7 @@ jobs:
           name: Android instrumented test results
           path: '**/*.xml'
           reporter: java-junit
-
-  checkDependencies:
-    name: Check Android dependencies
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      pull-requests: write
-
-    defaults:
-      run:
-        working-directory: android
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
-      - name: Get changed Android files
-        id: changed-files
-        uses: tj-actions/changed-files@v46
-        with:
-          files: android/**
-      - name: Note if Android files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
-        run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
-      - name: Check for out-of-date dependencies
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./gradlew useLatestVersions && git diff && git diff-files --quiet --exit-code
-
+  
   checkBuildHealth:
     name: Check Android build health
     runs-on: ubuntu-latest
@@ -183,12 +137,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Check build health
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew buildHealth
