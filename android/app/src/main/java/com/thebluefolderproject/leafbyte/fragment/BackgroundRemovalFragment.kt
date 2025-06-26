@@ -421,6 +421,7 @@ const val DOUBLE_TAP_ZOOM = 4f
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, device = Devices.PIXEL)
+@Suppress("detekt:style:MagicNumber")
 @Composable
 fun preview() {
     val bitmap = createExampleImage()

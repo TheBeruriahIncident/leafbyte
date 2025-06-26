@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:max-line-length", "detekt:style:MagicNumber", "detekt:style:MaxLineLength")
+
 package com.thebluefolderproject.leafbyte.utils
 
 import android.graphics.Bitmap
@@ -118,6 +120,7 @@ fun IconButton(
     }
 }
 
+@Suppress("detekt:exceptions:TooGenericExceptionCaught")
 fun logImageString2() {
     Thread({
         log("loading")
@@ -148,6 +151,7 @@ fun logImageString2() {
     }).start()
 }
 
+@Suppress("detekt:exceptions:TooGenericExceptionCaught")
 @OptIn(ExperimentalEncodingApi::class)
 fun logImageString() {
     Thread({
@@ -155,7 +159,11 @@ fun logImageString() {
 
         val bitmap: Bitmap
         try {
-            bitmap = BitmapFactory.decodeStream(URL("https://zoegp.science/images/Example%20leaf%20lower%20res.png").openConnection().getInputStream())
+            bitmap =
+                BitmapFactory.decodeStream(
+                    URL("https://zoegp.science/images/Example%20leaf%20lower%20res.png").openConnection()
+                        .getInputStream(),
+                )
         } catch (e: Exception) {
             log("Exception: ${e.stackTraceToString()}")
             return@Thread
