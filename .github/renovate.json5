@@ -9,6 +9,7 @@
   "dependencyDashboardAutoclose": true,
   "dependencyDashboardOSVVulnerabilitySummary": "all",
   "dependencyDashboardReportAbandonment": true,
+  "dependencyDashboardTitle": "[Renovate Bot] Dependency Dashboard",
   "extends": [
     "config:recommended"
   ],
