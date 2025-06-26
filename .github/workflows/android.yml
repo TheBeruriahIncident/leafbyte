@@ -38,12 +38,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Build and check (without instrumented checks)
         if: steps.changed-files.outputs.any_changed == 'true'
         # Continue so that we can see all failures and not just the first; this step still fails if anything fails.
@@ -91,12 +85,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Run instrumented checks
         uses: ReactiveCircus/android-emulator-runner@v2
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -149,12 +137,6 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: steps.changed-files.outputs.any_changed == 'true'
-        with:
-          java-version: 17
-          distribution: "temurin"
       - name: Check build health
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./gradlew buildHealth
