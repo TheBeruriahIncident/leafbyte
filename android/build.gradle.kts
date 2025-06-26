@@ -41,7 +41,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt").version("1.23.7")
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
-    id("com.google.protobuf") version "0.9.4" apply false
+    id("com.google.protobuf") version "0.9.5" apply false
     id("jacoco")
 }
 
