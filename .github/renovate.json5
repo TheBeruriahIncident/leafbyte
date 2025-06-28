@@ -22,7 +22,8 @@
       // iOS AppAuth 2.0.0 requires iOS 12, which we are not ready to require
       "matchManagers": ["swift", "cocoapods"],
       "matchPackageNames": ["AppAuth"],
-      "allowedVersions": "(1.0.0,2.0.0)" // anything up to 2.0.0
+      "allowedVersions": "< 2.0.0",
+      "rangeStrategy": "bump",
     },
   ],
   "reviewers": [
