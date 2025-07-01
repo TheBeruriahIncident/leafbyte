@@ -2,10 +2,10 @@
 activity-version = "1.11.0"
 coroutines-version = "1.10.2"
 datastore-version = "1.1.7"
+deprecated-navigation-version = "2.9.6"
 kotlin-version = "2.2.21"
 lifecycle-version = "2.9.4"
 mockk-version = "1.14.6"
-navigation-version = "2.9.6"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-version" }
@@ -36,6 +36,9 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-version" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-version" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore-version" }
+deprecated-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "deprecated-navigation-version" }
+deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
+deprecated-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "deprecated-navigation-version" }
 fragment = "androidx.fragment:fragment-ktx:1.8.9"
 junit5-api = "org.junit.jupiter:junit-jupiter-api:5.14.1"
 junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"
@@ -48,9 +51,6 @@ lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", v
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "navigation-version" }
-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-version" }
-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation-version" }
 play-auth = "com.google.android.gms:play-services-auth:21.4.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.1"
