@@ -50,7 +50,7 @@ mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "navigation-version" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-version" }
 navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation-version" }
-play-auth = "com.google.android.gms:play-services-auth:21.3.0"
+play-auth = "com.google.android.gms:play-services-auth:21.4.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.31.1"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.16.0"
