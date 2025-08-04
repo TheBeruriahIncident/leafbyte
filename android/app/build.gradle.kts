@@ -274,7 +274,7 @@ dependencies {
     androidTestImplementation("com.android.support.test:rules:1.0.2")
     androidTestImplementation(libs.junit5.api)
 
-    androidTestImplementation("androidx.test:core:1.6.1")
+    androidTestImplementation("androidx.test:core:1.7.0")
 
     implementation(libs.datastore.core)
     implementation(libs.protobuf.javalite)
