@@ -231,7 +231,7 @@ dependencies {
 //    }
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.0")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.8.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.0")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
