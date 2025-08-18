@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.12.0")
+        classpath("com.android.tools.build:gradle:8.12.1")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.13.1.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
         classpath("nl.littlerobots.vcu:plugin:1.0.0")
