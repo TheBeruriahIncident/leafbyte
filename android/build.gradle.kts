@@ -37,7 +37,7 @@ plugins {
     ) // Adds useLatestVersions command to update dependencies // TODO: delete this and the two it builds on after moving to version catalog
     id("nl.littlerobots.version-catalog-update").version("1.0.0")
     alias(libs.plugins.dependencyAnalysis)
-    id("org.jlleitschuh.gradle.ktlint").version("12.3.0")
+    id("org.jlleitschuh.gradle.ktlint").version("13.1.0")
     id("io.gitlab.arturbosch.detekt").version("1.23.8")
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
