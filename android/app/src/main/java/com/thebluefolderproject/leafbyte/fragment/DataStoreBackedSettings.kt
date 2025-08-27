@@ -63,7 +63,10 @@ private const val DEFAULT_UNIT = "cm"
  * read, just in case we're reading a value that has never been written.
  */
 @Suppress("ktlint:standard:function-signature")
-class DataStoreBackedSettings(context: Context, private val clock: Clock = SystemClock()) : Settings {
+class DataStoreBackedSettings(
+    context: Context,
+    private val clock: Clock = SystemClock(),
+) : Settings {
     private val settingsStore = context.settingsStore
 
     private fun <T> fromSettings(from: SerializedSettings.() -> T): Flow<T> =
@@ -114,7 +117,8 @@ class DataStoreBackedSettings(context: Context, private val clock: Clock = Syste
         fromSettings {
             // Sort the dataset names by last use, excluding the current dataset
             val otherDatasetNames =
-                datasetNameToEpochTimeOfLastUseMap.toList()
+                datasetNameToEpochTimeOfLastUseMap
+                    .toList()
                     .sortedBy { nameToTime -> nameToTime.second }
                     .reversed()
                     .map { it.first }

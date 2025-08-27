@@ -33,9 +33,7 @@ fun assertFlowFalse(actual: Flow<Boolean>) {
 class TestClock : Clock {
     private var time = 1L
 
-    override fun getEpochTimeInSeconds(): Long {
-        return time
-    }
+    override fun getEpochTimeInSeconds(): Long = time
 
     fun waitASecond() {
         time++
@@ -46,9 +44,7 @@ fun ComposeContext.printScreen() {
     onAllNodes(isRoot()).printToLog(tag = LOG_TAG, maxDepth = 100)
 }
 
-fun ComposeContext.getScreenState(): String {
-    return onAllNodes(isRoot()).printToString(maxDepth = 100)
-}
+fun ComposeContext.getScreenState(): String = onAllNodes(isRoot()).printToString(maxDepth = 100)
 
 fun clearMockedMethodCallCounts(mock: Any) {
     clearMocks(
@@ -118,7 +114,10 @@ private fun gatherInterceptedLogs(): String {
 }
 
 // inspired by https://www.braze.com/resources/articles/logcat-junit-android-tests
-class ComposeTestFailureException(context: ComposeContext, cause: Throwable) : Exception(createMessage(context, cause)) {
+class ComposeTestFailureException(
+    context: ComposeContext,
+    cause: Throwable,
+) : Exception(createMessage(context, cause)) {
     init {
         // We replace the stacktrace to seamlessly swap this exception for the original and not add another wrapping layer of indirection
         this.stackTrace = cause.stackTrace
@@ -128,12 +127,11 @@ class ComposeTestFailureException(context: ComposeContext, cause: Throwable) : E
         private fun createMessage(
             context: ComposeContext,
             cause: Throwable,
-        ): String {
-            return "\nMessage: ${cause.message}" +
+        ): String =
+            "\nMessage: ${cause.message}" +
                 "\nOriginal class: ${cause.javaClass.name}\n\n" +
                 "================================ Logcat Output ================================\n${gatherInterceptedLogs()}\n" +
                 "================================ Current UI Nodes ================================\n${context.getScreenState()}\n\n" +
                 "================================ Stacktrace ================================"
-        }
     }
 }

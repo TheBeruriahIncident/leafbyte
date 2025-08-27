@@ -31,11 +31,12 @@ private const val GET_USER_ID_SCOPE = "openid"
 private const val WRITE_TO_GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
 private val ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT = mapOf(Pair("enable_granular_consent", "true"))
 
-class GoogleSignInContractInput(val serviceConfig: AuthorizationServiceConfiguration, val authService: AuthorizationService)
+class GoogleSignInContractInput(
+    val serviceConfig: AuthorizationServiceConfiguration,
+    val authService: AuthorizationService,
+)
 
-fun isGoogleSignInConfigured(): Boolean {
-    return !BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID.contains("FILL_THIS_IN")
-}
+fun isGoogleSignInConfigured(): Boolean = !BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID.contains("FILL_THIS_IN")
 
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
 class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, AuthorizationResponse?>() {
@@ -44,14 +45,14 @@ class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, A
         input: GoogleSignInContractInput,
     ): Intent {
         val authRequest: AuthorizationRequest =
-            AuthorizationRequest.Builder(
-                input.serviceConfig,
-                // This id is set in secrets.properties
-                BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID,
-                ResponseTypeValues.CODE,
-                LEAFBYTE_REDIRECT_URI,
-            )
-                .setScopes(GET_USER_ID_SCOPE, WRITE_TO_GOOGLE_DRIVE_SCOPE)
+            AuthorizationRequest
+                .Builder(
+                    input.serviceConfig,
+                    // This id is set in secrets.properties
+                    BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID,
+                    ResponseTypeValues.CODE,
+                    LEAFBYTE_REDIRECT_URI,
+                ).setScopes(GET_USER_ID_SCOPE, WRITE_TO_GOOGLE_DRIVE_SCOPE)
                 // we do actually require both scopes we request, but we enable granular consent to get ahead of Google enabling it for us
                 //   in the future
                 .setAdditionalParameters(ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT)
@@ -172,9 +173,7 @@ class GoogleSignInManagerImpl(
         }
     }
 
-    private fun alreadySignedIn(): Boolean {
-        return authState.isAuthorized
-    }
+    private fun alreadySignedIn(): Boolean = authState.isAuthorized
 
     override fun signOut() {
         // just forgetting our auth state is enough to effectively log the user out from LeafByte's perspective.
@@ -187,11 +186,10 @@ class GoogleSignInManagerImpl(
     override fun getLauncher(
         onSuccess: () -> Unit,
         onFailure: (GoogleSignInFailureType) -> Unit,
-    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> {
-        return rememberLauncherForActivityResult(GoogleSignInContract()) { authResponse ->
+    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> =
+        rememberLauncherForActivityResult(GoogleSignInContract()) { authResponse ->
             processAuthResponse(authResponse, onSuccess, onFailure)
         }
-    }
 
     @Suppress("detekt:style:ReturnCount")
     private fun processAuthResponse(
@@ -270,15 +268,13 @@ class GoogleSignInManagerImpl(
         return null
     }
 
-    private fun getDeferredServiceConfig(): Deferred<AuthorizationServiceConfiguration?> {
-        return coroutineScope.async { loadServiceConfig() }
-    }
+    private fun getDeferredServiceConfig(): Deferred<AuthorizationServiceConfiguration?> = coroutineScope.async { loadServiceConfig() }
 
     /**
      * This method will not throw; it will log and return null.
      */
-    private suspend fun loadServiceConfig(): AuthorizationServiceConfiguration? {
-        return suspendCoroutine<AuthorizationServiceConfiguration?> { continuation ->
+    private suspend fun loadServiceConfig(): AuthorizationServiceConfiguration? =
+        suspendCoroutine<AuthorizationServiceConfiguration?> { continuation ->
             log("Attempting to fetch Google auth config")
 
             AuthorizationServiceConfiguration.fetchFromIssuer(GOOGLE_OPENID_CONNECT_ISSUER_URI) { serviceConfiguration, exception ->
@@ -297,5 +293,4 @@ class GoogleSignInManagerImpl(
                 }
             }
         }
-    }
 }
