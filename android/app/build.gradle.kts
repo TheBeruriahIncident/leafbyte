@@ -102,7 +102,7 @@ android {
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         manifestPlaceholders += mapOf("appAuthRedirectScheme" to "com.thebluefolderproject.leafbyte")
         testInstrumentationRunnerArguments +=
@@ -112,7 +112,7 @@ android {
             )
         applicationId = "com.thebluefolderproject.leafbyte"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
