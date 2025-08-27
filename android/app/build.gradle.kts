@@ -97,10 +97,11 @@ android {
     compileSdk = 35
     defaultConfig {
         manifestPlaceholders += mapOf("appAuthRedirectScheme" to "com.thebluefolderproject.leafbyte")
-        testInstrumentationRunnerArguments += mapOf(
-            "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder",
-            "clearPackageData" to "true"
-        )
+        testInstrumentationRunnerArguments +=
+            mapOf(
+                "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder",
+                "clearPackageData" to "true",
+            )
         applicationId = "com.thebluefolderproject.leafbyte"
         minSdk = 21
         targetSdk = 35
