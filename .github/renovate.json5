@@ -22,8 +22,7 @@
     {
       "matchDepNames": ["/^com.android.tools.build:gradle/"],
       "draftPR": true,
-      "prHeader": "> [!CAUTION]\\n
-> ***Check the AGP upgrade assistant for any additional changes, and do not upgrade past what the upgrade assistant supports! Android Studio does not necessarily support the latest version yet.***",
+      "prHeader": "> [!CAUTION]\n> ***Check the AGP upgrade assistant for any additional changes, and do not upgrade past what the upgrade assistant supports! Android Studio does not necessarily support the latest version yet.***",
     },
     {
       // iOS AppAuth 2.0.0 requires iOS 12, which we are not ready to require
