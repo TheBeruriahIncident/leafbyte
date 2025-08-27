@@ -31,7 +31,7 @@ compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-uiUnit = { module = "androidx.compose.ui:ui-unit" }
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.2.1"
 constraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.1.1"
-core = "androidx.core:core-ktx:1.16.0"
+core = "androidx.core:core-ktx:1.17.0"
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-version" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-version" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-version" }
