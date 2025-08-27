@@ -72,13 +72,12 @@ class TutorialFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        return ComposeView(requireContext()).apply {
+    ): View? =
+        ComposeView(requireContext()).apply {
             setContent {
                 TutorialScreen({ listener!!.doneTutorial() })
             }
         }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

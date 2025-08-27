@@ -73,7 +73,9 @@ fun Text(
     )
 }
 
-enum class TextSize(internal val fontSize: TextUnit) {
+enum class TextSize(
+    internal val fontSize: TextUnit,
+) {
     MAIN_TITLE(45.sp),
     SCREEN_TITLE(20.sp),
     STANDARD(16.sp),
@@ -81,9 +83,7 @@ enum class TextSize(internal val fontSize: TextUnit) {
     FOOTNOTE(12.sp),
 }
 
-fun Modifier.description(description: String): Modifier {
-    return semantics { contentDescription = description }
-}
+fun Modifier.description(description: String): Modifier = semantics { contentDescription = description }
 
 /**
  * This is a fork of androidx.compose.material3.IconButton v1.3.1. Unfortunately there does not seem to be a way to use the vanilla
@@ -161,7 +161,8 @@ fun logImageString() {
         try {
             bitmap =
                 BitmapFactory.decodeStream(
-                    URL("https://zoegp.science/images/Example%20leaf%20lower%20res.png").openConnection()
+                    URL("https://zoegp.science/images/Example%20leaf%20lower%20res.png")
+                        .openConnection()
                         .getInputStream(),
                 )
         } catch (e: Exception) {
@@ -175,7 +176,9 @@ fun logImageString() {
         buffer.rewind()
         log("printing")
         log(bitmap.config ?: "")
-        Base64.encode(buffer.array()).chunked(3500)
+        Base64
+            .encode(buffer.array())
+            .chunked(3500)
             .forEach { log(it) }
 
         log("loaded")

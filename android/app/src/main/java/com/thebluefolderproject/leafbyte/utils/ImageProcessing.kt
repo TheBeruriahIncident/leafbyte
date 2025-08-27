@@ -8,16 +8,15 @@ data class Size(
     var standardPart: Int = 0,
     var drawingPart: Int = 0,
 ) {
-    fun total(): Int {
-        return standardPart + drawingPart
-    }
+    fun total(): Int = standardPart + drawingPart
 
-    operator fun plus(increment: Size): Size {
-        return Size(standardPart + increment.standardPart, drawingPart + increment.drawingPart)
-    }
+    operator fun plus(increment: Size): Size = Size(standardPart + increment.standardPart, drawingPart + increment.drawingPart)
 }
 
-data class Point(val x: Int, val y: Int)
+data class Point(
+    val x: Int,
+    val y: Int,
+)
 
 data class ConnectedComponentsInfo(
     val labelToMemberPoint: Map<Int, Point>,
@@ -187,7 +186,8 @@ fun labelConnectedComponents(
     val outsideOfImageClass = equivalenceClasses.getClassOf(BACKGROUND_LABEL)!!
     val outsideOfImageClassElement =
         equivalenceClasses.classToElements[outsideOfImageClass]!!
-            .filter { it != BACKGROUND_LABEL }.firstOrNull()
+            .filter { it != BACKGROUND_LABEL }
+            .firstOrNull()
     if (outsideOfImageClassElement != null) {
         labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement!!]!!
     } else {

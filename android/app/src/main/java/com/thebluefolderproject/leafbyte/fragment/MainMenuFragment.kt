@@ -96,17 +96,11 @@ class MainMenuFragment : Fragment() {
     fun MainMenuPreview() {
         val settings =
             object : SampleSettings() {
-                override fun getDataSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.GOOGLE_DRIVE)
-                }
+                override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.GOOGLE_DRIVE)
 
-                override fun getImageSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.LOCAL)
-                }
+                override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.LOCAL)
 
-                override fun getUseBarcode(): Flow<Boolean> {
-                    return flowOf(false)
-                }
+                override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
             }
         MainMenuScreen(settings)
     }
@@ -116,17 +110,11 @@ class MainMenuFragment : Fragment() {
     fun MainMenuWithBarcodesPreview() {
         val settings =
             object : SampleSettings() {
-                override fun getDataSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.LOCAL)
-                }
+                override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.LOCAL)
 
-                override fun getImageSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.NONE)
-                }
+                override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
 
-                override fun getUseBarcode(): Flow<Boolean> {
-                    return flowOf(true)
-                }
+                override fun getUseBarcode(): Flow<Boolean> = flowOf(true)
             }
         MainMenuScreen(settings)
     }
@@ -136,17 +124,11 @@ class MainMenuFragment : Fragment() {
     fun MainMenuWithoutSavingPreview() {
         val settings =
             object : SampleSettings() {
-                override fun getDataSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.NONE)
-                }
+                override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
 
-                override fun getImageSaveLocation(): Flow<SaveLocation> {
-                    return flowOf(SaveLocation.NONE)
-                }
+                override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
 
-                override fun getUseBarcode(): Flow<Boolean> {
-                    return flowOf(false)
-                }
+                override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
             }
         MainMenuScreen(settings)
     }
@@ -307,7 +289,8 @@ class MainMenuFragment : Fragment() {
         title: String,
         message: String,
     ) {
-        AlertDialog.Builder(requireActivity())
+        AlertDialog
+            .Builder(requireActivity())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
@@ -367,13 +350,12 @@ class MainMenuFragment : Fragment() {
 
     companion object {
         @Composable
-        private fun getSaveLocationsDescription(settings: Settings): AnnotatedString {
-            return getSaveLocationsDescription(
+        private fun getSaveLocationsDescription(settings: Settings): AnnotatedString =
+            getSaveLocationsDescription(
                 dataSaveLocation = settings.getDataSaveLocation().valueForCompose(),
                 imageSaveLocation = settings.getImageSaveLocation().valueForCompose(),
                 datasetName = settings.getDatasetName().valueForCompose(),
             )
-        }
 
         @VisibleForTesting(VisibleForTesting.PRIVATE)
         fun getSaveLocationsDescription(
@@ -427,13 +409,12 @@ class MainMenuFragment : Fragment() {
             append(". Go to Settings to change.")
         }
 
-        private fun saveLocationToDescription(saveLocation: SaveLocation): String {
-            return when (saveLocation) {
+        private fun saveLocationToDescription(saveLocation: SaveLocation): String =
+            when (saveLocation) {
                 SaveLocation.NONE -> "nowhere" // should be unreachable, but avoiding ever throwing
                 SaveLocation.LOCAL -> "My Files"
                 SaveLocation.GOOGLE_DRIVE -> "Google Drive"
             }
-        }
     }
 }
 
@@ -474,11 +455,10 @@ object MainMenuUtils {
         return data.data!!
     }
 
-    fun createCameraIntent(photoURI: Uri): Intent {
-        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+    fun createCameraIntent(photoURI: Uri): Intent =
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         }
-    }
 
     fun createImageUri(context: Context): Uri {
         val imageFile = createImageFile(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)

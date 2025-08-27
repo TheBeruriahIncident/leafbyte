@@ -69,11 +69,12 @@ class SaveLocationsDescriptionTests {
         expectedDescription: String,
     ) {
         val description =
-            MainMenuFragment.getSaveLocationsDescription(
-                dataSaveLocation = dataSaveLocation,
-                imageSaveLocation = imageSaveLocation,
-                datasetName = "Test dataset name",
-            ).text
+            MainMenuFragment
+                .getSaveLocationsDescription(
+                    dataSaveLocation = dataSaveLocation,
+                    imageSaveLocation = imageSaveLocation,
+                    datasetName = "Test dataset name",
+                ).text
         assertContains(description, expectedDescription)
     }
 }

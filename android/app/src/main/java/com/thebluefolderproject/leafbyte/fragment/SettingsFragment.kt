@@ -94,8 +94,8 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        return ComposeView(requireContext()).apply {
+    ): View =
+        ComposeView(requireContext()).apply {
             setContent {
                 val settings = remember { DataStoreBackedSettings(requireContext()) }
                 val coroutineScope = rememberCoroutineScope()
@@ -105,7 +105,6 @@ class SettingsFragment : Fragment() {
                 SettingsScreen(settings, googleSignInManager)
             }
         }
-    }
 }
 
 enum class AlertType {
@@ -119,8 +118,8 @@ enum class AlertType {
     ;
 
     companion object {
-        fun from(signInFailureType: GoogleSignInFailureType): AlertType {
-            return when (signInFailureType) {
+        fun from(signInFailureType: GoogleSignInFailureType): AlertType =
+            when (signInFailureType) {
                 GoogleSignInFailureType.UNCONFIGURED -> GOOGLE_SIGN_IN_UNCONFIGURED
                 GoogleSignInFailureType.NON_INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE
                 GoogleSignInFailureType.INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE
@@ -128,7 +127,6 @@ enum class AlertType {
                 GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE -> GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE
                 GoogleSignInFailureType.NEITHER_SCOPE -> GOOGLE_SIGN_IN_NEITHER_SCOPE
             }
-        }
     }
 }
 
@@ -214,7 +212,8 @@ fun SettingsScreen(
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
 
-    MaterialTheme { // need to figure where to put theming
+    MaterialTheme {
+        // need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
             currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
         }
@@ -341,8 +340,8 @@ private fun Alert(currentAlert: MutableState<AlertType?>) {
     }
 }
 
-fun getAlertTitle(alertType: AlertType?): String {
-    return when (alertType) {
+fun getAlertTitle(alertType: AlertType?): String =
+    when (alertType) {
         AlertType.BACK_WITHOUT_DATASET_NAME ->
             "Dataset name missing"
         AlertType.GOOGLE_SIGN_IN_UNCONFIGURED,
@@ -358,10 +357,9 @@ fun getAlertTitle(alertType: AlertType?): String {
         // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
         null -> ""
     }
-}
 
-fun getAlertMessage(alertType: AlertType?): String {
-    return when (alertType) {
+fun getAlertMessage(alertType: AlertType?): String =
+    when (alertType) {
         AlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
         AlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
             "Google sign-in is not configured. Please reach out to leafbyte@zoegp.science so we can fix this."
@@ -383,7 +381,6 @@ fun getAlertMessage(alertType: AlertType?): String {
         // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
         null -> ""
     }
-}
 
 @Composable
 private fun DatasetNameSetting(
@@ -475,7 +472,8 @@ private fun ScaleLengthSetting(
                         imeAction = ImeAction.Done,
                     ),
                 modifier =
-                    Modifier.constrainAs(lengthTextField) { centerTo(parent) }
+                    Modifier
+                        .constrainAs(lengthTextField) { centerTo(parent) }
                         .description("Scale length entry"),
                 onValueChange = {
                     // We strip out everything but numbers and decimals, so it's as if typing other characters doesn't do anything
@@ -497,8 +495,7 @@ private fun ScaleLengthSetting(
                         .constrainAs(unitButton) {
                             start.linkTo(lengthTextField.end)
                             baseline.linkTo(lengthTextField.baseline)
-                        }
-                        .width(IntrinsicSize.Min)
+                        }.width(IntrinsicSize.Min)
                         .height(IntrinsicSize.Max)
                         .description("Scale length unit selector"),
                 onClick = { dropdownIsExpanded = !dropdownIsExpanded },
@@ -594,7 +591,8 @@ fun SaveLocationSetting(
                     },
                     icon = {},
                     modifier =
-                        Modifier.fillMaxHeight()
+                        Modifier
+                            .fillMaxHeight()
                             .description("Set $fullSettingName to ${option.userFacingName}"),
                 ) {
                     Text(

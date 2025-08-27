@@ -375,9 +375,7 @@ class SettingsComposeTest {
         }
     }
 
-    private fun yPositionOf(node: SemanticsNodeInteraction): Float {
-        return node.fetchSemanticsNode().boundsInRoot.top
-    }
+    private fun yPositionOf(node: SemanticsNodeInteraction): Float = node.fetchSemanticsNode().boundsInRoot.top
 
     @Test
     fun testScaleLength() {
@@ -513,22 +511,26 @@ class SettingsComposeTest {
             onNodeWithContentDescription("Set Data Save Location to None")
                 .performScrollTo()
                 .performClick()
-            toggle.performScrollTo()
+            toggle
+                .performScrollTo()
                 .assert(isNotEnabled())
                 .performClick()
                 .assert(isOff())
             onNodeWithContentDescription("Set Data Save Location to My Files")
                 .performScrollTo()
                 .performClick()
-            toggle.performScrollTo()
+            toggle
+                .performScrollTo()
                 .assert(isEnabled())
 
             assertFlowEquals(false, settings.getUseBarcode())
-            toggle.performClick()
+            toggle
+                .performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getUseBarcode())
-            toggle.performClick()
+            toggle
+                .performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getUseBarcode())
         }
@@ -546,22 +548,26 @@ class SettingsComposeTest {
             onNodeWithContentDescription("Set Data Save Location to None")
                 .performScrollTo()
                 .performClick()
-            toggle.performScrollTo()
+            toggle
+                .performScrollTo()
                 .assert(isNotEnabled())
                 .performClick()
                 .assert(isOff())
             onNodeWithContentDescription("Set Data Save Location to My Files")
                 .performScrollTo()
                 .performClick()
-            toggle.performScrollTo()
+            toggle
+                .performScrollTo()
                 .assert(isEnabled())
 
             assertFlowEquals(false, settings.getSaveGpsData())
-            toggle.performClick()
+            toggle
+                .performClick()
                 .assert(isOn())
             onNodeWithContentDescription("Check mark").assertExists()
             assertFlowEquals(true, settings.getSaveGpsData())
-            toggle.performClick()
+            toggle
+                .performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getSaveGpsData())
         }
@@ -596,17 +602,21 @@ class SettingsComposeTest {
 
             val config = AuthorizationServiceConfiguration(Uri.parse("auth endpoint"), Uri.parse("token endpoint"))
             val authRequest =
-                AuthorizationRequest.Builder(config, "client id", "code", Uri.parse("redirect"))
+                AuthorizationRequest
+                    .Builder(config, "client id", "code", Uri.parse("redirect"))
                     .build()
             val authResponse =
-                AuthorizationResponse.Builder(authRequest)
+                AuthorizationResponse
+                    .Builder(authRequest)
                     .build()
             val tokenRequest =
-                TokenRequest.Builder(config, "client id")
+                TokenRequest
+                    .Builder(config, "client id")
                     .setGrantType("grant")
                     .build()
             val tokenResponse =
-                TokenResponse.Builder(tokenRequest)
+                TokenResponse
+                    .Builder(tokenRequest)
                     .setAccessToken("access")
                     .setIdToken("id")
                     .build()

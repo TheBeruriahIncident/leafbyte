@@ -206,15 +206,15 @@ class BackgroundRemovalFragment : Fragment() {
         helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
         helpButton.setIcon(R.drawable.galleryicon)
         helpButton.setOnMenuItemClickListener {
-            AlertDialog.Builder(requireActivity())
+            AlertDialog
+                .Builder(requireActivity())
                 .setMessage(
                     "First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different " +
                         "parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
                         "\n" +
                         "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're " +
                         "actually choosing what brightnesses count as background vs foreground)",
-                )
-                .show()
+                ).show()
             true
         }
 

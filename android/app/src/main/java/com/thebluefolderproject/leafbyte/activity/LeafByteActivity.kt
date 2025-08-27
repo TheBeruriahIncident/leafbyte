@@ -54,7 +54,11 @@ class LeafByteActivity :
             throw RuntimeException("Failed to initialize OpenCV")
         }
 
-        PreferenceManager.getDefaultSharedPreferences(baseContext).edit().clear().apply()
+        PreferenceManager
+            .getDefaultSharedPreferences(baseContext)
+            .edit()
+            .clear()
+            .apply()
 
         model = ViewModelProviders.of(this).get(WorkflowViewModel::class.java)
     }
@@ -80,10 +84,12 @@ class LeafByteActivity :
         findNavController(R.id.nav_host_fragment).navigate(
             R.id.backgroundRemovalFragment,
             null,
-            NavOptions.Builder().setPopUpTo(
-                R.id.mainMenuFragment,
-                false,
-            ).build(),
+            NavOptions
+                .Builder()
+                .setPopUpTo(
+                    R.id.mainMenuFragment,
+                    false,
+                ).build(),
         )
     }
 
@@ -93,12 +99,11 @@ class LeafByteActivity :
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
-    fun resourceToUri(resID: Int): Uri {
-        return Uri.parse(
+    fun resourceToUri(resID: Int): Uri =
+        Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                 getResources().getResourcePackageName(resID) + '/'.toString() +
                 getResources().getResourceTypeName(resID) + '/'.toString() +
                 getResources().getResourceEntryName(resID),
         )
-    }
 }

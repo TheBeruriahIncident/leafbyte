@@ -21,4 +21,8 @@ package javax.annotation
 @Retention(
     AnnotationRetention.RUNTIME,
 )
-annotation class Generated(vararg val value: String, val date: String = "", val comments: String = "")
+annotation class Generated(
+    vararg val value: String,
+    val date: String = "",
+    val comments: String = "",
+)

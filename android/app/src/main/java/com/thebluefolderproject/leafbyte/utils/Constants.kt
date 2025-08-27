@@ -84,8 +84,8 @@ private fun logCoreImplementation(
     Log.println(priority, LOG_TAG, log)
 }
 
-private fun priorityToDescription(priority: Int): String {
-    return when (priority) {
+private fun priorityToDescription(priority: Int): String =
+    when (priority) {
         Log.VERBOSE -> "VERBOSE"
         Log.DEBUG -> "DEBUG  "
         Log.INFO -> "INFO   "
@@ -94,7 +94,6 @@ private fun priorityToDescription(priority: Int): String {
         Log.ASSERT -> "ASSERT "
         else -> "UNKNOWN"
     }
-}
 
 fun <T> Flow<T>.load(): T {
     val flow = this
@@ -127,9 +126,7 @@ class SystemClock : Clock {
 // this is a provider so that the "const" here can't be changed
 val DEFAULT_AUTH_STATE = { AuthState() }
 
-fun <T> PreviewParameterProvider<T>.value(): T {
-    return values.first()
-}
+fun <T> PreviewParameterProvider<T>.value(): T = values.first()
 
 @Suppress("detekt:style:MagicNumber")
 val BUTTON_COLOR = Color(0xFF007AFF)
