@@ -96,19 +96,19 @@ android {
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
     compileSdk = 35
     defaultConfig {
-        manifestPlaceholders += mapOf()
-        testInstrumentationRunnerArguments += mapOf()
-        testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        manifestPlaceholders += mapOf("appAuthRedirectScheme" to "com.thebluefolderproject.leafbyte")
+        testInstrumentationRunnerArguments +=
+            mapOf(
+                "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder",
+                "clearPackageData" to "true",
+            )
         applicationId = "com.thebluefolderproject.leafbyte"
         minSdk = 21
         targetSdk = 35
         versionCode = 1
         versionName = "0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         multiDexEnabled = true
-
-        manifestPlaceholders["appAuthRedirectScheme"] = "com.thebluefolderproject.leafbyte"
 
         // buildConfigField("String", "GOOGLE_SIGN_IN_CLIENT_ID", secretProperties["googleSignInClientId"])
 
