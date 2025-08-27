@@ -16,7 +16,12 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      "matchDepNames": ["!/^com.android.tools.build:gradle/"],
+      "automerge": true,
+    },
+    {
+      "matchDepNames": ["/^com.android.tools.build:gradle/"],
+      "prHeader": "***Check AGP upgrade assistant for any additional changes!***",
     },
     {
       // iOS AppAuth 2.0.0 requires iOS 12, which we are not ready to require
