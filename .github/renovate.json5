@@ -21,6 +21,7 @@
     },
     {
       "matchDepNames": ["/^com.android.tools.build:gradle/"],
+      "draftPR": true,
       "prHeader": "***Check the AGP upgrade assistant for any additional changes, and do not upgrade past what the upgrade assistant supports! Android Studio does not necessarily support the latest version yet.***",
     },
     {
