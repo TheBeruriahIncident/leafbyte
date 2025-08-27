@@ -238,7 +238,7 @@ dependencies {
 //        exclude(group = "org.apache.httpcomponents")
 //    }
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.0")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.0")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
