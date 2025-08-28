@@ -26,7 +26,7 @@ Some useful commands:
     classpath-aware and thus can't run some checks)
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks
-- `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest` to quickly apply automated fixes and
+- `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest --write-locks` to quickly apply automated fixes and
    do fast checking (does not run any tests)
 - `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
     caught something that normal lint didn't)
