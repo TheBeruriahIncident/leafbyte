@@ -18,9 +18,9 @@ You can follow [Google's guide](https://developer.android.com/studio/publish/app
 To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
 
 Some useful commands:
-- `./gradlew useLatestVersions versionCatalogUpdate` to update dependencies
-- `./gradlew dependencies :app:dependencies --write-locks` updates the lock file after changing dependencies.
-- `./gradlew buildHealth` to check for dependency issues
+- `./gradlew useLatestVersions versionCatalogUpdate --write-locks` to update dependencies and lock files
+- `./gradlew dependencies :app:dependencies --write-locks` updates the lock file after changing dependencies
+- `./gradlew buildHealth --write-locks` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
 - `./gradlew detektMain detektTest detektDebugAndroidTest` to check for detekt issues (running just `./gradlew detekt` is not 
     classpath-aware and thus can't run some checks)
@@ -28,7 +28,7 @@ Some useful commands:
 - `./gradlew connectedCheck` runs all instrumented checks
 - `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest --write-locks` to quickly apply automated fixes and
    do fast checking (does not run any tests)
-- `./gradlew check connectedCheck lintVitalRelease` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
+- `./gradlew check connectedCheck lintVitalRelease --write-locks` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
     caught something that normal lint didn't)
 
 Regarding Renovate Bot:

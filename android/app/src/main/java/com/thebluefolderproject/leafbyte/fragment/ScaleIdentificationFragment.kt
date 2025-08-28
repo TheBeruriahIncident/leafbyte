@@ -193,7 +193,7 @@ fun ScaleIdentificationScreen(
                     state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
                     onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
                 ),
-            contentDescription = "The  leaf with background being removed",
+            contentDescription = "The leaf with background being removed",
         )
         Row(
             horizontalArrangement = Arrangement.End,

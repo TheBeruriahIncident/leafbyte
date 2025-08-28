@@ -13,14 +13,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
+import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.LayeredIndexableImage
 import com.thebluefolderproject.leafbyte.utils.Point
+import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.labelConnectedComponents
 import com.thebluefolderproject.leafbyte.utils.log
+import me.saket.telephoto.zoomable.DoubleClickToZoomListener
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.zoomable
 import org.opencv.android.Utils
 import org.opencv.core.CvType
 import org.opencv.core.Mat
@@ -89,7 +106,11 @@ class ResultsFragment : Fragment() {
                 .maxByOrNull { it.total() }
         log("Number of pixels: " + pixels)
 
-        return view
+        return ComposeView(requireContext()).apply {
+            setContent {
+                ResultsScreen(bitmap) { listener!!.doneResults() }
+            }
+        }
     }
 
     fun correct(
@@ -214,6 +235,46 @@ class ResultsFragment : Fragment() {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
+        }
+    }
+}
+
+@Composable
+fun ResultsScreen(
+    image: Bitmap,
+    onPressingNext: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Image(
+            bitmap = image.asImageBitmap(),
+            modifier =
+                Modifier.zoomable(
+                    state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
+                    onDoubleClick = DoubleClickToZoomListener.cycle(DOUBLE_TAP_ZOOM),
+                ),
+            contentDescription = "The leaf with area being measured",
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButton(
+                onClick = { },
+            ) {
+                Text("Draw", color = BUTTON_COLOR)
+            }
+            TextButton(
+                onClick = { },
+            ) {
+                Text("Exclude Area", color = BUTTON_COLOR)
+            }
+            TextButton(
+                onClick = { onPressingNext() },
+            ) {
+                Text("Next", color = BUTTON_COLOR)
+            }
         }
     }
 }
