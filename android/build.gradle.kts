@@ -25,13 +25,9 @@ fun runningInAndroidStudioGui(): Boolean {
     return systemProperties["idea.active"] != null
 }
 
-fun runningInAndroidTerminal(): Boolean {
-    return !System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()
-}
+fun runningInAndroidTerminal(): Boolean = !System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()
 
-fun runningInAndroidStudio(): Boolean {
-    return runningInAndroidStudioGui() || runningInAndroidTerminal()
-}
+fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidTerminal()
 
 allprojects {
     repositories {
