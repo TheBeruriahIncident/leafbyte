@@ -37,10 +37,14 @@ allprojects {
 
     dependencyLocking {
         configurations.configureEach {
-            // HACKHACK: It appears that there are no dependencies associated with this configuration, so --write-locks adds nothing, but
+            // HACKHACK: It appears that there are no dependencies associated with these configurations, so --write-locks adds nothing, but
             //   STRICT mode fails because there is no lock file. I'm not sure if this is a bug, but I don't see a way to use STRICT without
-            //   skipping this
-            if (name.startsWith("implementationDependenciesMetadata")) {
+            //   skipping these
+            if (arrayOf(
+                    "implementationDependenciesMetadata",
+                    "projectHealthClasspath",
+                ).any { name.startsWith(it) }
+            ) {
                 return@configureEach
             }
 
