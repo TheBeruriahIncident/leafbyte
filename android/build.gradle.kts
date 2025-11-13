@@ -41,6 +41,7 @@ allprojects {
             //   STRICT mode fails because there is no lock file. I'm not sure if this is a bug, but I don't see a way to use STRICT without
             //   skipping these
             if (arrayOf(
+                    "combinedGraphClasspath",
                     "implementationDependenciesMetadata",
                     "projectHealthClasspath",
                 ).any { name.startsWith(it) }
