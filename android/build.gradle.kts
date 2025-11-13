@@ -35,6 +35,14 @@ allprojects {
     }
 
     dependencyLocking {
+        configurations.configureEach {
+            // HACKHACK: It appears that there are no dependencies associated with this configuration, so --write-locks adds nothing, but
+            //   STRICT mode fails because there is no lock file. I'm not sure if this is a bug, but I don't see a way to use STRICT without
+            //   skipping this
+            if (name.startsWith("implementationDependenciesMetadata")) {
+                return@configureEach
+            }
+
             resolutionStrategy.activateDependencyLocking()
             // We want to be lenient in Android Studio for two reasons:
             // - Gradle sync for some reason doesn't find the lock state, so STRICT would fail there
