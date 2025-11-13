@@ -20,12 +20,17 @@ buildscript {
     }
 }
 
-/**
- * Determines if this build is within the Android Studio GUI (even the Android Studio terminal returns false)
- */
-fun runningInAndroidStudio(): Boolean {
+fun runningInAndroidStudioGui(): Boolean {
     val systemProperties = System.getProperties()
     return systemProperties["idea.active"] != null
+}
+
+fun runningInAndroidTerminal(): Boolean {
+    return !System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()
+}
+
+fun runningInAndroidStudio(): Boolean {
+    return runningInAndroidStudioGui() || runningInAndroidTerminal()
 }
 
 allprojects {
