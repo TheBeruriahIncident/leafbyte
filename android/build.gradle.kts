@@ -20,10 +20,28 @@ buildscript {
     }
 }
 
+/**
+ * Determines if this build is within the Android Studio GUI (even the Android Studio terminal returns false)
+ */
+fun runningInAndroidStudio(): Boolean {
+    val systemProperties = System.getProperties()
+    return systemProperties["idea.active"] != null
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+
+    dependencyLocking {
+            resolutionStrategy.activateDependencyLocking()
+            // We want to be lenient in Android Studio for two reasons:
+            // - Gradle sync for some reason doesn't find the lock state, so STRICT would fail there
+            // - We want it to be easy to iterate, so even DEFAULT is too strict
+            // CI will be STRICT, so nothing should get through.
+            lockMode = if (runningInAndroidStudio()) LockMode.LENIENT else LockMode.STRICT
+        }
     }
 }
 
