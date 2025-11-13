@@ -42,6 +42,7 @@ allprojects {
             //   skipping these
             if (arrayOf(
                     "combinedGraphClasspath",
+                    "detekt",
                     "implementationDependenciesMetadata",
                     "projectHealthClasspath",
                 ).any { name.startsWith(it) }
