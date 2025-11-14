@@ -44,6 +44,7 @@ allprojects {
                     "combinedGraphClasspath",
                     "detekt",
                     "implementationDependenciesMetadata",
+                    "jacocoAgent",
                     "projectHealthClasspath",
                 ).any { name.startsWith(it) }
             ) {
