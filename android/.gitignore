@@ -3,6 +3,9 @@
 *.ap_
 *.aab
 
+# Kotlin compiler temp files
+*.salive
+
 # Files for the ART/Dalvik VM
 *.dex
 
