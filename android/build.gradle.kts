@@ -50,6 +50,7 @@ allprojects {
                 "projectHealthClasspath",
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
+                "swiftExportClasspathResolvable",
             )
 
         configurations.configureEach {
