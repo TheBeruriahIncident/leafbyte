@@ -38,7 +38,7 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore-version" }
 fragment = "androidx.fragment:fragment-ktx:1.8.9"
 junit5-api = "org.junit.jupiter:junit-jupiter-api:5.13.4"
-junit5-test = "de.mannodermaus.junit5:android-test-core:1.8.0"
+junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-version" }
 lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle-version" }
