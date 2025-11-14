@@ -20,7 +20,16 @@
       "automerge": true,
     },
     {
+      "matchDepNames": ["!/^com.android.tools.build:gradle/"],
+      // wait a week to take new versions, to increase the odds that issues are caught before they hit us.
+      // security issues (e.g. malicious code insertions) will hopefully be blacklisted in that time.
+      // for normal major bugs, we'll hopefully at least be able to see existing debugging or manually bump to a patch.
+      "minimumReleaseAge": "7 days",
+    },
+    {
       "matchDepNames": ["/^com.android.tools.build:gradle/"],
+      // wait a month so that we aren't getting poked to do this upgrade before Android Studio even supports it
+      "minimumReleaseAge": "1 month",
       "draftPR": true,
       "commitMessagePrefix": "[NEEDS WORK] ",
       "prHeader": "> [!CAUTION]\n> ***Check the AGP upgrade assistant for any additional changes, and do not upgrade past what the upgrade assistant supports! Android Studio does not necessarily support the latest version yet.***",
