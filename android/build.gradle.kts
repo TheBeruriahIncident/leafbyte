@@ -45,6 +45,7 @@ allprojects {
                     "detekt",
                     "implementationDependenciesMetadata",
                     "jacocoAgent",
+                    "jacocoAnt",
                     "projectHealthClasspath",
                 ).any { name.startsWith(it) }
             ) {
