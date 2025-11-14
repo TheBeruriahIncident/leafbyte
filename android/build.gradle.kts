@@ -36,28 +36,21 @@ allprojects {
     }
 
     dependencyLocking {
-        configurations.configureEach {
-            // HACKHACK: It appears that there are no dependencies associated with these configurations, so --write-locks adds nothing, but
-            //   STRICT mode fails because there is no lock file. I'm not sure if this is a bug, but I don't see a way to use STRICT without
-            //   skipping these
-            if (arrayOf(
-                    "combinedGraphClasspath",
-                    "detekt",
-                    "implementationDependenciesMetadata",
-                    "jacocoAgent",
-                    "jacocoAnt",
-                    "projectHealthClasspath",
-                ).any { name.startsWith(it) }
-            ) {
-                return@configureEach
-            }
+        val indicatorsOfLockableConfiguration =
+            arrayOf(
+                "annotationProcessor",
+                "classpath",
+            )
 
-            resolutionStrategy.activateDependencyLocking()
-            // We want to be lenient in Android Studio for two reasons:
-            // - Gradle sync for some reason doesn't find the lock state, so STRICT would fail there
-            // - We want it to be easy to iterate, so even DEFAULT is too strict
-            // CI will be STRICT, so nothing should get through.
-            lockMode = if (runningInAndroidStudio()) LockMode.LENIENT else LockMode.STRICT
+        configurations.configureEach {
+            if (indicatorsOfLockableConfiguration.any { name.lowercase().contains(it.lowercase()) }) {
+                resolutionStrategy.activateDependencyLocking()
+                // We want to be lenient in Android Studio for two reasons:
+                // - Gradle sync for some reason doesn't find the lock state, so STRICT would fail there
+                // - We want it to be easy to iterate, so even DEFAULT is too strict
+                // CI will be STRICT, so nothing should get through.
+                lockMode = if (runningInAndroidStudio()) LockMode.LENIENT else LockMode.STRICT
+            }
         }
     }
 }
