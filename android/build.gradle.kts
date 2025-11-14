@@ -48,6 +48,7 @@ allprojects {
             arrayOf(
                 "combinedGraphClasspath",
                 "projectHealthClasspath",
+                "resolvedDepsClasspath",
             )
 
         configurations.configureEach {
