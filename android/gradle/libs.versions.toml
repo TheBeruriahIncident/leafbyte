@@ -54,7 +54,7 @@ navigation-runtime = { module = "androidx.navigation:navigation-runtime", versio
 play-auth = "com.google.android.gms:play-services-auth:21.4.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.1"
-telephoto-zoomable = "me.saket.telephoto:zoomable:0.16.0"
+telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
 
 [plugins]
 dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.4.1"
