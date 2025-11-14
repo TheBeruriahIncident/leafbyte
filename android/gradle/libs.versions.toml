@@ -53,7 +53,7 @@ navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", 
 navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation-version" }
 play-auth = "com.google.android.gms:play-services-auth:21.4.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
-protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.32.0"
+protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.1"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.16.0"
 
 [plugins]
