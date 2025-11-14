@@ -41,9 +41,18 @@ allprojects {
                 "annotationProcessor",
                 "classpath",
             )
+        // HACKHACK: It appears that there are no dependencies associated with these configurations, so --write-locks adds nothing, but
+        //   STRICT mode fails because there is no lock file. I'm not sure if this is a bug, but I don't see a way to use STRICT without
+        //   skipping these
+        val configurationsThatCantBeLocked =
+            arrayOf(
+                "projectHealthClasspath",
+            )
 
         configurations.configureEach {
-            if (indicatorsOfLockableConfiguration.any { name.lowercase().contains(it.lowercase()) }) {
+            if (configurationsThatCantBeLocked.none { name == it } &&
+                indicatorsOfLockableConfiguration.any { name.lowercase().contains(it.lowercase()) }
+            ) {
                 resolutionStrategy.activateDependencyLocking()
                 // We want to be lenient in Android Studio for two reasons:
                 // - Gradle sync for some reason doesn't find the lock state, so STRICT would fail there
