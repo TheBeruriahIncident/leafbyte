@@ -46,6 +46,7 @@ allprojects {
         //   skipping these
         val configurationsThatCantBeLocked =
             arrayOf(
+                "combinedGraphClasspath",
                 "projectHealthClasspath",
             )
 
