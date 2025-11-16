@@ -8,7 +8,7 @@ plugins {
     id("de.mannodermaus.android-junit5")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("se.patrikerdes.use-latest-versions")
-    id("com.github.ben-manes.versions").version("0.52.0") // Adds dependencyUpdates command to determinate stale dependencies
+    id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
     id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
@@ -40,7 +40,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.32.0"
+        artifact = "com.google.protobuf:protoc:4.33.1"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -235,7 +235,7 @@ dependencies {
 //    }
 
 //    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.0")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.4")
 
 //    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -268,14 +268,12 @@ dependencies {
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
     androidTestRuntimeOnly(libs.mockk.android)
 
-    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
     implementation(libs.telephoto.zoomable)
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     // androidTestImplementation("androidx.test:runner:1.6.2")
     // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
     // androidTestRuntimeOnly(libs.junit5.test)
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.8.0") // TODO: why does using libs.junit5.test resolve differently
-    androidTestImplementation("com.android.support.test:rules:1.0.2")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
     androidTestImplementation(libs.junit5.api)
 
     androidTestImplementation("androidx.test:core:1.7.0")
