@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
@@ -84,9 +85,7 @@ class MainMenuFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                val settings = remember { DataStoreBackedSettings(requireContext()) }
-
-                MainMenuScreen(settings)
+                MainMenuScreen()
             }
         }
     }
@@ -102,7 +101,7 @@ class MainMenuFragment : Fragment() {
 
                 override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
             }
-        MainMenuScreen(settings)
+        ContextlessMainMenuScreen(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
@@ -116,7 +115,7 @@ class MainMenuFragment : Fragment() {
 
                 override fun getUseBarcode(): Flow<Boolean> = flowOf(true)
             }
-        MainMenuScreen(settings)
+        ContextlessMainMenuScreen(settings)
     }
 
     @Preview(showBackground = true, device = Devices.PIXEL)
@@ -130,11 +129,19 @@ class MainMenuFragment : Fragment() {
 
                 override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
             }
-        MainMenuScreen(settings)
+        ContextlessMainMenuScreen(settings)
     }
 
     @Composable
-    fun MainMenuScreen(settings: Settings) {
+    fun MainMenuScreen() {
+        val context = LocalContext.current
+        val settings = remember { DataStoreBackedSettings(context) }
+
+        ContextlessMainMenuScreen(settings)
+    }
+
+    @Composable
+    fun ContextlessMainMenuScreen(settings: Settings) {
         Column(
             modifier =
                 Modifier
