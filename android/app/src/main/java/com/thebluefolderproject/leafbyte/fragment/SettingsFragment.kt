@@ -97,12 +97,7 @@ class SettingsFragment : Fragment() {
     ): View =
         ComposeView(requireContext()).apply {
             setContent {
-                val settings = remember { DataStoreBackedSettings(requireContext()) }
-                val coroutineScope = rememberCoroutineScope()
-                val context = LocalContext.current
-                val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
-
-                SettingsScreen(settings, googleSignInManager)
+                SettingsScreen2()
             }
         }
 }
@@ -144,6 +139,16 @@ private fun SettingsScreenWithAlertPreview() {
     val settings = SampleSettings()
     val googleSignInManager = SampleGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+}
+
+@Composable
+fun SettingsScreen2() {
+    val context = LocalContext.current
+    val settings = remember { DataStoreBackedSettings(context) }
+    val coroutineScope = rememberCoroutineScope()
+    val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
+
+    SettingsScreen(settings, googleSignInManager)
 }
 
 @Suppress("detekt:complexity:LongMethod")

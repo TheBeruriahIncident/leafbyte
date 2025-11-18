@@ -111,7 +111,7 @@ android {
                 "clearPackageData" to "true",
             )
         applicationId = "com.thebluefolderproject.leafbyte"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "0.1"
@@ -210,6 +210,8 @@ dependencies {
     // implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation(libs.core)
     implementation(libs.lifecycle.extensions)
+    implementation(libs.navigation.runtime)
+    implementation(libs.navigation.ui)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.deprecated.navigation.fragment)
     implementation(libs.constraintlayout)

@@ -1,11 +1,13 @@
 [versions]
-activity-version = "1.11.0"
+activity-version = "1.12.0-rc01"
 coroutines-version = "1.10.2"
 datastore-version = "1.1.7"
 deprecated-navigation-version = "2.9.6"
 kotlin-version = "2.2.21"
 lifecycle-version = "2.9.4"
 mockk-version = "1.14.6"
+navigation-version = "1.0.0-rc01"
+serialization = "1.8.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-version" }
@@ -51,6 +53,8 @@ lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", v
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
+navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
+navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
 play-auth = "com.google.android.gms:play-services-auth:21.4.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.1"

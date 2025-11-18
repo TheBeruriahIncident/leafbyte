@@ -75,7 +75,7 @@ class LeafByteActivity :
         findNavController(R.id.nav_host_fragment).navigate(R.id.scaleIdentificationFragment)
     }
 
-    override fun doneScaleIdentification(scaleMarks: List<Point>) {
+    override fun doneScaleIdentification(thresholdedImage: Bitmap, scaleMarks: List<Point>) {
         model.scaleMarks = scaleMarks
         findNavController(R.id.nav_host_fragment).navigate(R.id.resultsFragment)
     }
@@ -93,17 +93,11 @@ class LeafByteActivity :
         )
     }
 
-    override fun doneTutorial() {
+    override fun doneTutorial(uri: Uri) {
         // TODO: resize here and elsewhere
-        model.uri = resourceToUri(R.drawable.example_leaf)
+        model.uri = uri
         findNavController(R.id.nav_host_fragment).navigate(R.id.backgroundRemovalFragment)
     }
 
-    fun resourceToUri(resID: Int): Uri =
-        Uri.parse(
-            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                getResources().getResourcePackageName(resID) + '/'.toString() +
-                getResources().getResourceTypeName(resID) + '/'.toString() +
-                getResources().getResourceEntryName(resID),
-        )
+
 }

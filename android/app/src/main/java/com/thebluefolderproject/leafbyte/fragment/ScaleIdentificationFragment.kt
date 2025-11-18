@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -66,8 +67,6 @@ class ScaleIdentificationFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     var model: WorkflowViewModel? = null
 
-    var dotCenters: List<Point>? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -81,17 +80,12 @@ class ScaleIdentificationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_scale_identification, container, false)
-
-        view.findViewById<Button>(R.id.scaleIdentificationNext).setOnClickListener { listener!!.doneScaleIdentification(dotCenters!!) }
 
         requireActivity().let {
             model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
         }
 
         val bitmap = model!!.thresholdedImage!!
-        // view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bitmap)
 
         log("Trying to find centers: " + bitmap.width + " " + bitmap.height) // TODO swap to center of dots
         val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
@@ -113,14 +107,12 @@ class ScaleIdentificationFragment : Fragment() {
         paint.setColor(Color.RED)
         canvas.drawBitmap(bitmap, Matrix(), null)
         dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 8.0f, paint) }
-        view.findViewById<ImageView>(R.id.imageView).setImageBitmap(bmOverlay)
 
         log("Found centers: " + dotCenters)
-        this.dotCenters = dotCenters
 
         return ComposeView(requireContext()).apply {
             setContent {
-                ScaleIdentificationScreen(bmOverlay) { listener!!.doneScaleIdentification(dotCenters) }
+                ScaleIdentificationScreen(bitmap) { listener!!.doneScaleIdentification(bitmap,dotCenters) }
             }
         }
     }
@@ -152,7 +144,7 @@ class ScaleIdentificationFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun doneScaleIdentification(scaleMarks: List<Point>)
+        fun doneScaleIdentification(thresholdedImage: Bitmap, scaleMarks: List<Point>)
     }
 
     companion object {
@@ -180,14 +172,38 @@ class ScaleIdentificationFragment : Fragment() {
 
 @Composable
 fun ScaleIdentificationScreen(
-    image: Bitmap,
-    onPressingNext: () -> Unit,
+    bitmap: Bitmap,
+    onPressingNext: (scaleMarks: List<Point>) -> Unit,
 ) {
+
+    log("Trying to find centers: " + bitmap.width + " " + bitmap.height) // TODO swap to center of dots
+    val info = labelConnectedComponents(LayeredIndexableImage(bitmap.width, bitmap.height, bitmap), listOf())
+    log("done labeling")
+
+    val dotLabels =
+        info.labelToSize.entries
+            .filter { entry -> entry.key > 0 }
+            .sortedByDescending { entry -> entry.value.total() }
+            .take(5)
+            .drop(1)
+            .map { entry -> entry.key }
+    // find center of point, draw dot
+    val dotCenters = dotLabels.map { dot -> info.labelToMemberPoint.get(dot)!! }
+
+    val bmOverlay = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config!!)
+    val canvas = Canvas(bmOverlay)
+    val paint = Paint()
+    paint.setColor(Color.RED)
+    canvas.drawBitmap(bitmap, Matrix(), null)
+    dotCenters.forEach { canvas.drawCircle(it.x.toFloat(), it.y.toFloat(), 8.0f, paint) }
+
+    log("Found centers: " + dotCenters)
+
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
         Image(
-            bitmap = image.asImageBitmap(),
+            bitmap = bitmap.asImageBitmap(),
             modifier =
                 Modifier.zoomable(
                     state = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = MAX_ZOOM)),
@@ -200,7 +216,7 @@ fun ScaleIdentificationScreen(
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButton(
-                onClick = { onPressingNext() },
+                onClick = { onPressingNext(dotCenters) },
             ) {
                 Text("Next", color = BUTTON_COLOR)
             }

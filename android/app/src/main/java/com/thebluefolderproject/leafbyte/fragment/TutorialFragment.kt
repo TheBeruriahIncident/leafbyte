@@ -4,7 +4,9 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,7 +78,7 @@ class TutorialFragment : Fragment() {
     ): View? =
         ComposeView(requireContext()).apply {
             setContent {
-                TutorialScreen({ listener!!.doneTutorial() })
+                TutorialScreen({ uri -> listener!!.doneTutorial(uri) })
             }
         }
 
@@ -106,7 +109,7 @@ class TutorialFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun doneTutorial()
+        fun doneTutorial(uri: Uri)
     }
 
     companion object {
@@ -141,7 +144,9 @@ private fun TutorialScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("detekt:complexity:LongMethod")
 @Composable
-fun TutorialScreen(onPressingNext: () -> Unit) {
+fun TutorialScreen(onPressingNext: (uri: Uri) -> Unit) {
+    val uri = resourceToUri(R.drawable.example_leaf)
+
     Column(
         modifier =
             Modifier
@@ -154,7 +159,7 @@ fun TutorialScreen(onPressingNext: () -> Unit) {
         TopAppBar(
             navigationIcon = {
                 TextButton(
-                    onClick = { onPressingNext() },
+                    onClick = {  }, // TODO: onPressingNext()
                 ) {
                     Text("Back", color = BUTTON_COLOR)
                 }
@@ -204,10 +209,21 @@ fun TutorialScreen(onPressingNext: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButton(
-                onClick = { onPressingNext() },
+                onClick = { onPressingNext(uri) },
             ) {
                 Text("Next", color = BUTTON_COLOR)
             }
         }
     }
+}
+
+@Composable
+fun resourceToUri(resID: Int): Uri {
+    val resources = LocalContext.current.resources
+    return Uri.parse(
+        ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                resources.getResourcePackageName(resID) + '/'.toString() +
+                resources.getResourceTypeName(resID) + '/'.toString() +
+                resources.getResourceEntryName(resID),
+    )
 }
