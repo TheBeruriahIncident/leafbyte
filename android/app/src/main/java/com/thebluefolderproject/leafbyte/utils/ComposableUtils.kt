@@ -1,5 +1,7 @@
 @file:Suppress("ktlint:standard:max-line-length", "detekt:style:MagicNumber", "detekt:style:MaxLineLength")
 
+// TO DO: missing copyrights
+
 package com.thebluefolderproject.leafbyte.utils
 
 import android.graphics.Bitmap

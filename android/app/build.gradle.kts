@@ -111,7 +111,7 @@ android {
                 "clearPackageData" to "true",
             )
         applicationId = "com.thebluefolderproject.leafbyte"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "0.1"
@@ -209,16 +209,17 @@ dependencies {
     implementation(libs.appcompat)
     // implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation(libs.core)
-    implementation(libs.lifecycle.extensions)
+    implementation(libs.navigation.runtime)
+    implementation(libs.navigation.ui)
     implementation(libs.lifecycle.viewmodel)
-    implementation(libs.navigation.fragment)
+    implementation(libs.deprecated.navigation.fragment)
     implementation(libs.constraintlayout)
     implementation(libs.constraintlayout.compose)
     implementation(libs.datastore)
     implementation(libs.fragment)
-    implementation(libs.navigation.common)
-    implementation(libs.navigation.runtime)
     implementation(libs.collections)
+    implementation("androidx.compose.animation:animation:1.9.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
 //    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation(libs.preference)
 //    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
