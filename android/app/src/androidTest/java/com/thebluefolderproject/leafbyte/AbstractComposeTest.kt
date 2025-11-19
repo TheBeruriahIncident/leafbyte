@@ -1,0 +1,64 @@
+/**
+ * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
+ */
+
+package com.thebluefolderproject.leafbyte
+
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.ExperimentalTestApi
+import com.thebluefolderproject.leafbyte.activity.NavigationRoot
+import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.fragment.Settings
+import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import de.mannodermaus.junit5.compose.ComposeContext
+import de.mannodermaus.junit5.compose.createComposeExtension
+import io.mockk.mockk
+import org.junit.jupiter.api.extension.RegisterExtension
+
+@OptIn(ExperimentalTestApi::class)
+@Suppress("style:UnnecessaryAbstractClass")
+abstract class AbstractComposeTest(
+    val navigateToCorrectScreen: ComposeContext.() -> Unit,
+) {
+    @RegisterExtension
+    private val extension = createComposeExtension()
+
+    private val clock = TestClock()
+
+    protected fun runTest(
+        initializeSettings: (Settings) -> Unit = {},
+        test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
+    ) {
+        // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
+        //   probably doesn't make sense to do until the dust settles on moving nav over to compose
+        initializeLogInterception()
+
+        extension.use {
+            var settings: Settings? = null
+            val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
+
+            setContent {
+                // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
+                clearSettingsStore(LocalContext.current)
+
+                settings = DataStoreBackedSettings(LocalContext.current, clock)
+                initializeSettings(settings)
+
+                NavigationRoot(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+            }
+
+            navigateToCorrectScreen(this)
+
+            try {
+                test(this, settings!!, googleSignInManager)
+            } catch (throwable: Throwable) {
+                throw ComposeTestFailureException(this, throwable)
+            }
+        }
+    }
+
+    protected fun waitASecond() {
+        clock.waitASecond()
+    }
+}
