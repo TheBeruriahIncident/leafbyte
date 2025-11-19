@@ -4,10 +4,6 @@
 
 package com.thebluefolderproject.leafbyte.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,7 +46,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -60,7 +55,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
@@ -77,35 +71,6 @@ import net.openid.appauth.AuthState
 
 private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
 private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
-
-/**
- * settings vs preferences
- *
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [SettingsFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class SettingsFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View =
-        ComposeView(requireContext()).apply {
-            setContent {
-                val settings = remember { DataStoreBackedSettings(requireContext()) }
-                val coroutineScope = rememberCoroutineScope()
-                val context = LocalContext.current
-                val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
-
-                SettingsScreen(settings, googleSignInManager)
-            }
-        }
-}
 
 enum class AlertType {
     BACK_WITHOUT_DATASET_NAME,
@@ -144,6 +109,16 @@ private fun SettingsScreenWithAlertPreview() {
     val settings = SampleSettings()
     val googleSignInManager = SampleGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+}
+
+@Composable
+fun SettingsScreen2() {
+    val context = LocalContext.current
+    val settings = remember { DataStoreBackedSettings(context) }
+    val coroutineScope = rememberCoroutineScope()
+    val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
+
+    SettingsScreen(settings, googleSignInManager)
 }
 
 @Suppress("detekt:complexity:LongMethod")
