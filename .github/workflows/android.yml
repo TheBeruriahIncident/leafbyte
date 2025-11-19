@@ -60,6 +60,7 @@ jobs:
           name: Android unit test results
           path: '**/*.xml'
           reporter: java-junit
+          fail-on-error: false # the test running will have failed, so this step doesn't need to fail
 
   instrumentedTest:
     name: Run Android instrumented tests
@@ -112,6 +113,7 @@ jobs:
           name: Android instrumented test results
           path: '**/*.xml'
           reporter: java-junit
+          fail-on-error: false # the test running will have failed, so this step doesn't need to fail
   
   checkBuildHealth:
     name: Check Android build health
