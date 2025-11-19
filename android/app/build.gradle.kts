@@ -219,7 +219,7 @@ dependencies {
     implementation(libs.fragment)
     implementation(libs.collections)
     implementation("androidx.compose.animation:animation:1.9.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
 //    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation(libs.preference)
 //    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
