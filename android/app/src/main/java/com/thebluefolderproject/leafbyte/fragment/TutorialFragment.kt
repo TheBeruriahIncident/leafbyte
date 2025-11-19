@@ -1,3 +1,4 @@
+@file:Suppress("all")
 /**
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
@@ -5,12 +6,7 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import android.content.ContentResolver
-import android.content.Context
 import android.net.Uri
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,111 +25,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.IconButton
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-
-// TO DO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [TutorialFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [TutorialFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-@Suppress("all")
-class TutorialFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? =
-        ComposeView(requireContext()).apply {
-            setContent {
-                TutorialScreen({ uri -> listener!!.doneTutorial(uri) })
-            }
-        }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun doneTutorial(uri: Uri)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TutorialFragment.
-         */
-        @JvmStatic // TODO: Rename and change types and number of parameters
-        fun newInstance(
-            param1: String,
-            param2: String,
-        ) = TutorialFragment().apply {
-            arguments =
-                Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-        }
-    }
-}
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
@@ -159,7 +60,7 @@ fun TutorialScreen(onPressingNext: (uri: Uri) -> Unit) {
         TopAppBar(
             navigationIcon = {
                 TextButton(
-                    onClick = {  }, // TODO: onPressingNext()
+                    onClick = { }, // TODO: onPressingNext()
                 ) {
                     Text("Back", color = BUTTON_COLOR)
                 }
@@ -222,8 +123,8 @@ fun resourceToUri(resID: Int): Uri {
     val resources = LocalContext.current.resources
     return Uri.parse(
         ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                resources.getResourcePackageName(resID) + '/'.toString() +
-                resources.getResourceTypeName(resID) + '/'.toString() +
-                resources.getResourceEntryName(resID),
+            resources.getResourcePackageName(resID) + '/'.toString() +
+            resources.getResourceTypeName(resID) + '/'.toString() +
+            resources.getResourceEntryName(resID),
     )
 }

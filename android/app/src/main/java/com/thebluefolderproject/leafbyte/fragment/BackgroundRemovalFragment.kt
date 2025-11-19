@@ -1,27 +1,18 @@
+@file:Suppress("all")
 /**
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
 package com.thebluefolderproject.leafbyte.fragment
 
-import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
@@ -42,13 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.activity.WorkflowViewModel
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.createExampleImage
@@ -68,211 +55,116 @@ import org.opencv.imgproc.Imgproc
 import java.util.Arrays
 import kotlin.math.roundToInt
 
-// TO DO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+// fun onCreateView(
+//    inflater: LayoutInflater,
+//    container: ViewGroup?,
+//    savedInstanceState: Bundle?,
+// ): View? {
+//
+//    var bitmap = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, null)
+//    // TODO: see if scaled decoding is good enough, noting that it's only powers of two
+//    bitmap = Bitmap.createScaledBitmap(bitmap!!, 1200, 1200, true)
+//
+//    val otsu = otsu(bitmap)
+//
+//    val thresholdedImage = threshold(bitmap, otsu)
+//
+//    val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
+//    seekBar.progress = otsu.roundToInt()
+//    seekBar.max = 255
+//    seekBar.setOnSeekBarChangeListener(
+//        object : SeekBar.OnSeekBarChangeListener {
+//            override fun onStartTrackingTouch(p0: SeekBar?) {
+//            }
+//
+//            override fun onStopTrackingTouch(p0: SeekBar?) {
+//            }
+//
+//            override fun onProgressChanged(
+//                p0: SeekBar?,
+//                p1: Int,
+//                p2: Boolean,
+//            ) {
+//                val bitmap = threshold(bitmap, p1.toDouble())
+//                imageView.setImageBitmap(bitmap)
+//            }
+//        },
+//    )
+//
+//    setHasOptionsMenu(true)
+//
+//    return ComposeView(requireContext()).apply {
+//        setContent {
+//            BackgroundRemovalScreen(bitmap) { listener!!.doneBackgroundRemoval(it) }
+//        }
+//    }
+// }
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [BackgroundRemovalFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [BackgroundRemovalFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-@SuppressLint("all")
-@Suppress("all")
-class BackgroundRemovalFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-    var model: WorkflowViewModel? = null
+// https://stackoverflow.com/a/17839597/1092672
+fun lessResolution(
+    resolver: ContentResolver,
+    uri: Uri,
+    width: Int,
+    height: Int,
+): Bitmap {
+    val reqHeight = height
+    val reqWidth = width
+    val options = BitmapFactory.Options()
+    // First decode with inJustDecodeBounds=true to check dimensions
+    options.inJustDecodeBounds = true
+    BitmapFactory.decodeStream(resolver.openInputStream(uri), null, options)
+    // Calculate inSampleSize
+    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+    // Decode bitmap with inSampleSize set
+    options.inJustDecodeBounds = false
+    return BitmapFactory.decodeStream(resolver.openInputStream(uri), null, options)!!
+}
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_background_removal, container, false)
+private fun calculateInSampleSize(
+    options: BitmapFactory.Options,
+    reqWidth: Int,
+    reqHeight: Int,
+): Int {
+    val height = options.outHeight
+    val width = options.outWidth
+    var inSampleSize = 1
+    if (height > reqHeight || width > reqWidth) {
+        // Calculate ratios of height and width to requested height and width
+        val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
+        val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
+        // Choose the smallest ratio as inSampleSize value, this will guarantee
+        // a final image with both dimensions larger than or equal to the
+        // requested height and width.
+        inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
+    }
+    return inSampleSize
+}
 
-        requireActivity().let {
-            model = ViewModelProviders.of(requireActivity()).get(WorkflowViewModel::class.java)
-        }
-
-        val uri = model!!.uri!!
-        var bitmap = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, null)
-        // TODO: see if scaled decoding is good enough, noting that it's only powers of two
-        bitmap = Bitmap.createScaledBitmap(bitmap!!, 1200, 1200, true)
-        val imageView = view.findViewById<ImageView>(R.id.imageView)
-        val histogramView = view.findViewById<ImageView>(R.id.histogram)
-        view.findViewById<Button>(R.id.backgroundRemovalNext).setOnClickListener {
-            listener!!.doneBackgroundRemoval((imageView.drawable as BitmapDrawable).bitmap)
-        }
-
-        val otsu = otsu(bitmap)
-
-        val thresholdedImage = threshold(bitmap, otsu)
-        imageView.setImageBitmap(thresholdedImage)
-
-        val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
-        seekBar.progress = otsu.roundToInt()
-        seekBar.max = 255
-        seekBar.setOnSeekBarChangeListener(
-            object : SeekBar.OnSeekBarChangeListener {
-                override fun onStartTrackingTouch(p0: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(p0: SeekBar?) {
-                }
-
-                override fun onProgressChanged(
-                    p0: SeekBar?,
-                    p1: Int,
-                    p2: Boolean,
-                ) {
-                    val bitmap = threshold(bitmap, p1.toDouble())
-                    imageView.setImageBitmap(bitmap)
-                    model!!.thresholdedImage = bitmap
-                }
-            },
-        )
-
-        setHasOptionsMenu(true)
-
-        return ComposeView(requireContext()).apply {
-            setContent {
-                BackgroundRemovalScreen(bitmap) { listener!!.doneBackgroundRemoval(it) }
-            }
-        }
+fun onCreateOptionsMenu(
+    context: Context,
+    menu: Menu,
+) {
+    val homeButton = menu.add("Home")
+    homeButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+    homeButton.setIcon(R.drawable.home)
+    homeButton.setOnMenuItemClickListener {
+        true
     }
 
-    // https://stackoverflow.com/a/17839597/1092672
-    fun lessResolution(
-        resolver: ContentResolver,
-        uri: Uri,
-        width: Int,
-        height: Int,
-    ): Bitmap {
-        val reqHeight = height
-        val reqWidth = width
-        val options = BitmapFactory.Options()
-        // First decode with inJustDecodeBounds=true to check dimensions
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, options)
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false
-        return BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(uri), null, options)!!
-    }
-
-    private fun calculateInSampleSize(
-        options: BitmapFactory.Options,
-        reqWidth: Int,
-        reqHeight: Int,
-    ): Int {
-        val height = options.outHeight
-        val width = options.outWidth
-        var inSampleSize = 1
-        if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
-            val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
-            // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
-        }
-        return inSampleSize
-    }
-
-    override fun onCreateOptionsMenu(
-        menu: Menu,
-        inflater: MenuInflater,
-    ) {
-        val homeButton = menu.add("Home")
-        homeButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        homeButton.setIcon(R.drawable.home)
-        homeButton.setOnMenuItemClickListener {
-            listener!!.goHome()
-            true
-        }
-
-        val helpButton = menu.add("Help")
-        helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        helpButton.setIcon(R.drawable.galleryicon)
-        helpButton.setOnMenuItemClickListener {
-            AlertDialog
-                .Builder(requireActivity())
-                .setMessage(
-                    "First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different " +
-                        "parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
-                        "\n" +
-                        "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're " +
-                        "actually choosing what brightnesses count as background vs foreground)",
-                ).show()
-            true
-        }
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun goHome()
-
-        fun doneBackgroundRemoval(bitmap: Bitmap)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BackgroundRemovalFragment.
-         */
-        @JvmStatic // TODO: Rename and change types and number of parameters
-        fun newInstance(
-            param1: String,
-            param2: String,
-        ) = BackgroundRemovalFragment().apply {
-            arguments =
-                Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-        }
+    val helpButton = menu.add("Help")
+    helpButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+    helpButton.setIcon(R.drawable.galleryicon)
+    helpButton.setOnMenuItemClickListener {
+        AlertDialog
+            .Builder(context)
+            .setMessage(
+                "First, we remove any background to leave just the leaf and scale. LeafByte looks at the brightness of different " +
+                    "parts of the image to try to do this automatically, but you can move the slider to tweak.\n" +
+                    "\n" +
+                    "(Above the slider you'll see a histogram of brightnesses in the image; when you move the slider, you're " +
+                    "actually choosing what brightnesses count as background vs foreground)",
+            ).show()
+        true
     }
 }
 
