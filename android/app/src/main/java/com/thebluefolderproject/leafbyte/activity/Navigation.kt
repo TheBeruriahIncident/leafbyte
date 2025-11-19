@@ -19,6 +19,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
+import com.thebluefolderproject.leafbyte.fragment.MainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
@@ -53,7 +54,7 @@ sealed interface Screen : NavKey {
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = remember { mutableStateListOf<Any>(Screen.Tutorial) }
+    val backStack = remember { mutableStateListOf<Any>(Screen.MainScreen) }
     val context = LocalContext.current
 
     // TODO: hide and show properly
@@ -65,6 +66,14 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
+                is Screen.MainScreen ->
+                    NavEntry(key) {
+                        MainMenuScreen(
+                            openSettings = { backStack.add(Screen.SettingsScreen) },
+                            startTutorial = { backStack.add(Screen.Tutorial) },
+                        )
+                    }
+
                 is Screen.SettingsScreen ->
                     NavEntry(key) {
                         SettingsScreen2()
