@@ -23,6 +23,7 @@ import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import io.mockk.every
 import io.mockk.slot
@@ -105,6 +106,7 @@ class SettingsComposeTest : AbstractComposeTest {
                 }
             }
 
+            log("First we test the data save options")
             testSaveLocation(
                 googleSignInManager = googleSignInManager,
                 noneButton = dataNone,
@@ -117,6 +119,7 @@ class SettingsComposeTest : AbstractComposeTest {
                 otherSelectionIs = ::imageSelectionIs,
                 getOtherSaveLocationInSettings = settings::getImageSaveLocation,
             )
+            log("Second we test the image save options")
             testSaveLocation(
                 googleSignInManager = googleSignInManager,
                 noneButton = imageNone,
@@ -148,7 +151,7 @@ class SettingsComposeTest : AbstractComposeTest {
         otherSelectionIs: (SemanticsNodeInteraction) -> Unit,
         getOtherSaveLocationInSettings: () -> Flow<SaveLocation>,
     ) {
-        // *********** First we test the non-Google options ***************
+        log("First we test the non-Google options")
         localButton.performClick()
         selectionIs(localButton)
         assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
@@ -157,7 +160,7 @@ class SettingsComposeTest : AbstractComposeTest {
         selectionIs(noneButton)
         assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
 
-        // *********** And now Google ***************
+        log("And now we test Google options")
         // precondition is set above, but just in case of refactors
         selectionIs(noneButton)
 
@@ -206,7 +209,7 @@ class SettingsComposeTest : AbstractComposeTest {
         testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
         testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
 
-        // only now do we test the happy path
+        log("Finally we test the Google happy path")
         onSuccess()
         selectionIs(googleButton)
         assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getSaveLocationInSettings())
