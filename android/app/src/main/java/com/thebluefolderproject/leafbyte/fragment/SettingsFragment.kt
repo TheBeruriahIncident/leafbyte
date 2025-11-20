@@ -112,11 +112,14 @@ private fun SettingsScreenWithAlertPreview() {
 }
 
 @Composable
-fun SettingsScreen2() {
+fun SettingsScreen2(
+    injectedSettings: Settings?,
+    injectedGoogleSignInManager: GoogleSignInManager?,
+) {
     val context = LocalContext.current
-    val settings = remember { DataStoreBackedSettings(context) }
+    val settings = remember { injectedSettings ?: DataStoreBackedSettings(context) }
     val coroutineScope = rememberCoroutineScope()
-    val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
+    val googleSignInManager = remember { injectedGoogleSignInManager ?: GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
     SettingsScreen(settings, googleSignInManager)
 }

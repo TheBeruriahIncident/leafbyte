@@ -22,9 +22,11 @@ import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
 import com.thebluefolderproject.leafbyte.fragment.MainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
+import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen2
 import com.thebluefolderproject.leafbyte.fragment.TutorialScreen
+import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.log
@@ -53,7 +55,11 @@ sealed interface Screen : NavKey {
 }
 
 @Composable
-fun NavigationRoot(modifier: Modifier = Modifier) {
+fun NavigationRoot(
+    modifier: Modifier = Modifier,
+    injectedSettings: Settings? = null,
+    injectedGoogleSignInManager: GoogleSignInManager? = null,
+) {
     val backStack = remember { mutableStateListOf<Any>(Screen.MainScreen) }
     val context = LocalContext.current
 
@@ -76,7 +82,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
 
                 is Screen.SettingsScreen ->
                     NavEntry(key) {
-                        SettingsScreen2()
+                        SettingsScreen2(injectedSettings = injectedSettings, injectedGoogleSignInManager = injectedGoogleSignInManager)
                     }
 
                 is Screen.Tutorial ->
