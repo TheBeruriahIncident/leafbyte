@@ -53,13 +53,15 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v2.2.0
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: unitTestResults
           name: Android unit test results
           path: '**/*.xml'
           reporter: java-junit
+          list-suites: failed
+          list-tests: failed
           fail-on-error: false # the test running will have failed, so this step doesn't need to fail
 
   instrumentedTest:
@@ -86,14 +88,22 @@ jobs:
       - name: Note if Android files not changed
         if: steps.changed-files.outputs.any_changed != 'true'
         run: echo "Android is not affected"
+      - name: Enable KVM to allow hardware acceleration if available
+        if: steps.changed-files.outputs.any_changed == 'true'
+        # From instructions on https://github.com/ReactiveCircus/android-emulator-runner
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - name: Run instrumented checks
-        uses: ReactiveCircus/android-emulator-runner@v2
+        uses: ReactiveCircus/android-emulator-runner@v2.35.0
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           api-level: 28
           arch: x86_64
           disk-size: 6000M
           heap-size: 600M
+          ram-size: 2048M
           disable-animations: true
           script: cd android && ./gradlew connectedCheck
       - name: Upload instrumented test results
@@ -106,13 +116,15 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v2.2.0
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: instrumentedTestResults
           name: Android instrumented test results
           path: '**/*.xml'
           reporter: java-junit
+          list-suites: failed
+          list-tests: failed
           fail-on-error: false # the test running will have failed, so this step doesn't need to fail
   
   checkBuildHealth:
