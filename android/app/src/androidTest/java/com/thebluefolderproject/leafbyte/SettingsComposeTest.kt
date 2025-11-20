@@ -279,14 +279,10 @@ class SettingsComposeTest : AbstractComposeTest {
             val tutorialButton = onNodeWithText("Tutorial")
             tutorialButton.assertDoesNotExist()
 
-            datasetNameField
-                .performScrollTo()
-                .performTextReplacement("non-empty")
+            datasetNameField.performTextReplacement("non-empty")
             // and now we can return to the main menu
             Espresso.pressBack()
-            tutorialButton
-                .performScrollTo()
-                .assertExists()
+            tutorialButton.assertExists()
         }
     }
 
