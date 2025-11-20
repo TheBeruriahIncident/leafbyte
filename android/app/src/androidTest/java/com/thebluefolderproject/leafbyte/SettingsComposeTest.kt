@@ -1,8 +1,6 @@
 package com.thebluefolderproject.leafbyte
 
 import android.net.Uri
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
@@ -21,18 +19,13 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
 import com.thebluefolderproject.leafbyte.fragment.AlertType
-import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.fragment.Settings
-import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
-import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
-import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
@@ -44,50 +37,12 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
 
-@OptIn(ExperimentalTestApi::class)
-class SettingsComposeTest {
-    @JvmField
-    @RegisterExtension
-    val extension = createComposeExtension()
-
-    val clock = TestClock()
-
-    private fun runTest(
-        initializeSettings: (Settings) -> Unit = {},
-        test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
-    ) {
-        // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
-        //   probably doesn't make sense to do until the dust settles on moving nav over to compose
-        initializeLogInterception()
-
-        extension.use {
-            var settings: Settings? = null
-            val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
-
-            setContent {
-                // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
-                clearSettingsStore(LocalContext.current)
-
-                settings = DataStoreBackedSettings(LocalContext.current, clock)
-                initializeSettings(settings)
-                SettingsScreen(settings, googleSignInManager)
-            }
-
-            try {
-                test(this, settings!!, googleSignInManager)
-            } catch (throwable: Throwable) {
-                throw ComposeTestFailureException(this, throwable)
-            }
-        }
-    }
-
-    private fun waitASecond() {
-        clock.waitASecond()
-    }
+class SettingsComposeTest : AbstractComposeTest {
+    constructor() : super(navigateToCorrectScreen = {
+        onNodeWithText("Settings").performClick()
+    })
 
     @Test
     fun testInitialState() {
@@ -151,6 +106,7 @@ class SettingsComposeTest {
                 }
             }
 
+            log("First we test the data save options")
             testSaveLocation(
                 googleSignInManager = googleSignInManager,
                 noneButton = dataNone,
@@ -163,6 +119,7 @@ class SettingsComposeTest {
                 otherSelectionIs = ::imageSelectionIs,
                 getOtherSaveLocationInSettings = settings::getImageSaveLocation,
             )
+            log("Second we test the image save options")
             testSaveLocation(
                 googleSignInManager = googleSignInManager,
                 noneButton = imageNone,
@@ -194,7 +151,7 @@ class SettingsComposeTest {
         otherSelectionIs: (SemanticsNodeInteraction) -> Unit,
         getOtherSaveLocationInSettings: () -> Flow<SaveLocation>,
     ) {
-        // *********** First we test the non-Google options ***************
+        log("First we test the non-Google options")
         localButton.performClick()
         selectionIs(localButton)
         assertFlowEquals(SaveLocation.LOCAL, getSaveLocationInSettings())
@@ -203,7 +160,7 @@ class SettingsComposeTest {
         selectionIs(noneButton)
         assertFlowEquals(SaveLocation.NONE, getSaveLocationInSettings())
 
-        // *********** And now Google ***************
+        log("And now we test Google options")
         // precondition is set above, but just in case of refactors
         selectionIs(noneButton)
 
@@ -252,7 +209,7 @@ class SettingsComposeTest {
         testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
         testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
 
-        // only now do we test the happy path
+        log("Finally we test the Google happy path")
         onSuccess()
         selectionIs(googleButton)
         assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getSaveLocationInSettings())
@@ -292,22 +249,23 @@ class SettingsComposeTest {
     @Test
     fun testBackButtonWorksNormally() {
         runTest { settings, googleSignInManager ->
-            // you can press back to leave the screen
-            assertClosesApp {
-                Espresso.pressBack()
-            }
+            val tutorialButton = onNodeWithText("Tutorial")
+            tutorialButton.assertDoesNotExist()
+
+            // you can press back to return to the main menu
+            Espresso.pressBack()
+            tutorialButton.assertExists()
         }
     }
 
-    @Disabled("https://github.com/TheBeruriahIncident/leafbyte/issues/74")
     @Test
     fun testBackButtonBlockedByEmptyDatasetName() {
         runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
             datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
 
-            Espresso.pressBack() // one back to close the keyboard
-            Espresso.pressBack() // and one to actually go back
+            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
+            Espresso.pressBack()
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
@@ -320,11 +278,16 @@ class SettingsComposeTest {
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
 
+            // we are not on the main menu
+            val tutorialButton = onNodeWithText("Tutorial")
+            tutorialButton.assertDoesNotExist()
+
             datasetNameField.performTextReplacement("non-empty")
-            // and now we can leave
-            assertClosesApp {
-                Espresso.pressBack()
-            }
+            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
+
+            // and now we can return to the main menu
+            Espresso.pressBack()
+            tutorialButton.assertExists()
         }
     }
 
