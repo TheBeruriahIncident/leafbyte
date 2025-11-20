@@ -264,8 +264,8 @@ class SettingsComposeTest : AbstractComposeTest {
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
             datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
 
-            Espresso.pressBack() // one back to close the keyboard
-            Espresso.pressBack() // and one to actually go back
+            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
+            Espresso.pressBack()
 
             val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
@@ -283,6 +283,8 @@ class SettingsComposeTest : AbstractComposeTest {
             tutorialButton.assertDoesNotExist()
 
             datasetNameField.performTextReplacement("non-empty")
+            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
+
             // and now we can return to the main menu
             Espresso.pressBack()
             tutorialButton.assertExists()
