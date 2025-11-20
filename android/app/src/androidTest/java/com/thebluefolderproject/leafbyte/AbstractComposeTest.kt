@@ -11,6 +11,7 @@ import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.mockk
@@ -30,29 +31,41 @@ abstract class AbstractComposeTest(
         initializeSettings: (Settings) -> Unit = {},
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
-        // TODO pull this logic out into a helper (or more likely an abstract class because of the extension field)
-        //   probably doesn't make sense to do until the dust settles on moving nav over to compose
         initializeLogInterception()
 
-        extension.use {
-            var settings: Settings? = null
-            val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
+        try {
+            log("Setting up Compose test")
+            extension.use {
+                var settings: Settings? = null
+                val googleSignInManager = mockk<GoogleSignInManager>(relaxed = true)
 
-            setContent {
-                // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
-                clearSettingsStore(LocalContext.current)
+                setContent {
+                    // clear any prior state (this can't happen in @Before or @After because of Compose complexities)
+                    clearSettingsStore(LocalContext.current)
 
-                settings = DataStoreBackedSettings(LocalContext.current, clock)
-                initializeSettings(settings)
+                    settings = DataStoreBackedSettings(LocalContext.current, clock)
+                    log("Initializing settings")
+                    initializeSettings(settings)
 
-                NavigationRoot(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+                    log("Starting up Compose app")
+                    NavigationRoot(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+                }
+
+                log("Navigating to correct screen for specific test")
+                navigateToCorrectScreen(this)
+
+                try {
+                    log("Running specific test")
+                    test(this, settings!!, googleSignInManager)
+                    log("Completed running specific test")
+                } catch (throwable: Throwable) {
+                    throw ComposeTestFailureException(this, throwable)
+                }
             }
-
-            navigateToCorrectScreen(this)
-
-            try {
-                test(this, settings!!, googleSignInManager)
-            } catch (throwable: Throwable) {
+        } catch (throwable: Throwable) {
+            if (throwable is ComposeTestFailureException) {
+                throw throwable
+            } else {
                 throw ComposeTestFailureException(this, throwable)
             }
         }

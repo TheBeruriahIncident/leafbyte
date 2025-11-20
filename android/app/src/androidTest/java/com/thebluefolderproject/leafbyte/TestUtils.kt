@@ -115,7 +115,7 @@ private fun gatherInterceptedLogs(): String {
 
 // inspired by https://www.braze.com/resources/articles/logcat-junit-android-tests
 class ComposeTestFailureException(
-    context: ComposeContext,
+    context: ComposeContext?,
     cause: Throwable,
 ) : Exception(createMessage(context, cause)) {
     init {
@@ -125,13 +125,13 @@ class ComposeTestFailureException(
 
     companion object {
         private fun createMessage(
-            context: ComposeContext,
+            context: ComposeContext?,
             cause: Throwable,
         ): String =
             "\nMessage: ${cause.message}" +
                 "\nOriginal class: ${cause.javaClass.name}\n\n" +
                 "================================ Logcat Output ================================\n${gatherInterceptedLogs()}\n" +
-                "================================ Current UI Nodes ================================\n${context.getScreenState()}\n\n" +
+                "================================ Current UI Nodes ================================\n${context?.getScreenState() ?: "Unknown"}\n\n" +
                 "================================ Stacktrace ================================"
     }
 }
