@@ -4,7 +4,7 @@
 
 package com.thebluefolderproject.leafbyte
 
-import com.thebluefolderproject.leafbyte.activity.LeafByteActivity2
+import com.thebluefolderproject.leafbyte.LeafByteActivity
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 class DataStoreBackedSettingsTest {
     @JvmField
     @RegisterExtension
-    val activityScenarioExtension = ActivityScenarioExtension.launch<LeafByteActivity2>()
+    val activityScenarioExtension = ActivityScenarioExtension.launch<LeafByteActivity>()
 
     val clock = TestClock()
 

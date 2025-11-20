@@ -1,10 +1,10 @@
-@file:Suppress("all")
 /**
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.activity
+package com.thebluefolderproject.leafbyte
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,20 +13,34 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.thebluefolderproject.leafbyte.activity.ui.theme.AndroidTheme
+import androidx.compose.ui.text.style.TextAlign
+import com.thebluefolderproject.leafbyte.activity.NavigationRoot
+import com.thebluefolderproject.leafbyte.activity.ui.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
 import org.opencv.android.OpenCVLoader
 
-class LeafByteActivity2 : ComponentActivity() {
+class LeafByteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        log("onCreate")
+        log("Initializing LeafByteActivity")
 
         if (!OpenCVLoader.initDebug()) {
-            throw RuntimeException("Failed to initialize OpenCV")
+            logError("Failed to initialize OpenCV")
+            return setContent {
+                Text(
+                    modifier = Modifier.fillMaxSize(),
+                    textAlign = TextAlign.Center,
+                    text =
+                        "\n\n\n" +
+                            "LeafByte failed to initialize OpenCV. Please report this crash to leafbyte@zoegp.science so we can fix it.",
+                )
+            }
         }
+        log("Initialized OpenCV")
 
         if (isGoogleSignInConfigured()) {
             log("Google Sign-In is configured")
@@ -38,18 +52,23 @@ class LeafByteActivity2 : ComponentActivity() {
             )
         }
 
-        enableEdgeToEdge()
         setContent {
-            AndroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            LeafByteTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
                     NavigationRoot(
                         modifier =
                             Modifier
                                 .fillMaxSize()
-                                .padding(innerPadding),
+                                .padding(paddingValues),
                     )
                 }
             }
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Changing the theme doesn't recreate the activity, so set the edge-to-edge values again
+        enableEdgeToEdge()
     }
 }
