@@ -128,10 +128,13 @@ class ComposeTestFailureException(
             context: ComposeContext?,
             cause: Throwable,
         ): String =
-            "\nMessage: ${cause.message}" +
-                "\nOriginal class: ${cause.javaClass.name}\n\n" +
-                "================================ Logcat Output ================================\n${gatherInterceptedLogs()}\n" +
-                "================================ Current UI Nodes ================================\n${context?.getScreenState() ?: "Unknown"}\n\n" +
+            "\n" +
+                "Message: ${cause.message}\n" +
+                "Original class: ${cause.javaClass.name}\n\n" +
+                "================================ Logcat Output ================================\n" +
+                "${gatherInterceptedLogs()}\n" +
+                "================================ Current UI Nodes ================================\n" +
+                "${context?.getScreenState() ?: "Unknown"}\n\n" +
                 "================================ Stacktrace ================================"
     }
 }

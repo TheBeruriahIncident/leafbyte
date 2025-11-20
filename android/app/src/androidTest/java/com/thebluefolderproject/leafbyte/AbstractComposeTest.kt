@@ -18,7 +18,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @OptIn(ExperimentalTestApi::class)
-@Suppress("style:UnnecessaryAbstractClass")
+@Suppress("style:ThrowsCount", "style:UnnecessaryAbstractClass")
 abstract class AbstractComposeTest(
     val navigateToCorrectScreen: ComposeContext.() -> Unit,
 ) {
@@ -66,7 +66,7 @@ abstract class AbstractComposeTest(
             if (throwable is ComposeTestFailureException) {
                 throw throwable
             } else {
-                throw ComposeTestFailureException(this, throwable)
+                throw ComposeTestFailureException(context = null, throwable)
             }
         }
     }
