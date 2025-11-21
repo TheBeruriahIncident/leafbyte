@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Abigail Getman-Pickering. All rights reserved.
+ */
+
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
@@ -213,10 +217,8 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.deprecated.navigation.fragment)
-    implementation(libs.constraintlayout)
     implementation(libs.constraintlayout.compose)
     implementation(libs.datastore)
-    implementation(libs.fragment)
     implementation(libs.collections)
     implementation("androidx.compose.animation:animation:1.9.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")

@@ -1,6 +1,8 @@
-@file:Suppress("ktlint:standard:max-line-length", "detekt:style:MagicNumber", "detekt:style:MaxLineLength")
+/*
+ * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
+ */
 
-// TO DO: missing copyrights
+@file:Suppress("ktlint:standard:max-line-length", "detekt:style:MagicNumber", "detekt:style:MaxLineLength")
 
 package com.thebluefolderproject.leafbyte.utils
 

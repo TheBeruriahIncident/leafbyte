@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Abigail Getman-Pickering. All rights reserved.
+ */
+
 @file:Suppress("all")
 /**
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.

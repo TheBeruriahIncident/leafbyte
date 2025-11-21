@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
+ */
+
 package com.thebluefolderproject.leafbyte
 
 class MainMenuComposeTest {

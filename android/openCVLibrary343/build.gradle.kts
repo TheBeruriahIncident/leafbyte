@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Abigail Getman-Pickering. All rights reserved.
+ */
+
 // we should probably update this library
 
 
