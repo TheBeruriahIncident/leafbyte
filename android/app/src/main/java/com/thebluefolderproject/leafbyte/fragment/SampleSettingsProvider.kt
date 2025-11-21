@@ -19,14 +19,18 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationResponse
 
 @Suppress("detekt:style:MagicNumber")
-open class SampleSettings : Settings {
-    override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.LOCAL)
+open class SampleSettings(
+    val dataSaveLocation: SaveLocation = SaveLocation.LOCAL,
+    val imageSaveLocation: SaveLocation = SaveLocation.GOOGLE_DRIVE,
+    val useBarcode: Boolean = true
+) : Settings {
+    override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(dataSaveLocation)
 
     override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) {
         TODO("Not yet implemented")
     }
 
-    override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.GOOGLE_DRIVE)
+    override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(imageSaveLocation)
 
     override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) {
         TODO("Not yet implemented")
@@ -66,7 +70,7 @@ open class SampleSettings : Settings {
         TODO("Not yet implemented")
     }
 
-    override fun getUseBarcode(): Flow<Boolean> = flowOf(true)
+    override fun getUseBarcode(): Flow<Boolean> = flowOf(useBarcode)
 
     override fun setUseBarcode(newUseBarcode: Boolean) {
         TODO("Not yet implemented")

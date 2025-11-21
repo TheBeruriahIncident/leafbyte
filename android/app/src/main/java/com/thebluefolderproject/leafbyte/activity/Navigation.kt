@@ -22,9 +22,9 @@ import androidx.core.net.toUri
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
-import com.thebluefolderproject.leafbyte.compose.NavigationAwareTutorialScreen
+import com.thebluefolderproject.leafbyte.compose.AppAwareTutorialScreen
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
-import com.thebluefolderproject.leafbyte.compose.MainMenuScreen
+import com.thebluefolderproject.leafbyte.compose.AppAwareMainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
 import com.thebluefolderproject.leafbyte.fragment.Settings
@@ -72,20 +72,14 @@ fun LeafByteNavigation(
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
-                is LeafByteNavKey.MainScreen ->
-                    NavEntry(key) {
-                        MainMenuScreen(
-                            openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
-                            startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
-                        )
-                    }
+                is LeafByteNavKey.MainScreen -> NavEntry(key) { AppAwareMainMenuScreen(backStack = backStack) }
 
                 is LeafByteNavKey.SettingsScreen ->
                     NavEntry(key) {
                         SettingsScreen2(injectedSettings = injectedSettings, injectedGoogleSignInManager = injectedGoogleSignInManager)
                     }
 
-                is LeafByteNavKey.Tutorial -> NavEntry(key) { NavigationAwareTutorialScreen(backStack = backStack) }
+                is LeafByteNavKey.Tutorial -> NavEntry(key) { AppAwareTutorialScreen(backStack = backStack) }
                 is LeafByteNavKey.BackgroundRemovalScreen ->
                     NavEntry(key) {
                         BackgroundRemovalScreen(

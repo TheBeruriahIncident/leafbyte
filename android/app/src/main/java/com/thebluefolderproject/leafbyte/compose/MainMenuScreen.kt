@@ -1,9 +1,4 @@
 /*
- * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
- */
-
-@file:Suppress("all")
-/**
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
@@ -29,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.activity.LeafByteNavKey
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.SampleSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
@@ -60,61 +57,41 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
+@Composable
+fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
+    val context = LocalContext.current
+    val settings = remember { DataStoreBackedSettings(context) }
+
+    MainMenuScreen(
+        settings = settings,
+        openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
+        startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
+    )
+}
+
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun MainMenuPreview() {
-    val settings =
-        object : SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.GOOGLE_DRIVE)
-
-            override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.LOCAL)
-
-            override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
-        }
-    ContextlessMainMenuScreen(settings, {}, {})
+    val settings = SampleSettings(useBarcode = false)
+    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun MainMenuWithBarcodesPreview() {
-    val settings =
-        object : SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.LOCAL)
-
-            override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
-
-            override fun getUseBarcode(): Flow<Boolean> = flowOf(true)
-        }
-    ContextlessMainMenuScreen(settings, {}, {})
+    val settings = SampleSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
+    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun MainMenuWithoutSavingPreview() {
-    val settings =
-        object : SampleSettings() {
-            override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
-
-            override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(SaveLocation.NONE)
-
-            override fun getUseBarcode(): Flow<Boolean> = flowOf(false)
-        }
-    ContextlessMainMenuScreen(settings, {}, {})
+    val settings = SampleSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
+    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
 }
 
 @Composable
 fun MainMenuScreen(
-    openSettings: () -> Unit,
-    startTutorial: () -> Unit,
-) {
-    val context = LocalContext.current
-    val settings = remember { DataStoreBackedSettings(context) }
-
-    ContextlessMainMenuScreen(settings, openSettings = openSettings, startTutorial = startTutorial)
-}
-
-@Composable
-fun ContextlessMainMenuScreen(
     settings: Settings,
     openSettings: () -> Unit,
     startTutorial: () -> Unit,

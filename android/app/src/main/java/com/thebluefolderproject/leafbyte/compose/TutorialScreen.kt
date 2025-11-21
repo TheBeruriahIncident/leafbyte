@@ -41,7 +41,7 @@ import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.resourceToUri
 
 @Composable
-fun NavigationAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
+fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
     TutorialScreen(
         onPressingBack = {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
