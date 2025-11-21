@@ -6,7 +6,7 @@ package com.thebluefolderproject.leafbyte
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
-import com.thebluefolderproject.leafbyte.activity.NavigationRoot
+import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
@@ -48,7 +48,7 @@ abstract class AbstractComposeTest(
                     initializeSettings(settings)
 
                     log("Starting up Compose app")
-                    NavigationRoot(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+                    LeafByteNavigation(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
                 }
 
                 log("Navigating to correct screen for specific test")

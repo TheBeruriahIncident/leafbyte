@@ -10,30 +10,81 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.minimumInteractiveComponentSize
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.get
 import androidx.core.graphics.set
+import com.thebluefolderproject.leafbyte.R
 import java.net.URL
 import java.nio.ByteBuffer
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppBar(
+    onPressingBack: () -> Unit,
+    onPressingHome: () -> Unit,
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    androidx.compose.material3.TopAppBar(
+        navigationIcon = {
+            TextButton(
+                onClick = onPressingBack,
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.material_design_symbol__arrow_back_ios_new_24px),
+                    tint = BUTTON_COLOR,
+                    contentDescription = "Back arrow",
+                )
+                Text("Back", color = BUTTON_COLOR)
+            }
+        },
+        title = {},
+        actions = {
+            IconButton(
+                onClick = onPressingHome,
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.home),
+                    tint = BUTTON_COLOR,
+                    contentDescription = "Home button",
+                )
+            }
+        },
+        scrollBehavior = scrollBehavior,
+    )
+}
 
 @Composable
 @Suppress("detekt:complexity:LongParameterList")
@@ -72,6 +123,7 @@ fun Text(
         fontSize = size.fontSize,
         fontWeight = if (bold) FontWeight.Bold else null,
         textAlign = textAlign,
+        lineHeight = size.fontSize,
     )
 }
 
@@ -239,4 +291,34 @@ fun createExampleImage2(): Bitmap {
     }
 
     return bitmap
+}
+
+fun PaddingValues.addToLeftAndRight(dp: Dp): PaddingValues =
+    PaddingValues.Absolute(
+        bottom = calculateBottomPadding(),
+        top = calculateTopPadding(),
+        left = calculateLeftPadding(LayoutDirection.Ltr) + dp,
+        right = calculateRightPadding(LayoutDirection.Ltr) + dp,
+    )
+
+@Composable
+fun AnnotatedString.Builder.appendLink(
+    anchorText: String,
+    url: String,
+) {
+    withLink(
+        link =
+            LinkAnnotation.Url(
+                url = url,
+                styles =
+                    TextLinkStyles(
+                        style =
+                            SpanStyle(
+                                color = BUTTON_COLOR,
+                            ),
+                    ),
+            ),
+    ) {
+        append(anchorText)
+    }
 }

@@ -31,12 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +43,7 @@ import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
+import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.coroutines.flow.Flow
@@ -151,21 +149,7 @@ fun ContextlessMainMenuScreen(
             Text(
                 text =
                     buildAnnotatedString {
-                        withLink(
-                            link =
-                                LinkAnnotation.Url(
-                                    url = "https://zoegp.science/leafbyte-faqs",
-                                    styles =
-                                        TextLinkStyles(
-                                            style =
-                                                SpanStyle(
-                                                    color = BUTTON_COLOR,
-                                                ),
-                                        ),
-                                ),
-                        ) {
-                            append("FAQs, Help, and Bug Reporting")
-                        }
+                        appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
                     },
             )
         }

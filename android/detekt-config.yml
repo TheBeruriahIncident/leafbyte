@@ -1,6 +1,8 @@
 complexity:
   TooManyFunctions:
     active: false
+    ignoreAnnotatedFunctions:
+      - 'Preview'
 config:
   validation: true
 empty-blocks:
@@ -16,6 +18,7 @@ style:
       - 'android.app.main.IconButton' # should use our fork
       - 'androidx.compose.material3.Text' # should use our wrapper
       - 'androidx.compose.material3.IconButton' # should use our fork
+      - 'androidx.compose.material3.TopAppBar' # should use our wrapper
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.jetbrains.annotations.VisibleForTesting' # standardize on Android's version that lets you specify the "proper" visibility
       - 'org.junit.Test' # use Junit 5

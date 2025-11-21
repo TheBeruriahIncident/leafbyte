@@ -18,53 +18,49 @@ import androidx.core.net.toUri
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
+import com.thebluefolderproject.leafbyte.compose.NavigationAwareTutorialScreen
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
 import com.thebluefolderproject.leafbyte.fragment.MainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
 import com.thebluefolderproject.leafbyte.fragment.Settings
-import com.thebluefolderproject.leafbyte.fragment.SettingsScreen
 import com.thebluefolderproject.leafbyte.fragment.SettingsScreen2
-import com.thebluefolderproject.leafbyte.fragment.TutorialScreen
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.log
 import kotlinx.serialization.Serializable
 
-sealed interface Screen : NavKey {
+sealed interface LeafByteNavKey : NavKey {
     @Serializable
-    data object MainScreen : Screen
+    data object MainScreen : LeafByteNavKey
     @Serializable
-    data object SettingsScreen : Screen
+    data object SettingsScreen : LeafByteNavKey
     @Serializable
-    data object Tutorial : Screen
+    data object Tutorial : LeafByteNavKey
     @Serializable
     data class BackgroundRemovalScreen(
         val originalImageUri: Uri,
-    ) : Screen
+    ) : LeafByteNavKey
     @Serializable
     data class ScaleIdentificationScreen(
         val thresholdedImageUri: Uri,
-    ) : Screen
+    ) : LeafByteNavKey
     @Serializable
     data class ResultsScreen(
         val thresholdedImageUri: Uri,
         val scaleMarks: List<Point>,
-    ) : Screen
+    ) : LeafByteNavKey
 }
 
 @Composable
-fun NavigationRoot(
+fun LeafByteNavigation(
     modifier: Modifier = Modifier,
     injectedSettings: Settings? = null,
     injectedGoogleSignInManager: GoogleSignInManager? = null,
 ) {
-    val backStack = remember { mutableStateListOf<Any>(Screen.MainScreen) }
+    val backStack = remember { mutableStateListOf<Any>(LeafByteNavKey.MainScreen) }
     val context = LocalContext.current
-
-    // TODO: hide and show properly
-    // supportActionBar!!.show()
 
     NavDisplay(
         modifier = modifier,
@@ -72,43 +68,42 @@ fun NavigationRoot(
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
-                is Screen.MainScreen ->
+                is LeafByteNavKey.MainScreen ->
                     NavEntry(key) {
                         MainMenuScreen(
-                            openSettings = { backStack.add(Screen.SettingsScreen) },
-                            startTutorial = { backStack.add(Screen.Tutorial) },
+                            openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
+                            startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
                         )
                     }
 
-                is Screen.SettingsScreen ->
+                is LeafByteNavKey.SettingsScreen ->
                     NavEntry(key) {
                         SettingsScreen2(injectedSettings = injectedSettings, injectedGoogleSignInManager = injectedGoogleSignInManager)
                     }
 
-                is Screen.Tutorial ->
-                    NavEntry(key) {
-                        TutorialScreen(onPressingNext = { uri -> backStack.add(Screen.BackgroundRemovalScreen(uri)) })
-                    }
-                is Screen.BackgroundRemovalScreen ->
+                is LeafByteNavKey.Tutorial -> NavEntry(key) { NavigationAwareTutorialScreen(backStack = backStack) }
+                is LeafByteNavKey.BackgroundRemovalScreen ->
                     NavEntry(key) {
                         BackgroundRemovalScreen(
                             originalImage = loadUri(key.originalImageUri, context = context),
                             onPressingNext = { thresholdedImage ->
                                 val uri = saveCurrentThresholdedImage(context = context, bitmap = thresholdedImage)
-                                backStack.add(Screen.ScaleIdentificationScreen(uri))
+                                backStack.add(LeafByteNavKey.ScaleIdentificationScreen(uri))
                             },
                         )
                     }
-                is Screen.ScaleIdentificationScreen ->
+                is LeafByteNavKey.ScaleIdentificationScreen ->
                     NavEntry(key) {
                         ScaleIdentificationScreen(
                             loadUri(context = context, uri = key.thresholdedImageUri),
                             { scaleMarks ->
-                                backStack.add(Screen.ResultsScreen(thresholdedImageUri = key.thresholdedImageUri, scaleMarks = scaleMarks))
+                                backStack.add(
+                                    LeafByteNavKey.ResultsScreen(thresholdedImageUri = key.thresholdedImageUri, scaleMarks = scaleMarks),
+                                )
                             },
                         )
                     }
-                is Screen.ResultsScreen ->
+                is LeafByteNavKey.ResultsScreen ->
                     NavEntry(key) {
                         ResultsScreen(loadUri(context = context, uri = key.thresholdedImageUri), { })
                     }
