@@ -295,14 +295,6 @@ fun createExampleImage2(): Bitmap {
     return bitmap
 }
 
-fun PaddingValues.addToLeftAndRight(dp: Dp): PaddingValues =
-    PaddingValues.Absolute(
-        bottom = calculateBottomPadding(),
-        top = calculateTopPadding(),
-        left = calculateLeftPadding(LayoutDirection.Ltr) + dp,
-        right = calculateRightPadding(LayoutDirection.Ltr) + dp,
-    )
-
 @Composable
 fun AnnotatedString.Builder.appendLink(
     anchorText: String,
