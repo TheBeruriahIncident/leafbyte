@@ -16,6 +16,7 @@ import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.mockk
 import org.junit.jupiter.api.extension.RegisterExtension
+import org.opencv.android.OpenCVLoader
 
 @OptIn(ExperimentalTestApi::class)
 @Suppress("style:ThrowsCount", "style:UnnecessaryAbstractClass")
@@ -32,6 +33,7 @@ abstract class AbstractComposeTest(
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
         initializeLogInterception()
+        check(OpenCVLoader.initDebug(), { "OpenCV failed to initialize" })
 
         try {
             log("Setting up Compose test")

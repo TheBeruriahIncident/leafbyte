@@ -5,6 +5,7 @@
 package com.thebluefolderproject.leafbyte.compose
 
 import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,7 +44,12 @@ import com.thebluefolderproject.leafbyte.utils.resourceToUri
 fun NavigationAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
     TutorialScreen(
         onPressingBack = {
-            backStack.removeLast()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                // Javadoc doesn't say this is only from API 35, but the linter does, and CI fails otherwise
+                backStack.removeLast()
+            } else {
+                backStack.removeAt(backStack.lastIndex)
+            }
         },
         onPressingHome = {
             backStack.clear()

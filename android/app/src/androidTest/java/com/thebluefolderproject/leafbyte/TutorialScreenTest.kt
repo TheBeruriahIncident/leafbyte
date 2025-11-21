@@ -8,8 +8,14 @@ import org.junit.jupiter.api.Test
 class TutorialScreenTest : AbstractComposeTest {
     constructor() : super(navigateToCorrectScreen = {
         onNodeWithText("Tutorial").performClick()
-        onNodeWithText("We use images", substring = true).assertExists()
     })
+
+    @Test
+    fun testTutorialAppears() {
+        runTest { _, _ ->
+            onNodeWithText("We use images", substring = true).assertExists()
+        }
+    }
 
     @Test
     fun testBack() {
@@ -22,7 +28,7 @@ class TutorialScreenTest : AbstractComposeTest {
     @Test
     fun testHome() {
         runTest { _, _ ->
-            onNodeWithContentDescription("Home Button").performClick()
+            onNodeWithContentDescription("Home button").performClick()
             onNodeWithText("Settings").assertExists()
         }
     }
