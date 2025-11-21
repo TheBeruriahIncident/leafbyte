@@ -24,7 +24,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.thebluefolderproject.leafbyte.compose.NavigationAwareTutorialScreen
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
-import com.thebluefolderproject.leafbyte.fragment.MainMenuScreen
+import com.thebluefolderproject.leafbyte.compose.MainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
 import com.thebluefolderproject.leafbyte.fragment.Settings

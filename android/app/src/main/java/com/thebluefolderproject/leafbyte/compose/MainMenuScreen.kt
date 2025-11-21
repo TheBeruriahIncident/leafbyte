@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Abigail Getman-Pickering. All rights reserved.
+ * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
  */
 
 @file:Suppress("all")
@@ -7,7 +7,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.compose
 
 import android.content.Context
 import android.content.Intent
@@ -44,6 +44,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.fragment.SampleSettings
+import com.thebluefolderproject.leafbyte.fragment.SaveLocation
+import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
