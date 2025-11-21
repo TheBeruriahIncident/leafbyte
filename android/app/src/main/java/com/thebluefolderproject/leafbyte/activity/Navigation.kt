@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
+ */
+
 @file:Suppress("all")
 
 package com.thebluefolderproject.leafbyte.activity

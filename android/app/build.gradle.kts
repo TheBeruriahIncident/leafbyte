@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Abigail Getman-Pickering. All rights reserved.
+ */
+
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat

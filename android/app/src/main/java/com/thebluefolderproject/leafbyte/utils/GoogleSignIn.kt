@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
+ */
+
 @file:Suppress("ktlint:standard:no-wildcard-imports", "detekt:style:WildcardImport")
 
 package com.thebluefolderproject.leafbyte.utils

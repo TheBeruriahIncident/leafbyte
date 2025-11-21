@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
+ */
+
 package com.thebluefolderproject.leafbyte
 
 import androidx.compose.ui.test.onNodeWithContentDescription
