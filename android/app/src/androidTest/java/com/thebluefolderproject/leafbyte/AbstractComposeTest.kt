@@ -6,7 +6,7 @@ package com.thebluefolderproject.leafbyte
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
-import com.thebluefolderproject.leafbyte.activity.NavigationRoot
+import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
@@ -16,6 +16,7 @@ import de.mannodermaus.junit5.compose.ComposeContext
 import de.mannodermaus.junit5.compose.createComposeExtension
 import io.mockk.mockk
 import org.junit.jupiter.api.extension.RegisterExtension
+import org.opencv.android.OpenCVLoader
 
 @OptIn(ExperimentalTestApi::class)
 @Suppress("style:ThrowsCount", "style:UnnecessaryAbstractClass")
@@ -32,6 +33,7 @@ abstract class AbstractComposeTest(
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
         initializeLogInterception()
+        check(OpenCVLoader.initDebug(), { "OpenCV failed to initialize" })
 
         try {
             log("Setting up Compose test")
@@ -48,7 +50,7 @@ abstract class AbstractComposeTest(
                     initializeSettings(settings)
 
                     log("Starting up Compose app")
-                    NavigationRoot(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+                    LeafByteNavigation(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
                 }
 
                 log("Navigating to correct screen for specific test")

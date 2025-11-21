@@ -39,7 +39,7 @@ import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class SettingsComposeTest : AbstractComposeTest {
+class SettingsScreenTest : AbstractComposeTest {
     constructor() : super(navigateToCorrectScreen = {
         onNodeWithText("Settings").performClick()
     })

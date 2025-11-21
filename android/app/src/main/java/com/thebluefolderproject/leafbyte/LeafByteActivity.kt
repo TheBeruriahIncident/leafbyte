@@ -10,11 +10,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.thebluefolderproject.leafbyte.activity.NavigationRoot
+import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.activity.ui.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
@@ -54,14 +52,7 @@ class LeafByteActivity : ComponentActivity() {
 
         setContent {
             LeafByteTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-                    NavigationRoot(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(paddingValues),
-                    )
-                }
+                LeafByteNavigation()
             }
         }
     }

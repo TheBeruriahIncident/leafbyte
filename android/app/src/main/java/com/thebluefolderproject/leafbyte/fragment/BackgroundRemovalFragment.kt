@@ -354,6 +354,7 @@ fun LogiclessBackgroundRemovalScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
+        Text("Background Removal")
         Image(
             bitmap = thresholdedImage.value.asImageBitmap(),
             modifier =
