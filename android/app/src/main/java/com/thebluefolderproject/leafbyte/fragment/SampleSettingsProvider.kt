@@ -22,7 +22,7 @@ import net.openid.appauth.AuthorizationResponse
 open class SampleSettings(
     val dataSaveLocation: SaveLocation = SaveLocation.LOCAL,
     val imageSaveLocation: SaveLocation = SaveLocation.GOOGLE_DRIVE,
-    val useBarcode: Boolean = true
+    val useBarcode: Boolean = true,
 ) : Settings {
     override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(dataSaveLocation)
 

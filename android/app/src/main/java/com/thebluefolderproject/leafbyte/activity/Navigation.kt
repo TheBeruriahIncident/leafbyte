@@ -22,9 +22,9 @@ import androidx.core.net.toUri
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
+import com.thebluefolderproject.leafbyte.compose.AppAwareMainMenuScreen
 import com.thebluefolderproject.leafbyte.compose.AppAwareTutorialScreen
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
-import com.thebluefolderproject.leafbyte.compose.AppAwareMainMenuScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
 import com.thebluefolderproject.leafbyte.fragment.Settings

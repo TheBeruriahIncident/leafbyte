@@ -37,7 +37,6 @@ import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.TopAppBar
-import com.thebluefolderproject.leafbyte.utils.addToLeftAndRight
 import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.resourceToUri
 

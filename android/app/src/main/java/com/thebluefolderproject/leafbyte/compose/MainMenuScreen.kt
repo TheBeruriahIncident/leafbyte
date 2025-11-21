@@ -51,8 +51,6 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -79,7 +77,8 @@ fun MainMenuPreview() {
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 fun MainMenuWithBarcodesPreview() {
-    val settings = SampleSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
+    val settings =
+        SampleSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
     MainMenuScreen(settings, openSettings = {}, startTutorial = {})
 }
 
