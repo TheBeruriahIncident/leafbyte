@@ -16,6 +16,10 @@ naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
 style:
+  AlsoCouldBeApply:
+    active: true
+  DoubleNegativeLambda:
+    active: true
   ForbiddenImport:
     active: true
     imports:
@@ -41,7 +45,10 @@ style:
       - 'android.util.Log.println'
   MaxLineLength:
     maxLineLength: 140
+  NoTabs:
+    active: true
   UnusedPrivateMember:
     ignoreAnnotated:
       - 'Preview'
 # TODO make ForbiddenComment detect TODO without a colon
+# TODO enable other inactive rules
