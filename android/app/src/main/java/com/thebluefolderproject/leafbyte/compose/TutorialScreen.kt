@@ -70,7 +70,7 @@ private fun TutorialScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("complexity:LongMethod")
 @Composable
-fun TutorialScreen(
+private fun TutorialScreen(
     onPressingBack: () -> Unit,
     onPressingHome: () -> Unit,
     onPressingNext: (exampleImageUri: Uri) -> Unit,
@@ -83,13 +83,13 @@ fun TutorialScreen(
         topBar = {
             TopAppBar(onPressingBack = onPressingBack, onPressingHome = onPressingHome)
         },
-    ) { paddingValues ->
+    ) { scaffoldPaddingValues ->
         Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(paddingValues)
+                    .padding(scaffoldPaddingValues)
                     .absolutePadding(left = 15.dp, right = 15.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.Start,

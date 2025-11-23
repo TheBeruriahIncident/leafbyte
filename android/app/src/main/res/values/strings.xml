@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
+  -->
+
+<resources>
+    <string
+        name="file_provider_authority"
+        >"com.thebluefolderproject.leafbyte.fileprovider"</string>
+</resources>

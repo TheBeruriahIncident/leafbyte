@@ -4,29 +4,37 @@
 
 package com.thebluefolderproject.leafbyte.compose
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -46,238 +54,225 @@ import com.thebluefolderproject.leafbyte.fragment.SampleSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
+import com.thebluefolderproject.leafbyte.utils.GetGalleryImage
+import com.thebluefolderproject.leafbyte.utils.TakePhoto
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.appendLink
+import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
+import com.thebluefolderproject.leafbyte.utils.hasCamera
 import com.thebluefolderproject.leafbyte.utils.log
+import com.thebluefolderproject.leafbyte.utils.logError
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
+
+enum class AlertType {
+    FAILED_TO_TAKE_PHOTO,
+    FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY,
+    TAKING_PHOTO_WITHOUT_CAMERA,
+    ;
+}
 
 @Composable
 fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     val context = LocalContext.current
     val settings = remember { DataStoreBackedSettings(context) }
 
+    val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(null) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = GetGalleryImage(),
+        onResult = { (resultCode, imageUri) ->
+            when(resultCode) {
+                Activity.RESULT_OK -> {
+                    log("Successfully chose image: $imageUri")
+                    if (imageUri != null) {
+                        backStack.add(LeafByteNavKey.BackgroundRemovalScreen(originalImageUri = imageUri))
+                    } else {
+                        // This case is currently only theoretical
+                        logError("Despite an OK result code, no image uri was returned from gallery")
+                        currentAlert.value = AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    log("Choosing an image was canceled")
+                    // This is not an error, we just return to the main menu
+                }
+                // We should make more specific errors as we learn what error codes are possible
+                else -> {
+                    logError("Failed to choose image: $resultCode")
+                    currentAlert.value = AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY
+                }
+            }
+        }
+    )
+
+    val hasCamera = hasCamera()
+    // on startup, we already validated that this uri can be created
+    val cameraPhotoUri = remember { getCameraPhotoUri(context) }
+
+    val cameraLauncher =
+        rememberLauncherForActivityResult(contract = TakePhoto(),
+            onResult = { resultCode ->
+                when(resultCode) {
+                    Activity.RESULT_OK -> {
+                        log("Successfully took photo: $cameraPhotoUri")
+                        backStack.add(LeafByteNavKey.BackgroundRemovalScreen(originalImageUri = cameraPhotoUri))
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        log("Taking a photo was canceled")
+                        // This is not an error, we just return to the main menu
+                    }
+                    // We should make more specific errors as we learn what error codes are possible
+                    else -> {
+                        logError("Failed to take photo: $resultCode")
+                        currentAlert.value = AlertType.FAILED_TO_TAKE_PHOTO
+                    }
+                }
+            })
+
     MainMenuScreen(
         settings = settings,
         openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
         startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
+        chooseFromGallery = {
+            log("Launching intent to pick an image from the gallery")
+            galleryLauncher.launch(Unit)
+        },
+        takeAPhoto = {
+            if (hasCamera) {
+                log("Launching intent to take a photo")
+                cameraLauncher.launch(cameraPhotoUri)
+            } else {
+                log("Attempting to take photo without camera")
+                currentAlert.value = AlertType.TAKING_PHOTO_WITHOUT_CAMERA
+            }
+         },
     )
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
-fun MainMenuPreview() {
+private fun MainMenuPreview() {
     val settings = SampleSettings(useBarcode = false)
-    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
+    PreviewableMainMenuScreen(settings)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
-fun MainMenuWithBarcodesPreview() {
+private fun MainMenuWithBarcodesPreview() {
     val settings =
         SampleSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
-    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
+    PreviewableMainMenuScreen(settings)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
-fun MainMenuWithoutSavingPreview() {
+private fun MainMenuWithoutSavingPreview() {
     val settings = SampleSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
-    MainMenuScreen(settings, openSettings = {}, startTutorial = {})
+    PreviewableMainMenuScreen(settings)
 }
 
 @Composable
-fun MainMenuScreen(
+private fun PreviewableMainMenuScreen(settings: Settings) {
+    MainMenuScreen(settings, openSettings = {}, startTutorial = {}, chooseFromGallery = {}, takeAPhoto = {})
+}
+
+@Composable
+private fun MainMenuScreen(
     settings: Settings,
     openSettings: () -> Unit,
     startTutorial: () -> Unit,
+    chooseFromGallery: () -> Unit,
+    takeAPhoto: () -> Unit,
 ) {
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            TextButton(
-                onClick = { startTutorial() },
-            ) {
-                Text("Tutorial", color = BUTTON_COLOR)
-            }
-            TextButton(
-                onClick = { openSettings() },
-            ) {
-                Text("Settings", color = BUTTON_COLOR)
-            }
-        }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+    ) { scaffoldPaddingValues ->
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = scaffoldPaddingValues)
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 15.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.leafimage),
-                contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
-                Modifier.fillMaxWidth(.3f),
-            )
-            Text(text = "LeafByte", size = TextSize.MAIN_TITLE)
-            Text(text = "Abigail & Zoe")
-            Text(text = "Getman-Pickering")
-            Text(
-                text =
-                    buildAnnotatedString {
-                        appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
-                    },
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceAround,
-        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                TextButton(
+                    onClick = { startTutorial() },
+                ) {
+                    Text("Tutorial", color = BUTTON_COLOR)
+                }
+                TextButton(
+                    onClick = { openSettings() },
+                ) {
+                    Text("Settings", color = BUTTON_COLOR)
+                }
+            }
             Column(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.galleryicon),
-                    contentDescription = "Image gallery icon",
-                    Modifier
-                        .fillMaxWidth(.3f),
-                    // .clickable { chooseImageFromGallery() },
+                    painter = painterResource(id = R.drawable.leafimage),
+                    contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
+                    Modifier.fillMaxWidth(.36f),
                 )
+                Text(text = "LeafByte", size = TextSize.MAIN_TITLE)
+                Text(text = "Abigail & Zoe")
+                Text(text = "Getman-Pickering")
                 Text(
-                    "Choose from Gallery",
-                    // modifier = Modifier.clickable { chooseImageFromGallery() }
+                    text =
+                        buildAnnotatedString {
+                            appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
+                        },
                 )
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                // modifier = Modifier.clickable { takeAPhoto() },
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.camera),
-                    contentDescription = "Camera icon",
-                    Modifier.fillMaxWidth(.3f),
+                GetImageButton(
+                    imageResourceId = R.drawable.galleryicon,
+                    contentDescription = "Image gallery icon",
+                    onClick = chooseFromGallery,
+                    displayedDescription = "Choose from Gallery",
                 )
-                Text("Take a Photo")
+                GetImageButton(
+                    imageResourceId = R.drawable.camera,
+                    contentDescription = "Camera icon",
+                    onClick = takeAPhoto,
+                    displayedDescription = "Take a Photo",
+                )
             }
+            Text(
+                text = getSaveLocationsDescription(settings),
+                textAlign = TextAlign.Center,
+                size = TextSize.FOOTNOTE,
+            )
         }
-        Text(
-            text = getSaveLocationsDescription(settings),
-            textAlign = TextAlign.Center,
-            size = TextSize.FOOTNOTE,
+    }
+}
+
+@Composable
+private fun GetImageButton(imageResourceId: Int, contentDescription: String, onClick: () -> Unit, displayedDescription: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(id = imageResourceId),
+            contentDescription = contentDescription,
+            Modifier
+                .fillMaxWidth(.3f)
+                .clip(CircleShape)
+                .clickable(onClick = onClick),
         )
-    }
-}
-
-private fun chooseImageFromGallery(context: Context) {
-    startActivity(
-        MainMenuUtils.IMAGE_PICKER_INTENT,
-        MainMenuUtils.IMAGE_PICKER_REQUEST_CODE,
-        "choose an image",
-        context,
-    )
-}
-
-var uri: Uri? = null
-
-private fun takeAPhoto(context: Context) {
-    if (!context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-        showAlert(
-            "No camera found",
-            "Could not take a photo: no camera was found. Try selecting an existing image instead.",
-            context,
-        )
-        return
-    }
-
-    uri = MainMenuUtils.createImageUri(context = context)
-    startActivity(
-        MainMenuUtils.createCameraIntent(uri!!),
-        MainMenuUtils.CAMERA_REQUEST_CODE,
-        "take a photo",
-        context,
-    )
-}
-
-fun startActivity(
-    intent: Intent,
-    requestCode: Int,
-    actionDescription: String,
-    context: Context,
-) {
-    if (intent.resolveActivity(context.packageManager) == null) {
-        showAlert(
-            "Could not $actionDescription",
-            "Could not $actionDescription: no app was found supporting that action.",
-            context,
-        )
-        return
-    }
-
-//    startActivityForResult(intent, requestCode)
-}
-
-fun showAlert(
-    title: String,
-    message: String,
-    context: Context,
-) {
-    AlertDialog
-        .Builder(context)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-        .show()
-}
-
-fun onActivityResult(
-    requestCode: Int,
-    resultCode: Int,
-    data: Intent?,
-) {
-    log("onActivityResult " + resultCode)
-    when (resultCode) {
-        AppCompatActivity.RESULT_OK -> {
-            if (data == null) {
-                throw IllegalArgumentException("Intent data is null")
-            }
-
-            processActivityResultData(requestCode, data)
-        }
-
-        AppCompatActivity.RESULT_CANCELED -> {
-        }
-
-        else -> throw IllegalArgumentException("Result code: $resultCode")
-    }
-}
-
-private fun processActivityResultData(
-    requestCode: Int,
-    data: Intent,
-) {
-    log("Request succesful " + requestCode)
-    when (requestCode) {
-        MainMenuUtils.IMAGE_PICKER_REQUEST_CODE -> {
-            val imageUri = MainMenuUtils.intentToUri(data)
-
-//            listener!!.onImageSelection(imageUri)
-        }
-
-        MainMenuUtils.CAMERA_REQUEST_CODE -> {
-            // no meaningful response??
-//            listener!!.onImageSelection(uri!!)
-        }
-
-        else -> throw IllegalArgumentException("Request code: $requestCode")
+        Text(displayedDescription)
     }
 }
 
@@ -347,60 +342,3 @@ private fun saveLocationToDescription(saveLocation: SaveLocation): String =
         SaveLocation.LOCAL -> "My Files"
         SaveLocation.GOOGLE_DRIVE -> "Google Drive"
     }
-
-@Suppress("all")
-object MainMenuUtils {
-    const val IMAGE_PICKER_REQUEST_CODE = 1
-    const val CAMERA_REQUEST_CODE = 2
-
-    val IMAGE_PICKER_INTENT by lazy {
-        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
-        with(intent) {
-            // API level 19 added the ability to request any of multiple MIME types
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                type = API_19_ACCEPTED_MIME_TYPE_RANGE
-                putExtra(Intent.EXTRA_MIME_TYPES, API_19_ACCEPTED_MIME_TYPES)
-            } else {
-                type = PRE_API_19_ACCEPTED_MIME_TYPE
-            }
-        }
-
-        intent
-    }
-
-    private const val PRE_API_19_ACCEPTED_MIME_TYPE = "image/jpeg"
-    private const val API_19_ACCEPTED_MIME_TYPE_RANGE = "image/*"
-    private val API_19_ACCEPTED_MIME_TYPES =
-        arrayOf(
-            PRE_API_19_ACCEPTED_MIME_TYPE,
-            "image/png",
-            "image/bmp",
-        )
-
-    fun intentToUri(data: Intent): Uri {
-        if (data.data == null) {
-            throw IllegalStateException("Intent data is null")
-        }
-        return data.data!!
-    }
-
-    fun createCameraIntent(photoURI: Uri): Intent =
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-        }
-
-    fun createImageUri(context: Context): Uri {
-        val imageFile = createImageFile(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
-        return FileProvider.getUriForFile(
-            context,
-            "com.thebluefolderproject.leafbyte.fileprovider",
-            imageFile,
-        )
-    }
-
-    private fun createImageFile(externalFilesDir: File): File {
-        val timestamp: String = SimpleDateFormat("yyyyMMdd HHmmss").format(Date())
-        return externalFilesDir.resolve(timestamp).apply { createNewFile() }
-    }
-}

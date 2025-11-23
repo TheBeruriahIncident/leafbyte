@@ -2,7 +2,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.compose
 
 class MainMenuComposeTest {
     // TODO once we factor to pure compose to fix some listener weirdness
