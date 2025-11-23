@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
@@ -15,12 +15,14 @@ import androidx.compose.ui.text.style.TextAlign
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.activity.ui.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.Text
+import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
 import com.thebluefolderproject.leafbyte.utils.isGoogleSignInConfigured
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
 import org.opencv.android.OpenCVLoader
 
 class LeafByteActivity : ComponentActivity() {
+    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive for all ways startup could fail
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -39,6 +41,23 @@ class LeafByteActivity : ComponentActivity() {
             }
         }
         log("Initialized OpenCV")
+
+        try {
+            getCameraPhotoUri(context = applicationContext)
+        } catch (exception: RuntimeException) {
+            logError("Failed to initialize uri for taking photos", exception)
+            return setContent {
+                Text(
+                    modifier = Modifier.fillMaxSize(),
+                    textAlign = TextAlign.Center,
+                    text =
+                        "\n\n\n" +
+                            "LeafByte failed to access storage. Is your storage full, or is there some other explanation? Please report " +
+                            "this crash to leafbyte@zoegp.science so we can fix it.",
+                )
+            }
+        }
+        log("Initialized uri for taking photos")
 
         if (isGoogleSignInConfigured()) {
             log("Google Sign-In is configured")

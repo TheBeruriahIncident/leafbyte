@@ -85,10 +85,9 @@ fun assertClosesApp(actionThatShouldCloseApp: () -> Unit) {
  * Ideally we would have done something like https://www.braze.com/resources/articles/logcat-junit-android-tests and drawn logs directly
  *   from logcat, but I've had no success execing logcat from here. That approach may no longer be possible with Android's security model
  */
-@Suppress("detekt:potential-bugs:DoubleMutabilityForCollection")
-var interceptedLogs = mutableListOf<String>()
+val interceptedLogs = mutableListOf<String>()
 fun initializeLogInterception() {
-    interceptedLogs = mutableListOf()
+    interceptedLogs.clear()
     registerLogInterceptor { interceptedLogs.add(it) }
 }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,12 +37,11 @@ import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.TopAppBar
-import com.thebluefolderproject.leafbyte.utils.addToLeftAndRight
 import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.resourceToUri
 
 @Composable
-fun NavigationAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
+fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
     TutorialScreen(
         onPressingBack = {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
@@ -68,9 +68,9 @@ private fun TutorialScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("complexity:LongMethod")
+@Suppress("detekt:complexity:LongMethod")
 @Composable
-fun TutorialScreen(
+private fun TutorialScreen(
     onPressingBack: () -> Unit,
     onPressingHome: () -> Unit,
     onPressingNext: (exampleImageUri: Uri) -> Unit,
@@ -83,13 +83,14 @@ fun TutorialScreen(
         topBar = {
             TopAppBar(onPressingBack = onPressingBack, onPressingHome = onPressingHome)
         },
-    ) { paddingValues ->
+    ) { scaffoldPaddingValues ->
         Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(paddingValues.addToLeftAndRight(15.dp)),
+                    .padding(scaffoldPaddingValues)
+                    .absolutePadding(left = 15.dp, right = 15.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.Start,
         ) {

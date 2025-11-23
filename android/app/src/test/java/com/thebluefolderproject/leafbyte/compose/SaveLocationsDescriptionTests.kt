@@ -1,11 +1,10 @@
-/**
+/*
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.compose
 
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.fragment.getSaveLocationsDescription
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContains
 
