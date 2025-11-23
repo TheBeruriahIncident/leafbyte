@@ -40,14 +40,14 @@ class MainMenuScreenTests : AbstractComposeTests {
     @Test
     fun testSaveLocationsDescription() {
         runTest { _, _ ->
-            onNodeWithText("Saving data and images to My Files under the name Test dataset name.").assertExists()
+            onNodeWithText("Saving data and images to My Files under the name Herbivory Data.").assertExists()
 
             onNodeWithText("Settings").performClick()
             onNodeWithContentDescription("Set Image Save Location to None").performClick()
             Espresso.pressBack()
 
             onNodeWithText(
-                "Saving data to My Files under the name Test dataset name.\nImages are not being saved. Go to Settings to change.",
+                "Saving data to My Files under the name Herbivory Data.\nImages are not being saved. Go to Settings to change.",
             ).assertExists()
         }
     }
