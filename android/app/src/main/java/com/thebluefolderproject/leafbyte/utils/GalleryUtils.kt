@@ -14,12 +14,12 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavKey
-import com.thebluefolderproject.leafbyte.compose.AlertType
+import com.thebluefolderproject.leafbyte.compose.MainMenuAlertType
 
 @Composable
 fun getGalleryLauncher(
     backStack: SnapshotStateList<Any>,
-    setAlert: (AlertType) -> Unit,
+    setAlert: (MainMenuAlertType) -> Unit,
 ): ManagedActivityResultLauncher<Unit, Pair<Int, Uri?>> =
     rememberLauncherForActivityResult(
         contract = GetGalleryImageContract(),
@@ -32,7 +32,7 @@ fun getGalleryLauncher(
                     } else {
                         // This case is currently only theoretical
                         logError("Despite an OK result code, no image uri was returned from gallery")
-                        setAlert(AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY)
+                        setAlert(MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY)
                     }
                 }
                 Activity.RESULT_CANCELED -> {
@@ -42,7 +42,7 @@ fun getGalleryLauncher(
                 // We should make more specific errors as we learn what error codes are possible
                 else -> {
                     logError("Failed to choose image: $resultCode")
-                    setAlert(AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY)
+                    setAlert(MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY)
                 }
             }
         },

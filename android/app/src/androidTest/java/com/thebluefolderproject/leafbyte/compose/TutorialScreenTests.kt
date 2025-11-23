@@ -12,11 +12,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performFirstLinkClick
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
-import com.thebluefolderproject.leafbyte.AbstractComposeTest
 import org.hamcrest.core.AllOf
 import org.junit.jupiter.api.Test
 
-class TutorialScreenTest : AbstractComposeTest {
+class TutorialScreenTests : AbstractComposeTests {
     constructor() : super(navigateToCorrectScreen = {
         onNodeWithText("Tutorial").performClick()
     })

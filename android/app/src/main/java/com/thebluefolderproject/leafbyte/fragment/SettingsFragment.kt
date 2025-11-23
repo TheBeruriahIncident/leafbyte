@@ -5,6 +5,7 @@
 package com.thebluefolderproject.leafbyte.fragment
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +18,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,7 +29,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -56,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.compose.Alert
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManagerImpl
@@ -63,7 +60,6 @@ import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
-import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
@@ -71,29 +67,6 @@ import net.openid.appauth.AuthState
 
 private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
 private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
-
-enum class AlertType {
-    BACK_WITHOUT_DATASET_NAME,
-    GOOGLE_SIGN_IN_UNCONFIGURED,
-    GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
-    GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
-    GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
-    GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
-    GOOGLE_SIGN_IN_NEITHER_SCOPE,
-    ;
-
-    companion object {
-        fun from(signInFailureType: GoogleSignInFailureType): AlertType =
-            when (signInFailureType) {
-                GoogleSignInFailureType.UNCONFIGURED -> GOOGLE_SIGN_IN_UNCONFIGURED
-                GoogleSignInFailureType.NON_INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE
-                GoogleSignInFailureType.INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE
-                GoogleSignInFailureType.NO_GET_USER_ID_SCOPE -> GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE
-                GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE -> GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE
-                GoogleSignInFailureType.NEITHER_SCOPE -> GOOGLE_SIGN_IN_NEITHER_SCOPE
-            }
-    }
-}
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
 @Composable
@@ -108,7 +81,7 @@ private fun SettingsScreenPreview() {
 private fun SettingsScreenWithAlertPreview() {
     val settings = SampleSettings()
     val googleSignInManager = SampleGoogleSignInManager()
-    SettingsScreen(settings, googleSignInManager, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+    SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
 }
 
 @Composable
@@ -130,14 +103,14 @@ fun SettingsScreen(
     settings: Settings,
     googleSignInManager: GoogleSignInManager,
     // exposed for @Previews
-    initialAlert: AlertType? = null,
+    initialAlert: SettingsAlertType? = null,
 ) {
     // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
     val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
 
-    val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(initialAlert) }
+    val currentAlert: MutableState<SettingsAlertType?> = remember { mutableStateOf(initialAlert) }
 
     val dataSaveLocationDisplayValue = remember { mutableStateOf(settings.getDataSaveLocation().load()) }
     val imageSaveLocationDisplayValue = remember { mutableStateOf(settings.getImageSaveLocation().load()) }
@@ -161,7 +134,7 @@ fun SettingsScreen(
             fullySetImageSaveLocation(SaveLocation.LOCAL)
         }
 
-        currentAlert.value = AlertType.from(failure)
+        currentAlert.value = SettingsAlertType.from(failure)
     }
     val imageSaveToGoogleSuccess = {
         fullySetImageSaveLocation(SaveLocation.GOOGLE_DRIVE)
@@ -174,7 +147,7 @@ fun SettingsScreen(
             fullySetDataSaveLocation(SaveLocation.LOCAL)
         }
 
-        currentAlert.value = AlertType.from(failure)
+        currentAlert.value = SettingsAlertType.from(failure)
     }
 
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
@@ -191,11 +164,11 @@ fun SettingsScreen(
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
 
     MaterialTheme {
-        // need to figure where to put theming
+        // TODO need to figure where to put theming
         BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
-            currentAlert.value = AlertType.BACK_WITHOUT_DATASET_NAME
+            currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
         }
-        Alert(currentAlert)
+        Alert(currentAlert = currentAlert, getAlertTitle = { getAlertTitle(it) }, getAlertMessage = { getAlertMessage(it) })
 
         Column(
             modifier =
@@ -277,87 +250,66 @@ fun SettingsScreen(
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun Alert(currentAlert: MutableState<AlertType?>) {
-    if (currentAlert.value == null) {
-        return
-    }
-    log("Displaying settings screen alert for ${currentAlert.value}")
+enum class SettingsAlertType {
+    BACK_WITHOUT_DATASET_NAME,
+    GOOGLE_SIGN_IN_UNCONFIGURED,
+    GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
+    GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
+    GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
+    GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
+    GOOGLE_SIGN_IN_NEITHER_SCOPE,
+    ;
 
-    BasicAlertDialog(
-        onDismissRequest = { currentAlert.value = null },
-    ) {
-        Surface(
-            modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-            shape = MaterialTheme.shapes.large,
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = getAlertTitle(currentAlert.value),
-                    size = TextSize.SCREEN_TITLE,
-                    bold = true,
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = getAlertMessage(currentAlert.value),
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                TextButton(
-                    onClick = { currentAlert.value = null },
-                    modifier = Modifier.align(Alignment.End),
-                ) {
-                    Text("OK")
-                }
+    companion object {
+        fun from(signInFailureType: GoogleSignInFailureType): SettingsAlertType =
+            when (signInFailureType) {
+                GoogleSignInFailureType.UNCONFIGURED -> GOOGLE_SIGN_IN_UNCONFIGURED
+                GoogleSignInFailureType.NON_INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE
+                GoogleSignInFailureType.INTERACTIVE_STAGE -> GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE
+                GoogleSignInFailureType.NO_GET_USER_ID_SCOPE -> GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE
+                GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE -> GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE
+                GoogleSignInFailureType.NEITHER_SCOPE -> GOOGLE_SIGN_IN_NEITHER_SCOPE
             }
-        }
     }
 }
 
-fun getAlertTitle(alertType: AlertType?): String =
+private fun getAlertTitle(alertType: SettingsAlertType): String =
     when (alertType) {
-        AlertType.BACK_WITHOUT_DATASET_NAME ->
+        SettingsAlertType.BACK_WITHOUT_DATASET_NAME ->
             "Dataset name missing"
-        AlertType.GOOGLE_SIGN_IN_UNCONFIGURED,
-        AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
-        AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
+        SettingsAlertType.GOOGLE_SIGN_IN_UNCONFIGURED,
+        SettingsAlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
+        SettingsAlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE,
         ->
             "Google sign-in unsuccessful"
-        AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
-        AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
-        AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE,
+        SettingsAlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
+        SettingsAlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
+        SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE,
         ->
             "LeafByte not granted access"
-        // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
-        null -> ""
     }
 
-fun getAlertMessage(alertType: AlertType?): String =
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+fun getAlertMessage(alertType: SettingsAlertType): String =
     when (alertType) {
-        AlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
-        AlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
+        SettingsAlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
+        SettingsAlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
             "Google sign-in is not configured. Please reach out to leafbyte@zoegp.science so we can fix this."
-        AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE ->
+        SettingsAlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE ->
             "Failed to communicate with Google. Please confirm that you are online and LeafByte has access to the internet."
-        AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE ->
+        SettingsAlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE ->
             "Sign-in to Google was not successful. LeafByte cannot save to Google Drive without a successful sign-in."
-        AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE ->
+        SettingsAlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE ->
             "We must be authorized to identify you if you want to save to Google Drive. We specifically need the ability to identify you " +
                 "so that you can edit the same datasheets over the course of multiple LeafByte sessions or to use LeafByte with " +
                 "multiple Google accounts. To save to Google Drive, sign in again and grant access."
-        AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE ->
+        SettingsAlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE ->
             "We must be authorized to write to Google Drive in order to save to Google Drive. To save to Google Drive, sign in again and " +
                 "grant access."
-        AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE ->
+        SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE ->
             "We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need " +
                 "the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions " +
                 "or to use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access."
-        // This handles a (perhaps theoretical) case where the alert is closing but in the middle of one last recompose
-        null -> ""
     }
 
 @Composable

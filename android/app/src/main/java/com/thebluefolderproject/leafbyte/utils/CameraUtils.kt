@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavKey
-import com.thebluefolderproject.leafbyte.compose.AlertType
+import com.thebluefolderproject.leafbyte.compose.MainMenuAlertType
 import java.io.File
 
 @Composable
@@ -33,7 +33,7 @@ fun hasCamera(): Boolean {
 fun getCameraLauncher(
     cameraPhotoUri: Uri,
     backStack: SnapshotStateList<Any>,
-    setAlert: (AlertType) -> Unit,
+    setAlert: (MainMenuAlertType) -> Unit,
 ): ManagedActivityResultLauncher<Uri, Int> =
     rememberLauncherForActivityResult(
         contract = TakePhotoContract(),
@@ -50,7 +50,7 @@ fun getCameraLauncher(
                 // We should make more specific errors as we learn what error codes are possible
                 else -> {
                     logError("Failed to take photo: $resultCode")
-                    setAlert(AlertType.FAILED_TO_TAKE_PHOTO)
+                    setAlert(MainMenuAlertType.FAILED_TO_TAKE_PHOTO)
                 }
             }
         },

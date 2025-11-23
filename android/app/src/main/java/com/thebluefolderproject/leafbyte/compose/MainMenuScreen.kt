@@ -54,18 +54,12 @@ import com.thebluefolderproject.leafbyte.utils.hasCamera
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 
-enum class AlertType {
-    FAILED_TO_TAKE_PHOTO,
-    FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY,
-    TAKING_PHOTO_WITHOUT_CAMERA,
-}
-
 @Composable
 fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     val context = LocalContext.current
     val settings = remember { DataStoreBackedSettings(context) }
 
-    val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(null) }
+    val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(null) }
 
     val galleryLauncher = getGalleryLauncher(backStack = backStack, setAlert = { currentAlert.value = it })
 
@@ -74,6 +68,7 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     val cameraLauncher = getCameraLauncher(cameraPhotoUri = cameraPhotoUri, backStack = backStack, setAlert = { currentAlert.value = it })
 
     MainMenuScreen(
+        currentAlert = currentAlert,
         settings = settings,
         openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
         startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
@@ -87,7 +82,7 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
                 cameraLauncher.launch(cameraPhotoUri)
             } else {
                 log("Attempting to take photo without camera")
-                currentAlert.value = AlertType.TAKING_PHOTO_WITHOUT_CAMERA
+                currentAlert.value = MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA
             }
         },
     )
@@ -117,17 +112,24 @@ private fun MainMenuWithoutSavingPreview() {
 
 @Composable
 private fun PreviewableMainMenuScreen(settings: Settings) {
-    MainMenuScreen(settings, openSettings = {}, startTutorial = {}, chooseFromGallery = {}, takeAPhoto = {})
+    val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(null) }
+
+    MainMenuScreen(currentAlert = currentAlert, settings = settings, openSettings = {
+    }, startTutorial = {}, chooseFromGallery = {}, takeAPhoto = {})
 }
 
 @Composable
+@Suppress("detekt:complexity:LongParameterList")
 private fun MainMenuScreen(
+    currentAlert: MutableState<MainMenuAlertType?>,
     settings: Settings,
     openSettings: () -> Unit,
     startTutorial: () -> Unit,
     chooseFromGallery: () -> Unit,
     takeAPhoto: () -> Unit,
 ) {
+    Alert(currentAlert = currentAlert, getAlertTitle = { getAlertTitle(it) }, getAlertMessage = { getAlertMessage(it) })
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { scaffoldPaddingValues ->
@@ -183,6 +185,29 @@ private fun MainMenuScreen(
     }
 }
 
+enum class MainMenuAlertType {
+    FAILED_TO_TAKE_PHOTO,
+    FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY,
+    TAKING_PHOTO_WITHOUT_CAMERA,
+}
+
+private fun getAlertTitle(alertType: MainMenuAlertType): String =
+    when (alertType) {
+        MainMenuAlertType.FAILED_TO_TAKE_PHOTO -> "Failed to take photo"
+        MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY -> "Failed to load image"
+        MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA -> "No camera found"
+    }
+
+private fun getAlertMessage(alertType: MainMenuAlertType): String =
+    when (alertType) {
+        MainMenuAlertType.FAILED_TO_TAKE_PHOTO ->
+            "Failed to take a photo with the camera. Please report this to leafbyte@zoegp.science so we can fix this."
+        MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY ->
+            "Failed to load an image from the gallery. Please report this to leafbyte@zoegp.science so we can fix this."
+        MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA ->
+            "Could not take a photo: no camera was found. Try selecting an existing image instead."
+    }
+
 @Composable
 private fun MainTitle() {
     Column(
@@ -236,7 +261,7 @@ private fun getSaveLocationsDescription(settings: Settings): AnnotatedString =
         datasetName = settings.getDatasetName().valueForCompose(),
     )
 
-@VisibleForTesting(VisibleForTesting.PRIVATE)
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 @Suppress("detekt:style:ReturnCount")
 fun getSaveLocationsDescription(
     dataSaveLocation: SaveLocation,

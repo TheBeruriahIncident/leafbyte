@@ -22,8 +22,9 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
-import com.thebluefolderproject.leafbyte.fragment.AlertType
+import com.thebluefolderproject.leafbyte.compose.AbstractComposeTests
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
+import com.thebluefolderproject.leafbyte.fragment.SettingsAlertType
 import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
@@ -43,7 +44,7 @@ import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class SettingsScreenTest : AbstractComposeTest {
+class SettingsScreenTests : AbstractComposeTests {
     constructor() : super(navigateToCorrectScreen = {
         onNodeWithText("Settings").performClick()
     })
@@ -186,7 +187,7 @@ class SettingsScreenTest : AbstractComposeTest {
 
         fun testGoogleFailure(
             googleSignInFailureType: GoogleSignInFailureType,
-            alertType: AlertType,
+            alertType: SettingsAlertType,
         ) {
             // this doesn't make sense in the flow, but we reset the UI and settings to NONE in order to validate the failure callbacks
             noneButton.performClick()
@@ -206,12 +207,15 @@ class SettingsScreenTest : AbstractComposeTest {
             otherSelectionIs(otherLocalButton)
             assertFlowEquals(SaveLocation.LOCAL, getOtherSaveLocationInSettings())
         }
-        testGoogleFailure(GoogleSignInFailureType.UNCONFIGURED, AlertType.GOOGLE_SIGN_IN_UNCONFIGURED)
-        testGoogleFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE)
-        testGoogleFailure(GoogleSignInFailureType.INTERACTIVE_STAGE, AlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE)
-        testGoogleFailure(GoogleSignInFailureType.NEITHER_SCOPE, AlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
-        testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
-        testGoogleFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE, AlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.UNCONFIGURED, SettingsAlertType.GOOGLE_SIGN_IN_UNCONFIGURED)
+        testGoogleFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE, SettingsAlertType.GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.INTERACTIVE_STAGE, SettingsAlertType.GOOGLE_SIGN_IN_INTERACTIVE_STAGE_FAILURE)
+        testGoogleFailure(GoogleSignInFailureType.NEITHER_SCOPE, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+        testGoogleFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE, SettingsAlertType.GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE)
+        testGoogleFailure(
+            GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
+            SettingsAlertType.GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
+        )
 
         log("Finally we test the Google happy path")
         onSuccess()
@@ -271,7 +275,7 @@ class SettingsScreenTest : AbstractComposeTest {
             Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
             Espresso.pressBack()
 
-            val errorMessage = onNodeWithText(getAlertMessage(AlertType.BACK_WITHOUT_DATASET_NAME))
+            val errorMessage = onNodeWithText(getAlertMessage(SettingsAlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()

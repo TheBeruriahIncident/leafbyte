@@ -1,15 +1,18 @@
-/**
+/*
  * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte
+package com.thebluefolderproject.leafbyte.compose
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
+import com.thebluefolderproject.leafbyte.ComposeTestFailureException
+import com.thebluefolderproject.leafbyte.TestClock
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
+import com.thebluefolderproject.leafbyte.initializeLogInterception
 import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
@@ -20,7 +23,7 @@ import org.opencv.android.OpenCVLoader
 
 @OptIn(ExperimentalTestApi::class)
 @Suppress("detekt:style:ThrowsCount", "detekt:style:UnnecessaryAbstractClass")
-abstract class AbstractComposeTest(
+abstract class AbstractComposeTests(
     val navigateToCorrectScreen: ComposeContext.() -> Unit,
 ) {
     @RegisterExtension
