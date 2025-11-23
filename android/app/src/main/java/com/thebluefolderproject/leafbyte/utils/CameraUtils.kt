@@ -34,6 +34,7 @@ fun getCameraLauncher(
     cameraPhotoUri: Uri,
     backStack: SnapshotStateList<Any>,
     setAlert: (MainMenuAlertType) -> Unit,
+    releaseIntentLock: () -> Unit,
 ): ManagedActivityResultLauncher<Uri, Int> =
     rememberLauncherForActivityResult(
         contract = TakePhotoContract(),
@@ -53,6 +54,7 @@ fun getCameraLauncher(
                     setAlert(MainMenuAlertType.FAILED_TO_TAKE_PHOTO)
                 }
             }
+            releaseIntentLock()
         },
     )
 

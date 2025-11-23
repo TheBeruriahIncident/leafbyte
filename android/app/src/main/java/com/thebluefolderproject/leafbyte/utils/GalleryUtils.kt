@@ -20,6 +20,7 @@ import com.thebluefolderproject.leafbyte.compose.MainMenuAlertType
 fun getGalleryLauncher(
     backStack: SnapshotStateList<Any>,
     setAlert: (MainMenuAlertType) -> Unit,
+    releaseIntentLock: () -> Unit,
 ): ManagedActivityResultLauncher<Unit, Pair<Int, Uri?>> =
     rememberLauncherForActivityResult(
         contract = GetGalleryImageContract(),
@@ -45,6 +46,7 @@ fun getGalleryLauncher(
                     setAlert(MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY)
                 }
             }
+            releaseIntentLock()
         },
     )
 

@@ -53,7 +53,10 @@ import com.thebluefolderproject.leafbyte.utils.getGalleryLauncher
 import com.thebluefolderproject.leafbyte.utils.hasCamera
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
+@OptIn(ExperimentalAtomicApi::class)
 @Composable
 fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     val context = LocalContext.current
@@ -61,11 +64,25 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
 
     val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(null) }
 
-    val galleryLauncher = getGalleryLauncher(backStack = backStack, setAlert = { currentAlert.value = it })
+    val intentInProgress = AtomicBoolean(false)
+    val releaseIntentLock = { intentInProgress.store(false) }
+
+    val galleryLauncher =
+        getGalleryLauncher(
+            backStack = backStack,
+            setAlert = { currentAlert.value = it },
+            releaseIntentLock = releaseIntentLock,
+        )
 
     val hasCamera = hasCamera()
     val cameraPhotoUri = remember { getCameraPhotoUri(context) } // on startup, we already validated that this uri can be created
-    val cameraLauncher = getCameraLauncher(cameraPhotoUri = cameraPhotoUri, backStack = backStack, setAlert = { currentAlert.value = it })
+    val cameraLauncher =
+        getCameraLauncher(
+            cameraPhotoUri = cameraPhotoUri,
+            backStack = backStack,
+            setAlert = { currentAlert.value = it },
+            releaseIntentLock = releaseIntentLock,
+        )
 
     MainMenuScreen(
         currentAlert = currentAlert,
@@ -73,16 +90,24 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
         openSettings = { backStack.add(LeafByteNavKey.SettingsScreen) },
         startTutorial = { backStack.add(LeafByteNavKey.Tutorial) },
         chooseFromGallery = {
-            log("Launching intent to pick an image from the gallery")
-            galleryLauncher.launch(Unit)
+            if (intentInProgress.compareAndSet(expectedValue = false, newValue = true)) {
+                log("Launching intent to pick an image from the gallery")
+                galleryLauncher.launch(Unit)
+            } else {
+                log("Ignoring attempt to choose a picture from the gallery after already starting a different intent")
+            }
         },
         takeAPhoto = {
-            if (hasCamera) {
-                log("Launching intent to take a photo")
-                cameraLauncher.launch(cameraPhotoUri)
+            if (intentInProgress.compareAndSet(expectedValue = false, newValue = true)) {
+                if (hasCamera) {
+                    log("Launching intent to take a photo")
+                    cameraLauncher.launch(cameraPhotoUri)
+                } else {
+                    log("Attempting to take photo without camera")
+                    currentAlert.value = MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA
+                }
             } else {
-                log("Attempting to take photo without camera")
-                currentAlert.value = MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA
+                log("Ignoring attempt to take a photo after already starting a different intent")
             }
         },
     )
