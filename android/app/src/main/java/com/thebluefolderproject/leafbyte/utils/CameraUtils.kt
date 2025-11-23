@@ -56,14 +56,47 @@ fun getCameraLauncher(
         },
     )
 
+private val ALTERNATE_CAMERA_CANDIDATES =
+    listOf(
+        "net.sourceforge.opencamera",
+    )
+
 /**
  * Adapted from {@link androidx.activity.result.contract.ActivityResultContracts.TakePicture}, but tweaked to allow error handling
+ *
+ * Note that ACTION_IMAGE_CAPTURE is considered generally janky and bad. However, the only reasonable option is writing our own whole screen
+ * that runs the camera using camera APIs directly. We're avoiding that until we have strong reason to invest that effort.
+ * (see https://commonsware.com/blog/2015/06/08/action-image-capture-fallacy.html for some of the issues)
  */
 private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
     override fun createIntent(
         context: Context,
         input: Uri,
-    ): Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, input)
+    ): Intent {
+        val baseIntent =
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                .putExtra(MediaStore.EXTRA_OUTPUT, input)
+
+        // Per https://commonsware.com/blog/2020/08/16/action-image-capture-android-r.html , we try to make this a little more likely to
+        //   succeed if the user has a non-default camera
+        val additionalCameraIntents = getAdditionalCameraIntent(context = context, baseIntent = baseIntent)
+        if (additionalCameraIntents.isEmpty()) {
+            return baseIntent
+        } else {
+            return Intent
+                .createChooser(baseIntent, null)
+                .putExtra(Intent.EXTRA_INITIAL_INTENTS, additionalCameraIntents)
+        }
+    }
+
+    private fun getAdditionalCameraIntent(
+        context: Context,
+        baseIntent: Intent,
+    ): Array<Intent> =
+        ALTERNATE_CAMERA_CANDIDATES
+            .map { Intent(baseIntent).setPackage(it) }
+            .filter { context.packageManager.queryIntentActivities(it, 0).isNotEmpty() }
+            .toTypedArray()
 
     override fun getSynchronousResult(
         context: Context,
@@ -79,7 +112,7 @@ private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
 private const val CAMERA_PHOTO_PATH = "most_recent_photo_taken_by_user.jpg"
 fun getCameraPhotoUri(context: Context): Uri {
     val externalFilesDir = context.getExternalFilesDir(null)
-    checkNotNull(externalFilesDir != null) { "External files directory is null; shared storage is not currently available" }
+    checkNotNull(externalFilesDir) { "External files directory is null; shared storage is not currently available" }
 
     val cameraPhotoFile = File(externalFilesDir, CAMERA_PHOTO_PATH)
     cameraPhotoFile.createNewFile() // ensures it's created, without crashing if it already exists

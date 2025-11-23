@@ -128,7 +128,11 @@ private fun MainMenuScreen(
     chooseFromGallery: () -> Unit,
     takeAPhoto: () -> Unit,
 ) {
-    Alert(currentAlert = currentAlert, getAlertTitle = { getAlertTitle(it) }, getAlertMessage = { getAlertMessage(it) })
+    Alert(
+        currentAlert = currentAlert,
+        getAlertTitle = { getAlertTitle(it) },
+        getAlertMessage = { getAlertMessage(it) },
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -158,24 +162,7 @@ private fun MainMenuScreen(
                 }
             }
             MainTitle()
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceAround,
-            ) {
-                GetImageButton(
-                    imageResourceId = R.drawable.galleryicon,
-                    contentDescription = "Image gallery icon",
-                    onClick = chooseFromGallery,
-                    displayedDescription = "Choose from Gallery",
-                )
-                GetImageButton(
-                    imageResourceId = R.drawable.camera,
-                    contentDescription = "Camera icon",
-                    onClick = takeAPhoto,
-                    displayedDescription = "Take a Photo",
-                )
-            }
+            GetImageButtons(chooseFromGallery = chooseFromGallery, takeAPhoto = takeAPhoto)
             Text(
                 text = getSaveLocationsDescription(settings),
                 textAlign = TextAlign.Center,
@@ -227,6 +214,31 @@ private fun MainTitle() {
                 buildAnnotatedString {
                     appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
                 },
+        )
+    }
+}
+
+@Composable
+private fun GetImageButtons(
+    chooseFromGallery: () -> Unit,
+    takeAPhoto: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.SpaceAround,
+    ) {
+        GetImageButton(
+            imageResourceId = R.drawable.galleryicon,
+            contentDescription = "Image gallery icon",
+            onClick = chooseFromGallery,
+            displayedDescription = "Choose from Gallery",
+        )
+        GetImageButton(
+            imageResourceId = R.drawable.camera,
+            contentDescription = "Camera icon",
+            onClick = takeAPhoto,
+            displayedDescription = "Take a Photo",
         )
     }
 }
