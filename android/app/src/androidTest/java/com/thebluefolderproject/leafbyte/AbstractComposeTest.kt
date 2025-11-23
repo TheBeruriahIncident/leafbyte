@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import org.opencv.android.OpenCVLoader
 
 @OptIn(ExperimentalTestApi::class)
-@Suppress("style:ThrowsCount", "style:UnnecessaryAbstractClass")
+@Suppress("detekt:style:ThrowsCount", "detekt:style:UnnecessaryAbstractClass")
 abstract class AbstractComposeTest(
     val navigateToCorrectScreen: ComposeContext.() -> Unit,
 ) {

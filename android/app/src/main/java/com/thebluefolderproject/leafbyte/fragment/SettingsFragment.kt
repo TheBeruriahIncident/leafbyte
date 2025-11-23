@@ -425,7 +425,7 @@ private fun DatasetNameSetting(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun ScaleLengthSetting(
     settings: Settings,

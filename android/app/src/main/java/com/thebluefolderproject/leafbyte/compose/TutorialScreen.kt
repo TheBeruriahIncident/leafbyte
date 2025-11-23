@@ -68,7 +68,7 @@ private fun TutorialScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("complexity:LongMethod")
+@Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun TutorialScreen(
     onPressingBack: () -> Unit,

@@ -237,7 +237,7 @@ private fun getSaveLocationsDescription(settings: Settings): AnnotatedString =
     )
 
 @VisibleForTesting(VisibleForTesting.PRIVATE)
-@Suppress("style:ReturnCount")
+@Suppress("detekt:style:ReturnCount")
 fun getSaveLocationsDescription(
     dataSaveLocation: SaveLocation,
     imageSaveLocation: SaveLocation,
