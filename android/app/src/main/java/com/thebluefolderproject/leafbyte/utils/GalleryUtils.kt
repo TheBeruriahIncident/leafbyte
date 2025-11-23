@@ -55,6 +55,10 @@ private const val IMAGE_MIME_TYPE = "image/*"
 /**
  * Adapted from {@link androidx.activity.result.contract.ActivityResultContracts.GetContent}, but tweaked to be image specific and allow
  * error handling
+ *
+ * Note also the existence {@link androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia}. After brief testing, it does
+ * not appear functionally or cosmetically different. It's newer, but it has little presence in docs or on the web, and I can't find
+ * anything comparing the two, so I'm sticking with the standard approach for now.
  */
 private class GetGalleryImageContract : ActivityResultContract<Unit, Pair<Int, Uri?>>() {
     override fun createIntent(
