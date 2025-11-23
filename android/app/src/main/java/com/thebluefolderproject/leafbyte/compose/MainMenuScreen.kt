@@ -169,6 +169,7 @@ private fun MainMenuScreen(
                     .padding(paddingValues = scaffoldPaddingValues)
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 15.dp),
             verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
