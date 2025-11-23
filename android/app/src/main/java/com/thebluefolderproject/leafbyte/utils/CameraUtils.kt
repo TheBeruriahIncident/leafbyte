@@ -69,6 +69,9 @@ private val ALTERNATE_CAMERA_CANDIDATES =
  * Note that ACTION_IMAGE_CAPTURE is considered generally janky and bad. However, the only reasonable option is writing our own whole screen
  * that runs the camera using camera APIs directly. We're avoiding that until we have strong reason to invest that effort.
  * (see https://commonsware.com/blog/2015/06/08/action-image-capture-fallacy.html for some of the issues)
+ *
+ * Note also that if we ever request the camera permission, then the following would counterintuitively start requiring the camera
+ * permission: https://www.egorand.dev/taking-photos-not-so-simply-how-i-got-bitten-by-action-image-capture/
  */
 private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
     override fun createIntent(
