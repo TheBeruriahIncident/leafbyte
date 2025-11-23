@@ -22,6 +22,7 @@ import com.thebluefolderproject.leafbyte.utils.logError
 import org.opencv.android.OpenCVLoader
 
 class LeafByteActivity : ComponentActivity() {
+    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive for all ways startup could fail
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -51,7 +52,8 @@ class LeafByteActivity : ComponentActivity() {
                     textAlign = TextAlign.Center,
                     text =
                         "\n\n\n" +
-                                "LeafByte failed to access storage. Is your storage full, or is there some other explanation? Please report this crash to leafbyte@zoegp.science so we can fix it.",
+                            "LeafByte failed to access storage. Is your storage full, or is there some other explanation? Please report " +
+                            "this crash to leafbyte@zoegp.science so we can fix it.",
                 )
             }
         }

@@ -272,6 +272,7 @@ dependencies {
     androidTestRuntimeOnly(libs.mockk.android)
 
     implementation(libs.telephoto.zoomable)
+    androidTestImplementation("org.hamcrest:hamcrest-core:1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
     // androidTestImplementation("androidx.test:runner:1.6.2")

@@ -2,20 +2,11 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
+@file:Suppress("detekt:naming:MatchingDeclarationName")
+
 package com.thebluefolderproject.leafbyte.compose
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +37,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavKey
 import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
@@ -54,23 +44,20 @@ import com.thebluefolderproject.leafbyte.fragment.SampleSettings
 import com.thebluefolderproject.leafbyte.fragment.SaveLocation
 import com.thebluefolderproject.leafbyte.fragment.Settings
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
-import com.thebluefolderproject.leafbyte.utils.GetGalleryImage
-import com.thebluefolderproject.leafbyte.utils.TakePhoto
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.appendLink
+import com.thebluefolderproject.leafbyte.utils.getCameraLauncher
 import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
+import com.thebluefolderproject.leafbyte.utils.getGalleryLauncher
 import com.thebluefolderproject.leafbyte.utils.hasCamera
 import com.thebluefolderproject.leafbyte.utils.log
-import com.thebluefolderproject.leafbyte.utils.logError
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
-import java.io.File
 
 enum class AlertType {
     FAILED_TO_TAKE_PHOTO,
     FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY,
     TAKING_PHOTO_WITHOUT_CAMERA,
-    ;
 }
 
 @Composable
@@ -80,56 +67,11 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
 
     val currentAlert: MutableState<AlertType?> = remember { mutableStateOf(null) }
 
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = GetGalleryImage(),
-        onResult = { (resultCode, imageUri) ->
-            when(resultCode) {
-                Activity.RESULT_OK -> {
-                    log("Successfully chose image: $imageUri")
-                    if (imageUri != null) {
-                        backStack.add(LeafByteNavKey.BackgroundRemovalScreen(originalImageUri = imageUri))
-                    } else {
-                        // This case is currently only theoretical
-                        logError("Despite an OK result code, no image uri was returned from gallery")
-                        currentAlert.value = AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    log("Choosing an image was canceled")
-                    // This is not an error, we just return to the main menu
-                }
-                // We should make more specific errors as we learn what error codes are possible
-                else -> {
-                    logError("Failed to choose image: $resultCode")
-                    currentAlert.value = AlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY
-                }
-            }
-        }
-    )
+    val galleryLauncher = getGalleryLauncher(backStack = backStack, setAlert = { currentAlert.value = it })
 
     val hasCamera = hasCamera()
-    // on startup, we already validated that this uri can be created
-    val cameraPhotoUri = remember { getCameraPhotoUri(context) }
-
-    val cameraLauncher =
-        rememberLauncherForActivityResult(contract = TakePhoto(),
-            onResult = { resultCode ->
-                when(resultCode) {
-                    Activity.RESULT_OK -> {
-                        log("Successfully took photo: $cameraPhotoUri")
-                        backStack.add(LeafByteNavKey.BackgroundRemovalScreen(originalImageUri = cameraPhotoUri))
-                    }
-                    Activity.RESULT_CANCELED -> {
-                        log("Taking a photo was canceled")
-                        // This is not an error, we just return to the main menu
-                    }
-                    // We should make more specific errors as we learn what error codes are possible
-                    else -> {
-                        logError("Failed to take photo: $resultCode")
-                        currentAlert.value = AlertType.FAILED_TO_TAKE_PHOTO
-                    }
-                }
-            })
+    val cameraPhotoUri = remember { getCameraPhotoUri(context) } // on startup, we already validated that this uri can be created
+    val cameraLauncher = getCameraLauncher(cameraPhotoUri = cameraPhotoUri, backStack = backStack, setAlert = { currentAlert.value = it })
 
     MainMenuScreen(
         settings = settings,
@@ -147,7 +89,7 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
                 log("Attempting to take photo without camera")
                 currentAlert.value = AlertType.TAKING_PHOTO_WITHOUT_CAMERA
             }
-         },
+        },
     )
 }
 
@@ -213,25 +155,7 @@ private fun MainMenuScreen(
                     Text("Settings", color = BUTTON_COLOR)
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.leafimage),
-                    contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
-                    Modifier.fillMaxWidth(.36f),
-                )
-                Text(text = "LeafByte", size = TextSize.MAIN_TITLE)
-                Text(text = "Abigail & Zoe")
-                Text(text = "Getman-Pickering")
-                Text(
-                    text =
-                        buildAnnotatedString {
-                            appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
-                        },
-                )
-            }
+            MainTitle()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
@@ -260,7 +184,35 @@ private fun MainMenuScreen(
 }
 
 @Composable
-private fun GetImageButton(imageResourceId: Int, contentDescription: String, onClick: () -> Unit, displayedDescription: String) {
+private fun MainTitle() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.leafimage),
+            contentDescription = "LeafByte's logo, a hand-drawn leaf with a bite taken out",
+            Modifier.fillMaxWidth(fraction = .36f),
+        )
+        Text(text = "LeafByte", size = TextSize.MAIN_TITLE)
+        Text(text = "Abigail & Zoe")
+        Text(text = "Getman-Pickering")
+        Text(
+            text =
+                buildAnnotatedString {
+                    appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
+                },
+        )
+    }
+}
+
+@Composable
+private fun GetImageButton(
+    imageResourceId: Int,
+    contentDescription: String,
+    onClick: () -> Unit,
+    displayedDescription: String,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -268,7 +220,7 @@ private fun GetImageButton(imageResourceId: Int, contentDescription: String, onC
             painter = painterResource(id = imageResourceId),
             contentDescription = contentDescription,
             Modifier
-                .fillMaxWidth(.3f)
+                .fillMaxWidth(fraction = .3f)
                 .clip(CircleShape)
                 .clickable(onClick = onClick),
         )
@@ -285,6 +237,7 @@ private fun getSaveLocationsDescription(settings: Settings): AnnotatedString =
     )
 
 @VisibleForTesting(VisibleForTesting.PRIVATE)
+@Suppress("style:ReturnCount")
 fun getSaveLocationsDescription(
     dataSaveLocation: SaveLocation,
     imageSaveLocation: SaveLocation,
