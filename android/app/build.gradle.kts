@@ -256,6 +256,7 @@ dependencies {
     implementation(libs.protobuf.javalite)
     implementation(libs.telephoto.zoomable)
     implementation(platform(libs.compose.bom))
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.9.5")
     implementation(project(path = ":openCVLibrary343"))
 
     testImplementation(libs.coroutines.test)
