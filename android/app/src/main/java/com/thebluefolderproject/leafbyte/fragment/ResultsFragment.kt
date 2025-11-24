@@ -67,7 +67,7 @@ fun correct(
     Utils.bitmapToMat(myBitmap, imageMat)
 
     // Find the center as the average of the corners.
-    val center = Point(dotCenters.sumBy { it.x } / 4, dotCenters.sumBy { it.y } / 4)
+    val center = Point(dotCenters.sumOf { it.x } / 4, dotCenters.sumOf { it.y } / 4)
 
     // Determine the angle from corner to the center.
     val cornersAndAngles =

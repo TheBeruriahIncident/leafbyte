@@ -132,6 +132,7 @@ fun loadUri(
             },
         )
     } else {
+        @Suppress("deprecation") // when available, we use the replacement above
         MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
     }
 
