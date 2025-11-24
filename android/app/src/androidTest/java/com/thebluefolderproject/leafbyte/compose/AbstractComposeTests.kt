@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import com.thebluefolderproject.leafbyte.ComposeTestFailureException
 import com.thebluefolderproject.leafbyte.TestClock
-import com.thebluefolderproject.leafbyte.activity.LeafByteNavigation
+import com.thebluefolderproject.leafbyte.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.initializeLogInterception
 import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings

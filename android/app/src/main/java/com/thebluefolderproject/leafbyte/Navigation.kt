@@ -4,7 +4,7 @@
 
 @file:Suppress("all")
 
-package com.thebluefolderproject.leafbyte.activity
+package com.thebluefolderproject.leafbyte
 
 import android.content.Context
 import android.graphics.Bitmap
