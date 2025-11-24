@@ -153,15 +153,16 @@ private fun MainMenuScreen(
     chooseFromGallery: () -> Unit,
     takeAPhoto: () -> Unit,
 ) {
-    Alert(
-        currentAlert = currentAlert,
-        getAlertTitle = { getAlertTitle(it) },
-        getAlertMessage = { getAlertMessage(it) },
-    )
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { scaffoldPaddingValues ->
+        Alert(
+            currentAlert = currentAlert,
+            getAlertTitle = { getAlertTitle(it) },
+            getAlertMessage = { getAlertMessage(it) },
+            scaffoldPaddingValues = scaffoldPaddingValues,
+        )
+
         Column(
             modifier =
                 Modifier

@@ -5,6 +5,7 @@
 package com.thebluefolderproject.leafbyte.compose
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ fun <AlertTypeT> Alert(
     currentAlert: MutableState<AlertTypeT?>,
     getAlertTitle: (AlertTypeT) -> String,
     getAlertMessage: (AlertTypeT) -> String,
+    scaffoldPaddingValues: PaddingValues,
 ) {
     if (currentAlert.value == null) {
         return
@@ -50,6 +52,7 @@ fun <AlertTypeT> Alert(
     }
 
     BasicAlertDialog(
+        modifier = Modifier.padding(scaffoldPaddingValues),
         onDismissRequest = { currentAlert.value = null },
     ) {
         Surface(
