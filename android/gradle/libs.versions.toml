@@ -42,6 +42,7 @@ deprecated-navigation-common = { module = "androidx.navigation:navigation-common
 deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
 deprecated-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "deprecated-navigation-version" }
 fragment = "androidx.fragment:fragment-ktx:1.8.9"
+hamcrest = "org.hamcrest:hamcrest-core:3.0"
 junit5-api = "org.junit.jupiter:junit-jupiter-api:5.14.1"
 junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
