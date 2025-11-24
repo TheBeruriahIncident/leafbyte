@@ -38,10 +38,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-version" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-version" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore-version" }
-deprecated-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "deprecated-navigation-version" }
 deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
-deprecated-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "deprecated-navigation-version" }
-fragment = "androidx.fragment:fragment-ktx:1.8.9"
 hamcrest = "org.hamcrest:hamcrest:3.0"
 junit5-api = "org.junit.jupiter:junit-jupiter-api:5.14.1"
 junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"

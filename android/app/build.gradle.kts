@@ -220,95 +220,72 @@ configurations {
 }
 
 dependencies {
-    implementation(libs.appcompat)
-    // implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation(libs.core)
-    implementation(libs.navigation.runtime)
-    implementation(libs.navigation.ui)
-    implementation(libs.lifecycle.viewmodel)
-    implementation(libs.deprecated.navigation.fragment)
-    implementation(libs.constraintlayout.compose)
-    implementation(libs.datastore)
-    implementation(libs.collections)
     implementation("androidx.compose.animation:animation:1.9.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
-//    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
-    implementation(libs.preference)
-//    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava") // HACKHACK: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
-    // implementation("com.google.android.material:material:1.12.0")
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.play.auth)
-//    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
-//    implementation("com.google.http-client:google-http-client-gson:1.45.0")
-//    implementation("com.google.api-client:google-api-client-android:2.7.0") {
-//        exclude(group = "org.apache.httpcomponents")
-//    }
-//    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
-//        exclude(group = "org.apache.httpcomponents")
-//    }
-
-//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.0")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.4")
-
-//    compileOnly("org.apache.tomcat:annotations-api:6.0.53") // protobuf uses deprecated @Generated
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(project(path = ":openCVLibrary343"))
-    implementation(libs.appauth)
-    // implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.uiGraphics)
-    implementation(libs.compose.uiToolingPreview)
-    implementation(libs.compose.material3)
-    androidTestImplementation(platform(libs.compose.bom))
-    // androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation(libs.mockk.dsl)
-    androidTestImplementation(libs.mockk)
     implementation(libs.activity.ktx)
+    implementation(libs.annotation)
+    implementation(libs.appauth)
+    implementation(libs.appcompat)
+    implementation(libs.collections)
+    implementation(libs.compose.animation)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundationLayout)
+    implementation(libs.compose.material3)
     implementation(libs.compose.runtime)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.uiGraphics)
     implementation(libs.compose.uiText)
+    implementation(libs.compose.uiToolingPreview)
     implementation(libs.compose.uiUnit)
-
-    androidTestImplementation(libs.compose.uiGeometry)
-    androidTestImplementation(libs.compose.uiTest)
-    implementation(libs.annotation)
+    implementation(libs.constraintlayout.compose)
+    implementation(libs.core)
+    implementation(libs.coroutines.core)
+    implementation(libs.datastore)
+    implementation(libs.datastore.core)
+    implementation(libs.deprecated.navigation.fragment)
+    implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.common)
     implementation(libs.lifecycle.runtimeCompose)
-
-    // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    androidTestRuntimeOnly(libs.mockk.android)
-
-    implementation(libs.telephoto.zoomable)
-    androidTestImplementation(libs.hamcrest)
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
-    // androidTestImplementation("androidx.test:runner:1.6.2")
-    // androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.6.0")
-    // androidTestRuntimeOnly(libs.junit5.test)
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
-    androidTestImplementation(libs.junit5.api)
-
-    androidTestImplementation("androidx.test:core:1.7.0")
-
-    implementation(libs.datastore.core)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.navigation.runtime)
+    implementation(libs.navigation.ui)
+    implementation(libs.play.auth)
+    implementation(libs.preference)
     implementation(libs.protobuf.javalite)
-    implementation(libs.coroutines.core)
-
-    // androidTestImplementation("de.mannodermaus.junit5:android-test-compose:1.6.0")
-    // debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.7")
-
-    implementation(libs.compose.animation)
-    testImplementation(libs.kotlin.test)
-    androidTestImplementation(libs.kotlin.test)
-
-    testImplementation(libs.junit5.api)
-    // testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
+    implementation(libs.telephoto.zoomable)
+    implementation(platform(libs.compose.bom))
+    implementation(project(path = ":openCVLibrary343"))
 
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.junit5.api)
+    testImplementation(libs.kotlin.test)
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
+    androidTestImplementation("androidx.test:core:1.7.0")
+    androidTestImplementation("org.hamcrest:hamcrest-core:1.3")
+    androidTestImplementation(libs.compose.uiGeometry)
+    androidTestImplementation(libs.compose.uiTest)
+    androidTestImplementation(libs.hamcrest)
+    androidTestImplementation(libs.junit5.api)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.dsl)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
+    androidTestRuntimeOnly(libs.mockk.android)
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.4")
     debugImplementation(libs.compose.uiTooling)
-    // debugImplementation("androidx.compose.ui:ui-test-manifest") // For testing coroutines (optional)
-    // testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // For testing Android components with coroutines (optional)
+
+    // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
+    //    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
+    //    implementation("com.google.http-client:google-http-client-gson:1.45.0")
+    //    implementation("com.google.api-client:google-api-client-android:2.7.0") {
+    //        exclude(group = "org.apache.httpcomponents")
+    //    }
+    //    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
+    //        exclude(group = "org.apache.httpcomponents")
+    //    }
 }
