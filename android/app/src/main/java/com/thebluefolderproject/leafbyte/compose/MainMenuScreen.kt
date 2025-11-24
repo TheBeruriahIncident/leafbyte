@@ -39,10 +39,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.activity.LeafByteNavKey
-import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
-import com.thebluefolderproject.leafbyte.fragment.SampleSettings
-import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.fragment.Settings
+import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.settings.MockSettings
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.Settings
 import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
@@ -116,7 +116,7 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun MainMenuPreview() {
-    val settings = SampleSettings(useBarcode = false)
+    val settings = MockSettings(useBarcode = false)
     PreviewableMainMenuScreen(settings)
 }
 
@@ -124,14 +124,14 @@ private fun MainMenuPreview() {
 @Composable
 private fun MainMenuWithBarcodesPreview() {
     val settings =
-        SampleSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
+        MockSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
     PreviewableMainMenuScreen(settings)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun MainMenuWithoutSavingPreview() {
-    val settings = SampleSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
+    val settings = MockSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
     PreviewableMainMenuScreen(settings)
 }
 

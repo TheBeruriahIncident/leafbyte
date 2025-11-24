@@ -23,11 +23,11 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
 import com.thebluefolderproject.leafbyte.compose.AbstractComposeTests
-import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.fragment.SettingsAlertType
-import com.thebluefolderproject.leafbyte.fragment.getAlertMessage
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.compose.SettingsAlertType
+import com.thebluefolderproject.leafbyte.compose.getAlertMessage
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.utils.log
 import de.mannodermaus.junit5.compose.ComposeContext
 import io.mockk.every

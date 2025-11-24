@@ -2,24 +2,16 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.settings
 
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.runtime.Composable
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInContract
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInContractInput
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import net.openid.appauth.AuthState
-import net.openid.appauth.AuthorizationResponse
 
 @Suppress("detekt:style:MagicNumber")
-open class SampleSettings(
+open class MockSettings(
     val dataSaveLocation: SaveLocation = SaveLocation.LOCAL,
     val imageSaveLocation: SaveLocation = SaveLocation.GOOGLE_DRIVE,
     val useBarcode: Boolean = true,
@@ -93,22 +85,4 @@ open class SampleSettings(
     override fun setAuthState(newAuthState: AuthState) {
         TODO("Not yet implemented")
     }
-}
-
-class SampleGoogleSignInManager : GoogleSignInManager {
-    override fun signIn(
-        launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
-        onSuccess: () -> Unit,
-        onFailure: (GoogleSignInFailureType) -> Unit,
-    ) {}
-
-    override fun signOut() {}
-
-    @Composable
-    override fun getLauncher(
-        onSuccess: () -> Unit,
-        onFailure: (GoogleSignInFailureType) -> Unit,
-    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?> =
-        rememberLauncherForActivityResult(GoogleSignInContract()) {
-        }
 }

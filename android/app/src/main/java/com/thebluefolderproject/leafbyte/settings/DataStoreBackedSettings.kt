@@ -2,7 +2,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.settings
 
 import android.content.Context
 import android.os.Build
@@ -12,6 +12,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.SerializedSettingsSerializer
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
 import com.thebluefolderproject.leafbyte.utils.SystemClock
@@ -93,12 +95,12 @@ class DataStoreBackedSettings(
     }
 
     override fun getDataSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.fromSerialized(dataSaveLocation) }
+        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
     override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
         edit { setDataSaveLocation(newDataSaveLocation.serialized) }
 
     override fun getImageSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.fromSerialized(imageSaveLocation) }
+        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
     override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
         edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 

@@ -4,7 +4,7 @@
 
 @file:Suppress("ktlint:standard:no-wildcard-imports", "detekt:style:WildcardImport")
 
-package com.thebluefolderproject.leafbyte.utils
+package com.thebluefolderproject.leafbyte.google.signin
 
 import android.app.Activity
 import android.content.Context
@@ -13,10 +13,14 @@ import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import com.thebluefolderproject.leafbyte.BuildConfig
-import com.thebluefolderproject.leafbyte.fragment.Settings
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType.*
+import com.thebluefolderproject.leafbyte.settings.Settings
+import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
+import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.log
+import com.thebluefolderproject.leafbyte.utils.logError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -30,19 +34,13 @@ import net.openid.appauth.ResponseTypeValues
 import kotlin.coroutines.suspendCoroutine
 
 private val GOOGLE_OPENID_CONNECT_ISSUER_URI = Uri.parse("https://accounts.google.com")
-private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google") // TODO what does the path do
+private val LEAFBYTE_REDIRECT_URI = Uri.parse("com.thebluefolderproject.leafbyte:/oauth2redirect/google")
 private const val GET_USER_ID_SCOPE = "openid"
 private const val WRITE_TO_GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
 private val ADDITIONAL_PARAMETERS_TO_ENABLE_GRANULAR_CONSENT = mapOf(Pair("enable_granular_consent", "true"))
 
-class GoogleSignInContractInput(
-    val serviceConfig: AuthorizationServiceConfiguration,
-    val authService: AuthorizationService,
-)
-
-fun isGoogleSignInConfigured(): Boolean = !BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID.contains("FILL_THIS_IN")
-
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) // visible for MockGoogleSignInManager
 class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, AuthorizationResponse?>() {
     override fun createIntent(
         context: Context,
@@ -112,31 +110,6 @@ class GoogleSignInContract : ActivityResultContract<GoogleSignInContractInput, A
     }
 }
 
-enum class GoogleSignInFailureType {
-    UNCONFIGURED,
-    NON_INTERACTIVE_STAGE,
-    INTERACTIVE_STAGE,
-    NO_GET_USER_ID_SCOPE,
-    NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
-    NEITHER_SCOPE,
-}
-
-interface GoogleSignInManager {
-    fun signIn(
-        launcher: ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>,
-        onSuccess: () -> Unit,
-        onFailure: (GoogleSignInFailureType) -> Unit,
-    )
-
-    fun signOut()
-
-    @Composable
-    fun getLauncher(
-        onSuccess: () -> Unit,
-        onFailure: (GoogleSignInFailureType) -> Unit,
-    ): ManagedActivityResultLauncher<GoogleSignInContractInput, AuthorizationResponse?>
-}
-
 // TODO make it possible to inject mock sign in manager for testing, make sure we're testing which field is actually selected
 @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
 class GoogleSignInManagerImpl(
@@ -155,12 +128,12 @@ class GoogleSignInManagerImpl(
     ) {
         if (!isGoogleSignInConfigured()) {
             logError("Attempting to use Google sign-in when it's unconfigured")
-            onFailure(UNCONFIGURED)
+            onFailure(GoogleSignInFailureType.UNCONFIGURED)
             return
         }
 
         if (alreadySignedIn()) {
-            log("Accessed to sign in when already signed-in")
+            log("Attempting to sign in when already signed-in")
             onSuccess()
             return
         }
@@ -168,7 +141,7 @@ class GoogleSignInManagerImpl(
         coroutineScope.launch(coroutineScope.coroutineContext) {
             val serviceConfig = getServiceConfigWithRetry()
             if (serviceConfig == null) {
-                onFailure(NON_INTERACTIVE_STAGE)
+                onFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE)
                 return@launch
             }
 
@@ -203,7 +176,7 @@ class GoogleSignInManagerImpl(
     ) {
         if (authResponse == null) {
             logError("Process auth response received a null response")
-            onFailure(INTERACTIVE_STAGE)
+            onFailure(GoogleSignInFailureType.INTERACTIVE_STAGE)
             return
         }
 
@@ -211,13 +184,13 @@ class GoogleSignInManagerImpl(
         val scope = authResponse.scope
         if (scope != null) {
             if (!scope.contains(GET_USER_ID_SCOPE) && !scope.contains(WRITE_TO_GOOGLE_DRIVE_SCOPE)) {
-                onFailure(NEITHER_SCOPE)
+                onFailure(GoogleSignInFailureType.NEITHER_SCOPE)
                 return
             } else if (!scope.contains(GET_USER_ID_SCOPE)) {
-                onFailure(NO_GET_USER_ID_SCOPE)
+                onFailure(GoogleSignInFailureType.NO_GET_USER_ID_SCOPE)
                 return
             } else if (!scope.contains(WRITE_TO_GOOGLE_DRIVE_SCOPE)) {
-                onFailure(NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
+                onFailure(GoogleSignInFailureType.NO_WRITE_TO_GOOGLE_DRIVE_SCOPE)
                 return
             }
         }
@@ -229,12 +202,12 @@ class GoogleSignInManagerImpl(
         authService.performTokenRequest(tokenRequest) { tokenResponse, exception ->
             if (exception != null) {
                 logError("Received exception when requesting token from Google", exception)
-                onFailure(NON_INTERACTIVE_STAGE)
+                onFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE)
                 return@performTokenRequest
             }
             if (tokenResponse == null) {
                 logError("Did not receive either exception or response when requesting token from Google")
-                onFailure(NON_INTERACTIVE_STAGE)
+                onFailure(GoogleSignInFailureType.NON_INTERACTIVE_STAGE)
                 return@performTokenRequest
             }
 
@@ -278,7 +251,7 @@ class GoogleSignInManagerImpl(
      * This method will not throw; it will log and return null.
      */
     private suspend fun loadServiceConfig(): AuthorizationServiceConfiguration? =
-        suspendCoroutine<AuthorizationServiceConfiguration?> { continuation ->
+        suspendCoroutine { continuation ->
             log("Attempting to fetch Google auth config")
 
             AuthorizationServiceConfiguration.fetchFromIssuer(GOOGLE_OPENID_CONNECT_ISSUER_URI) { serviceConfiguration, exception ->

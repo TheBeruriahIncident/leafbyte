@@ -2,7 +2,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.compose
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.VisibleForTesting
@@ -53,10 +53,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.compose.Alert
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManagerImpl
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
+import com.thebluefolderproject.leafbyte.google.signin.MockGoogleSignInManager
+import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.settings.MockSettings
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.Settings
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
@@ -72,16 +76,16 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 @Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
 @Composable
 private fun SettingsScreenPreview() {
-    val settings = SampleSettings()
-    val googleSignInManager = SampleGoogleSignInManager()
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun SettingsScreenWithAlertPreview() {
-    val settings = SampleSettings()
-    val googleSignInManager = SampleGoogleSignInManager()
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
 }
 
@@ -106,7 +110,8 @@ fun SettingsScreen(
     // exposed for @Previews
     initialAlert: SettingsAlertType? = null,
 ) {
-    // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
+    // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields.
+    // see https://medium.com/androiddevelopers/effective-state-management-for-textfield-in-compose-d6e5b070fbe5
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
     val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
@@ -163,6 +168,7 @@ fun SettingsScreen(
     }
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
+
     BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
         currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
     }
@@ -170,7 +176,6 @@ fun SettingsScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
         ) { scaffoldPaddingValues ->
-            // TODO pass padding elsewhere?
             // TODO need to figure where to put theming
 
             Alert(
