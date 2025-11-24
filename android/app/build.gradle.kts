@@ -206,6 +206,16 @@ android {
 configurations {
     all {
         exclude(group = "androidx.compose.ui", module = "ui-test-junit4") // use junit 5
+
+        resolutionStrategy {
+            eachDependency {
+                val hamcrest = libs.hamcrest.get()
+                if ((requested.group == hamcrest.group)) {
+                    // prevent Espresso from bringing in Junit 4's ancient Hamcrest and causing duplicate class errors
+                    useVersion(hamcrest.version!!)
+                }
+            }
+        }
     }
 }
 
@@ -255,9 +265,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
     androidTestImplementation("androidx.test:core:1.7.0")
-    androidTestImplementation("org.hamcrest:hamcrest-core:1.3")
     androidTestImplementation(libs.compose.uiGeometry)
     androidTestImplementation(libs.compose.uiTest)
+    androidTestImplementation(libs.hamcrest)
     androidTestImplementation(libs.junit5.api)
     androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(libs.mockk)

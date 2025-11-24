@@ -26,10 +26,9 @@ Some useful commands:
     classpath-aware and thus can't run some checks)
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks
-- `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest --write-locks` to quickly apply automated fixes and
-   do fast checking (does not run any tests)
-- `./gradlew check connectedCheck lintVitalRelease --write-locks` to mostly confirm that the CI build will pass (I have no idea why lintVitalRelease once
-    caught something that normal lint didn't)
+- `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest lintVitalRelease --write-locks` to quickly apply
+   automated fixes and do fast checking without running any tests
+- `./gradlew check connectedCheck --write-locks` to run all tests 
 
 Regarding Renovate Bot:
 - See the dashboard as a GitHub issue at https://github.com/TheBeruriahIncident/leafbyte/issues/195
