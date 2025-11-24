@@ -265,7 +265,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
     androidTestImplementation("androidx.test:core:1.7.0")
-    androidTestImplementation("org.hamcrest:hamcrest-core:1.3")
     androidTestImplementation(libs.compose.uiGeometry)
     androidTestImplementation(libs.compose.uiTest)
     androidTestImplementation(libs.hamcrest)
