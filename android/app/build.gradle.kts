@@ -275,7 +275,7 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
     androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.5")
     debugImplementation(libs.compose.uiTooling)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
