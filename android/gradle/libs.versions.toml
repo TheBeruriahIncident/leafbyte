@@ -55,7 +55,7 @@ navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", vers
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
 play-auth = "com.google.android.gms:play-services-auth:21.5.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
-protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.2"
+protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.3"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
 
 [plugins]
