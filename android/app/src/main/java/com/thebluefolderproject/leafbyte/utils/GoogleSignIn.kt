@@ -278,7 +278,7 @@ class GoogleSignInManagerImpl(
      * This method will not throw; it will log and return null.
      */
     private suspend fun loadServiceConfig(): AuthorizationServiceConfiguration? =
-        suspendCoroutine<AuthorizationServiceConfiguration?> { continuation ->
+        suspendCoroutine { continuation ->
             log("Attempting to fetch Google auth config")
 
             AuthorizationServiceConfiguration.fetchFromIssuer(GOOGLE_OPENID_CONNECT_ISSUER_URI) { serviceConfiguration, exception ->
