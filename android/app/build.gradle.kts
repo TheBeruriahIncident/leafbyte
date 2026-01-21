@@ -9,7 +9,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     id("com.android.application")
     alias(libs.plugins.kotlin.gradle)
-    id("de.mannodermaus.android-junit5")
+    alias(libs.plugins.android.junit)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("se.patrikerdes.use-latest-versions")
     id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies

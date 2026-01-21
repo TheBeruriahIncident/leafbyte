@@ -41,7 +41,6 @@ datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "
 deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
 hamcrest = "org.hamcrest:hamcrest:3.0"
 junit5-api = "org.junit.jupiter:junit-jupiter-api:5.14.2"
-junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-version" }
 lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle-version" }
@@ -59,6 +58,7 @@ protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.4"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
 
 [plugins]
+android-junit = "de.mannodermaus.android-junit:2.0.1"
 dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.5.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
 # javaResolver = "org.gradle.toolchains.foojay-resolver-convention:1.0.0"
