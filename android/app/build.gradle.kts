@@ -273,7 +273,7 @@ dependencies {
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.mockk.dsl)
     androidTestImplementation(platform(libs.compose.bom))
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:2.0.1") // TODO: why does using libs.junit5.test resolve differently
     androidTestRuntimeOnly(libs.mockk.android)
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.1")
     debugImplementation(libs.compose.uiTooling)
