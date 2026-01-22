@@ -175,7 +175,6 @@ com.squareup.okio:okio:3.9.1=debugAndroidTestCompileClasspath,debugCompileClassp
 de.mannodermaus.junit5:android-test-compose-junit6:2.0.1=debugAndroidTestCompileClasspath,debugAndroidTestRuntimeClasspath
 de.mannodermaus.junit5:android-test-core-junit6:2.0.1=debugAndroidTestCompileClasspath,debugAndroidTestRuntimeClasspath,debugUnitTestCompileClasspath,debugUnitTestRuntimeClasspath,releaseUnitTestRuntimeClasspath
 de.mannodermaus.junit5:android-test-runner-junit6:2.0.1=debugAndroidTestRuntimeClasspath
-de.mannodermaus.junit5:android-test-runner:2.0.1=debugAndroidTestRuntimeClasspath
 dev.drewhamilton.poko:poko-annotations-jvm:0.18.7=debugRuntimeClasspath,debugUnitTestRuntimeClasspath,releaseRuntimeClasspath,releaseUnitTestRuntimeClasspath
 dev.drewhamilton.poko:poko-annotations:0.18.7=debugRuntimeClasspath,debugUnitTestRuntimeClasspath,releaseRuntimeClasspath,releaseUnitTestRuntimeClasspath
 io.mockk:mockk-agent-android:1.14.6=debugAndroidTestRuntimeClasspath
