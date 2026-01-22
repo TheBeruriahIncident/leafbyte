@@ -277,6 +277,7 @@ class GoogleSignInManagerImpl(
     /**
      * This method will not throw; it will log and return null.
      */
+    @Suppress("detekt:coroutines:RedundantSuspendModifier") // TODO is this a detekt bug? https://github.com/detekt/detekt/issues/8997
     private suspend fun loadServiceConfig(): AuthorizationServiceConfiguration? =
         suspendCoroutine { continuation ->
             log("Attempting to fetch Google auth config")
