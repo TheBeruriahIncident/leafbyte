@@ -99,6 +99,7 @@ dependencyAnalysis {
                 // "androidx.navigation:navigation-fragment-ktx used in xml
                 exclude(
                     "de.mannodermaus.junit5:android-test-core",
+                    "de.mannodermaus.junit5:android-test-core-junit6",
                     "androidx.lifecycle:lifecycle-viewmodel",
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",
