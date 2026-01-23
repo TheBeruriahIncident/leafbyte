@@ -1,24 +1,26 @@
 [versions]
-activity-version = "1.12.0-rc01"
+activity-version = "1.12.2"
+android-junit-version = "2.0.1"
 coroutines-version = "1.10.2"
-datastore-version = "1.1.7"
+datastore-version = "1.2.0"
 deprecated-navigation-version = "2.9.6"
-kotlin-version = "2.2.21"
-lifecycle-version = "2.9.4"
+kotlin-version = "2.3.0"
+lifecycle-version = "2.10.0"
 mockk-version = "1.14.6"
-navigation-version = "1.0.0-rc01"
+navigation-version = "1.0.0"
 serialization = "1.8.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-version" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-version" }
-android-gradle = "com.android.tools.build:gradle:8.13.1"
+android-gradle = "com.android.tools.build:gradle:8.13.2"
+android-junit = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "android-junit-version" }
 annotation = "androidx.annotation:annotation:1.9.1"
 appauth = "net.openid:appauth:0.11.1"
 appcompat = "androidx.appcompat:appcompat:1.7.1"
 collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
 compose-animation = { module = "androidx.compose.animation:animation-core" }
-compose-bom = "androidx.compose:compose-bom:2025.11.00"
+compose-bom = "androidx.compose:compose-bom:2026.01.00"
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-foundationLayout = { module = "androidx.compose.foundation:foundation-layout" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
@@ -40,8 +42,7 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore-version" }
 deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
 hamcrest = "org.hamcrest:hamcrest:3.0"
-junit5-api = "org.junit.jupiter:junit-jupiter-api:5.14.1"
-junit5-test = "de.mannodermaus.junit5:android-test-core:1.9.0"
+junit = "org.junit.jupiter:junit-jupiter-api:5.14.2"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-version" }
 lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle-version" }
@@ -53,13 +54,14 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-versio
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
-play-auth = "com.google.android.gms:play-services-auth:21.4.0"
+play-auth = "com.google.android.gms:play-services-auth:21.5.0"
 preference = "androidx.preference:preference-ktx:1.2.1"
-protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.1"
+protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.4"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
 
 [plugins]
-dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.4.1"
+android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit-version" }
+dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.5.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
 # javaResolver = "org.gradle.toolchains.foojay-resolver-convention:1.0.0"
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }

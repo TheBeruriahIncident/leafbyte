@@ -12,7 +12,6 @@ buildscript {
     }
     dependencies {
         classpath(libs.android.gradle)
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.14.0.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
         classpath("nl.littlerobots.vcu:plugin:1.0.1")
         // NOTE: Do not place your application dependencies here; they belong
@@ -86,7 +85,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt").version("1.23.8")
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
-    id("com.google.protobuf") version "0.9.5" apply false
+    id("com.google.protobuf") version "0.9.6" apply false
     id("jacoco")
 }
 
@@ -100,6 +99,7 @@ dependencyAnalysis {
                 // "androidx.navigation:navigation-fragment-ktx used in xml
                 exclude(
                     "de.mannodermaus.junit5:android-test-core",
+                    "de.mannodermaus.junit5:android-test-core-junit6",
                     "androidx.lifecycle:lifecycle-viewmodel",
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",

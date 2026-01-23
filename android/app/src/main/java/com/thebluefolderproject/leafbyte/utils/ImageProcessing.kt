@@ -109,7 +109,7 @@ fun labelConnectedComponents(
                 label = westLabel!!
                 // If this pixel matches the west and north, those two ought to be equivalent.
                 if (isOccupied == northIsOccupied) {
-                    equivalenceClasses.combineClassesContaining(westLabel!!, northLabel!!)
+                    equivalenceClasses.combineClassesContaining(westLabel, northLabel!!)
                 }
             } else if (isOccupied == northIsOccupied) {
                 label = northLabel!!
@@ -164,7 +164,7 @@ fun labelConnectedComponents(
         // Check if this y row has any associated points to identify.
         val pointsToIdentifyXs = pointsToIdentifyYsToXs[y]
         if (pointsToIdentifyXs != null) {
-            for (pointToIdentifyX in pointsToIdentifyXs!!) {
+            for (pointToIdentifyX in pointsToIdentifyXs) {
                 // For each associated point to identify, record the association between the point and label.
                 val label = currentYLabels[pointToIdentifyX]
                 val point = Point(x = pointToIdentifyX, y = y)
@@ -189,7 +189,7 @@ fun labelConnectedComponents(
             .filter { it != BACKGROUND_LABEL }
             .firstOrNull()
     if (outsideOfImageClassElement != null) {
-        labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement!!]!!
+        labelToMemberPoint[BACKGROUND_LABEL] = labelToMemberPoint[outsideOfImageClassElement]!!
     } else {
         // -1 is in a class of it's own.
         // This means it's useless, so remove it.
