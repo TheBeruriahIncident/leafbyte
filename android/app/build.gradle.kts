@@ -9,7 +9,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     id("com.android.application")
     alias(libs.plugins.kotlin.gradle)
-    id("de.mannodermaus.android-junit5")
+    alias(libs.plugins.android.junit)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("se.patrikerdes.use-latest-versions")
     id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
@@ -111,7 +111,7 @@ android {
         manifestPlaceholders += mapOf("appAuthRedirectScheme" to "com.thebluefolderproject.leafbyte")
         testInstrumentationRunnerArguments +=
             mapOf(
-                "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder",
+                "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnitFrameworkBuilder",
                 "clearPackageData" to "true",
             )
         applicationId = "com.thebluefolderproject.leafbyte"
@@ -259,7 +259,7 @@ dependencies {
     implementation(project(path = ":openCVLibrary343"))
 
     testImplementation(libs.coroutines.test)
-    testImplementation(libs.junit5.api)
+    testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
@@ -268,12 +268,12 @@ dependencies {
     androidTestImplementation(libs.compose.uiGeometry)
     androidTestImplementation(libs.compose.uiTest)
     androidTestImplementation(libs.hamcrest)
-    androidTestImplementation(libs.junit5.api)
+    androidTestImplementation(libs.junit)
     androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.mockk.dsl)
     androidTestImplementation(platform(libs.compose.bom))
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.9.0") // TODO: why does using libs.junit5.test resolve differently
+    androidTestRuntimeOnly(libs.android.junit)
     androidTestRuntimeOnly(libs.mockk.android)
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.1")
     debugImplementation(libs.compose.uiTooling)
