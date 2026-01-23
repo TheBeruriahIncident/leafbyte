@@ -14,7 +14,7 @@ serialization = "1.8.1"
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-version" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-version" }
 android-gradle = "com.android.tools.build:gradle:8.13.2"
-android-junit = { module = "de.mannodermaus.junit5:android-test-runner-junit6", version.ref = "android-junit-version" }
+android-junit = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "android-junit-version" }
 annotation = "androidx.annotation:annotation:1.9.1"
 appauth = "net.openid:appauth:0.11.1"
 appcompat = "androidx.appcompat:appcompat:1.7.1"
@@ -42,7 +42,7 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore-version" }
 deprecated-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "deprecated-navigation-version" }
 hamcrest = "org.hamcrest:hamcrest:3.0"
-junit = "org.junit.jupiter:junit-jupiter-api:6.0.2"
+junit = "org.junit.jupiter:junit-jupiter-api:5.14.2"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-version" }
 lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle-version" }
