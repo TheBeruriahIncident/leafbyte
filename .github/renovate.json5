@@ -35,6 +35,13 @@
       "prHeader": "> [!CAUTION]\n> ***Check the AGP upgrade assistant for any additional changes, and do not upgrade past what the upgrade assistant supports! Android Studio does not necessarily support the latest version yet.***",
     },
     {
+      // JUnit 6 requires Android SDK 35, which we are not ready to require
+      "matchManagers": ["gradle"],
+      "matchPackageNames": ["jupiter-api"],
+      "allowedVersions": "< 6.0.0",
+      "rangeStrategy": "bump",
+    },
+    {
       // iOS AppAuth 2.0.0 requires iOS 12, which we are not ready to require
       "matchManagers": ["swift", "cocoapods"],
       "matchPackageNames": ["AppAuth"],
