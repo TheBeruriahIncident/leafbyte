@@ -1,5 +1,5 @@
 [versions]
-activity-version = "1.12.2"
+activity-version = "1.12.3"
 android-junit-version = "2.0.1"
 coroutines-version = "1.10.2"
 datastore-version = "1.2.0"
