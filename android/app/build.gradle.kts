@@ -271,6 +271,7 @@ dependencies {
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.core)
     androidTestImplementation(libs.mockk.dsl)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly(libs.android.junit)

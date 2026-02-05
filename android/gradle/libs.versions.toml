@@ -6,7 +6,7 @@ datastore-version = "1.2.0"
 deprecated-navigation-version = "2.9.6"
 kotlin-version = "2.3.0"
 lifecycle-version = "2.10.0"
-mockk-version = "1.14.6"
+mockk-version = "1.14.9"
 navigation-version = "1.0.0"
 serialization = "1.8.1"
 
@@ -51,6 +51,7 @@ lifecycle-runtimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-comp
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-version" }
+mockk-core = { module = "io.mockk:mockk-core", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
