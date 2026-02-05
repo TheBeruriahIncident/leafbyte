@@ -1,12 +1,12 @@
 [versions]
-activity-version = "1.12.2"
+activity-version = "1.12.3"
 android-junit-version = "2.0.1"
 coroutines-version = "1.10.2"
 datastore-version = "1.2.0"
-deprecated-navigation-version = "2.9.6"
+deprecated-navigation-version = "2.9.7"
 kotlin-version = "2.3.0"
 lifecycle-version = "2.10.0"
-mockk-version = "1.14.6"
+mockk-version = "1.14.9"
 navigation-version = "1.0.0"
 serialization = "1.8.1"
 
@@ -20,7 +20,7 @@ appauth = "net.openid:appauth:0.11.1"
 appcompat = "androidx.appcompat:appcompat:1.7.1"
 collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
 compose-animation = { module = "androidx.compose.animation:animation-core" }
-compose-bom = "androidx.compose:compose-bom:2026.01.00"
+compose-bom = "androidx.compose:compose-bom:2026.01.01"
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-foundationLayout = { module = "androidx.compose.foundation:foundation-layout" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
@@ -51,6 +51,7 @@ lifecycle-runtimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-comp
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-version" }
+mockk-core = { module = "io.mockk:mockk-core", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }

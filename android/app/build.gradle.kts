@@ -220,8 +220,8 @@ configurations {
 }
 
 dependencies {
-    implementation("androidx.compose.animation:animation:1.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
+    implementation("androidx.compose.animation:animation:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.10.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.activity.compose)
     implementation(libs.activity.ktx)
@@ -272,11 +272,12 @@ dependencies {
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.core)
     androidTestImplementation(libs.mockk.dsl)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly(libs.android.junit)
     androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.2")
     debugImplementation(libs.compose.uiTooling)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
