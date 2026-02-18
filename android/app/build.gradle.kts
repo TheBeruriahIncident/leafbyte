@@ -220,7 +220,7 @@ configurations {
 }
 
 dependencies {
-    implementation("androidx.compose.animation:animation:1.10.2")
+    implementation("androidx.compose.animation:animation:1.10.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.10.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.activity.compose)
