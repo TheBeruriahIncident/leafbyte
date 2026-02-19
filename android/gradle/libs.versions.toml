@@ -7,7 +7,7 @@ deprecated-navigation-version = "2.9.7"
 kotlin-version = "2.3.10"
 lifecycle-version = "2.10.0"
 mockk-version = "1.14.9"
-navigation-version = "1.0.0"
+navigation-version = "1.0.1"
 serialization = "1.8.1"
 
 [libraries]
