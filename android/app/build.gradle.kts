@@ -276,7 +276,7 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly(libs.android.junit)
     androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.3")
     debugImplementation(libs.compose.uiTooling)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
