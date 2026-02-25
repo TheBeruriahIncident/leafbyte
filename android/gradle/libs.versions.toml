@@ -55,7 +55,7 @@ mockk-core = { module = "io.mockk:mockk-core", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
-play-auth = "com.google.android.gms:play-services-auth:21.5.0"
+play-auth = "com.google.android.gms:play-services-auth:21.5.1"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.33.5"
 telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
