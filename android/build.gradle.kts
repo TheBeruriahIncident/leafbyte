@@ -79,7 +79,7 @@ plugins {
     ).version(
         "0.2.18",
     ) // Adds useLatestVersions command to update dependencies // TODO: delete this and the two it builds on after moving to version catalog
-    id("nl.littlerobots.version-catalog-update").version("1.0.1")
+    id("nl.littlerobots.version-catalog-update").version("1.1.0")
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.ktlint)
     id("io.gitlab.arturbosch.detekt").version("1.23.8")
