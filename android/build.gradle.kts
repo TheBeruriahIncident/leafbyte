@@ -38,7 +38,7 @@ fun runningInAndroidStudioTerminal(): Boolean {
     }
 
     // for Linux
-    return System.getenv("TERMINAL_EMULATOR").equals("JetBrains-JediTerm")
+    return System.getenv("TERMINAL_EMULATOR") == "JetBrains-JediTerm"
 }
 
 fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidStudioTerminal()
