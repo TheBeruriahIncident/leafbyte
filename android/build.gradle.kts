@@ -28,9 +28,20 @@ fun runningInAndroidStudioGui(): Boolean {
     return systemProperties["idea.active"] != null
 }
 
-fun runningInAndroidTerminal(): Boolean = !System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()
+/**
+ * Unfortunately I have not found a spec/API to operate off of, so this is just what currently works.
+ */
+fun runningInAndroidStudioTerminal(): Boolean {
+    // for Windows
+    if (!System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()) {
+        return true
+    }
 
-fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidTerminal()
+    // for Linux
+    return System.getenv("TERMINAL_EMULATOR").equals("JetBrains-JediTerm")
+}
+
+fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidStudioTerminal()
 
 allprojects {
     repositories {
