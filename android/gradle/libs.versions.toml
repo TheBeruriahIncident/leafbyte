@@ -58,7 +58,7 @@ navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = 
 play-auth = "com.google.android.gms:play-services-auth:21.5.1"
 preference = "androidx.preference:preference-ktx:1.2.1"
 protobuf-javalite = "com.google.protobuf:protobuf-javalite:4.34.1"
-telephoto-zoomable = "me.saket.telephoto:zoomable:0.18.0"
+telephoto-zoomable = "me.saket.telephoto:zoomable:0.19.0"
 
 [plugins]
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit-version" }
