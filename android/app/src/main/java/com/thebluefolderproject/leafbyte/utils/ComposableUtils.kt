@@ -63,7 +63,7 @@ fun TopAppBar(
             ) {
                 Icon(
                     painterResource(id = R.drawable.material_design_symbol__arrow_back_ios_new_24px),
-                    tint = BUTTON_COLOR,
+//                    tint = BUTTON_COLOR,
                     contentDescription = "Back arrow",
                 )
                 Text("Back", color = BUTTON_COLOR)
@@ -76,7 +76,7 @@ fun TopAppBar(
             ) {
                 Icon(
                     painterResource(id = R.drawable.home),
-                    tint = BUTTON_COLOR,
+//                    tint = BUTTON_COLOR,
                     contentDescription = "Home button",
                 )
             }
@@ -97,7 +97,7 @@ fun Text(
 ) {
     Text(
         text = AnnotatedString(text),
-        color = color,
+//        color = color,
         modifier = modifier,
         size = size,
         bold = bold,
@@ -117,7 +117,7 @@ fun Text(
 ) {
     androidx.compose.material3.Text(
         text = text,
-        color = color,
+//        color = color,
         modifier = modifier,
         fontSize = size.fontSize,
         fontWeight = if (bold) FontWeight.Bold else null,
@@ -301,13 +301,13 @@ fun AnnotatedString.Builder.appendLink(
         link =
             LinkAnnotation.Url(
                 url = url,
-                styles =
-                    TextLinkStyles(
-                        style =
-                            SpanStyle(
-                                color = BUTTON_COLOR,
-                            ),
-                    ),
+//                styles =
+//                    TextLinkStyles(
+//                        style =
+//                            SpanStyle(
+//                                color = BUTTON_COLOR,
+//                            ),
+//                    ),
             ),
     ) {
         append(anchorText)
