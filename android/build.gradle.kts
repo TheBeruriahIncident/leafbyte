@@ -60,6 +60,7 @@ allprojects {
         val configurationsThatCantBeLocked =
             arrayOf(
                 "combinedGraphClasspath",
+                "projectMetadataClasspath",
                 "projectHealthClasspath",
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
