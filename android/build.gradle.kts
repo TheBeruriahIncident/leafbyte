@@ -13,7 +13,6 @@ buildscript {
     dependencies {
         classpath(libs.android.gradle)
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("nl.littlerobots.vcu:plugin:1.1.0")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -83,14 +82,6 @@ allprojects {
 }
 
 plugins {
-    id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
-    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
-    id(
-        "se.patrikerdes.use-latest-versions",
-    ).version(
-        "0.2.18",
-    ) // Adds useLatestVersions command to update dependencies // TODO: delete this and the two it builds on after moving to version catalog
-    id("nl.littlerobots.version-catalog-update").version("1.1.0")
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.ktlint)
     id("io.gitlab.arturbosch.detekt").version("1.23.8")
