@@ -11,9 +11,6 @@ plugins {
     alias(libs.plugins.kotlin.gradle)
     alias(libs.plugins.android.junit)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("se.patrikerdes.use-latest-versions")
-    id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
-    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
