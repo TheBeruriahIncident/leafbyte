@@ -21,7 +21,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.LayeredIndexableImage
 import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.Text
@@ -112,7 +111,7 @@ fun ScaleIdentificationScreen(
             TextButton(
                 onClick = { onPressingNext(dotCenters) },
             ) {
-                Text("Next", color = BUTTON_COLOR)
+                Text("Next")
             }
         }
     }

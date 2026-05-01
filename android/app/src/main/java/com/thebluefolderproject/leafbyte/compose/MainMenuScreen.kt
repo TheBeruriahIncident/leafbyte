@@ -43,10 +43,9 @@ import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
-import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
+import com.thebluefolderproject.leafbyte.utils.AppendLink
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
-import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.getCameraLauncher
 import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
 import com.thebluefolderproject.leafbyte.utils.getGalleryLauncher
@@ -180,12 +179,12 @@ private fun MainMenuScreen(
                 TextButton(
                     onClick = { startTutorial() },
                 ) {
-                    Text("Tutorial", color = BUTTON_COLOR)
+                    Text("Tutorial")
                 }
                 TextButton(
                     onClick = { openSettings() },
                 ) {
-                    Text("Settings", color = BUTTON_COLOR)
+                    Text("Settings")
                 }
             }
             MainTitle()
@@ -239,7 +238,7 @@ private fun MainTitle() {
         Text(
             text =
                 buildAnnotatedString {
-                    appendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
+                    AppendLink(anchorText = "FAQs, Help, and Bug Reporting", url = "https://zoegp.science/leafbyte-faqs")
                 },
         )
     }

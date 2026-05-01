@@ -17,7 +17,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.log
@@ -149,17 +148,17 @@ fun ResultsScreen(
             TextButton(
                 onClick = { },
             ) {
-                Text("Draw", color = BUTTON_COLOR)
+                Text("Draw")
             }
             TextButton(
                 onClick = { },
             ) {
-                Text("Exclude Area", color = BUTTON_COLOR)
+                Text("Exclude Area")
             }
             TextButton(
                 onClick = { onPressingNext() },
             ) {
-                Text("Next", color = BUTTON_COLOR)
+                Text("Next")
             }
         }
     }

@@ -8,7 +8,6 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
@@ -127,6 +126,3 @@ class SystemClock : Clock {
 val DEFAULT_AUTH_STATE = { AuthState() }
 
 fun <T> PreviewParameterProvider<T>.value(): T = values.first()
-
-@Suppress("detekt:style:MagicNumber")
-val BUTTON_COLOR = Color(0xFF007AFF)
