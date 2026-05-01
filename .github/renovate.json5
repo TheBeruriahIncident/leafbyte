@@ -37,7 +37,7 @@
     {
       // JUnit 6 requires Android SDK 35, which we are not ready to require
       "matchManagers": ["gradle"],
-      "matchPackageNames": ["jupiter-api"],
+      "matchPackageNames": ["junit-jupiter-api"],
       "allowedVersions": "< 6.0.0",
       "rangeStrategy": "bump",
     },

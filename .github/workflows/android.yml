@@ -45,7 +45,7 @@ jobs:
         #   https://stackoverflow.com/questions/79009667/how-is-lintvitalrelease-different-from-lint-and-why-isnt-it-running
         run: ./gradlew check lintVitalRelease --continue
       - name: Upload unit test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           name: unitTestResults
@@ -53,7 +53,7 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish unit test results
-        uses: dorny/test-reporter@v2.5.0
+        uses: dorny/test-reporter@v3.0.0
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: unitTestResults
@@ -96,7 +96,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run instrumented checks
-        uses: ReactiveCircus/android-emulator-runner@v2.35.0
+        uses: ReactiveCircus/android-emulator-runner@v2.37.0
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           api-level: 28
@@ -107,7 +107,7 @@ jobs:
           disable-animations: true
           script: cd android && ./gradlew connectedCheck
       - name: Upload instrumented test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         # This (and certain other steps) uses `!cancelled`, because otherwise there's an implicit `success() &&`, even when tests fails
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
@@ -116,7 +116,7 @@ jobs:
           retention-days: 1
       # Warning: test results may appear on the wrong workflow, e.g. iOS or CodeQL https://github.com/orgs/community/discussions/24616
       - name: Publish instrumented test results
-        uses: dorny/test-reporter@v2.5.0
+        uses: dorny/test-reporter@v3.0.0
         if: ${{ !cancelled() && steps.changed-files.outputs.any_changed == 'true' }}
         with:
           artifact: instrumentedTestResults

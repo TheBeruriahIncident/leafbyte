@@ -11,9 +11,6 @@ plugins {
     alias(libs.plugins.kotlin.gradle)
     alias(libs.plugins.android.junit)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("se.patrikerdes.use-latest-versions")
-    id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
-    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
     id("com.autonomousapps.dependency-analysis")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
@@ -44,7 +41,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.33.4"
+        artifact = "com.google.protobuf:protoc:${libs.protobuf.javalite.get().version}"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -220,8 +217,8 @@ configurations {
 }
 
 dependencies {
-    implementation("androidx.compose.animation:animation:1.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.10.0")
+    implementation("androidx.compose.animation:animation:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.activity.compose)
     implementation(libs.activity.ktx)
@@ -277,7 +274,7 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly(libs.android.junit)
     androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.11.0")
     debugImplementation(libs.compose.uiTooling)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
