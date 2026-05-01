@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -32,16 +31,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.get
-import androidx.core.graphics.set
 import com.thebluefolderproject.leafbyte.R
 import java.net.URL
 import java.nio.ByteBuffer
@@ -63,10 +58,9 @@ fun TopAppBar(
             ) {
                 Icon(
                     painterResource(id = R.drawable.material_design_symbol__arrow_back_ios_new_24px),
-                    tint = BUTTON_COLOR,
                     contentDescription = "Back arrow",
                 )
-                Text("Back", color = BUTTON_COLOR)
+                Text("Back")
             }
         },
         title = {},
@@ -76,7 +70,6 @@ fun TopAppBar(
             ) {
                 Icon(
                     painterResource(id = R.drawable.home),
-                    tint = BUTTON_COLOR,
                     contentDescription = "Home button",
                 )
             }
@@ -169,7 +162,7 @@ fun IconButton(
                 ),
         contentAlignment = Alignment.Center,
     ) {
-        CompositionLocalProvider(LocalContentColor provides BUTTON_COLOR, content = content)
+        CompositionLocalProvider(content = content) // LocalContentColor provides BUTTON_COLOR,
     }
 }
 
@@ -293,7 +286,7 @@ fun createExampleImage2(): Bitmap {
 }
 
 @Composable
-fun AnnotatedString.Builder.appendLink(
+fun AnnotatedString.Builder.AppendLink(
     anchorText: String,
     url: String,
 ) {
@@ -301,13 +294,6 @@ fun AnnotatedString.Builder.appendLink(
         link =
             LinkAnnotation.Url(
                 url = url,
-                styles =
-                    TextLinkStyles(
-                        style =
-                            SpanStyle(
-                                color = BUTTON_COLOR,
-                            ),
-                    ),
             ),
     ) {
         append(anchorText)

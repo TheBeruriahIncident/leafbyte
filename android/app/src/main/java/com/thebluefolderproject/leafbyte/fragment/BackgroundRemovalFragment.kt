@@ -37,7 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.createExampleImage
 import com.thebluefolderproject.leafbyte.utils.createHistogram
@@ -385,7 +384,7 @@ fun LogiclessBackgroundRemovalScreen(
             TextButton(
                 onClick = { onPressingNext(thresholdedImage.value) },
             ) {
-                Text("Next", color = BUTTON_COLOR)
+                Text("Next")
             }
         }
     }

@@ -61,6 +61,7 @@ import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
+import com.thebluefolderproject.leafbyte.theme.errorLight
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
@@ -582,7 +583,7 @@ fun ToggleableSetting(
         )
         Text(
             text = if (enabled) explanation else "Data is not currently being saved",
-            color = if (enabled) Color.Unspecified else Color(0xFFB3261E),
+            color = if (enabled) Color.Unspecified else errorLight,
             size = TextSize.FOOTNOTE,
         )
     }

@@ -33,11 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thebluefolderproject.leafbyte.LeafByteNavKey
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.utils.BUTTON_COLOR
+import com.thebluefolderproject.leafbyte.utils.AppendLink
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.TopAppBar
-import com.thebluefolderproject.leafbyte.utils.appendLink
 import com.thebluefolderproject.leafbyte.utils.resourceToUri
 
 @Composable
@@ -120,14 +119,14 @@ private fun TutorialScreen(
                 TextButton(
                     onClick = { onPressingNext(exampleImageUri) },
                 ) {
-                    Text("Next", color = BUTTON_COLOR)
+                    Text("Next")
                 }
             }
             Text(
                 text =
                     buildAnnotatedString {
                         append("* See ")
-                        appendLink(anchorText = "the website", url = "https://zoegp.science/leafbyte-faqs")
+                        AppendLink(anchorText = "the website", url = "https://zoegp.science/leafbyte-faqs")
                         append(" for a printout with a scale and other details and tips.")
                     },
                 modifier = Modifier.fillMaxWidth(),

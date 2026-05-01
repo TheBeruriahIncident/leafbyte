@@ -180,7 +180,7 @@ class GoogleSignInManagerImpl(
             return
         }
 
-        // if we don't have sufficient scope, don't save the auth state so that the sign-in flow can be easily retriggered
+        // if we don't have sufficient scope, don't save the auth state, so that the sign-in flow can be easily retriggered
         val scope = authResponse.scope
         if (scope != null) {
             if (!scope.contains(GET_USER_ID_SCOPE) && !scope.contains(WRITE_TO_GOOGLE_DRIVE_SCOPE)) {
