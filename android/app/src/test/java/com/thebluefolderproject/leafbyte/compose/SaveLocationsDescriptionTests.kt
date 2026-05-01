@@ -4,7 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.compose
 
-import com.thebluefolderproject.leafbyte.fragment.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContains
 

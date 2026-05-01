@@ -4,11 +4,10 @@
 
 package com.thebluefolderproject.leafbyte
 
-import com.thebluefolderproject.leafbyte.LeafByteActivity
-import com.thebluefolderproject.leafbyte.fragment.DataStoreBackedSettings
-import com.thebluefolderproject.leafbyte.fragment.SaveLocation
-import com.thebluefolderproject.leafbyte.fragment.Settings
-import com.thebluefolderproject.leafbyte.fragment.clearSettingsStore
+import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.Settings
+import com.thebluefolderproject.leafbyte.settings.clearSettingsStore
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

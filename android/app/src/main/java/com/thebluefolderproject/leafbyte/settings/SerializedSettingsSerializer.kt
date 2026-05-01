@@ -2,7 +2,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.settings
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer

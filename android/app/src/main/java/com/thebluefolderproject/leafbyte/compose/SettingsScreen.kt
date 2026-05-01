@@ -2,7 +2,7 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.fragment
+package com.thebluefolderproject.leafbyte.compose
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.VisibleForTesting
@@ -26,6 +26,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -52,10 +53,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.compose.Alert
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInFailureType
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManagerImpl
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
+import com.thebluefolderproject.leafbyte.google.signin.MockGoogleSignInManager
+import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
+import com.thebluefolderproject.leafbyte.settings.MockSettings
+import com.thebluefolderproject.leafbyte.settings.SaveLocation
+import com.thebluefolderproject.leafbyte.settings.Settings
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description
@@ -71,16 +76,16 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 @Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
 @Composable
 private fun SettingsScreenPreview() {
-    val settings = SampleSettings()
-    val googleSignInManager = SampleGoogleSignInManager()
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager)
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun SettingsScreenWithAlertPreview() {
-    val settings = SampleSettings()
-    val googleSignInManager = SampleGoogleSignInManager()
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
     SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
 }
 
@@ -105,7 +110,8 @@ fun SettingsScreen(
     // exposed for @Previews
     initialAlert: SettingsAlertType? = null,
 ) {
-    // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields
+    // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields.
+    // see https://medium.com/androiddevelopers/effective-state-management-for-textfield-in-compose-d6e5b070fbe5
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
     val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleMarkLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
@@ -163,89 +169,100 @@ fun SettingsScreen(
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
 
+    BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
+        currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
+    }
     MaterialTheme {
-        // TODO need to figure where to put theming
-        BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
-            currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
-        }
-        Alert(currentAlert = currentAlert, getAlertTitle = { getAlertTitle(it) }, getAlertMessage = { getAlertMessage(it) })
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+        ) { scaffoldPaddingValues ->
+            // TODO need to figure where to put theming
 
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 60.dp)
-                    .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-            Spacer(Modifier.height(20.dp))
-            Text("Settings", size = TextSize.SCREEN_TITLE)
-            SaveLocationSetting(
-                "Data",
-                dataSaveLocationDisplayValue,
-                setNonGoogleLocation = {
-                    fullySetDataSaveLocation(it)
-                },
-                setLocationToGoogle = {
-                    dataSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
-                    googleSignInManager.signIn(dataSaveToGoogleLauncher, dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
-                },
+            Alert(
+                currentAlert = currentAlert,
+                getAlertTitle = { getAlertTitle(it) },
+                getAlertMessage = { getAlertMessage(it) },
+                scaffoldPaddingValues = scaffoldPaddingValues,
             )
-            SaveLocationSetting(
-                "Image",
-                imageSaveLocationDisplayValue,
-                setNonGoogleLocation = {
-                    fullySetImageSaveLocation(it)
-                },
-                setLocationToGoogle = {
-                    imageSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
-                    googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
-                },
-            )
-            DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
-            ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
-            NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
-            ToggleableSetting(
-                title = "Scan Barcodes?",
-                enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
-                currentValue = settings.getUseBarcode().valueForCompose(),
-            ) { settings.setUseBarcode(it) }
-            ToggleableSetting(
-                title = "Save GPS Location?",
-                enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
-                explanation = "May slow saving",
-                currentValue = settings.getSaveGpsData().valueForCompose(),
-            ) { settings.setSaveGpsData(it) }
-            ToggleableSetting(
-                title = "Use Black Background?",
-                explanation = "For use with light plant tissue",
-                currentValue = settings.getUseBlackBackground().valueForCompose(),
-            ) { settings.setUseBlackBackground(it) }
-            TextButton(
-                enabled = isGoogleSignedIn.valueForCompose(),
-                onClick = {
-                    if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
-                        fullySetDataSaveLocation(SaveLocation.LOCAL)
-                    }
-                    if (imageSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
-                        fullySetImageSaveLocation(SaveLocation.LOCAL)
-                    }
 
-                    googleSignInManager.signOut()
-                },
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(scaffoldPaddingValues)
+                        .padding(horizontal = 60.dp)
+                        .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
-                Text("Sign out of Google")
+                Spacer(Modifier.height(20.dp))
+                Text("Settings", size = TextSize.SCREEN_TITLE)
+                SaveLocationSetting(
+                    "Data",
+                    dataSaveLocationDisplayValue,
+                    setNonGoogleLocation = {
+                        fullySetDataSaveLocation(it)
+                    },
+                    setLocationToGoogle = {
+                        dataSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
+                        googleSignInManager.signIn(dataSaveToGoogleLauncher, dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
+                    },
+                )
+                SaveLocationSetting(
+                    "Image",
+                    imageSaveLocationDisplayValue,
+                    setNonGoogleLocation = {
+                        fullySetImageSaveLocation(it)
+                    },
+                    setLocationToGoogle = {
+                        imageSaveLocationDisplayValue.value = SaveLocation.GOOGLE_DRIVE
+                        googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
+                    },
+                )
+                DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
+                ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
+                NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
+                ToggleableSetting(
+                    title = "Scan Barcodes?",
+                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    currentValue = settings.getUseBarcode().valueForCompose(),
+                ) { settings.setUseBarcode(it) }
+                ToggleableSetting(
+                    title = "Save GPS Location?",
+                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    explanation = "May slow saving",
+                    currentValue = settings.getSaveGpsData().valueForCompose(),
+                ) { settings.setSaveGpsData(it) }
+                ToggleableSetting(
+                    title = "Use Black Background?",
+                    explanation = "For use with light plant tissue",
+                    currentValue = settings.getUseBlackBackground().valueForCompose(),
+                ) { settings.setUseBlackBackground(it) }
+                TextButton(
+                    enabled = isGoogleSignedIn.valueForCompose(),
+                    onClick = {
+                        if (dataSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+                            fullySetDataSaveLocation(SaveLocation.LOCAL)
+                        }
+                        if (imageSaveLocationDisplayValue.value == SaveLocation.GOOGLE_DRIVE) {
+                            fullySetImageSaveLocation(SaveLocation.LOCAL)
+                        }
+
+                        googleSignInManager.signOut()
+                    },
+                ) {
+                    Text("Sign out of Google")
+                }
+                Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
+                Text(
+                    "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla " +
+                        "Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and " +
+                        "improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took " +
+                        "photos for the website and tutorial respectively.",
+                )
+                Text("version .1")
+                Spacer(Modifier.height(20.dp))
             }
-            Text("LeafByte was made by Abigail & Zoe Getman-Pickering.")
-            Text(
-                "Nick Aflitto, Ari Grele, George Stack, Todd Ugine, Jules Davis, Heather Grab, Jose Rangel, Sheyla Finkner, Sheyla " +
-                    "Lugay, Fiona MacNeil, and Abby Dittmar all worked on testing the app and contributed ideas for features and " +
-                    "improvements. Eric Raboin helped with the projective geometry equations. Nick Aflitto and Julia Miller took " +
-                    "photos for the website and tutorial respectively.",
-            )
-            Text("version .1")
-            Spacer(Modifier.height(20.dp))
         }
     }
 }

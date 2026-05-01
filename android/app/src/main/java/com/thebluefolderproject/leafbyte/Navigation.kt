@@ -4,7 +4,7 @@
 
 @file:Suppress("all")
 
-package com.thebluefolderproject.leafbyte.activity
+package com.thebluefolderproject.leafbyte
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -24,12 +24,12 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.thebluefolderproject.leafbyte.compose.AppAwareMainMenuScreen
 import com.thebluefolderproject.leafbyte.compose.AppAwareTutorialScreen
+import com.thebluefolderproject.leafbyte.compose.SettingsScreen2
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
-import com.thebluefolderproject.leafbyte.fragment.Settings
-import com.thebluefolderproject.leafbyte.fragment.SettingsScreen2
-import com.thebluefolderproject.leafbyte.utils.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
+import com.thebluefolderproject.leafbyte.settings.Settings
 import com.thebluefolderproject.leafbyte.utils.Point
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.log
