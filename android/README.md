@@ -18,7 +18,6 @@ You can follow [Google's guide](https://developer.android.com/studio/publish/app
 To see your created keystore, run `keytool -keystore .\keystore.p12 -v -list`.
 
 Some useful commands:
-- `./gradlew useLatestVersions versionCatalogUpdate --write-locks` to update dependencies and lock files
 - `./gradlew dependencies :app:dependencies --write-locks` updates the lock file after changing dependencies
 - `./gradlew buildHealth --write-locks` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format

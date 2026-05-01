@@ -12,9 +12,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.android.gradle)
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.14.0.0")
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("nl.littlerobots.vcu:plugin:1.0.1")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -29,9 +27,20 @@ fun runningInAndroidStudioGui(): Boolean {
     return systemProperties["idea.active"] != null
 }
 
-fun runningInAndroidTerminal(): Boolean = !System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()
+/**
+ * Unfortunately I have not found a spec/API to operate off of, so this is just what currently works.
+ */
+fun runningInAndroidStudioTerminal(): Boolean {
+    // for Windows
+    if (!System.getenv("JETBRAINS_INTELLIJ_COMMAND_END_MARKER").isNullOrBlank()) {
+        return true
+    }
 
-fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidTerminal()
+    // for Linux
+    return System.getenv("TERMINAL_EMULATOR") == "JetBrains-JediTerm"
+}
+
+fun runningInAndroidStudio(): Boolean = runningInAndroidStudioGui() || runningInAndroidStudioTerminal()
 
 allprojects {
     repositories {
@@ -51,6 +60,7 @@ allprojects {
         val configurationsThatCantBeLocked =
             arrayOf(
                 "combinedGraphClasspath",
+                "projectMetadataClasspath",
                 "projectHealthClasspath",
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
@@ -73,20 +83,12 @@ allprojects {
 }
 
 plugins {
-    id("com.github.ben-manes.versions").version("0.53.0") // Adds dependencyUpdates command to determinate stale dependencies
-    id("se.ascp.gradle.gradle-versions-filter").version("0.1.16") // Makes version plugin understand which tags are stable
-    id(
-        "se.patrikerdes.use-latest-versions",
-    ).version(
-        "0.2.18",
-    ) // Adds useLatestVersions command to update dependencies // TODO: delete this and the two it builds on after moving to version catalog
-    id("nl.littlerobots.version-catalog-update").version("1.0.1")
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.ktlint)
     id("io.gitlab.arturbosch.detekt").version("1.23.8")
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
-    id("com.google.protobuf") version "0.9.5" apply false
+    id("com.google.protobuf") version "0.10.0" apply false
     id("jacoco")
 }
 
@@ -100,6 +102,7 @@ dependencyAnalysis {
                 // "androidx.navigation:navigation-fragment-ktx used in xml
                 exclude(
                     "de.mannodermaus.junit5:android-test-core",
+                    "de.mannodermaus.junit5:android-test-core-junit6",
                     "androidx.lifecycle:lifecycle-viewmodel",
                     "androidx.lifecycle:lifecycle-viewmodel-ktx",
                     "androidx.navigation:navigation-fragment-ktx",

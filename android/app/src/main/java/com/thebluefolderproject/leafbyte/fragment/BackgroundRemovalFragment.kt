@@ -203,7 +203,7 @@ fun threshold(
             CvType.CV_8U,
             Scalar(1.0),
         )
-    Imgproc.threshold(grayMat, thresholdMat, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY_INV)
+    Imgproc.threshold(grayMat, thresholdMat, threshold, 255.0, Imgproc.THRESH_BINARY_INV)
 
     val maskedImageMat =
         Mat(
@@ -375,7 +375,7 @@ fun LogiclessBackgroundRemovalScreen(
             value = thresoldVal.floatValue,
             modifier = Modifier.fillMaxWidth(),
             // TODO maybe limit frequency somehow
-            onValueChange = { thresoldVal.floatValue = it.toFloat() },
+            onValueChange = { thresoldVal.floatValue = it },
             valueRange = 0f..255f,
         )
         Row(
