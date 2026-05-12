@@ -6,7 +6,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!--
+      Our minimum SDK is 23, so we don't need android.permission.INTERNET.
+      https://www.reddit.com/r/Android/comments/382c81/android_m_all_android_apps_get_the_internet/
+
+      We're using an intent to take photos (i.e. deferring to the built-in camera), so we don't need android.permission.CAMERA.
+      Note though that we SHOULD NOT request it, because then it can be turned down, which will also block access to the built-in camera.
+      https://www.egorand.dev/taking-photos-not-so-simply-how-i-got-bitten-by-action-image-capture/
+      -->
 
     <application
         android:allowBackup="true"
@@ -25,6 +32,7 @@
             </intent-filter>
         </activity>
 
+        <!-- So if the user takes a photo, we can access it (the camera passes it back to us via uri) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authority"
