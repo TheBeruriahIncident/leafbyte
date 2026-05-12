@@ -49,6 +49,7 @@ import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.getCameraLauncher
 import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
 import com.thebluefolderproject.leafbyte.utils.getGalleryLauncher
+import com.thebluefolderproject.leafbyte.utils.getGalleryLauncherInput
 import com.thebluefolderproject.leafbyte.utils.hasCamera
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
@@ -69,7 +70,6 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     val galleryLauncher =
         getGalleryLauncher(
             backStack = backStack,
-            setAlert = { currentAlert.value = it },
             releaseIntentLock = releaseIntentLock,
         )
 
@@ -91,7 +91,7 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
         chooseFromGallery = {
             if (intentInProgress.compareAndSet(expectedValue = false, newValue = true)) {
                 log("Launching intent to pick an image from the gallery")
-                galleryLauncher.launch(Unit)
+                galleryLauncher.launch(getGalleryLauncherInput())
             } else {
                 log("Ignoring attempt to choose a picture from the gallery after already starting a different intent")
             }
@@ -200,14 +200,12 @@ private fun MainMenuScreen(
 
 enum class MainMenuAlertType {
     FAILED_TO_TAKE_PHOTO,
-    FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY,
     TAKING_PHOTO_WITHOUT_CAMERA,
 }
 
 private fun getAlertTitle(alertType: MainMenuAlertType): String =
     when (alertType) {
         MainMenuAlertType.FAILED_TO_TAKE_PHOTO -> "Failed to take photo"
-        MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY -> "Failed to load image"
         MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA -> "No camera found"
     }
 
@@ -215,8 +213,6 @@ private fun getAlertMessage(alertType: MainMenuAlertType): String =
     when (alertType) {
         MainMenuAlertType.FAILED_TO_TAKE_PHOTO ->
             "Failed to take a photo with the camera. Please report this to leafbyte@zoegp.science so we can fix this."
-        MainMenuAlertType.FAILED_TO_CHOOSE_IMAGE_FROM_GALLERY ->
-            "Failed to load an image from the gallery. Please report this to leafbyte@zoegp.science so we can fix this."
         MainMenuAlertType.TAKING_PHOTO_WITHOUT_CAMERA ->
             "Could not take a photo: no camera was found. Try selecting an existing image instead."
     }
