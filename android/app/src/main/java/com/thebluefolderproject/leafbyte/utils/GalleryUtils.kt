@@ -4,19 +4,14 @@
 
 package com.thebluefolderproject.leafbyte.utils
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.thebluefolderproject.leafbyte.LeafByteNavKey
-import com.thebluefolderproject.leafbyte.compose.MainMenuAlertType
 
 /**
  * This uses the new photo picker rather than the classic Intent.ACTION_GET_CONTENT so that we don't require any permissions. The tradeoff
