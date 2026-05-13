@@ -217,7 +217,7 @@ configurations {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
+    implementation(libs.kotlin.serialization)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.activity.compose)
     implementation(libs.activity.ktx)
@@ -238,7 +238,7 @@ dependencies {
     implementation(libs.compose.uiUnit)
     implementation(libs.constraintlayout)
     implementation(libs.android.core)
-    implementation(libs.coroutines.core)
+    implementation(libs.coroutines)
     implementation(libs.datastore)
     implementation(libs.datastore.core)
     implementation(libs.kotlin.stdlib)
@@ -257,9 +257,9 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
-    androidTestImplementation("androidx.test:core:1.7.0")
+    androidTestImplementation(libs.espresso)
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.compose.uiGeometry)
     androidTestImplementation(libs.compose.uiTest)
     androidTestImplementation(libs.hamcrest)
