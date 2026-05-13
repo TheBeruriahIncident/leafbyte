@@ -10,12 +10,13 @@ plugins {
     id("com.android.application")
     alias(libs.plugins.kotlin.gradle)
     alias(libs.plugins.android.junit)
+//    alias(libs.plugins.secrets)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("com.autonomousapps.dependency-analysis")
-    id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.dependencyAnalysis)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.protobuf")
+    alias(libs.plugins.protobuf)
     id("jacoco")
 }
 
@@ -217,70 +218,79 @@ configurations {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(libs.activity.compose)
-    implementation(libs.activity.ktx)
-    implementation(libs.annotation)
-    implementation(libs.appauth)
-    implementation(libs.appcompat)
-    implementation(libs.collections)
-    implementation(libs.compose.animation)
-    implementation(libs.compose.animationCore)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.foundationLayout)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.runtime)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.uiGraphics)
-    implementation(libs.compose.uiText)
-    implementation(libs.compose.uiToolingPreview)
-    implementation(libs.compose.uiUnit)
-    implementation(libs.constraintlayout)
-    implementation(libs.android.core)
-    implementation(libs.coroutines.core)
-    implementation(libs.datastore)
-    implementation(libs.datastore.core)
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.lifecycle.common)
-    implementation(libs.lifecycle.runtimeCompose)
-    implementation(libs.lifecycle.viewmodel)
-    implementation(libs.navigation.runtime)
-    implementation(libs.navigation.ui)
-    implementation(libs.protobuf)
-    implementation(libs.zoomable)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.googleFonts)
-    implementation(project(path = ":openCVLibrary343"))
+    val implementationDeps =
+        listOf(
+            fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))),
+            libs.activity.compose,
+            libs.activity.ktx,
+            libs.android.core,
+            libs.annotation,
+            libs.appauth,
+            libs.appcompat,
+            libs.collections,
+            libs.compose.animation,
+            libs.compose.animationCore,
+            libs.compose.foundation,
+            libs.compose.foundationLayout,
+            libs.compose.googleFonts,
+            libs.compose.material3,
+            libs.compose.runtime,
+            libs.compose.ui,
+            libs.compose.uiGraphics,
+            libs.compose.uiText,
+            libs.compose.uiToolingPreview,
+            libs.compose.uiUnit,
+            libs.constraintlayout,
+            libs.coroutines,
+            libs.datastore,
+            libs.datastore.core,
+            libs.kotlin.serialization,
+            libs.kotlin.stdlib,
+            libs.lifecycle.common,
+            libs.lifecycle.runtimeCompose,
+            libs.lifecycle.viewmodel,
+            libs.navigation.runtime,
+            libs.navigation.ui,
+            libs.protobuf,
+            libs.zoomable,
+            platform(libs.compose.bom),
+            project(path = ":openCVLibrary343"),
+        )
+    val debugImplementationDeps =
+        listOf(
+            libs.compose.uiTestManifest,
+            libs.compose.uiTooling,
+        )
+    implementationDeps.forEach { implementation(it) }
+    debugImplementationDeps.forEach { debugImplementation(it) }
 
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlin.test)
-
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
-    androidTestImplementation("androidx.test:core:1.7.0")
-    androidTestImplementation(libs.compose.uiGeometry)
-    androidTestImplementation(libs.compose.uiTest)
-    androidTestImplementation(libs.hamcrest)
-    androidTestImplementation(libs.junit)
-    androidTestImplementation(libs.kotlin.test)
-    androidTestImplementation(libs.mockk)
-    androidTestImplementation(libs.mockk.core)
-    androidTestImplementation(libs.mockk.dsl)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestRuntimeOnly(libs.android.junit)
-    androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation(libs.compose.uiTestManifest)
-    debugImplementation(libs.compose.uiTooling)
-
-    // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
-    //    implementation("com.google.apis:google-api-services-sheets:v4-rev20240826-2.0.0")
-    //    implementation("com.google.http-client:google-http-client-gson:1.45.0")
-    //    implementation("com.google.api-client:google-api-client-android:2.7.0") {
-    //        exclude(group = "org.apache.httpcomponents")
-    //    }
-    //    implementation("com.google.apis:google-api-services-drive:v3-rev20240914-2.0.0") {
-    //        exclude(group = "org.apache.httpcomponents")
-    //    }
+    val testImplementationDeps =
+        listOf(
+            libs.coroutines.test,
+            libs.junit,
+            libs.kotlin.test,
+        )
+    val androidTestImplementationDeps =
+        listOf(
+            libs.android.test,
+            libs.compose.uiGeometry,
+            libs.compose.uiTest,
+            libs.espresso,
+            libs.espresso.intents,
+            libs.hamcrest,
+            libs.junit,
+            libs.kotlin.test,
+            libs.mockk,
+            libs.mockk.core,
+            libs.mockk.dsl,
+            platform(libs.compose.bom),
+        )
+    val androidTestRuntimeOnlyDeps =
+        listOf(
+            libs.android.junit,
+            libs.mockk.android,
+        )
+    testImplementationDeps.forEach { testImplementation(it) }
+    androidTestImplementationDeps.forEach { androidTestImplementation(it) }
+    androidTestRuntimeOnlyDeps.forEach { androidTestRuntimeOnly(it) }
 }
