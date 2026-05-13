@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thebluefolderproject.leafbyte.LeafByteNavKey
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.AppendLink
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
