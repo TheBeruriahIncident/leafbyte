@@ -250,7 +250,7 @@ dependencies {
     implementation(libs.protobuf)
     implementation(libs.zoomable)
     implementation(platform(libs.compose.bom))
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.11.0")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.11.1")
     implementation(project(path = ":openCVLibrary343"))
 
     testImplementation(libs.coroutines.test)
