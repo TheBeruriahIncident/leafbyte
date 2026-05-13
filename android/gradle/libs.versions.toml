@@ -64,6 +64,8 @@ zoomable = "me.saket.telephoto:zoomable:0.19.0"
 [plugins]
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit-version" }
 dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.10.0"
+detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
+secrets = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:2.0.1"
