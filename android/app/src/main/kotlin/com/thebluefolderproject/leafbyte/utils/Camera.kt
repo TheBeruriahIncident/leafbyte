@@ -29,6 +29,21 @@ fun hasCamera(): Boolean {
     return remember { packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY) }
 }
 
+private const val CAMERA_PHOTO_PATH = "most_recent_photo_taken_by_user.jpg"
+fun getCameraPhotoUri(context: Context): Uri {
+    val externalFilesDir = context.getExternalFilesDir(null)
+    checkNotNull(externalFilesDir) { "External files directory is null; shared storage is not currently available" }
+
+    val cameraPhotoFile = File(externalFilesDir, CAMERA_PHOTO_PATH)
+    cameraPhotoFile.createNewFile() // ensures it's created, without crashing if it already exists
+
+    return FileProvider.getUriForFile(
+        context,
+        context.getString(R.string.file_provider_authority),
+        cameraPhotoFile,
+    )
+}
+
 @Composable
 fun getCameraLauncher(
     cameraPhotoUri: Uri,
@@ -37,7 +52,7 @@ fun getCameraLauncher(
     releaseIntentLock: () -> Unit,
 ): ManagedActivityResultLauncher<Uri, Int> =
     rememberLauncherForActivityResult(
-        contract = TakePhotoContract(),
+        contract = CameraContract(),
         onResult = { resultCode ->
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -58,11 +73,6 @@ fun getCameraLauncher(
         },
     )
 
-private val ALTERNATE_CAMERA_CANDIDATES =
-    listOf(
-        "net.sourceforge.opencamera",
-    )
-
 /**
  * Adapted from {@link androidx.activity.result.contract.ActivityResultContracts.TakePicture}, but tweaked to allow error handling
  *
@@ -73,7 +83,7 @@ private val ALTERNATE_CAMERA_CANDIDATES =
  * Note also that if we ever request the camera permission, then the following would counterintuitively start requiring the camera
  * permission: https://www.egorand.dev/taking-photos-not-so-simply-how-i-got-bitten-by-action-image-capture/
  */
-private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
+private class CameraContract : ActivityResultContract<Uri, Int>() {
     override fun createIntent(
         context: Context,
         input: Uri,
@@ -85,10 +95,10 @@ private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
         // Per https://commonsware.com/blog/2020/08/16/action-image-capture-android-r.html , we try to make this a little more likely to
         //   succeed if the user has a non-default camera
         val additionalCameraIntents = getAdditionalCameraIntent(context = context, baseIntent = baseIntent)
-        if (additionalCameraIntents.isEmpty()) {
-            return baseIntent
+        return if (additionalCameraIntents.isEmpty()) {
+            baseIntent
         } else {
-            return Intent
+            Intent
                 .createChooser(baseIntent, null)
                 .putExtra(Intent.EXTRA_INITIAL_INTENTS, additionalCameraIntents)
         }
@@ -112,19 +122,11 @@ private class TakePhotoContract : ActivityResultContract<Uri, Int>() {
         resultCode: Int,
         intent: Intent?,
     ): Int = resultCode
-}
 
-private const val CAMERA_PHOTO_PATH = "most_recent_photo_taken_by_user.jpg"
-fun getCameraPhotoUri(context: Context): Uri {
-    val externalFilesDir = context.getExternalFilesDir(null)
-    checkNotNull(externalFilesDir) { "External files directory is null; shared storage is not currently available" }
-
-    val cameraPhotoFile = File(externalFilesDir, CAMERA_PHOTO_PATH)
-    cameraPhotoFile.createNewFile() // ensures it's created, without crashing if it already exists
-
-    return FileProvider.getUriForFile(
-        context,
-        context.getString(R.string.file_provider_authority),
-        cameraPhotoFile,
-    )
+    companion object {
+        private val ALTERNATE_CAMERA_CANDIDATES =
+            listOf(
+                "net.sourceforge.opencamera",
+            )
+    }
 }
