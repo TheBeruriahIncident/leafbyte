@@ -217,7 +217,6 @@ configurations {
 }
 
 dependencies {
-    implementation("androidx.compose.animation:animation:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.activity.compose)
@@ -227,6 +226,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.collections)
     implementation(libs.compose.animation)
+    implementation(libs.compose.animationCore)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundationLayout)
     implementation(libs.compose.material3)
@@ -237,7 +237,7 @@ dependencies {
     implementation(libs.compose.uiToolingPreview)
     implementation(libs.compose.uiUnit)
     implementation(libs.constraintlayout)
-    implementation(libs.core)
+    implementation(libs.android.core)
     implementation(libs.coroutines.core)
     implementation(libs.datastore)
     implementation(libs.datastore.core)
@@ -250,7 +250,7 @@ dependencies {
     implementation(libs.protobuf)
     implementation(libs.zoomable)
     implementation(platform(libs.compose.bom))
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.11.0")
+    implementation(libs.compose.googleFonts)
     implementation(project(path = ":openCVLibrary343"))
 
     testImplementation(libs.coroutines.test)
@@ -271,7 +271,7 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestRuntimeOnly(libs.android.junit)
     androidTestRuntimeOnly(libs.mockk.android)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.11.0")
+    debugImplementation(libs.compose.uiTestManifest)
     debugImplementation(libs.compose.uiTooling)
 
     // ktlintRuleset("io.nlopez.compose.rules:ktlint:0.4.12")
