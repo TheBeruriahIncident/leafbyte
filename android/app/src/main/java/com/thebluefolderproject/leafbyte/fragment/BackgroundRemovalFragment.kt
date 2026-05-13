@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.createExampleImage
 import com.thebluefolderproject.leafbyte.utils.createHistogram
@@ -317,11 +318,14 @@ const val DOUBLE_TAP_ZOOM = 4f
 @Composable
 fun preview() {
     val bitmap = createExampleImage()
-    LogiclessBackgroundRemovalScreen(
-        thresholdedImage = remember { derivedStateOf { bitmap } },
-        histogram = createHistogram(),
-        thresoldVal = remember { mutableFloatStateOf(100f) },
-    ) {}
+    LeafByteTheme {
+        LogiclessBackgroundRemovalScreen(
+            thresholdedImage = remember { derivedStateOf { bitmap } },
+            histogram = createHistogram(),
+            thresoldVal = remember { mutableFloatStateOf(100f) },
+            onPressingNext = {},
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

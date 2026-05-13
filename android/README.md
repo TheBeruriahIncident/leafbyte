@@ -21,7 +21,7 @@ Some useful commands:
 - `./gradlew dependencies :app:dependencies --write-locks` updates the lock file after changing dependencies
 - `./gradlew buildHealth --write-locks` to check for dependency issues
 - `./gradlew ktlintFormat` to check for ktlint issues and auto-format
-- `./gradlew detektMain detektTest detektDebugAndroidTest` to check for detekt issues (running just `./gradlew detekt` is not 
+- `./gradlew detektMain detektTest detektDebugAndroidTest` to check for detekt issues (running just "./gradlew detekt" is not 
     classpath-aware and thus can't run some checks)
 - `./gradlew check` runs all non-instrumented checks
 - `./gradlew connectedCheck` runs all instrumented checks

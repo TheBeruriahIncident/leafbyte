@@ -109,7 +109,7 @@ fun LeafByteNavigation(
                 else ->
                     NavEntry(Unit) {
                         log("Unknown route $key")
-                        Text("Unknown route")
+                        Text("Unknown route: $key. Please report this crash to leafbyte@zoegp.science so we can fix it.")
                     }
             }
         },
