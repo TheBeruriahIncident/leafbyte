@@ -41,7 +41,7 @@ jacoco.apply {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:${libs.protobuf.javalite.get().version}"
+        artifact = "com.google.protobuf:protoc:${libs.protobuf.get().version}"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -236,21 +236,19 @@ dependencies {
     implementation(libs.compose.uiText)
     implementation(libs.compose.uiToolingPreview)
     implementation(libs.compose.uiUnit)
-    implementation(libs.constraintlayout.compose)
+    implementation(libs.constraintlayout)
     implementation(libs.core)
     implementation(libs.coroutines.core)
     implementation(libs.datastore)
     implementation(libs.datastore.core)
-    implementation(libs.deprecated.navigation.fragment)
     implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.common)
     implementation(libs.lifecycle.runtimeCompose)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.navigation.runtime)
     implementation(libs.navigation.ui)
-    implementation(libs.play.auth)
-    implementation(libs.protobuf.javalite)
-    implementation(libs.telephoto.zoomable)
+    implementation(libs.protobuf)
+    implementation(libs.zoomable)
     implementation(platform(libs.compose.bom))
     implementation("androidx.compose.ui:ui-text-google-fonts:1.11.0")
     implementation(project(path = ":openCVLibrary343"))
