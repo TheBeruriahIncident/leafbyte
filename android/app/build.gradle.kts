@@ -249,7 +249,6 @@ dependencies {
     implementation(libs.navigation.runtime)
     implementation(libs.navigation.ui)
     implementation(libs.play.auth)
-    implementation(libs.preference)
     implementation(libs.protobuf.javalite)
     implementation(libs.telephoto.zoomable)
     implementation(platform(libs.compose.bom))
