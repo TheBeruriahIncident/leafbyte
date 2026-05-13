@@ -16,7 +16,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.protobuf")
+    alias(libs.plugins.protobuf)
     id("jacoco")
 }
 

@@ -88,7 +88,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlin.gradle) apply false
     alias(libs.plugins.kotlin.compose) apply false
-    id("com.google.protobuf") version "0.10.0" apply false
+    alias(libs.plugins.protobuf) apply false
     id("jacoco")
 }
 
