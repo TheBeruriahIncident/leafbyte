@@ -70,16 +70,12 @@ private fun TutorialScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun TutorialScreen(
     onPressingBack: () -> Unit,
     onPressingHome: () -> Unit,
     onPressingNext: (exampleImageUri: Uri) -> Unit,
 ) {
-    val exampleImageResourceId = R.drawable.example_leaf
-    val exampleImageUri = resourceToUri(exampleImageResourceId)
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -96,45 +92,53 @@ private fun TutorialScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.Start,
         ) {
-            Text("LeafByte lets you quickly and accurately measure leaf area and herbivory.")
-            Text("We use images of leaves like this one:")
-            Spacer(modifier = Modifier.height(5.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = exampleImageResourceId),
-                    contentDescription = "Example leaf image",
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(fraction = .7f)
-                            .align(Alignment.Center),
-                )
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                "Note that the leaf is within four dots that form a square of known size (the \"scale\"). This lets us correct for " +
-                    "the angle the image was taken at and determine absolute sizes.*",
-            )
-            Text("You can take a photo or use an image you already have. For the tutorial, we'll just use this image.")
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TextButton(
-                    onClick = { onPressingNext(exampleImageUri) },
-                ) {
-                    Text("Next")
-                }
-            }
-            Text(
-                text =
-                    buildAnnotatedString {
-                        append("* See ")
-                        AppendLink(anchorText = "the website", url = "https://zoegp.science/leafbyte-faqs")
-                        append(" for a printout with a scale and other details and tips.")
-                    },
-                modifier = Modifier.fillMaxWidth(),
-                size = TextSize.FOOTNOTE,
-            )
+            TutorialScreenContent(onPressingNext = onPressingNext)
         }
     }
+}
+
+@Composable
+private fun TutorialScreenContent(onPressingNext: (Uri) -> Unit) {
+    val exampleImageResourceId = R.drawable.example_leaf
+    val exampleImageUri = resourceToUri(exampleImageResourceId)
+
+    Text("LeafByte lets you quickly and accurately measure leaf area and herbivory.")
+    Text("We use images of leaves like this one:")
+    Spacer(modifier = Modifier.height(5.dp))
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            painter = painterResource(id = exampleImageResourceId),
+            contentDescription = "Example leaf image",
+            modifier =
+                Modifier
+                    .fillMaxWidth(fraction = .7f)
+                    .align(Alignment.Center),
+        )
+    }
+    Spacer(modifier = Modifier.height(5.dp))
+    Text(
+        "Note that the leaf is within four dots that form a square of known size (the \"scale\"). This lets us correct for " +
+            "the angle the image was taken at and determine absolute sizes.*",
+    )
+    Text("You can take a photo or use an image you already have. For the tutorial, we'll just use this image.")
+    Row(
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        TextButton(
+            onClick = { onPressingNext(exampleImageUri) },
+        ) {
+            Text("Next")
+        }
+    }
+    Text(
+        text =
+            buildAnnotatedString {
+                append("* See ")
+                AppendLink(anchorText = "the website", url = "https://zoegp.science/leafbyte-faqs")
+                append(" for a printout with a scale and other details and tips.")
+            },
+        modifier = Modifier.fillMaxWidth(),
+        size = TextSize.FOOTNOTE,
+    )
 }
