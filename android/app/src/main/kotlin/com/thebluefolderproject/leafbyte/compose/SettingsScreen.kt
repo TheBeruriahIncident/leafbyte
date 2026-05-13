@@ -75,26 +75,6 @@ import net.openid.appauth.AuthState
 private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
 private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
-@Composable
-private fun SettingsScreenPreview() {
-    val settings = MockSettings()
-    val googleSignInManager = MockGoogleSignInManager()
-    LeafByteTheme {
-        SettingsScreen(settings, googleSignInManager)
-    }
-}
-
-@Preview(showBackground = true, device = Devices.PIXEL)
-@Composable
-private fun SettingsScreenWithAlertPreview() {
-    val settings = MockSettings()
-    val googleSignInManager = MockGoogleSignInManager()
-    LeafByteTheme {
-        SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
-    }
-}
-
 @Composable
 fun SettingsScreen2(
     injectedSettings: Settings?,
@@ -610,5 +590,25 @@ fun SingleSetting(
     ) {
         Text(title)
         content()
+    }
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
+@Composable
+private fun SettingsScreenPreview() {
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
+    LeafByteTheme {
+        SettingsScreen(settings, googleSignInManager)
+    }
+}
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun SettingsScreenWithAlertPreview() {
+    val settings = MockSettings()
+    val googleSignInManager = MockGoogleSignInManager()
+    LeafByteTheme {
+        SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
     }
 }
