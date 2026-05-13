@@ -43,6 +43,7 @@ import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
+import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.AppendLink
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
@@ -138,8 +139,16 @@ private fun MainMenuWithoutSavingPreview() {
 private fun PreviewableMainMenuScreen(settings: Settings) {
     val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(null) }
 
-    MainMenuScreen(currentAlert = currentAlert, settings = settings, openSettings = {
-    }, startTutorial = {}, chooseFromGallery = {}, takeAPhoto = {})
+    LeafByteTheme {
+        MainMenuScreen(
+            currentAlert = currentAlert,
+            settings = settings,
+            openSettings = {},
+            startTutorial = {},
+            chooseFromGallery = {},
+            takeAPhoto = {},
+        )
+    }
 }
 
 @Composable

@@ -61,6 +61,7 @@ import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
+import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.theme.errorLight
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
@@ -79,7 +80,9 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 private fun SettingsScreenPreview() {
     val settings = MockSettings()
     val googleSignInManager = MockGoogleSignInManager()
-    SettingsScreen(settings, googleSignInManager)
+    LeafByteTheme {
+        SettingsScreen(settings, googleSignInManager)
+    }
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL)
@@ -87,7 +90,9 @@ private fun SettingsScreenPreview() {
 private fun SettingsScreenWithAlertPreview() {
     val settings = MockSettings()
     val googleSignInManager = MockGoogleSignInManager()
-    SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+    LeafByteTheme {
+        SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+    }
 }
 
 @Composable
@@ -100,7 +105,9 @@ fun SettingsScreen2(
     val coroutineScope = rememberCoroutineScope()
     val googleSignInManager = remember { injectedGoogleSignInManager ?: GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
-    SettingsScreen(settings, googleSignInManager)
+    LeafByteTheme {
+        SettingsScreen(settings, googleSignInManager)
+    }
 }
 
 @Suppress("detekt:complexity:LongMethod")
