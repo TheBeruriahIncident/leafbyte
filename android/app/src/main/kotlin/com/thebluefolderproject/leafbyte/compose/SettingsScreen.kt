@@ -53,6 +53,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.compose.theme.errorLight
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
@@ -61,8 +63,6 @@ import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
-import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
-import com.thebluefolderproject.leafbyte.theme.errorLight
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.description

@@ -4,7 +4,7 @@
 
 @file:Suppress("detekt:style:UnusedPrivateProperty")
 
-package com.thebluefolderproject.leafbyte.theme
+package com.thebluefolderproject.leafbyte.compose.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

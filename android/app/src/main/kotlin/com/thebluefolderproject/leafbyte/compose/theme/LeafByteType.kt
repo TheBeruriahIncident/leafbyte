@@ -2,7 +2,7 @@
  * Copyright © 2025 Abigail Getman-Pickering. All rights reserved.
  */
 
-package com.thebluefolderproject.leafbyte.theme
+package com.thebluefolderproject.leafbyte.compose.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily

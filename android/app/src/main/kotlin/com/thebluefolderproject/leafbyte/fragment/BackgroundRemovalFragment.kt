@@ -37,7 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.thebluefolderproject.leafbyte.R
-import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.createExampleImage
 import com.thebluefolderproject.leafbyte.utils.createHistogram

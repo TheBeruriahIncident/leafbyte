@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import org.opencv.android.OpenCVLoader
 
 @OptIn(ExperimentalTestApi::class)
-@Suppress("detekt:style:ThrowsCount", "detekt:style:UnnecessaryAbstractClass")
+@Suppress("detekt:style:UnnecessaryAbstractClass")
 abstract class AbstractComposeTests(
     val navigateToCorrectScreen: ComposeContext.() -> Unit,
 ) {
@@ -68,13 +68,14 @@ abstract class AbstractComposeTests(
                 }
             }
         } catch (throwable: Throwable) {
-            if (throwable is ComposeTestFailureException) {
-                throw throwable
-            } else {
-                throw ComposeTestFailureException(context = null, throwable)
-            }
+            // we have a top level catch to be defensive, but we want to be sure the exception is a ComposeTestFailureException whether or
+            //   not it failed during the test lambda
+            throw ensureThrowableIsWrapped(throwable)
         }
     }
+
+    private fun ensureThrowableIsWrapped(throwable: Throwable): ComposeTestFailureException =
+        throwable as? ComposeTestFailureException ?: ComposeTestFailureException(context = null, throwable)
 
     protected fun waitASecond() {
         clock.waitASecond()

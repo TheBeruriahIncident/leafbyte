@@ -2,8 +2,6 @@
  * Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
  */
 
-@file:Suppress("detekt:naming:MatchingDeclarationName")
-
 package com.thebluefolderproject.leafbyte.compose
 
 import androidx.annotation.VisibleForTesting
@@ -39,11 +37,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thebluefolderproject.leafbyte.LeafByteNavKey
 import com.thebluefolderproject.leafbyte.R
+import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
-import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.AppendLink
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
@@ -305,15 +303,14 @@ private fun getSaveLocationsDescription(settings: Settings): AnnotatedString =
     )
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-@Suppress("detekt:style:ReturnCount")
 fun getSaveLocationsDescription(
     dataSaveLocation: SaveLocation,
     imageSaveLocation: SaveLocation,
     datasetName: String,
-): AnnotatedString {
+): AnnotatedString =
     if (dataSaveLocation == imageSaveLocation) {
         if (dataSaveLocation == SaveLocation.NONE) {
-            return buildAnnotatedString {
+            buildAnnotatedString {
                 append("Data and images are ")
                 withStyle(style = SpanStyle(color = Color.Red)) {
                     append("not being saved")
@@ -321,34 +318,33 @@ fun getSaveLocationsDescription(
                 append(". Go to Settings to change.")
             }
         } else {
-            return AnnotatedString(
+            AnnotatedString(
                 "Saving data and images to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.",
             )
         }
     } else {
         if (dataSaveLocation == SaveLocation.NONE) {
-            return buildAnnotatedString {
+            buildAnnotatedString {
                 append("Data is ")
                 appendNotBeingSaved()
                 append('\n')
                 append("Saving images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.")
             }
         } else if (imageSaveLocation == SaveLocation.NONE) {
-            return buildAnnotatedString {
+            buildAnnotatedString {
                 append("Saving data to ${saveLocationToDescription(dataSaveLocation)} under the name $datasetName.")
                 append('\n')
                 append("Images are ")
                 appendNotBeingSaved()
             }
+        } else {
+            AnnotatedString(
+                "Saving data to ${saveLocationToDescription(
+                    dataSaveLocation,
+                )} and images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.",
+            )
         }
-
-        return AnnotatedString(
-            "Saving data to ${saveLocationToDescription(
-                dataSaveLocation,
-            )} and images to ${saveLocationToDescription(imageSaveLocation)} under the name $datasetName.",
-        )
     }
-}
 
 private fun AnnotatedString.Builder.appendNotBeingSaved() {
     withStyle(style = SpanStyle(color = Color.Red)) {

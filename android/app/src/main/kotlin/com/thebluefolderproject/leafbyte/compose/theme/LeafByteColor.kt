@@ -4,7 +4,7 @@
 
 @file:Suppress("detekt:style:MagicNumber")
 
-package com.thebluefolderproject.leafbyte.theme
+package com.thebluefolderproject.leafbyte.compose.theme
 
 import androidx.compose.ui.graphics.Color
 

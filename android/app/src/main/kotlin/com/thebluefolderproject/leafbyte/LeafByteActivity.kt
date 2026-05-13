@@ -12,8 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.google.signin.isGoogleSignInConfigured
-import com.thebluefolderproject.leafbyte.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
 import com.thebluefolderproject.leafbyte.utils.log
@@ -21,7 +21,6 @@ import com.thebluefolderproject.leafbyte.utils.logError
 import org.opencv.android.OpenCVLoader
 
 class LeafByteActivity : ComponentActivity() {
-    @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive for all ways startup could fail
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -41,6 +40,7 @@ class LeafByteActivity : ComponentActivity() {
         }
         log("Initialized OpenCV")
 
+        @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive against all the ways this could fail
         try {
             getCameraPhotoUri(context = applicationContext)
         } catch (exception: RuntimeException) {
@@ -52,7 +52,7 @@ class LeafByteActivity : ComponentActivity() {
                     text =
                         "\n\n\n" +
                             "LeafByte failed to access storage. Is your storage full, or is there some other explanation? Please report " +
-                            "this crash to leafbyte@zoegp.science so we can fix it.",
+                            "this crash to leafbyte@zoegp.science so we can fix it.\n\nError message: ${exception.stackTraceToString()}",
                 )
             }
         }
