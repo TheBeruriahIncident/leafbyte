@@ -100,6 +100,9 @@ android {
             proto {
                 srcDir("src/main/proto")
             }
+            java {
+                directories += "build/generated/java"
+            }
         }
     }
 
