@@ -45,7 +45,7 @@ datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-version" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso-version" }
 hamcrest = "org.hamcrest:hamcrest:3.0"
-junit = "org.junit.jupiter:junit-jupiter-api:5.14.4"
+junit = "org.junit.jupiter:junit-jupiter-api:6.1.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin-version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-version" }
