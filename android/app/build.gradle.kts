@@ -101,7 +101,8 @@ android {
                 srcDir("src/main/proto")
             }
             java {
-                directories += "build/generated/java"
+                // TODO this probably should not be generateDebugProto
+                directories += "build/generated/java/generateDebugProto/java"
             }
         }
     }
