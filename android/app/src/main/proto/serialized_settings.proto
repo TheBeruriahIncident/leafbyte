@@ -1,35 +1,34 @@
-syntax = "proto3"; // TODO: use newest version
+edition = "2024";
 
 option java_package = "com.thebluefolderproject.leafbyte.serializedsettings";
-option java_multiple_files = true;
 
 // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer
 // and only use ~200 KBs, so it's a truly pathological case where this matters.
 message SerializedSettings {
   // Defaults to UNSPECIFIED and the proper default is substituted
-  SerializedSaveLocation dataSaveLocation = 1;
+  SerializedSaveLocation data_save_location = 1;
   // Defaults to UNSPECIFIED and the proper default is substituted
-  SerializedSaveLocation imageSaveLocation = 2;
+  SerializedSaveLocation image_save_location = 2;
   // Defaults to empty string and the proper default is substituted
-  string datasetName = 3;
+  string dataset_name = 3;
   // Note that this is int64 https://en.wikipedia.org/wiki/Year_2038_problem
-  map<string, int64> datasetNameToEpochTimeOfLastUse = 4;
+  map<string, int64> dataset_name_to_epoch_time_of_last_use = 4;
   // Defaults to 0 and the proper default is substituted
-  map<string, float> datasetNameToScaleMarkLength = 5;
-  map<string, string> datasetNameToUnit = 6;
+  map<string, float> dataset_name_to_scale_mark_length = 5;
+  map<string, string> dataset_name_to_unit = 6;
   // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
-  map<string, string> datasetNameToUnitInFirstLocalFile = 7;
-  map<string, int32> datasetNameToNextSampleNumber = 8;
+  map<string, string> dataset_name_to_unit_in_first_local_file = 7;
+  map<string, int32> dataset_name_to_next_sample_number = 8;
   // Defaults to false
-  bool useBarcode = 9;
+  bool use_barcode = 9;
   // Defaults to false
-  bool saveGpsData = 10;
+  bool save_gps_data = 10;
   // Defaults to false
-  bool useBlackBackground = 11;
-  string googleAuthState = 12;
-  map<string, string> userIdToTopLevelGoogleFolderId = 13;
-  map<string, UserIdToGoogleFolderId> datasetNameToUserIdToGoogleFolderId = 14;
-  map<string, UnitToUserIdToGoogleSpreadsheetId> datasetNameToUnitToUserIdToGoogleSpreadsheetId = 15;
+  bool use_black_background = 11;
+  string google_auth_state = 12;
+  map<string, string> user_id_to_top_level_google_folder_id = 13;
+  map<string, UserIdToGoogleFolderId> dataset_name_to_user_id_to_google_folder_id = 14;
+  map<string, UnitToUserIdToGoogleSpreadsheetId> dataset_name_to_unit_to_user_id_to_google_spreadsheet_id = 15;
 }
 
 enum SerializedSaveLocation { // TODO make this closed
@@ -40,13 +39,13 @@ enum SerializedSaveLocation { // TODO make this closed
 }
 
 message UserIdToGoogleFolderId {
-  map<string, string> userIdToGoogleFolderId = 1;
+  map<string, string> user_id_to_google_folder_id = 1;
 }
 
 message UnitToUserIdToGoogleSpreadsheetId {
-  map<string, UserIdToGoogleSpreadsheetId> userIdToGoogleFolderId = 1;
+  map<string, UserIdToGoogleSpreadsheetId> user_id_to_google_folder_id = 1;
 }
 
 message UserIdToGoogleSpreadsheetId {
-  map<string, string> userIdToGoogleFolderId = 1;
+  map<string, string> user_id_to_google_folder_id = 1;
 }
