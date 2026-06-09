@@ -31,7 +31,7 @@ message SerializedSettings {
   map<string, UnitToUserIdToGoogleSpreadsheetId> dataset_name_to_unit_to_user_id_to_google_spreadsheet_id = 15;
 }
 
-enum SerializedSaveLocation { // TODO make this closed
+enum SerializedSaveLocation {
   UNSPECIFIED = 0;
   NONE = 1;
   LOCAL = 2;
