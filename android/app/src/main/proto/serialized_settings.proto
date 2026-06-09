@@ -16,7 +16,9 @@ message SerializedSettings {
   // Defaults to 0 and the proper default is substituted
   map<string, float> dataset_name_to_scale_mark_length = 5;
   map<string, string> dataset_name_to_unit = 6;
-  // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
+  // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the
+  //   same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will
+  //   have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
   map<string, string> dataset_name_to_unit_in_first_local_file = 7;
   map<string, int32> dataset_name_to_next_sample_number = 8;
   // Defaults to false
