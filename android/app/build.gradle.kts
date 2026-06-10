@@ -51,6 +51,9 @@ protobuf {
                 //   Java code. However, the wrapper isn't even complete and doesn't have a copy-constructor, so it's useless if you ever
                 //   want to edit (which we do)
                 id("java") {
+                    // Otherwise this defaults to "java" and wraps everything in a second java folder which is interpreted as part of the
+                    //   package, causing everything to break. Is this a Protobuf bug?
+                    outputSubDir = ""
                     option("lite")
                     // Adds @javax.annotation.Generated annotation to the generated code for tooling like Jacoco
                     option("annotate_code")
@@ -102,10 +105,6 @@ android {
         named("main") {
             proto {
                 srcDir("src/main/proto")
-            }
-            java {
-                // TODO this probably should not be generateDebugProto
-                directories += "build/generated/java/generateDebugProto/java"
             }
         }
     }
