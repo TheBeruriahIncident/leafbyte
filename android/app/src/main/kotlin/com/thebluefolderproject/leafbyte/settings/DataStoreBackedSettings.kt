@@ -56,6 +56,8 @@ fun clearSettingsStore(context: Context) {
     }
 }
 
+// With the newer protobuf Editions, it's now possible to put defaults into the proto file, but Protobufs are opaque with unclear long-term
+//   API contract, so we're keeping things simple and specifying in code
 private const val DEFAULT_DATASET_NAME = "Herbivory Data"
 private const val DEFAULT_NEXT_SAMPLE_NUMBER = 1
 private const val DEFAULT_SCALE_MARK_LENGTH = 10.0f

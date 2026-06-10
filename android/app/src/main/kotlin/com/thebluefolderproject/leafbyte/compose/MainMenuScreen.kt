@@ -111,44 +111,6 @@ fun AppAwareMainMenuScreen(backStack: SnapshotStateList<Any>) {
     )
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL)
-@Composable
-private fun MainMenuPreview() {
-    val settings = MockSettings(useBarcode = false)
-    PreviewableMainMenuScreen(settings)
-}
-
-@Preview(showBackground = true, device = Devices.PIXEL)
-@Composable
-private fun MainMenuWithBarcodesPreview() {
-    val settings =
-        MockSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
-    PreviewableMainMenuScreen(settings)
-}
-
-@Preview(showBackground = true, device = Devices.PIXEL)
-@Composable
-private fun MainMenuWithoutSavingPreview() {
-    val settings = MockSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
-    PreviewableMainMenuScreen(settings)
-}
-
-@Composable
-private fun PreviewableMainMenuScreen(settings: Settings) {
-    val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(null) }
-
-    LeafByteTheme {
-        MainMenuScreen(
-            currentAlert = currentAlert,
-            settings = settings,
-            openSettings = {},
-            startTutorial = {},
-            chooseFromGallery = {},
-            takeAPhoto = {},
-        )
-    }
-}
-
 @Composable
 @Suppress("detekt:complexity:LongParameterList")
 private fun MainMenuScreen(
@@ -359,3 +321,51 @@ private fun saveLocationToDescription(saveLocation: SaveLocation): String =
         SaveLocation.LOCAL -> "My Files"
         SaveLocation.GOOGLE_DRIVE -> "Google Drive"
     }
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun MainMenuPreview() {
+    val settings = MockSettings(useBarcode = false)
+    PreviewableMainMenuScreen(settings)
+}
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun MainMenuWithBarcodesPreview() {
+    val settings =
+        MockSettings(dataSaveLocation = SaveLocation.GOOGLE_DRIVE, imageSaveLocation = SaveLocation.GOOGLE_DRIVE, useBarcode = true)
+    PreviewableMainMenuScreen(settings)
+}
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun MainMenuWithoutSavingPreview() {
+    val settings = MockSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
+    PreviewableMainMenuScreen(settings)
+}
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun MainMenuWithAlert() {
+    val settings = MockSettings(dataSaveLocation = SaveLocation.NONE, imageSaveLocation = SaveLocation.NONE)
+    PreviewableMainMenuScreen(settings, MainMenuAlertType.FAILED_TO_TAKE_PHOTO)
+}
+
+@Composable
+private fun PreviewableMainMenuScreen(
+    settings: Settings,
+    alert: MainMenuAlertType? = null,
+) {
+    val currentAlert: MutableState<MainMenuAlertType?> = remember { mutableStateOf(alert) }
+
+    LeafByteTheme {
+        MainMenuScreen(
+            currentAlert = currentAlert,
+            settings = settings,
+            openSettings = {},
+            startTutorial = {},
+            chooseFromGallery = {},
+            takeAPhoto = {},
+        )
+    }
+}

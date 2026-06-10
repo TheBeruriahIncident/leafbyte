@@ -61,14 +61,6 @@ fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
     )
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL)
-@Composable
-private fun TutorialScreenPreview() {
-    LeafByteTheme {
-        TutorialScreen(onPressingBack = {}, onPressingHome = {}, onPressingNext = {})
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TutorialScreen(
@@ -141,4 +133,12 @@ private fun TutorialScreenContent(onPressingNext: (Uri) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         size = TextSize.FOOTNOTE,
     )
+}
+
+@Preview(showBackground = true, device = Devices.PIXEL)
+@Composable
+private fun TutorialScreenPreview() {
+    LeafByteTheme {
+        TutorialScreen(onPressingBack = {}, onPressingHome = {}, onPressingNext = {})
+    }
 }

@@ -47,7 +47,13 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
+                // We don't use Kotlin codegen; it has to be used with the Java anyway, as it just generates a Kotlin wrapper around the
+                //   Java code. However, the wrapper isn't even complete and doesn't have a copy-constructor, so it's useless if you ever
+                //   want to edit (which we do)
                 id("java") {
+                    // Otherwise this defaults to "java" and wraps everything in a second java folder which is interpreted as part of the
+                    //   package, causing everything to break. Is this a Protobuf bug?
+                    outputSubDir = ""
                     option("lite")
                     // Adds @javax.annotation.Generated annotation to the generated code for tooling like Jacoco
                     option("annotate_code")

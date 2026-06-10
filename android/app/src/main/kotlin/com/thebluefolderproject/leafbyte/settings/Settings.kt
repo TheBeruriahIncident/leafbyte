@@ -4,7 +4,6 @@
 
 package com.thebluefolderproject.leafbyte.settings
 
-import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthState
