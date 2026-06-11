@@ -24,7 +24,7 @@ junitPlatform.jacocoOptions
 // junitPlatform.enableStandardTestTask true
 
 jacoco {
-    toolVersion = "0.8.14" // N.B. Android Gradle Plugin overrides our version, unclear if that's a bug on them
+    toolVersion = "0.8.15" // N.B. Android Gradle Plugin overrides our version, unclear if that's a bug on them
 //    applyTo(Task)
 //    applyTo(junitPlatformTest)
 }
