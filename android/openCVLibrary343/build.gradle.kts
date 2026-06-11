@@ -18,7 +18,7 @@ plugins {
 
 android {
     // Note that these versions must be kept in sync with the versions in the main build.gradle
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 23
