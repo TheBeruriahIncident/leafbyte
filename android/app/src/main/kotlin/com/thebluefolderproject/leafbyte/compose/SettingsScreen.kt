@@ -185,6 +185,7 @@ fun SettingsScreen(
             ) {
                 Spacer(Modifier.height(20.dp))
                 Text("Settings", size = TextSize.SCREEN_TITLE)
+                DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
                 SaveLocationSetting(
                     "Data",
                     dataSaveLocationDisplayValue,
@@ -207,7 +208,6 @@ fun SettingsScreen(
                         googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
                     },
                 )
-                DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
                 ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
                 NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
                 ToggleableSetting(
