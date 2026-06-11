@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -186,6 +187,10 @@ fun SettingsScreen(
                 Spacer(Modifier.height(20.dp))
                 Text("Settings", size = TextSize.SCREEN_TITLE)
                 DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
+                HorizontalDivider(thickness = 2.dp)
+                Text("All settings below are dataset-specific. When switching back to a previous dataset, LeafByte will restore the " +
+                        "settings used for that dataset.")
+
                 SaveLocationSetting(
                     "Data",
                     dataSaveLocationDisplayValue,
