@@ -96,7 +96,8 @@ fun AppAwareSettingsScreen(
         SettingsScreen(
             settings = settings,
             googleSignInManager = googleSignInManager,
-            goBack = { // TODO pull out the common logic
+            goBack = {
+                // TODO pull out the common logic
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
                     // Javadoc doesn't say this is only from API 35, but the linter does, and CI fails otherwise
                     backStack.removeLast()
@@ -106,7 +107,7 @@ fun AppAwareSettingsScreen(
             },
             closeKeyboard = {
                 focusManager.clearFocus()
-            }
+            },
         )
     }
 }
