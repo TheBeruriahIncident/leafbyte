@@ -24,7 +24,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.thebluefolderproject.leafbyte.compose.AppAwareMainMenuScreen
 import com.thebluefolderproject.leafbyte.compose.AppAwareTutorialScreen
-import com.thebluefolderproject.leafbyte.compose.SettingsScreen2
+import com.thebluefolderproject.leafbyte.compose.AppAwareSettingsScreen
 import com.thebluefolderproject.leafbyte.fragment.BackgroundRemovalScreen
 import com.thebluefolderproject.leafbyte.fragment.ResultsScreen
 import com.thebluefolderproject.leafbyte.fragment.ScaleIdentificationScreen
@@ -76,7 +76,11 @@ fun LeafByteNavigation(
 
                 is LeafByteNavKey.SettingsScreen ->
                     NavEntry(key) {
-                        SettingsScreen2(injectedSettings = injectedSettings, injectedGoogleSignInManager = injectedGoogleSignInManager)
+                        AppAwareSettingsScreen(
+                            backStack = backStack,
+                            injectedSettings = injectedSettings,
+                            injectedGoogleSignInManager = injectedGoogleSignInManager,
+                        )
                     }
 
                 is LeafByteNavKey.Tutorial -> NavEntry(key) { AppAwareTutorialScreen(backStack = backStack) }

@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.compose
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
@@ -41,10 +42,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -78,17 +81,33 @@ private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
 private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 
 @Composable
-fun SettingsScreen2(
+fun AppAwareSettingsScreen(
+    backStack: SnapshotStateList<Any>,
     injectedSettings: Settings?,
     injectedGoogleSignInManager: GoogleSignInManager?,
 ) {
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     val settings = remember { injectedSettings ?: DataStoreBackedSettings(context) }
     val coroutineScope = rememberCoroutineScope()
     val googleSignInManager = remember { injectedGoogleSignInManager ?: GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
     LeafByteTheme {
-        SettingsScreen(settings, googleSignInManager)
+        SettingsScreen(
+            settings = settings,
+            googleSignInManager = googleSignInManager,
+            goBack = { // TODO pull out the common logic
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    // Javadoc doesn't say this is only from API 35, but the linter does, and CI fails otherwise
+                    backStack.removeLast()
+                } else {
+                    backStack.removeAt(backStack.lastIndex)
+                }
+            },
+            closeKeyboard = {
+                focusManager.clearFocus()
+            }
+        )
     }
 }
 
@@ -97,6 +116,8 @@ fun SettingsScreen2(
 fun SettingsScreen(
     settings: Settings,
     googleSignInManager: GoogleSignInManager,
+    goBack: () -> Unit,
+    closeKeyboard: () -> Unit,
     // exposed for @Previews
     initialAlert: SettingsAlertType? = null,
 ) {
@@ -159,14 +180,24 @@ fun SettingsScreen(
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
 
-    BackHandler(enabled = datasetNameDisplayValue.value.isBlank()) {
-        currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
+    val onPressingBack = {
+        closeKeyboard()
+
+        if (datasetNameDisplayValue.value.isBlank()) {
+            currentAlert.value = SettingsAlertType.BACK_WITHOUT_DATASET_NAME
+        } else {
+            goBack()
+        }
+    }
+
+    BackHandler {
+        onPressingBack()
     }
     MaterialTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(title = "Settings", onPressingBack = { })
+                TopAppBar(title = "Settings", onPressingBack = onPressingBack)
             },
         ) { scaffoldPaddingValues ->
             // TODO need to figure where to put theming
@@ -605,7 +636,7 @@ private fun SettingsScreenPreview() {
     val settings = MockSettings()
     val googleSignInManager = MockGoogleSignInManager()
     LeafByteTheme {
-        SettingsScreen(settings, googleSignInManager)
+        SettingsScreen(settings, googleSignInManager, {}, {})
     }
 }
 
@@ -615,6 +646,6 @@ private fun SettingsScreenWithAlertPreview() {
     val settings = MockSettings()
     val googleSignInManager = MockGoogleSignInManager()
     LeafByteTheme {
-        SettingsScreen(settings, googleSignInManager, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
+        SettingsScreen(settings, googleSignInManager, {}, {}, SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE)
     }
 }
