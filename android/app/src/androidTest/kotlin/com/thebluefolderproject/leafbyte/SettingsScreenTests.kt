@@ -255,25 +255,45 @@ class SettingsScreenTests : AbstractComposeTests {
     }
 
     @Test
-    fun testBackButtonWorksNormally() {
+    fun testSystemBackButtonWorksNormally() {
+        testBackButtonWorksNormally({ Espresso.pressBack() })
+    }
+
+    @Test
+    fun testTopBarBackButtonWorksNormally() {
+        testBackButtonWorksNormally({ onNodeWithText("Back").performClick() })
+    }
+
+    fun testBackButtonWorksNormally(pressBack: ComposeContext.() -> Unit) {
         runTest { settings, googleSignInManager ->
             val tutorialButton = onNodeWithText("Tutorial")
             tutorialButton.assertDoesNotExist()
 
             // you can press back to return to the main menu
-            Espresso.pressBack()
+            pressBack()
             tutorialButton.assertExists()
         }
     }
 
     @Test
-    fun testBackButtonBlockedByEmptyDatasetName() {
+    fun testSystemBackButtonBlockedByEmptyDatasetName() {
+        testBackButtonBlockedByEmptyDatasetName({ onNodeWithText("Back").performClick() })
+    }
+
+    @Test
+    fun testTopBarBackButtonBlockedByEmptyDatasetName() {
+        testBackButtonBlockedByEmptyDatasetName({
+            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
+            Espresso.pressBack()
+        })
+    }
+
+    fun testBackButtonBlockedByEmptyDatasetName(pressBack: ComposeContext.() -> Unit) {
         runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
             datasetNameField.performTextClearance() // Put the screen into an invalid state where we shouldn't be allowed to leave
 
-            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
-            Espresso.pressBack()
+            pressBack()
 
             val errorMessage = onNodeWithText(getAlertMessage(SettingsAlertType.BACK_WITHOUT_DATASET_NAME))
             errorMessage.assertExists()
@@ -281,7 +301,7 @@ class SettingsScreenTests : AbstractComposeTests {
             errorMessage.assertDoesNotExist()
 
             // Confirm that the alert returns if we keep pressing back
-            Espresso.pressBack()
+            pressBack()
             errorMessage.assertExists()
             onNodeWithText("OK").performClick()
             errorMessage.assertDoesNotExist()
@@ -291,10 +311,9 @@ class SettingsScreenTests : AbstractComposeTests {
             tutorialButton.assertDoesNotExist()
 
             datasetNameField.performTextReplacement("non-empty")
-            Espresso.closeSoftKeyboard() // if we don't close the keyboard, it may consume the back button
 
             // and now we can return to the main menu
-            Espresso.pressBack()
+            pressBack()
             tutorialButton.assertExists()
         }
     }
