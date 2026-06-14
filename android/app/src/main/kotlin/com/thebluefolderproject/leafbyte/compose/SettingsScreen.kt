@@ -66,6 +66,7 @@ import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
+import com.thebluefolderproject.leafbyte.utils.TopAppBar
 import com.thebluefolderproject.leafbyte.utils.description
 import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
@@ -164,6 +165,9 @@ fun SettingsScreen(
     MaterialTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopAppBar(title = "Settings", onPressingBack = { })
+            },
         ) { scaffoldPaddingValues ->
             // TODO need to figure where to put theming
 
@@ -184,12 +188,8 @@ fun SettingsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
-                Spacer(Modifier.height(20.dp))
-                Text("Settings", size = TextSize.SCREEN_TITLE)
                 DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
                 HorizontalDivider(thickness = 2.dp)
-                Text("All settings below are dataset-specific. When switching back to a previous dataset, LeafByte will restore the " +
-                        "settings used for that dataset.")
 
                 SaveLocationSetting(
                     "Data",
@@ -384,6 +384,7 @@ private fun DatasetNameSetting(
                 }
             }
         }
+        Text("When switching back to a previous dataset, LeafByte will restore the settings used for that dataset.")
     }
 }
 
