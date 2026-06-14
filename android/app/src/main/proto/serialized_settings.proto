@@ -5,32 +5,38 @@ option java_package = "com.thebluefolderproject.leafbyte.serializedsettings";
 // These data structures on disk do theoretically grow without bound, but you could use a hundred different datasets every day for a summer
 // and only use ~200 KBs, so it's a truly pathological case where this matters.
 message SerializedSettings {
-  // Defaults to UNSPECIFIED and the proper default is substituted
-  SerializedSaveLocation data_save_location = 1;
-  // Defaults to UNSPECIFIED and the proper default is substituted
-  SerializedSaveLocation image_save_location = 2;
   // Defaults to empty string and the proper default is substituted
-  string dataset_name = 3;
-  // Note that this is int64 https://en.wikipedia.org/wiki/Year_2038_problem
-  map<string, int64> dataset_name_to_epoch_time_of_last_use = 4;
+  string current_dataset_name = 1;
+  // we store different settings for each dataset
+  map<string, DatasetSpecificSettings> dataset_name_to_settings = 2;
+}
+
+message DatasetSpecificSettings {
+  // When this dataset was last used; note that this is int64 https://en.wikipedia.org/wiki/Year_2038_problem
+  int64 epoch_time_of_last_use = 1;
+
+  // Defaults to UNSPECIFIED and the proper default is substituted
+  SerializedSaveLocation data_save_location = 2;
+  // Defaults to UNSPECIFIED and the proper default is substituted
+  SerializedSaveLocation image_save_location = 3;
   // Defaults to 0 and the proper default is substituted
-  map<string, float> dataset_name_to_scale_mark_length = 5;
-  map<string, string> dataset_name_to_unit = 6;
+  float scale_mark_length = 4;
+  string unit = 5;
   // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the
   //   same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will
   //   have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
-  map<string, string> dataset_name_to_unit_in_first_local_file = 7;
-  map<string, int32> dataset_name_to_next_sample_number = 8;
+  string unit_in_first_local_file = 6;
+  int32 next_sample_number = 7;
   // Defaults to false
-  bool use_barcode = 9;
+  bool use_barcode = 8;
   // Defaults to false
-  bool save_gps_data = 10;
+  bool save_gps_data = 9;
   // Defaults to false
-  bool use_black_background = 11;
-  string google_auth_state = 12;
-  map<string, string> user_id_to_top_level_google_folder_id = 13;
-  map<string, UserIdToGoogleFolderId> dataset_name_to_user_id_to_google_folder_id = 14;
-  map<string, UnitToUserIdToGoogleSpreadsheetId> dataset_name_to_unit_to_user_id_to_google_spreadsheet_id = 15;
+  bool use_black_background = 10;
+  string google_auth_state = 11;
+  map<string, string> user_id_to_top_level_google_folder_id = 12;
+  map<string, string> user_id_to_dataset_google_folder_id = 13;
+  map<string, UserIdToGoogleSpreadsheetId> unit_to_user_id_to_google_spreadsheet_id = 14;
 }
 
 enum SerializedSaveLocation {
@@ -38,14 +44,6 @@ enum SerializedSaveLocation {
   NONE = 1;
   LOCAL = 2;
   GOOGLE_DRIVE = 3;
-}
-
-message UserIdToGoogleFolderId {
-  map<string, string> user_id_to_google_folder_id = 1;
-}
-
-message UnitToUserIdToGoogleSpreadsheetId {
-  map<string, UserIdToGoogleSpreadsheetId> user_id_to_google_folder_id = 1;
 }
 
 message UserIdToGoogleSpreadsheetId {
