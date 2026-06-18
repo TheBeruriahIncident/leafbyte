@@ -64,7 +64,7 @@ zoomable = "me.saket.telephoto:zoomable:0.19.0"
 
 [plugins]
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit-version" }
-dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.14.1"
+dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.15.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
