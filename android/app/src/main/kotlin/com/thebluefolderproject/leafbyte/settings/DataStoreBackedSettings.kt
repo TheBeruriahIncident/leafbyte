@@ -11,6 +11,7 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.thebluefolderproject.leafbyte.serializedsettings.DatasetSpecificSettings
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.SerializedSettingsSerializer
@@ -67,7 +68,7 @@ private const val DEFAULT_UNIT = "cm"
  * This class wraps the data store logic (https://developer.android.com/topic/libraries/architecture/datastore) and ensures that all writes
  * are immediately persisted, and all reads are fresh.
  *
- * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalized on
+ * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalize on
  * read, just in case we're reading a value that has never been written.
  */
 @Suppress("ktlint:standard:function-signature")
@@ -77,8 +78,15 @@ class DataStoreBackedSettings(
 ) : Settings {
     private val settingsStore = context.settingsStore
 
-    private fun <T> fromSettings(from: SerializedSettings.() -> T): Flow<T> =
-        settingsStore.data.map { from(it) }
+    private fun <T> fromBaseSettings(from2: SerializedSettings.() -> T): Flow<T> =
+        settingsStore.data.map { from2(it) }
+
+    private fun <T> fromSettings(from: DatasetSpecificSettings.() -> T): Flow<T> =
+        fromBaseSettings { getDatasetNameToSettingsOrDefault(currentDatasetName) }
+//    settingsStore.data.map {
+//        from(it.getDatasetNameToSettingsOrDefault(it.currentDatasetName,
+//            DatasetSpecificSettings.getDefaultInstance()))
+//    }
 
     /**
      * Note that the scope is SerializedSettings.Builder. This makes everything much cleaner, but be aware that this shadows some local
@@ -97,12 +105,12 @@ class DataStoreBackedSettings(
     }
 
     override fun getDataSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
+        fromSettings { SaveLocation.fromSerialized(dataSaveLocation) }
     override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
         edit { setDataSaveLocation(newDataSaveLocation.serialized) }
 
     override fun getImageSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
+        fromSettings { SaveLocation.fromSerialized(imageSaveLocation) }
     override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
         edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 
