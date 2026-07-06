@@ -59,7 +59,7 @@ mockk-core = { module = "io.mockk:mockk-core", version.ref = "mockk-version" }
 mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk-version" }
 navigation-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation-version" }
 navigation-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation-version" }
-protobuf = "com.google.protobuf:protobuf-javalite:4.35.0"
+protobuf = "com.google.protobuf:protobuf-javalite:4.35.1"
 zoomable = "me.saket.telephoto:zoomable:0.19.0"
 
 [plugins]
