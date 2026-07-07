@@ -64,6 +64,7 @@ allprojects {
                 "combinedGraphClasspath",
                 "projectMetadataClasspath",
                 "projectHealthClasspath",
+                "publicClassesClasspath",
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
                 "swiftExportClasspathResolvable",
