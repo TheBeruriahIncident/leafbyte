@@ -68,6 +68,7 @@ allprojects {
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
                 "swiftExportClasspathResolvable",
+                "typeUsageClasspath",
             )
 
         configurations.configureEach {
