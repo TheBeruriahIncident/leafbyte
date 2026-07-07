@@ -19,7 +19,7 @@ android-test = "androidx.test:core:1.7.0"
 annotation = "androidx.annotation:annotation:1.10.0"
 appauth = "net.openid:appauth:0.11.1"
 appcompat = "androidx.appcompat:appcompat:1.7.1"
-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.0"
+collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.1"
 compose-animation = { module = "androidx.compose.animation:animation" }
 compose-animationCore = { module = "androidx.compose.animation:animation-core" }
 compose-bom = "androidx.compose:compose-bom:2026.06.01"
