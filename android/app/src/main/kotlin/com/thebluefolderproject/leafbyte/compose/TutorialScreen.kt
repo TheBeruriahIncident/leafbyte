@@ -43,7 +43,7 @@ import com.thebluefolderproject.leafbyte.utils.resourceToUri
 @Composable
 fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
     TutorialScreen(
-        onPressingBack = {
+        goBack = {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
                 // Javadoc doesn't say this is only from API 35, but the linter does, and CI fails otherwise
                 backStack.removeLast()
@@ -51,11 +51,11 @@ fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
                 backStack.removeAt(backStack.lastIndex)
             }
         },
-        onPressingHome = {
+        goHome = {
             backStack.clear()
             backStack.add(LeafByteNavKey.MainScreen)
         },
-        onPressingNext = { exampleImageUri ->
+        continueToNextScreen = { exampleImageUri ->
             backStack.add(LeafByteNavKey.BackgroundRemovalScreen(originalImageUri = exampleImageUri))
         },
     )
@@ -64,14 +64,14 @@ fun AppAwareTutorialScreen(backStack: SnapshotStateList<Any>) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TutorialScreen(
-    onPressingBack: () -> Unit,
-    onPressingHome: () -> Unit,
-    onPressingNext: (exampleImageUri: Uri) -> Unit,
+    goBack: () -> Unit,
+    goHome: () -> Unit,
+    continueToNextScreen: (exampleImageUri: Uri) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(onPressingBack = onPressingBack, onPressingHome = onPressingHome)
+            TopAppBar(onPressingBack = goBack, onPressingHome = goHome)
         },
     ) { scaffoldPaddingValues ->
         Column(
@@ -84,7 +84,7 @@ private fun TutorialScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.Start,
         ) {
-            TutorialScreenContent(onPressingNext = onPressingNext)
+            TutorialScreenContent(onPressingNext = continueToNextScreen)
         }
     }
 }
@@ -139,6 +139,6 @@ private fun TutorialScreenContent(onPressingNext: (Uri) -> Unit) {
 @Composable
 private fun TutorialScreenPreview() {
     LeafByteTheme {
-        TutorialScreen(onPressingBack = {}, onPressingHome = {}, onPressingNext = {})
+        TutorialScreen(goBack = {}, goHome = {}, continueToNextScreen = {})
     }
 }

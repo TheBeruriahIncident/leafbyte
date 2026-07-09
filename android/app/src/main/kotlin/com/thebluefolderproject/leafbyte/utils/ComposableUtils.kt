@@ -46,12 +46,13 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
+    title: String? = null,
     onPressingBack: () -> Unit,
-    onPressingHome: () -> Unit,
+    onPressingHome: (() -> Unit)? = null,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    androidx.compose.material3.TopAppBar(
+    androidx.compose.material3.CenterAlignedTopAppBar(
         navigationIcon = {
             TextButton(
                 onClick = onPressingBack,
@@ -63,15 +64,21 @@ fun TopAppBar(
                 Text("Back")
             }
         },
-        title = {},
+        title = {
+            if (title != null) {
+                Text(title, size = TextSize.SCREEN_TITLE)
+            }
+        },
         actions = {
-            IconButton(
-                onClick = onPressingHome,
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.home),
-                    contentDescription = "Home button",
-                )
+            if (onPressingHome != null) {
+                IconButton(
+                    onClick = onPressingHome,
+                ) {
+                    Icon(
+                        painterResource(id = R.drawable.home),
+                        contentDescription = "Home button",
+                    )
+                }
             }
         },
         scrollBehavior = scrollBehavior,
