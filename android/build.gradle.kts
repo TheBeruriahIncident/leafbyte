@@ -62,6 +62,7 @@ allprojects {
         val configurationsThatCantBeLocked =
             arrayOf(
                 "combinedGraphClasspath",
+                "dependencyAnalysisKotlinMetadataClasspath",
                 "projectMetadataClasspath",
                 "projectHealthClasspath",
                 "publicClassesClasspath",
