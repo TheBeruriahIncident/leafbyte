@@ -62,11 +62,14 @@ allprojects {
         val configurationsThatCantBeLocked =
             arrayOf(
                 "combinedGraphClasspath",
+                "dependencyAnalysisKotlinMetadataClasspath",
                 "projectMetadataClasspath",
                 "projectHealthClasspath",
+                "publicClassesClasspath",
                 "releaseUnitTestCompileClasspath",
                 "resolvedDepsClasspath",
                 "swiftExportClasspathResolvable",
+                "typeUsageClasspath",
             )
 
         configurations.configureEach {
