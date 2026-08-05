@@ -29,7 +29,7 @@ style:
       - 'androidx.compose.material3.TopAppBar' # should use our wrapper
       - 'java.util.concurrent.Flow' # probably mean Kotlin's flow
       - 'org.jetbrains.annotations.VisibleForTesting' # standardize on Android's version that lets you specify the "proper" visibility
-      - 'org.junit.Test' # use Junit 5
+      - 'org.junit.Test' # use JUnit 5
   ForbiddenMethodCall:
     active: true
     methods:
@@ -43,6 +43,13 @@ style:
       - 'android.util.Log.e'
       - 'android.util.Log.wtf'
       - 'android.util.Log.println'
+      # these should use the normalized version
+      #   (unfortunately Detekt fails to detect these if accessed as properties without an explicit this., but maybe it will work better in
+      #     the future) # TODO manually check for each after settings refactor
+      - 'com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings.getCurrentDatasetName'
+      - 'com.thebluefolderproject.leafbyte.serializedsettings.DatasetSpecificSettings.getScaleLength'
+      - 'com.thebluefolderproject.leafbyte.serializedsettings.DatasetSpecificSettings.getScaleUnit'
+      - 'com.thebluefolderproject.leafbyte.serializedsettings.DatasetSpecificSettings.getNextSampleNumber'
   MaxLineLength:
     maxLineLength: 140
   NoTabs:

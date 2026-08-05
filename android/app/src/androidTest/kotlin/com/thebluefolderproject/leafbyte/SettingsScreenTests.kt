@@ -52,9 +52,9 @@ class SettingsScreenTests : AbstractComposeTests {
     @Test
     fun testInitialState() {
         runTest({ settings ->
+            settings.setDatasetName("unique dataset name")
             settings.setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
             settings.setImageSaveLocation(SaveLocation.LOCAL)
-            settings.setDatasetName("unique dataset name")
             settings.setScaleLength(26f)
             settings.setScaleUnit("ft")
             settings.setNextSampleNumber(63)
