@@ -67,7 +67,7 @@ private const val DEFAULT_UNIT = "cm"
  * This class wraps the data store logic (https://developer.android.com/topic/libraries/architecture/datastore) and ensures that all writes
  * are immediately persisted, and all reads are fresh.
  *
- * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalized on
+ * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalize on
  * read, just in case we're reading a value that has never been written.
  */
 @Suppress("ktlint:standard:function-signature")
