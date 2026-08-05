@@ -96,16 +96,6 @@ class DataStoreBackedSettings(
         }
     }
 
-    override fun getDataSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
-    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
-        edit { setDataSaveLocation(newDataSaveLocation.serialized) }
-
-    override fun getImageSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
-    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
-        edit { setImageSaveLocation(newImageSaveLocation.serialized) }
-
     override fun getDatasetName(): Flow<String> =
         fromSettings { normalizeDatasetName(datasetName) }
     private val currentDatasetName: String
@@ -136,6 +126,16 @@ class DataStoreBackedSettings(
 
             previousDatasetNames.toImmutableList()
         }
+
+    override fun getDataSaveLocation(): Flow<SaveLocation> =
+        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
+    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
+        edit { setDataSaveLocation(newDataSaveLocation.serialized) }
+
+    override fun getImageSaveLocation(): Flow<SaveLocation> =
+        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
+    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
+        edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 
     override fun getScaleMarkLength(): Flow<Float> =
         fromSettings {

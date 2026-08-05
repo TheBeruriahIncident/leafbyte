@@ -9,16 +9,15 @@ import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthState
 
 interface Settings {
-    fun getDataSaveLocation(): Flow<SaveLocation>
-    fun setDataSaveLocation(newDataSaveLocation: SaveLocation)
-
-    fun getImageSaveLocation(): Flow<SaveLocation>
-    fun setImageSaveLocation(newImageSaveLocation: SaveLocation)
-
     fun getDatasetName(): Flow<String>
     fun setDatasetName(newDatasetName: String)
     fun noteDatasetUsed()
     fun getPreviousDatasetNames(): Flow<ImmutableList<String>>
+
+    fun getDataSaveLocation(): Flow<SaveLocation>
+    fun setDataSaveLocation(newDataSaveLocation: SaveLocation)
+    fun getImageSaveLocation(): Flow<SaveLocation>
+    fun setImageSaveLocation(newImageSaveLocation: SaveLocation)
 
     fun getScaleMarkLength(): Flow<Float>
     fun setScaleMarkLength(newScaleMarkLength: Float)
