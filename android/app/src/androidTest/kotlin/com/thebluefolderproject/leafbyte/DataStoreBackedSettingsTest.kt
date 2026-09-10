@@ -47,8 +47,8 @@ class DataStoreBackedSettingsTest {
             assertFlowEquals(SaveLocation.LOCAL, getDataSaveLocation())
             assertFlowEquals(SaveLocation.LOCAL, getImageSaveLocation())
             assertFlowEquals("Herbivory Data", getDatasetName())
-            assertFlowEquals(10f, getScaleMarkLength())
-            assertFlowEquals("cm", getScaleLengthUnit())
+            assertFlowEquals(10f, getScaleLength())
+            assertFlowEquals("cm", getScaleUnit())
             assertFlowEquals(1, getNextSampleNumber())
             assertFlowFalse(getUseBarcode())
             assertFlowFalse(getSaveGpsData())
@@ -152,33 +152,33 @@ class DataStoreBackedSettingsTest {
     }
 
     @Test
-    fun testScaleMarkLength() {
+    fun testScaleLength() {
         runTest {
-            setScaleMarkLength(5.3f)
-            assertFlowEquals(5.3f, getScaleMarkLength())
+            setScaleLength(5.3f)
+            assertFlowEquals(5.3f, getScaleLength())
 
-            setScaleMarkLength(241.234f)
-            assertFlowEquals(241.234f, getScaleMarkLength())
+            setScaleLength(241.234f)
+            assertFlowEquals(241.234f, getScaleLength())
 
-            setScaleMarkLength(0f)
-            assertFlowEquals(10f, getScaleMarkLength())
+            setScaleLength(0f)
+            assertFlowEquals(10f, getScaleLength())
 
-            setScaleMarkLength(-5f)
-            assertFlowEquals(10f, getScaleMarkLength())
+            setScaleLength(-5f)
+            assertFlowEquals(10f, getScaleLength())
         }
     }
 
     @Test
-    fun testScaleLengthUnit() {
+    fun testScaleUnit() {
         runTest {
-            setScaleLengthUnit("mm")
-            assertFlowEquals("mm", getScaleLengthUnit())
+            setScaleUnit("mm")
+            assertFlowEquals("mm", getScaleUnit())
 
-            setScaleLengthUnit("ft")
-            assertFlowEquals("ft", getScaleLengthUnit())
+            setScaleUnit("ft")
+            assertFlowEquals("ft", getScaleUnit())
 
-            setScaleLengthUnit(" \n ")
-            assertFlowEquals("cm", getScaleLengthUnit())
+            setScaleUnit(" \n ")
+            assertFlowEquals("cm", getScaleUnit())
         }
     }
 

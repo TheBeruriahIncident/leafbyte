@@ -12,8 +12,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
-import com.thebluefolderproject.leafbyte.settings.SaveLocation
-import com.thebluefolderproject.leafbyte.settings.SerializedSettingsSerializer
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
 import com.thebluefolderproject.leafbyte.utils.SystemClock
@@ -67,7 +65,7 @@ private const val DEFAULT_UNIT = "cm"
  * This class wraps the data store logic (https://developer.android.com/topic/libraries/architecture/datastore) and ensures that all writes
  * are immediately persisted, and all reads are fresh.
  *
- * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalized on
+ * We store data in normalized form, but because the protobuf format doesn't allow us to specify a default value, we must also normalize on
  * read, just in case we're reading a value that has never been written.
  */
 @Suppress("ktlint:standard:function-signature")
@@ -95,16 +93,6 @@ class DataStoreBackedSettings(
             }
         }
     }
-
-    override fun getDataSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
-    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
-        edit { setDataSaveLocation(newDataSaveLocation.serialized) }
-
-    override fun getImageSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
-    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
-        edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 
     override fun getDatasetName(): Flow<String> =
         fromSettings { normalizeDatasetName(datasetName) }
@@ -137,27 +125,37 @@ class DataStoreBackedSettings(
             previousDatasetNames.toImmutableList()
         }
 
-    override fun getScaleMarkLength(): Flow<Float> =
-        fromSettings {
-            val unnormalizedScaleMarkLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
-            normalizeScaleMarkLength(unnormalizedScaleMarkLength)
-        }
-    override fun setScaleMarkLength(newScaleMarkLength: Float) {
-        val normalizedNewScaleMarkLength = normalizeScaleMarkLength(newScaleMarkLength)
-        edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleMarkLength) }
-    }
-    private fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
+    override fun getDataSaveLocation(): Flow<SaveLocation> =
+        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
+    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
+        edit { setDataSaveLocation(newDataSaveLocation.serialized) }
 
-    override fun getScaleLengthUnit(): Flow<String> =
+    override fun getImageSaveLocation(): Flow<SaveLocation> =
+        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
+    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
+        edit { setImageSaveLocation(newImageSaveLocation.serialized) }
+
+    override fun getScaleLength(): Flow<Float> =
         fromSettings {
-            val unnormalizedScaleLengthUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
-            normalizeScaleLengthUnit(unnormalizedScaleLengthUnit)
+            val unnormalizedScaleLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
+            normalizeScaleLength(unnormalizedScaleLength)
         }
-    override fun setScaleLengthUnit(newScaleLengthUnit: String) {
-        val normalizedNewScaleLengthUnit = normalizeScaleLengthUnit(newScaleLengthUnit)
-        edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleLengthUnit) }
+    override fun setScaleLength(newScaleLength: Float) {
+        val normalizedNewScaleLength = normalizeScaleLength(newScaleLength)
+        edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleLength) }
     }
-    private fun normalizeScaleLengthUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
+    private fun normalizeScaleLength(scaleLength: Float) = if (scaleLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleLength
+
+    override fun getScaleUnit(): Flow<String> =
+        fromSettings {
+            val unnormalizedScaleUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
+            normalizeScaleUnit(unnormalizedScaleUnit)
+        }
+    override fun setScaleUnit(newScaleUnit: String) {
+        val normalizedNewScaleUnit = normalizeScaleUnit(newScaleUnit)
+        edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleUnit) }
+    }
+    private fun normalizeScaleUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
     override fun getNextSampleNumber(): Flow<Int> =
         fromSettings {

@@ -16,18 +16,6 @@ open class MockSettings(
     val imageSaveLocation: SaveLocation = SaveLocation.GOOGLE_DRIVE,
     val useBarcode: Boolean = true,
 ) : Settings {
-    override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(dataSaveLocation)
-
-    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(imageSaveLocation)
-
-    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) {
-        TODO("Not yet implemented")
-    }
-
     override fun getDatasetName(): Flow<String> = flowOf("Herbvar collection")
 
     override fun setDatasetName(newDatasetName: String) {
@@ -40,15 +28,27 @@ open class MockSettings(
 
     override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> = flowOf(persistentListOf("Herbivory data", "Herbvar"))
 
-    override fun getScaleMarkLength(): Flow<Float> = flowOf(15f)
+    override fun getDataSaveLocation(): Flow<SaveLocation> = flowOf(dataSaveLocation)
 
-    override fun setScaleMarkLength(newScaleMarkLength: Float) {
+    override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) {
         TODO("Not yet implemented")
     }
 
-    override fun getScaleLengthUnit(): Flow<String> = flowOf("in")
+    override fun getImageSaveLocation(): Flow<SaveLocation> = flowOf(imageSaveLocation)
 
-    override fun setScaleLengthUnit(newScaleLengthUnit: String) {
+    override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getScaleLength(): Flow<Float> = flowOf(15f)
+
+    override fun setScaleLength(newScaleLength: Float) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getScaleUnit(): Flow<String> = flowOf("in")
+
+    override fun setScaleUnit(newScaleUnit: String) {
         TODO("Not yet implemented")
     }
 

@@ -27,7 +27,7 @@ Some useful commands:
 - `./gradlew connectedCheck` runs all instrumented checks
 - `./gradlew ktlintFormat buildHealth detektMain detektTest detektDebugAndroidTest lintVitalRelease --write-locks` to quickly apply
    automated fixes and do fast checking without running any tests
-- `./gradlew check connectedCheck --write-locks` to run all tests 
+- `./gradlew check connectedCheck --write-locks` to run all tests
 
 Regarding Renovate Bot:
 - See the dashboard as a GitHub issue at https://github.com/TheBeruriahIncident/leafbyte/issues/195
