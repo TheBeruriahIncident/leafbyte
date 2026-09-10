@@ -125,7 +125,7 @@ fun SettingsScreen(
     // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields.
     // see https://medium.com/androiddevelopers/effective-state-management-for-textfield-in-compose-d6e5b070fbe5
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
-    val scaleMarkLengthDisplayValue = remember { mutableStateOf(settings.getScaleLength().map(Float::toString).load()) }
+    val scaleLengthDisplayValue = remember { mutableStateOf(settings.getScaleLength().map(Float::toString).load()) }
     val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
 
     val currentAlert: MutableState<SettingsAlertType?> = remember { mutableStateOf(initialAlert) }
@@ -175,7 +175,7 @@ fun SettingsScreen(
     // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
     //   to make the editing experience usable and not have the default pop in as soon as you cleared the field
     val onDatasetChange = {
-        scaleMarkLengthDisplayValue.value = settings.getScaleLength().load().toString()
+        scaleLengthDisplayValue.value = settings.getScaleLength().load().toString()
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
     }
 
@@ -245,7 +245,7 @@ fun SettingsScreen(
                         googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
                     },
                 )
-                ScaleLengthSetting(settings, scaleMarkLengthDisplayValue)
+                ScaleLengthSetting(settings, scaleLengthDisplayValue)
                 NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
                 ToggleableSetting(
                     title = "Scan Barcodes?",
@@ -428,7 +428,7 @@ private fun ScaleLengthSetting(
 ) {
     val isInvalid = displayValue.value.isBlank() || displayValue.value.toFloatOrNull() == null
     var dropdownIsExpanded by remember { mutableStateOf(false) }
-    val scaleLengthUnit = settings.getScaleUnit().valueForCompose()
+    val scaleUnit = settings.getScaleUnit().valueForCompose()
 
     SingleSetting("Scale Length") {
         ConstraintLayout(
@@ -474,7 +474,7 @@ private fun ScaleLengthSetting(
                 onClick = { dropdownIsExpanded = !dropdownIsExpanded },
             ) {
                 Text(
-                    text = scaleLengthUnit,
+                    text = scaleUnit,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Left,
                 )

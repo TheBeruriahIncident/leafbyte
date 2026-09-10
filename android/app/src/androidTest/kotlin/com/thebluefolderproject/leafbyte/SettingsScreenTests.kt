@@ -400,7 +400,7 @@ class SettingsScreenTests : AbstractComposeTests {
     }
 
     @Test
-    fun testScaleLengthUnit() {
+    fun testScaleUnit() {
         runTest { settings, googleSignInManager ->
             assertFlowEquals("cm", settings.getScaleUnit())
 

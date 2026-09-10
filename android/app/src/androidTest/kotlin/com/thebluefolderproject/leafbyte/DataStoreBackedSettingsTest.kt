@@ -152,7 +152,7 @@ class DataStoreBackedSettingsTest {
     }
 
     @Test
-    fun testScaleMarkLength() {
+    fun testScaleLength() {
         runTest {
             setScaleLength(5.3f)
             assertFlowEquals(5.3f, getScaleLength())
@@ -169,7 +169,7 @@ class DataStoreBackedSettingsTest {
     }
 
     @Test
-    fun testScaleLengthUnit() {
+    fun testScaleUnit() {
         runTest {
             setScaleUnit("mm")
             assertFlowEquals("mm", getScaleUnit())

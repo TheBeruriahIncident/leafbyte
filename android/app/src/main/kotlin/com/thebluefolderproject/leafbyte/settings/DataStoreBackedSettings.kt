@@ -137,25 +137,25 @@ class DataStoreBackedSettings(
 
     override fun getScaleLength(): Flow<Float> =
         fromSettings {
-            val unnormalizedScaleMarkLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
-            normalizeScaleMarkLength(unnormalizedScaleMarkLength)
+            val unnormalizedScaleLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
+            normalizeScaleLength(unnormalizedScaleLength)
         }
     override fun setScaleLength(newScaleLength: Float) {
-        val normalizedNewScaleMarkLength = normalizeScaleMarkLength(newScaleLength)
-        edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleMarkLength) }
+        val normalizedNewScaleLength = normalizeScaleLength(newScaleLength)
+        edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleLength) }
     }
-    private fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
+    private fun normalizeScaleLength(scaleLength: Float) = if (scaleLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleLength
 
     override fun getScaleUnit(): Flow<String> =
         fromSettings {
-            val unnormalizedScaleLengthUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
-            normalizeScaleLengthUnit(unnormalizedScaleLengthUnit)
+            val unnormalizedScaleUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
+            normalizeScaleUnit(unnormalizedScaleUnit)
         }
     override fun setScaleUnit(newScaleUnit: String) {
-        val normalizedNewScaleLengthUnit = normalizeScaleLengthUnit(newScaleUnit)
-        edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleLengthUnit) }
+        val normalizedNewScaleUnit = normalizeScaleUnit(newScaleUnit)
+        edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleUnit) }
     }
-    private fun normalizeScaleLengthUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
+    private fun normalizeScaleUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
     override fun getNextSampleNumber(): Flow<Int> =
         fromSettings {
