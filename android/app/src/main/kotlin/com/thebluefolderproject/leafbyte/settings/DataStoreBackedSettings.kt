@@ -168,9 +168,6 @@ class DataStoreBackedSettings(
     }
     private fun normalizeNextSampleNumber(nextSampleNumber: Int) =
         if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
-    override fun incrementSampleNumber() {
-        setNextSampleNumber(getNextSampleNumber().load() + 1)
-    }
 
     override fun getUseBarcode(): Flow<Boolean> =
         fromSettings { useBarcode }
