@@ -19,10 +19,10 @@ interface Settings {
     fun getImageSaveLocation(): Flow<SaveLocation>
     fun setImageSaveLocation(newImageSaveLocation: SaveLocation)
 
-    fun getScaleMarkLength(): Flow<Float>
-    fun setScaleMarkLength(newScaleMarkLength: Float)
-    fun getScaleLengthUnit(): Flow<String>
-    fun setScaleLengthUnit(newScaleLengthUnit: String)
+    fun getScaleLength(): Flow<Float>
+    fun setScaleLength(newScaleLength: Float)
+    fun getScaleUnit(): Flow<String>
+    fun setScaleUnit(newScaleUnit: String)
 
     fun getNextSampleNumber(): Flow<Int>
     fun setNextSampleNumber(newNextSampleNumber: Int)

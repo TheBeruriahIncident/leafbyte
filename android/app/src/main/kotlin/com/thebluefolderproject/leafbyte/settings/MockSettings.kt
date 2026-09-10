@@ -40,15 +40,15 @@ open class MockSettings(
         TODO("Not yet implemented")
     }
 
-    override fun getScaleMarkLength(): Flow<Float> = flowOf(15f)
+    override fun getScaleLength(): Flow<Float> = flowOf(15f)
 
-    override fun setScaleMarkLength(newScaleMarkLength: Float) {
+    override fun setScaleLength(newScaleLength: Float) {
         TODO("Not yet implemented")
     }
 
-    override fun getScaleLengthUnit(): Flow<String> = flowOf("in")
+    override fun getScaleUnit(): Flow<String> = flowOf("in")
 
-    override fun setScaleLengthUnit(newScaleLengthUnit: String) {
+    override fun setScaleUnit(newScaleUnit: String) {
         TODO("Not yet implemented")
     }
 

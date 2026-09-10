@@ -55,8 +55,8 @@ class SettingsScreenTests : AbstractComposeTests {
             settings.setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
             settings.setImageSaveLocation(SaveLocation.LOCAL)
             settings.setDatasetName("unique dataset name")
-            settings.setScaleMarkLength(26f)
-            settings.setScaleLengthUnit("ft")
+            settings.setScaleLength(26f)
+            settings.setScaleUnit("ft")
             settings.setNextSampleNumber(63)
             settings.setUseBarcode(true)
             settings.setSaveGpsData(false)
@@ -373,28 +373,28 @@ class SettingsScreenTests : AbstractComposeTests {
             val scaleLengthEntry = onNodeWithContentDescription("Scale length entry")
 
             scaleLengthEntry.performTextReplacement("15")
-            assertFlowEquals(15f, settings.getScaleMarkLength())
+            assertFlowEquals(15f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("15"))
 
             scaleLengthEntry.performTextClearance()
-            assertFlowEquals(10f, settings.getScaleMarkLength())
+            assertFlowEquals(10f, settings.getScaleLength())
             // the placeholder is included
             scaleLengthEntry.assert(hasText("Your scale length"))
 
             scaleLengthEntry.performTextReplacement("hello")
-            assertFlowEquals(10f, settings.getScaleMarkLength())
+            assertFlowEquals(10f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText(""))
 
             scaleLengthEntry.performTextReplacement("15.0000")
-            assertFlowEquals(15f, settings.getScaleMarkLength())
+            assertFlowEquals(15f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("15.0000"))
 
             scaleLengthEntry.performTextReplacement("15.0.1")
-            assertFlowEquals(10f, settings.getScaleMarkLength())
+            assertFlowEquals(10f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("15.0.1"))
 
             scaleLengthEntry.performTextReplacement("-2")
-            assertFlowEquals(2f, settings.getScaleMarkLength())
+            assertFlowEquals(2f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("2"))
         }
     }
@@ -402,15 +402,15 @@ class SettingsScreenTests : AbstractComposeTests {
     @Test
     fun testScaleLengthUnit() {
         runTest { settings, googleSignInManager ->
-            assertFlowEquals("cm", settings.getScaleLengthUnit())
+            assertFlowEquals("cm", settings.getScaleUnit())
 
             onNodeWithText("cm").performClick()
             onNodeWithText("in").performClick()
-            assertFlowEquals("in", settings.getScaleLengthUnit())
+            assertFlowEquals("in", settings.getScaleUnit())
 
             onNodeWithText("in").performClick()
             onNodeWithText("ft").performClick()
-            assertFlowEquals("ft", settings.getScaleLengthUnit())
+            assertFlowEquals("ft", settings.getScaleUnit())
         }
     }
 
@@ -468,9 +468,9 @@ class SettingsScreenTests : AbstractComposeTests {
 
             assertFlowEquals("test2", settings.getDatasetName())
             datasetNameField.assert(hasText("test2"))
-            assertFlowEquals(200f, settings.getScaleMarkLength())
+            assertFlowEquals(200f, settings.getScaleLength())
             scaleLengthField.assert(hasText("200"))
-            assertFlowEquals("m", settings.getScaleLengthUnit())
+            assertFlowEquals("m", settings.getScaleUnit())
             scaleUnitButton.assert(hasText("m"))
             assertFlowEquals(200, settings.getNextSampleNumber())
             nextSampleNumberField.assert(hasText("200"))
@@ -480,9 +480,9 @@ class SettingsScreenTests : AbstractComposeTests {
 
             assertFlowEquals("test1", settings.getDatasetName())
             datasetNameField.assert(hasText("test1"))
-            assertFlowEquals(100f, settings.getScaleMarkLength())
+            assertFlowEquals(100f, settings.getScaleLength())
             scaleLengthField.assert(hasText("100.0"))
-            assertFlowEquals("ft", settings.getScaleLengthUnit())
+            assertFlowEquals("ft", settings.getScaleUnit())
             scaleUnitButton.assert(hasText("ft"))
             assertFlowEquals(100, settings.getNextSampleNumber())
             nextSampleNumberField.assert(hasText("100"))

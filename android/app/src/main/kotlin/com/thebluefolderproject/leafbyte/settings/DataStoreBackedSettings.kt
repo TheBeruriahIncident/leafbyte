@@ -12,8 +12,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
-import com.thebluefolderproject.leafbyte.settings.SaveLocation
-import com.thebluefolderproject.leafbyte.settings.SerializedSettingsSerializer
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
 import com.thebluefolderproject.leafbyte.utils.SystemClock
@@ -137,24 +135,24 @@ class DataStoreBackedSettings(
     override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
         edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 
-    override fun getScaleMarkLength(): Flow<Float> =
+    override fun getScaleLength(): Flow<Float> =
         fromSettings {
             val unnormalizedScaleMarkLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
             normalizeScaleMarkLength(unnormalizedScaleMarkLength)
         }
-    override fun setScaleMarkLength(newScaleMarkLength: Float) {
-        val normalizedNewScaleMarkLength = normalizeScaleMarkLength(newScaleMarkLength)
+    override fun setScaleLength(newScaleLength: Float) {
+        val normalizedNewScaleMarkLength = normalizeScaleMarkLength(newScaleLength)
         edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleMarkLength) }
     }
     private fun normalizeScaleMarkLength(scaleMarkLength: Float) = if (scaleMarkLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleMarkLength
 
-    override fun getScaleLengthUnit(): Flow<String> =
+    override fun getScaleUnit(): Flow<String> =
         fromSettings {
             val unnormalizedScaleLengthUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
             normalizeScaleLengthUnit(unnormalizedScaleLengthUnit)
         }
-    override fun setScaleLengthUnit(newScaleLengthUnit: String) {
-        val normalizedNewScaleLengthUnit = normalizeScaleLengthUnit(newScaleLengthUnit)
+    override fun setScaleUnit(newScaleUnit: String) {
+        val normalizedNewScaleLengthUnit = normalizeScaleLengthUnit(newScaleUnit)
         edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleLengthUnit) }
     }
     private fun normalizeScaleLengthUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
