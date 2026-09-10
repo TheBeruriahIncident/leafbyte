@@ -58,10 +58,6 @@ open class MockSettings(
         TODO("Not yet implemented")
     }
 
-    override fun incrementSampleNumber() {
-        TODO("Not yet implemented")
-    }
-
     override fun getUseBarcode(): Flow<Boolean> = flowOf(useBarcode)
 
     override fun setUseBarcode(newUseBarcode: Boolean) {

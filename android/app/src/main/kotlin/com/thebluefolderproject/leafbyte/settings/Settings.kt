@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.settings
 
+import com.thebluefolderproject.leafbyte.utils.load
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthState
@@ -26,7 +27,9 @@ interface Settings {
 
     fun getNextSampleNumber(): Flow<Int>
     fun setNextSampleNumber(newNextSampleNumber: Int)
-    fun incrementSampleNumber()
+    fun incrementSampleNumber() {
+        setNextSampleNumber(getNextSampleNumber().load() + 1)
+    }
 
     fun getUseBarcode(): Flow<Boolean>
     fun setUseBarcode(newUseBarcode: Boolean)
