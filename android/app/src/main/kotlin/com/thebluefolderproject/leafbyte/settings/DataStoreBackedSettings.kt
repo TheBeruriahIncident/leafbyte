@@ -128,6 +128,7 @@ class DataStoreBackedSettings(
             val otherDatasetNames =
                 datasetNameToSettingsMap
                     .toList()
+                    .filter { datasetNameToSettings -> datasetNameToSettings.second.epochTimeOfLastUse > 0 }
                     .sortedBy { datasetNameToSettings -> datasetNameToSettings.second.epochTimeOfLastUse }
                     .reversed()
                     .map { it.first }

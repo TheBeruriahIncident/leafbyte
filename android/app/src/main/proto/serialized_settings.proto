@@ -9,7 +9,7 @@ message SerializedSettings {
   string current_dataset_name = 1;
   // we store different settings for each dataset
   map<string, DatasetSpecificSettings> dataset_name_to_settings = 2;
-  string google_auth_state = 11;
+  string google_auth_state = 3;
 }
 
 message DatasetSpecificSettings {
@@ -20,6 +20,7 @@ message DatasetSpecificSettings {
   SerializedSaveLocation data_save_location = 2;
   // Defaults to UNSPECIFIED and the proper default is substituted
   SerializedSaveLocation image_save_location = 3;
+
   // Defaults to 0 and the proper default is substituted
   float scale_length = 4;
   // defaults to blank and the proper default is substituted
@@ -27,19 +28,21 @@ message DatasetSpecificSettings {
   // We have a separate file for each unit for a given dataset so that the header is accurate. On Google Drive, these files can all have the
   //   same filename, but locally you need unique names. So, the first filename will be just the dataset, while subsequent filenames will
   //   have the unit suffixed. To achieve that, we need to track the unit of the first file (the one without a suffix).
-
   string unit_in_first_local_file = 6;
+
   // defaults to zero and the proper default is substituted
   int32 next_sample_number = 7;
+
   // Defaults to false
   bool use_barcode = 8;
   // Defaults to false
   bool save_gps_data = 9;
   // Defaults to false
   bool use_black_background = 10;
-  map<string, string> user_id_to_top_level_google_folder_id = 12;
-  map<string, string> user_id_to_dataset_google_folder_id = 13;
-  map<string, UserIdToGoogleSpreadsheetId> unit_to_user_id_to_google_spreadsheet_id = 14;
+
+  map<string, string> user_id_to_top_level_google_folder_id = 11;
+  map<string, string> user_id_to_dataset_google_folder_id = 12;
+  map<string, UserIdToGoogleSpreadsheetId> unit_to_user_id_to_google_spreadsheet_id = 13;
 }
 
 enum SerializedSaveLocation {
