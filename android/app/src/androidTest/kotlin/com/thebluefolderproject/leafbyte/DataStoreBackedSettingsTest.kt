@@ -57,6 +57,31 @@ class DataStoreBackedSettingsTest {
     }
 
     @Test
+    fun testNormalization() {
+        runTest {
+            setDatasetName("aphids")
+            assertFlowEquals("aphids", getDatasetName())
+            setDatasetName("")
+            assertFlowEquals("Herbivory Data", getDatasetName())
+
+            setScaleLength(5f)
+            assertFlowEquals(5f, getScaleLength())
+            setScaleLength(0f)
+            assertFlowEquals(10f, getScaleLength())
+
+            setScaleUnit("ft")
+            assertFlowEquals("ft", getScaleUnit())
+            setScaleUnit("")
+            assertFlowEquals("cm", getScaleUnit())
+
+            setNextSampleNumber(23)
+            assertFlowEquals(23, getNextSampleNumber())
+            setNextSampleNumber(0)
+            assertFlowEquals(1, getNextSampleNumber())
+        }
+    }
+
+    @Test
     fun testDataSaveLocation() {
         runTest {
             setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
@@ -105,6 +130,43 @@ class DataStoreBackedSettingsTest {
         }
     }
 
+    @Test
+    fun testScoping() {
+        runTest {
+            setDataSaveLocation(SaveLocation.GOOGLE_DRIVE)
+            setImageSaveLocation(SaveLocation.GOOGLE_DRIVE)
+            setScaleLength(1234f)
+            setScaleUnit("cubits")
+            setNextSampleNumber(235)
+            setUseBarcode(true)
+            setSaveGpsData(true)
+            setUseBlackBackground(true)
+
+            setDatasetName("other")
+            // everything is now the default values, not the values from the previous dataset
+            assertFlowEquals("other", getDatasetName())
+            assertFlowEquals(SaveLocation.LOCAL, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.LOCAL, getImageSaveLocation())
+            assertFlowEquals(10f, getScaleLength())
+            assertFlowEquals("cm", getScaleUnit())
+            assertFlowEquals(1, getNextSampleNumber())
+            assertFlowFalse(getUseBarcode())
+            assertFlowFalse(getSaveGpsData())
+            assertFlowFalse(getUseBlackBackground())
+
+            setDatasetName("")
+            assertFlowEquals("Herbivory Data", getDatasetName())
+            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getDataSaveLocation())
+            assertFlowEquals(SaveLocation.GOOGLE_DRIVE, getImageSaveLocation())
+            assertFlowEquals(1234f, getScaleLength())
+            assertFlowEquals("cubits", getScaleUnit())
+            assertFlowEquals(235, getNextSampleNumber())
+            assertFlowTrue(getUseBarcode())
+            assertFlowTrue(getSaveGpsData())
+            assertFlowTrue(getUseBlackBackground())
+        }
+    }
+
     /**
      * We waitASecond before calling noteDatasetUsed, because epoch time is in seconds, and we want to record a different second.
      */
@@ -125,6 +187,10 @@ class DataStoreBackedSettingsTest {
 
             setDatasetName("Dill")
             assertFlowEquals(listOf("Dill", "Salad"), getPreviousDatasetNames())
+
+            setDatasetName("NeverUsedEvenIfSettingsSet")
+            setNextSampleNumber(4)
+            assertFlowEquals(listOf("NeverUsedEvenIfSettingsSet", "Salad"), getPreviousDatasetNames())
 
             setDatasetName("Salad")
             assertFlowEquals(listOf("Salad"), getPreviousDatasetNames())
@@ -148,6 +214,34 @@ class DataStoreBackedSettingsTest {
             noteDatasetUsed()
             setDatasetName("Potato")
             assertFlowEquals(listOf("Potato", "Dill", "Vinegar", "Salad"), getPreviousDatasetNames())
+        }
+    }
+
+    /**
+     * The previous dataset list should only have datasets you've ever actually used, i.e. gone through a flow with. However, if you do save
+     * settings for a specific dataset, we'll keep those settings around just in case.
+     */
+    @Test
+    fun settingsSavedEvenIfNotInPreviousDatasets() {
+        runTest {
+            assertFlowEquals(listOf("Herbivory Data"), getPreviousDatasetNames())
+
+            setDatasetName("a")
+            setNextSampleNumber(4)
+            assertFlowEquals(listOf("a"), getPreviousDatasetNames())
+
+            setDatasetName("b")
+            setNextSampleNumber(5)
+            noteDatasetUsed()
+            assertFlowEquals(listOf("b"), getPreviousDatasetNames())
+
+            setDatasetName("a")
+            assertFlowEquals(4, getNextSampleNumber())
+            assertFlowEquals(listOf("a", "b"), getPreviousDatasetNames())
+
+            setDatasetName("b")
+            assertFlowEquals(5, getNextSampleNumber())
+            assertFlowEquals(listOf("b"), getPreviousDatasetNames())
         }
     }
 
