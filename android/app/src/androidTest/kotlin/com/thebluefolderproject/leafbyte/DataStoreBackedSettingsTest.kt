@@ -106,7 +106,7 @@ class DataStoreBackedSettingsTest {
     }
 
     /**
-     * We sleep before calling noteDatasetUsed, because epoch time is in seconds, and we want to record a different second.
+     * We waitASecond before calling noteDatasetUsed, because epoch time is in seconds, and we want to record a different second.
      */
     @Test
     fun testPreviousDatasetNames() {

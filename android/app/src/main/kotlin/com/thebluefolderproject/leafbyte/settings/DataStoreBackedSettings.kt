@@ -11,11 +11,11 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.thebluefolderproject.leafbyte.serializedsettings.DatasetSpecificSettings
 import com.thebluefolderproject.leafbyte.serializedsettings.SerializedSettings
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.DEFAULT_AUTH_STATE
 import com.thebluefolderproject.leafbyte.utils.SystemClock
-import com.thebluefolderproject.leafbyte.utils.load
 import com.thebluefolderproject.leafbyte.utils.log
 import com.thebluefolderproject.leafbyte.utils.logError
 import kotlinx.collections.immutable.ImmutableList
@@ -54,13 +54,6 @@ fun clearSettingsStore(context: Context) {
     }
 }
 
-// With the newer protobuf Editions, it's now possible to put defaults into the proto file, but Protobufs are opaque with unclear long-term
-//   API contract, so we're keeping things simple and specifying in code
-private const val DEFAULT_DATASET_NAME = "Herbivory Data"
-private const val DEFAULT_NEXT_SAMPLE_NUMBER = 1
-private const val DEFAULT_SCALE_MARK_LENGTH = 10.0f
-private const val DEFAULT_UNIT = "cm"
-
 /**
  * This class wraps the data store logic (https://developer.android.com/topic/libraries/architecture/datastore) and ensures that all writes
  * are immediately persisted, and all reads are fresh.
@@ -75,47 +68,67 @@ class DataStoreBackedSettings(
 ) : Settings {
     private val settingsStore = context.settingsStore
 
-    private fun <T> fromSettings(from: SerializedSettings.() -> T): Flow<T> =
+    private fun <T> fromTopLevelSettings(from: SerializedSettings.() -> T): Flow<T> =
         settingsStore.data.map { from(it) }
+
+    private fun <T> fromSettings(from: DatasetSpecificSettings.() -> T): Flow<T> =
+        settingsStore.data.map { from(it.currentSettings()) }
 
     /**
      * Note that the scope is SerializedSettings.Builder. This makes everything much cleaner, but be aware that this shadows some local
      * functions.
      */
-    private fun edit(editAction: SerializedSettings.Builder.() -> SerializedSettings.Builder) {
+    private fun editTopLevel(editAction: SerializedSettings.Builder.() -> SerializedSettings.Builder) {
         runBlocking {
             settingsStore.updateData { currentSerializedSettings ->
                 val settingsBuilder = currentSerializedSettings.toBuilder()
                 val settings = editAction(settingsBuilder).build()
 
-                log("Writing new settings: $settings")
+                log("Writing new settings via top-level edit: $settings")
+                settings
+            }
+        }
+    }
+    private fun edit(editAction: DatasetSpecificSettings.Builder.() -> DatasetSpecificSettings.Builder) {
+        runBlocking {
+            settingsStore.updateData { currentSerializedSettings ->
+                val settingsBuilder = currentSerializedSettings.toBuilder()
+                val datasetSpecificSettings = editAction(currentSerializedSettings.currentSettings().toBuilder()).build()
+
+                val settings =
+                    settingsBuilder
+                        .putDatasetNameToSettings(
+                            currentSerializedSettings.currentDatasetNameNormalized(),
+                            datasetSpecificSettings,
+                        ).build()
+
+                log("Writing new settings via dataset-specific edit: $settings")
                 settings
             }
         }
     }
 
     override fun getDatasetName(): Flow<String> =
-        fromSettings { normalizeDatasetName(datasetName) }
-    private val currentDatasetName: String
-        get() = getDatasetName().load()
+        fromTopLevelSettings { currentDatasetNameNormalized() }
+
+    // TODO can I nest other setters somehow under this? so we always set for the right dataset
     override fun setDatasetName(newDatasetName: String) {
         val normalizedNewDatasetName = normalizeDatasetName(newDatasetName)
-        edit { setDatasetName(normalizedNewDatasetName) }
+        editTopLevel { setCurrentDatasetName(normalizedNewDatasetName) }
     }
-    private fun normalizeDatasetName(datasetName: String) =
-        datasetName.ifBlank { DEFAULT_DATASET_NAME }
 
     override fun noteDatasetUsed() {
         val epochTimeInSeconds = clock.getEpochTimeInSeconds()
-        edit { putDatasetNameToEpochTimeOfLastUse(currentDatasetName, epochTimeInSeconds) }
+        edit { setEpochTimeOfLastUse(epochTimeInSeconds) }
     }
     override fun getPreviousDatasetNames(): Flow<ImmutableList<String>> =
-        fromSettings {
+        fromTopLevelSettings {
+            val currentDatasetName = currentDatasetNameNormalized()
             // Sort the dataset names by last use, excluding the current dataset
             val otherDatasetNames =
-                datasetNameToEpochTimeOfLastUseMap
+                datasetNameToSettingsMap
                     .toList()
-                    .sortedBy { nameToTime -> nameToTime.second }
+                    .sortedBy { datasetNameToSettings -> datasetNameToSettings.second.epochTimeOfLastUse }
                     .reversed()
                     .map { it.first }
                     .filter { it != currentDatasetName }
@@ -126,48 +139,35 @@ class DataStoreBackedSettings(
         }
 
     override fun getDataSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(dataSaveLocation) }
+        fromSettings { dataSaveLocation.deserialize() }
     override fun setDataSaveLocation(newDataSaveLocation: SaveLocation) =
         edit { setDataSaveLocation(newDataSaveLocation.serialized) }
 
     override fun getImageSaveLocation(): Flow<SaveLocation> =
-        fromSettings { SaveLocation.Companion.fromSerialized(imageSaveLocation) }
+        fromSettings { imageSaveLocation.deserialize() }
     override fun setImageSaveLocation(newImageSaveLocation: SaveLocation) =
         edit { setImageSaveLocation(newImageSaveLocation.serialized) }
 
     override fun getScaleLength(): Flow<Float> =
-        fromSettings {
-            val unnormalizedScaleLength = getDatasetNameToScaleMarkLengthOrDefault(currentDatasetName, DEFAULT_SCALE_MARK_LENGTH)
-            normalizeScaleLength(unnormalizedScaleLength)
-        }
+        fromSettings { scaleLengthNormalized() }
     override fun setScaleLength(newScaleLength: Float) {
         val normalizedNewScaleLength = normalizeScaleLength(newScaleLength)
-        edit { putDatasetNameToScaleMarkLength(currentDatasetName, normalizedNewScaleLength) }
+        edit { setScaleLength(normalizedNewScaleLength) }
     }
-    private fun normalizeScaleLength(scaleLength: Float) = if (scaleLength <= 0) DEFAULT_SCALE_MARK_LENGTH else scaleLength
 
     override fun getScaleUnit(): Flow<String> =
-        fromSettings {
-            val unnormalizedScaleUnit = getDatasetNameToUnitOrDefault(currentDatasetName, DEFAULT_UNIT)
-            normalizeScaleUnit(unnormalizedScaleUnit)
-        }
+        fromSettings { scaleUnitNormalized() }
     override fun setScaleUnit(newScaleUnit: String) {
         val normalizedNewScaleUnit = normalizeScaleUnit(newScaleUnit)
-        edit { putDatasetNameToUnit(currentDatasetName, normalizedNewScaleUnit) }
+        edit { setScaleUnit(normalizedNewScaleUnit) }
     }
-    private fun normalizeScaleUnit(unit: String) = unit.ifBlank { DEFAULT_UNIT }
 
     override fun getNextSampleNumber(): Flow<Int> =
-        fromSettings {
-            val unnormalizedNextSampleNumber = getDatasetNameToNextSampleNumberOrDefault(currentDatasetName, DEFAULT_NEXT_SAMPLE_NUMBER)
-            normalizeNextSampleNumber(unnormalizedNextSampleNumber)
-        }
+        fromSettings { nextSampleNumberNormalized() }
     override fun setNextSampleNumber(newNextSampleNumber: Int) {
         val normalizedNewNextSampleNumber = normalizeNextSampleNumber(newNextSampleNumber)
-        edit { putDatasetNameToNextSampleNumber(currentDatasetName, normalizedNewNextSampleNumber) }
+        edit { setNextSampleNumber(normalizedNewNextSampleNumber) }
     }
-    private fun normalizeNextSampleNumber(nextSampleNumber: Int) =
-        if (nextSampleNumber <= 0) DEFAULT_NEXT_SAMPLE_NUMBER else nextSampleNumber
 
     override fun getUseBarcode(): Flow<Boolean> =
         fromSettings { useBarcode }
@@ -189,7 +189,7 @@ class DataStoreBackedSettings(
 
     @Suppress("detekt:exceptions:TooGenericExceptionCaught") // being defensive about the exceptions AppAuth might throw
     override fun getAuthState(): Flow<AuthState> {
-        val rawAuthState = fromSettings { googleAuthState }
+        val rawAuthState = fromTopLevelSettings { googleAuthState }
         return rawAuthState.map { authStateString ->
             if (authStateString.isBlank()) {
                 return@map DEFAULT_AUTH_STATE()
@@ -213,6 +213,6 @@ class DataStoreBackedSettings(
             return
         }
 
-        edit { setGoogleAuthState(newAuthStateString) }
+        editTopLevel { setGoogleAuthState(newAuthStateString) }
     }
 }
