@@ -416,7 +416,10 @@ private fun DatasetNameSetting(
                 }
             }
         }
-        Text("When switching back to a previous dataset, LeafByte will restore the settings used for that dataset.")
+        Text(
+            "When switching to a previous dataset, LeafByte will restore the settings used for that dataset.",
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
