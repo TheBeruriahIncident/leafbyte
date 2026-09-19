@@ -360,7 +360,7 @@ private fun DatasetNameSetting(
     displayValue: MutableState<String>,
     onDatasetChange: () -> Unit,
 ) {
-    val isInvalid = displayValue.value.isBlank()
+    val isBlank = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val previousDatasetNames = settings.getPreviousDatasetNames().valueForCompose()
 
@@ -389,9 +389,9 @@ private fun DatasetNameSetting(
             },
             supportingText = {
                 // Even if valid, there's a space here so that the height doesn't change
-                Text(if (isInvalid) "Dataset name is required" else " ")
+                Text(if (isBlank) "Dataset name is required" else " ")
             },
-            isError = isInvalid,
+            isError = isBlank,
         )
         Box(contentAlignment = Alignment.Center) {
             TextButton(
