@@ -56,7 +56,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.compose.theme.errorContainerLight
 import com.thebluefolderproject.leafbyte.compose.theme.errorLight
+import com.thebluefolderproject.leafbyte.compose.theme.onErrorContainerLight
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
 import com.thebluefolderproject.leafbyte.google.signin.MockGoogleSignInManager
@@ -455,6 +457,21 @@ fun SaveLocationSetting(
             val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
             options.forEachIndexed { index, option ->
                 val selected = currentLocation.value == option
+                val colors =
+                    // "None" should appear in error-like ways
+                    if (currentLocation.value == SaveLocation.NONE) {
+                        SegmentedButtonDefaults.colors().copy(
+                            activeContainerColor = errorContainerLight,
+                            activeContentColor = onErrorContainerLight,
+                            disabledActiveContainerColor = errorContainerLight,
+                            disabledActiveContentColor =
+                                onErrorContainerLight.copy(
+                                    SegmentedButtonDefaults.colors().disabledActiveContentColor.alpha,
+                                ),
+                        )
+                    } else {
+                        SegmentedButtonDefaults.colors()
+                    }
 
                 SegmentedButton(
                     shape =
@@ -462,6 +479,7 @@ fun SaveLocationSetting(
                             index = index,
                             count = options.size,
                         ),
+                    colors = colors,
                     selected = selected,
                     enabled = enabled,
                     onClick = {
