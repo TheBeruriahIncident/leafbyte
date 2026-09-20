@@ -163,10 +163,6 @@ fun SettingsScreen(
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
 
-    var dataPreviouslyBeingSaved = remember { settings.getDataSaveLocation().load() != SaveLocation.NONE }
-    var imagePreviouslyBeingSaved = remember { settings.getImageSaveLocation().load() != SaveLocation.NONE }
-    var gpsPreviouslyBeingSaved = remember { settings.getSaveGpsData().load() }
-
     val onDatasetChange = {
         // Settings are scoped to the particular dataset. Everything that doesn't have a separate display value will automatically update
         //   from the flow from the settings, but the display values that exist in order to make the editing experience better must be
@@ -175,24 +171,6 @@ fun SettingsScreen(
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
         dataSaveLocationDisplayValue.value = settings.getDataSaveLocation().load()
         imageSaveLocationDisplayValue.value = settings.getImageSaveLocation().load()
-
-        // Check if we should warn that saving has been reduced
-        val dataNowBeingSaved = settings.getDataSaveLocation().load() != SaveLocation.NONE
-        val imageNowBeingSaved = settings.getImageSaveLocation().load() != SaveLocation.NONE
-        val gpsNowBeingSaved = settings.getSaveGpsData().load()
-
-        @Suppress("detekt:complexity:ComplexCondition")
-        if (
-            (dataPreviouslyBeingSaved && !dataNowBeingSaved) ||
-            (imagePreviouslyBeingSaved && !imageNowBeingSaved) ||
-            (gpsPreviouslyBeingSaved && !gpsNowBeingSaved)
-        ) {
-            currentAlert.value = SettingsAlertType.SWITCHING_TO_DATASET_WITH_LESS_PERSISTENCE
-        }
-
-        dataPreviouslyBeingSaved = dataNowBeingSaved
-        imagePreviouslyBeingSaved = imageNowBeingSaved
-        gpsPreviouslyBeingSaved = gpsNowBeingSaved
     }
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
@@ -337,7 +315,6 @@ enum class SettingsAlertType {
     GOOGLE_SIGN_IN_NO_GET_USER_ID_SCOPE,
     GOOGLE_SIGN_IN_NO_WRITE_TO_GOOGLE_DRIVE_SCOPE,
     GOOGLE_SIGN_IN_NEITHER_SCOPE,
-    SWITCHING_TO_DATASET_WITH_LESS_PERSISTENCE,
     ;
 
     companion object {
@@ -367,8 +344,6 @@ private fun getAlertTitle(alertType: SettingsAlertType): String =
         SettingsAlertType.GOOGLE_SIGN_IN_NEITHER_SCOPE,
         ->
             "LeafByte not granted access"
-        SettingsAlertType.SWITCHING_TO_DATASET_WITH_LESS_PERSISTENCE ->
-            "LeafByte is now saving less"
     }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -392,9 +367,6 @@ fun getAlertMessage(alertType: SettingsAlertType): String =
             "We must be authorized to identify you and write to Google Drive if you want to save to Google Drive. We specifically need " +
                 "the ability to identify you so that you can edit the same datasheets over the course of multiple LeafByte sessions " +
                 "or to use LeafByte with multiple Google accounts. To save to Google Drive, sign in again and grant access."
-        SettingsAlertType.SWITCHING_TO_DATASET_WITH_LESS_PERSISTENCE ->
-            "You have switched to a dataset that is configured to not save everything that your previous dataset was saving. Please make " +
-                "sure you are comfortable with the new data, image, and GPS saving settings."
     }
 
 @Composable
