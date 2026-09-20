@@ -40,13 +40,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -58,12 +56,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.thebluefolderproject.leafbyte.R
 import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.compose.theme.errorContainerLight
 import com.thebluefolderproject.leafbyte.compose.theme.errorLight
+import com.thebluefolderproject.leafbyte.compose.theme.onErrorContainerLight
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
 import com.thebluefolderproject.leafbyte.google.signin.MockGoogleSignInManager
-import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
@@ -83,14 +81,10 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 @Composable
 fun AppAwareSettingsScreen(
     backStack: SnapshotStateList<Any>,
-    injectedSettings: Settings?,
-    injectedGoogleSignInManager: GoogleSignInManager?,
+    settings: Settings,
+    googleSignInManager: GoogleSignInManager,
 ) {
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val settings = remember { injectedSettings ?: DataStoreBackedSettings(context) }
-    val coroutineScope = rememberCoroutineScope()
-    val googleSignInManager = remember { injectedGoogleSignInManager ?: GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
     LeafByteTheme {
         SettingsScreen(
@@ -171,12 +165,14 @@ fun SettingsScreen(
     val dataSaveToGoogleLauncher = googleSignInManager.getLauncher(dataSaveToGoogleSuccess, dataSaveToGoogleFailure)
     val imageSaveToGoogleLauncher = googleSignInManager.getLauncher(imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
 
-    // Scale length, scale unit, and next sample number are scoped to the particular dataset
-    // Unit will automatically update from the flow from the settings, but scale length and next sample number have a display value in order
-    //   to make the editing experience usable and not have the default pop in as soon as you cleared the field
     val onDatasetChange = {
+        // Settings are scoped to the particular dataset. Everything that doesn't have a separate display value will automatically update
+        //   from the flow from the settings, but the display values that exist in order to make the editing experience better must be
+        //   manually updated
         scaleLengthDisplayValue.value = settings.getScaleLength().load().toString()
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
+        dataSaveLocationDisplayValue.value = settings.getDataSaveLocation().load()
+        imageSaveLocationDisplayValue.value = settings.getImageSaveLocation().load()
     }
 
     val isGoogleSignedIn = remember { settings.getAuthState().map(AuthState::isAuthorized) }
@@ -220,12 +216,21 @@ fun SettingsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
-                DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
+                val datasetNameIsBlank = datasetNameDisplayValue.value.isBlank()
+                val datasetNameIsNotBlank = !datasetNameIsBlank
+
+                DatasetNameSetting(
+                    settings = settings,
+                    displayValue = datasetNameDisplayValue,
+                    isBlank = datasetNameIsBlank,
+                    onDatasetChange = onDatasetChange,
+                )
                 HorizontalDivider(thickness = 2.dp)
 
                 SaveLocationSetting(
-                    "Data",
-                    dataSaveLocationDisplayValue,
+                    locationSettingName = "Data",
+                    enabled = datasetNameIsNotBlank,
+                    currentLocation = dataSaveLocationDisplayValue,
                     setNonGoogleLocation = {
                         fullySetDataSaveLocation(it)
                     },
@@ -235,8 +240,9 @@ fun SettingsScreen(
                     },
                 )
                 SaveLocationSetting(
-                    "Image",
-                    imageSaveLocationDisplayValue,
+                    locationSettingName = "Image",
+                    enabled = datasetNameIsNotBlank,
+                    currentLocation = imageSaveLocationDisplayValue,
                     setNonGoogleLocation = {
                         fullySetImageSaveLocation(it)
                     },
@@ -245,21 +251,32 @@ fun SettingsScreen(
                         googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
                     },
                 )
-                ScaleLengthSetting(settings, scaleLengthDisplayValue)
-                NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
+                ScaleLengthSetting(
+                    settings = settings,
+                    enabled = datasetNameIsNotBlank,
+                    displayValue = scaleLengthDisplayValue,
+                )
+                NextSampleNumberSetting(
+                    settings = settings,
+                    enabled = datasetNameIsNotBlank,
+                    displayValue = nextSampleNumberDisplayValue,
+                )
                 ToggleableSetting(
                     title = "Scan Barcodes?",
-                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
+                    disabledBecauseNotSavingData = dataSaveLocationDisplayValue.value == SaveLocation.NONE,
                     currentValue = settings.getUseBarcode().valueForCompose(),
                 ) { settings.setUseBarcode(it) }
                 ToggleableSetting(
                     title = "Save GPS Location?",
-                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
+                    disabledBecauseNotSavingData = dataSaveLocationDisplayValue.value == SaveLocation.NONE,
                     explanation = "May slow saving",
                     currentValue = settings.getSaveGpsData().valueForCompose(),
                 ) { settings.setSaveGpsData(it) }
                 ToggleableSetting(
                     title = "Use Black Background?",
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
                     explanation = "For use with light plant tissue",
                     currentValue = settings.getUseBlackBackground().valueForCompose(),
                 ) { settings.setUseBlackBackground(it) }
@@ -358,9 +375,9 @@ fun getAlertMessage(alertType: SettingsAlertType): String =
 private fun DatasetNameSetting(
     settings: Settings,
     displayValue: MutableState<String>,
+    isBlank: Boolean,
     onDatasetChange: () -> Unit,
 ) {
-    val isInvalid = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val previousDatasetNames = settings.getPreviousDatasetNames().valueForCompose()
 
@@ -389,9 +406,9 @@ private fun DatasetNameSetting(
             },
             supportingText = {
                 // Even if valid, there's a space here so that the height doesn't change
-                Text(if (isInvalid) "Dataset name is required" else " ")
+                Text(if (isBlank) "Dataset name is required" else " ")
             },
-            isError = isInvalid,
+            isError = isBlank,
         )
         Box(contentAlignment = Alignment.Center) {
             TextButton(
@@ -416,13 +433,83 @@ private fun DatasetNameSetting(
                 }
             }
         }
-        Text("When switching back to a previous dataset, LeafByte will restore the settings used for that dataset.")
+        Text(
+            "When switching to a previous dataset, LeafByte will restore the settings used for that dataset.",
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+fun SaveLocationSetting(
+    locationSettingName: String,
+    enabled: Boolean,
+    currentLocation: MutableState<SaveLocation>,
+    setNonGoogleLocation: (SaveLocation) -> Unit,
+    setLocationToGoogle: () -> Unit,
+) {
+    val fullSettingName = remember { "$locationSettingName Save Location" }
+
+    SingleSetting(fullSettingName) {
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.height(IntrinsicSize.Min),
+        ) {
+            val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
+            options.forEachIndexed { index, option ->
+                val selected = currentLocation.value == option
+                val colors =
+                    // "None" should appear in error-like ways
+                    if (currentLocation.value == SaveLocation.NONE) {
+                        SegmentedButtonDefaults.colors().copy(
+                            activeContainerColor = errorContainerLight,
+                            activeContentColor = onErrorContainerLight,
+                            disabledActiveContainerColor = errorContainerLight,
+                            disabledActiveContentColor =
+                                onErrorContainerLight.copy(
+                                    SegmentedButtonDefaults.colors().disabledActiveContentColor.alpha,
+                                ),
+                        )
+                    } else {
+                        SegmentedButtonDefaults.colors()
+                    }
+
+                SegmentedButton(
+                    shape =
+                        SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = options.size,
+                        ),
+                    colors = colors,
+                    selected = selected,
+                    enabled = enabled,
+                    onClick = {
+                        if (option == SaveLocation.GOOGLE_DRIVE) {
+                            setLocationToGoogle()
+                        } else {
+                            setNonGoogleLocation(option)
+                        }
+                    },
+                    icon = {},
+                    modifier =
+                        Modifier
+                            .fillMaxHeight()
+                            .description("Set $fullSettingName to ${option.userFacingName}"),
+                ) {
+                    Text(
+                        text = option.userFacingName,
+                        size = TextSize.IN_BUTTON,
+                        bold = selected,
+                    )
+                }
+            }
+        }
     }
 }
 
 @Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun ScaleLengthSetting(
+    enabled: Boolean,
     settings: Settings,
     displayValue: MutableState<String>,
 ) {
@@ -438,6 +525,7 @@ private fun ScaleLengthSetting(
 
             TextField(
                 value = displayValue.value,
+                enabled = enabled,
                 singleLine = true,
                 keyboardOptions =
                     KeyboardOptions(
@@ -502,6 +590,7 @@ private fun ScaleLengthSetting(
 
 @Composable
 private fun NextSampleNumberSetting(
+    enabled: Boolean,
     settings: Settings,
     displayValue: MutableState<String>,
 ) {
@@ -510,6 +599,7 @@ private fun NextSampleNumberSetting(
     SingleSetting("Next Sample Number") {
         TextField(
             value = displayValue.value,
+            enabled = enabled,
             singleLine = true,
             keyboardOptions =
                 KeyboardOptions(
@@ -531,60 +621,14 @@ private fun NextSampleNumberSetting(
     }
 }
 
-@Composable
-fun SaveLocationSetting(
-    locationSettingName: String,
-    currentLocation: MutableState<SaveLocation>,
-    setNonGoogleLocation: (SaveLocation) -> Unit,
-    setLocationToGoogle: () -> Unit,
-) {
-    val fullSettingName = remember { "$locationSettingName Save Location" }
-
-    SingleSetting(fullSettingName) {
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.height(IntrinsicSize.Min),
-        ) {
-            val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
-            options.forEachIndexed { index, option ->
-                val selected = currentLocation.value == option
-
-                SegmentedButton(
-                    shape =
-                        SegmentedButtonDefaults.itemShape(
-                            index = index,
-                            count = options.size,
-                        ),
-                    selected = selected,
-                    onClick = {
-                        if (option == SaveLocation.GOOGLE_DRIVE) {
-                            setLocationToGoogle()
-                        } else {
-                            setNonGoogleLocation(option)
-                        }
-                    },
-                    icon = {},
-                    modifier =
-                        Modifier
-                            .fillMaxHeight()
-                            .description("Set $fullSettingName to ${option.userFacingName}"),
-                ) {
-                    Text(
-                        text = option.userFacingName,
-                        size = TextSize.IN_BUTTON,
-                        bold = selected,
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Suppress("detekt:style:MagicNumber") // once we fiddle with theme colors, the colors should come from a theme constant
+// once we fiddle with theme colors, the colors should come from a theme constant
+@Suppress("detekt:complexity:LongParameterList", "detekt:style:MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToggleableSetting(
     title: String,
-    enabled: Boolean = true,
+    disabledBecauseEmptyDatasetName: Boolean = false,
+    disabledBecauseNotSavingData: Boolean = false,
     // default is non-empty to ensure size doesn't change when a warning is swapped in
     explanation: String = " ",
     currentValue: Boolean,
@@ -593,7 +637,7 @@ fun ToggleableSetting(
     SingleSetting(title) {
         Switch(
             modifier = Modifier.description("$title toggle"),
-            enabled = enabled,
+            enabled = !disabledBecauseEmptyDatasetName && !disabledBecauseNotSavingData,
             checked = currentValue,
             onCheckedChange = { setNewValue(it) },
             thumbContent = {
@@ -607,8 +651,8 @@ fun ToggleableSetting(
             },
         )
         Text(
-            text = if (enabled) explanation else "Data is not currently being saved",
-            color = if (enabled) Color.Unspecified else errorLight,
+            text = if (disabledBecauseNotSavingData) "Data is not currently being saved" else explanation,
+            color = if (disabledBecauseNotSavingData) errorLight else Color.Unspecified,
             size = TextSize.FOOTNOTE,
         )
     }

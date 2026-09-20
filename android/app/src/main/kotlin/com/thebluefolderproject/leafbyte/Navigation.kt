@@ -59,9 +59,9 @@ sealed interface LeafByteNavKey : NavKey {
 
 @Composable
 fun LeafByteNavigation(
-    modifier: Modifier = Modifier,
-    injectedSettings: Settings? = null,
-    injectedGoogleSignInManager: GoogleSignInManager? = null,
+    modifier: Modifier = Modifier, // TODO delete?
+    settings: Settings,
+    googleSignInManager: GoogleSignInManager,
 ) {
     val backStack = remember { mutableStateListOf<Any>(LeafByteNavKey.MainScreen) }
     val context = LocalContext.current
@@ -78,14 +78,15 @@ fun LeafByteNavigation(
                     NavEntry(key) {
                         AppAwareSettingsScreen(
                             backStack = backStack,
-                            injectedSettings = injectedSettings,
-                            injectedGoogleSignInManager = injectedGoogleSignInManager,
+                            settings = settings,
+                            googleSignInManager = googleSignInManager,
                         )
                     }
 
                 is LeafByteNavKey.Tutorial -> NavEntry(key) { AppAwareTutorialScreen(backStack = backStack) }
                 is LeafByteNavKey.BackgroundRemovalScreen ->
                     NavEntry(key) {
+                        settings.noteDatasetUsed() // TODO delete! this is just to make testing possible before the full flow
                         BackgroundRemovalScreen(
                             originalImage = loadUri(key.originalImageUri, context = context),
                             onPressingNext = { thresholdedImage ->

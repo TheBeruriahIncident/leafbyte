@@ -53,7 +53,7 @@ abstract class AbstractComposeTests(
                     initializeSettings(settings)
 
                     log("Starting up Compose app")
-                    LeafByteNavigation(injectedSettings = settings, injectedGoogleSignInManager = googleSignInManager)
+                    LeafByteNavigation(settings = settings, googleSignInManager = googleSignInManager)
                 }
 
                 log("Navigating to correct screen for specific test")

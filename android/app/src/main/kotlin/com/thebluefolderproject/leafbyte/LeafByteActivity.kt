@@ -10,10 +10,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
+import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
 import com.thebluefolderproject.leafbyte.google.signin.isGoogleSignInConfigured
+import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.getCameraPhotoUri
 import com.thebluefolderproject.leafbyte.utils.log
@@ -69,8 +74,16 @@ class LeafByteActivity : ComponentActivity() {
         }
 
         setContent {
+            val context = LocalContext.current
+            val settings = remember { DataStoreBackedSettings(context) }
+            val coroutineScope = rememberCoroutineScope()
+            val googleSignInManager = remember { GoogleSignInManagerImpl(coroutineScope, context, settings) }
+
             LeafByteTheme {
-                LeafByteNavigation()
+                LeafByteNavigation(
+                    settings = settings,
+                    googleSignInManager = googleSignInManager,
+                )
             }
         }
     }
