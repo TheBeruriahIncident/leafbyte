@@ -40,13 +40,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -61,9 +59,7 @@ import com.thebluefolderproject.leafbyte.compose.theme.LeafByteTheme
 import com.thebluefolderproject.leafbyte.compose.theme.errorLight
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInFailureType
 import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManager
-import com.thebluefolderproject.leafbyte.google.signin.GoogleSignInManagerImpl
 import com.thebluefolderproject.leafbyte.google.signin.MockGoogleSignInManager
-import com.thebluefolderproject.leafbyte.settings.DataStoreBackedSettings
 import com.thebluefolderproject.leafbyte.settings.MockSettings
 import com.thebluefolderproject.leafbyte.settings.SaveLocation
 import com.thebluefolderproject.leafbyte.settings.Settings
@@ -83,14 +79,10 @@ private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
 @Composable
 fun AppAwareSettingsScreen(
     backStack: SnapshotStateList<Any>,
-    injectedSettings: Settings?,
-    injectedGoogleSignInManager: GoogleSignInManager?,
+    settings: Settings,
+    googleSignInManager: GoogleSignInManager,
 ) {
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val settings = remember { injectedSettings ?: DataStoreBackedSettings(context) }
-    val coroutineScope = rememberCoroutineScope()
-    val googleSignInManager = remember { injectedGoogleSignInManager ?: GoogleSignInManagerImpl(coroutineScope, context, settings) }
 
     LeafByteTheme {
         SettingsScreen(
