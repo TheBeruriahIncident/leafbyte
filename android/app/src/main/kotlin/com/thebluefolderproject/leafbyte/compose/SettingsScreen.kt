@@ -220,12 +220,21 @@ fun SettingsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
-                DatasetNameSetting(settings, datasetNameDisplayValue, onDatasetChange)
+                val datasetNameIsBlank = datasetNameDisplayValue.value.isBlank()
+                val datasetNameIsNotBlank = !datasetNameIsBlank
+
+                DatasetNameSetting(
+                    settings = settings,
+                    displayValue = datasetNameDisplayValue,
+                    isBlank = datasetNameIsBlank,
+                    onDatasetChange = onDatasetChange,
+                )
                 HorizontalDivider(thickness = 2.dp)
 
                 SaveLocationSetting(
-                    "Data",
-                    dataSaveLocationDisplayValue,
+                    locationSettingName = "Data",
+                    enabled = datasetNameIsNotBlank,
+                    currentLocation = dataSaveLocationDisplayValue,
                     setNonGoogleLocation = {
                         fullySetDataSaveLocation(it)
                     },
@@ -235,8 +244,9 @@ fun SettingsScreen(
                     },
                 )
                 SaveLocationSetting(
-                    "Image",
-                    imageSaveLocationDisplayValue,
+                    locationSettingName = "Image",
+                    enabled = datasetNameIsNotBlank,
+                    currentLocation = imageSaveLocationDisplayValue,
                     setNonGoogleLocation = {
                         fullySetImageSaveLocation(it)
                     },
@@ -245,21 +255,32 @@ fun SettingsScreen(
                         googleSignInManager.signIn(imageSaveToGoogleLauncher, imageSaveToGoogleSuccess, imageSaveToGoogleFailure)
                     },
                 )
-                ScaleLengthSetting(settings, scaleLengthDisplayValue)
-                NextSampleNumberSetting(settings, nextSampleNumberDisplayValue)
+                ScaleLengthSetting(
+                    settings = settings,
+                    enabled = datasetNameIsNotBlank,
+                    displayValue = scaleLengthDisplayValue,
+                )
+                NextSampleNumberSetting(
+                    settings = settings,
+                    enabled = datasetNameIsNotBlank,
+                    displayValue = nextSampleNumberDisplayValue,
+                )
                 ToggleableSetting(
                     title = "Scan Barcodes?",
-                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
+                    disabledBecauseNotSavingData = dataSaveLocationDisplayValue.value == SaveLocation.NONE,
                     currentValue = settings.getUseBarcode().valueForCompose(),
                 ) { settings.setUseBarcode(it) }
                 ToggleableSetting(
                     title = "Save GPS Location?",
-                    enabled = dataSaveLocationDisplayValue.value != SaveLocation.NONE,
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
+                    disabledBecauseNotSavingData = dataSaveLocationDisplayValue.value == SaveLocation.NONE,
                     explanation = "May slow saving",
                     currentValue = settings.getSaveGpsData().valueForCompose(),
                 ) { settings.setSaveGpsData(it) }
                 ToggleableSetting(
                     title = "Use Black Background?",
+                    disabledBecauseEmptyDatasetName = datasetNameIsBlank,
                     explanation = "For use with light plant tissue",
                     currentValue = settings.getUseBlackBackground().valueForCompose(),
                 ) { settings.setUseBlackBackground(it) }
@@ -358,9 +379,9 @@ fun getAlertMessage(alertType: SettingsAlertType): String =
 private fun DatasetNameSetting(
     settings: Settings,
     displayValue: MutableState<String>,
+    isBlank: Boolean,
     onDatasetChange: () -> Unit,
 ) {
-    val isBlank = displayValue.value.isBlank()
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val previousDatasetNames = settings.getPreviousDatasetNames().valueForCompose()
 
@@ -426,6 +447,7 @@ private fun DatasetNameSetting(
 @Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun ScaleLengthSetting(
+    enabled: Boolean,
     settings: Settings,
     displayValue: MutableState<String>,
 ) {
@@ -441,6 +463,7 @@ private fun ScaleLengthSetting(
 
             TextField(
                 value = displayValue.value,
+                enabled = enabled,
                 singleLine = true,
                 keyboardOptions =
                     KeyboardOptions(
@@ -505,6 +528,7 @@ private fun ScaleLengthSetting(
 
 @Composable
 private fun NextSampleNumberSetting(
+    enabled: Boolean,
     settings: Settings,
     displayValue: MutableState<String>,
 ) {
@@ -513,6 +537,7 @@ private fun NextSampleNumberSetting(
     SingleSetting("Next Sample Number") {
         TextField(
             value = displayValue.value,
+            enabled = enabled,
             singleLine = true,
             keyboardOptions =
                 KeyboardOptions(
@@ -537,6 +562,7 @@ private fun NextSampleNumberSetting(
 @Composable
 fun SaveLocationSetting(
     locationSettingName: String,
+    enabled: Boolean,
     currentLocation: MutableState<SaveLocation>,
     setNonGoogleLocation: (SaveLocation) -> Unit,
     setLocationToGoogle: () -> Unit,
@@ -558,6 +584,7 @@ fun SaveLocationSetting(
                             count = options.size,
                         ),
                     selected = selected,
+                    enabled = enabled,
                     onClick = {
                         if (option == SaveLocation.GOOGLE_DRIVE) {
                             setLocationToGoogle()
@@ -587,7 +614,8 @@ fun SaveLocationSetting(
 @Composable
 fun ToggleableSetting(
     title: String,
-    enabled: Boolean = true,
+    disabledBecauseEmptyDatasetName: Boolean = false,
+    disabledBecauseNotSavingData: Boolean = false,
     // default is non-empty to ensure size doesn't change when a warning is swapped in
     explanation: String = " ",
     currentValue: Boolean,
@@ -596,7 +624,7 @@ fun ToggleableSetting(
     SingleSetting(title) {
         Switch(
             modifier = Modifier.description("$title toggle"),
-            enabled = enabled,
+            enabled = !disabledBecauseEmptyDatasetName && !disabledBecauseNotSavingData,
             checked = currentValue,
             onCheckedChange = { setNewValue(it) },
             thumbContent = {
@@ -610,8 +638,8 @@ fun ToggleableSetting(
             },
         )
         Text(
-            text = if (enabled) explanation else "Data is not currently being saved",
-            color = if (enabled) Color.Unspecified else errorLight,
+            text = if (disabledBecauseNotSavingData) "Data is not currently being saved" else explanation,
+            color = if (disabledBecauseNotSavingData) errorLight else Color.Unspecified,
             size = TextSize.FOOTNOTE,
         )
     }
