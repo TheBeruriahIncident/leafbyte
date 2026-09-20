@@ -181,6 +181,7 @@ fun SettingsScreen(
         val imageNowBeingSaved = settings.getImageSaveLocation().load() != SaveLocation.NONE
         val gpsNowBeingSaved = settings.getSaveGpsData().load()
 
+        @Suppress("detekt:complexity:ComplexCondition")
         if (
             (dataPreviouslyBeingSaved && !dataNowBeingSaved) ||
             (imagePreviouslyBeingSaved && !imageNowBeingSaved) ||
@@ -630,7 +631,8 @@ fun SaveLocationSetting(
     }
 }
 
-@Suppress("detekt:style:MagicNumber") // once we fiddle with theme colors, the colors should come from a theme constant
+// once we fiddle with theme colors, the colors should come from a theme constant
+@Suppress("detekt:complexity:LongParameterList", "detekt:style:MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToggleableSetting(
