@@ -176,11 +176,13 @@ fun SettingsScreen(
     var gpsPreviouslyBeingSaved = remember { settings.getSaveGpsData().load() }
 
     val onDatasetChange = {
-        // Settings are scoped to the particular dataset. Everything that's not a text box will automatically update from the flow from the
-        //   settings, but scale length and next sample number have a display value in order to make the editing experience usable and not have
-        //   the default pop in as soon as you cleared the field
+        // Settings are scoped to the particular dataset. Everything that doesn't have a separate display value will automatically update
+        //   from the flow from the settings, but the display values that exist in order to make the editing experience better must be
+        //   manually updated
         scaleLengthDisplayValue.value = settings.getScaleLength().load().toString()
         nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
+        dataSaveLocationDisplayValue.value = settings.getDataSaveLocation().load()
+        imageSaveLocationDisplayValue.value = settings.getImageSaveLocation().load()
 
         // Check if we should warn that saving has been reduced
         val dataNowBeingSaved = settings.getDataSaveLocation().load() != SaveLocation.NONE
