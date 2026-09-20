@@ -438,6 +438,56 @@ private fun DatasetNameSetting(
     }
 }
 
+@Composable
+fun SaveLocationSetting(
+    locationSettingName: String,
+    enabled: Boolean,
+    currentLocation: MutableState<SaveLocation>,
+    setNonGoogleLocation: (SaveLocation) -> Unit,
+    setLocationToGoogle: () -> Unit,
+) {
+    val fullSettingName = remember { "$locationSettingName Save Location" }
+
+    SingleSetting(fullSettingName) {
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.height(IntrinsicSize.Min),
+        ) {
+            val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
+            options.forEachIndexed { index, option ->
+                val selected = currentLocation.value == option
+
+                SegmentedButton(
+                    shape =
+                        SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = options.size,
+                        ),
+                    selected = selected,
+                    enabled = enabled,
+                    onClick = {
+                        if (option == SaveLocation.GOOGLE_DRIVE) {
+                            setLocationToGoogle()
+                        } else {
+                            setNonGoogleLocation(option)
+                        }
+                    },
+                    icon = {},
+                    modifier =
+                        Modifier
+                            .fillMaxHeight()
+                            .description("Set $fullSettingName to ${option.userFacingName}"),
+                ) {
+                    Text(
+                        text = option.userFacingName,
+                        size = TextSize.IN_BUTTON,
+                        bold = selected,
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Suppress("detekt:complexity:LongMethod")
 @Composable
 private fun ScaleLengthSetting(
@@ -550,56 +600,6 @@ private fun NextSampleNumberSetting(
             },
             isError = isInvalid,
         )
-    }
-}
-
-@Composable
-fun SaveLocationSetting(
-    locationSettingName: String,
-    enabled: Boolean,
-    currentLocation: MutableState<SaveLocation>,
-    setNonGoogleLocation: (SaveLocation) -> Unit,
-    setLocationToGoogle: () -> Unit,
-) {
-    val fullSettingName = remember { "$locationSettingName Save Location" }
-
-    SingleSetting(fullSettingName) {
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.height(IntrinsicSize.Min),
-        ) {
-            val options = listOf(SaveLocation.NONE, SaveLocation.LOCAL, SaveLocation.GOOGLE_DRIVE)
-            options.forEachIndexed { index, option ->
-                val selected = currentLocation.value == option
-
-                SegmentedButton(
-                    shape =
-                        SegmentedButtonDefaults.itemShape(
-                            index = index,
-                            count = options.size,
-                        ),
-                    selected = selected,
-                    enabled = enabled,
-                    onClick = {
-                        if (option == SaveLocation.GOOGLE_DRIVE) {
-                            setLocationToGoogle()
-                        } else {
-                            setNonGoogleLocation(option)
-                        }
-                    },
-                    icon = {},
-                    modifier =
-                        Modifier
-                            .fillMaxHeight()
-                            .description("Set $fullSettingName to ${option.userFacingName}"),
-                ) {
-                    Text(
-                        text = option.userFacingName,
-                        size = TextSize.IN_BUTTON,
-                        bold = selected,
-                    )
-                }
-            }
-        }
     }
 }
 
