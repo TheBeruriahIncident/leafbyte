@@ -559,6 +559,7 @@ private fun ScaleLengthSetting(
                         }.width(IntrinsicSize.Min)
                         .height(IntrinsicSize.Max)
                         .description("Scale length unit selector"),
+                enabled = enabled,
                 onClick = { dropdownIsExpanded = !dropdownIsExpanded },
             ) {
                 Text(

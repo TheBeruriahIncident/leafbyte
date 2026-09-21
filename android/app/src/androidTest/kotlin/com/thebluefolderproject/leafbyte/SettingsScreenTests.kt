@@ -7,6 +7,10 @@ package com.thebluefolderproject.leafbyte
 import android.net.Uri
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEnabled
 import androidx.compose.ui.test.isNotEnabled
@@ -44,6 +48,7 @@ import net.openid.appauth.TokenResponse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
+@Suppress("detekt:complexity:LongMethod", "detekt:complexity:LargeClass")
 class SettingsScreenTests : AbstractComposeTests {
     constructor() : super(navigateToCorrectScreen = {
         onNodeWithText("Settings").performClick()
@@ -445,15 +450,153 @@ class SettingsScreenTests : AbstractComposeTests {
     }
 
     @Test
-    fun testChangingDatasetChangesOtherSettings() {
+    fun testDefaultValues() {
         runTest { settings, googleSignInManager ->
             val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to My Files")
+            val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to My Files")
+            val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
             val scaleLengthField = onNodeWithContentDescription("Scale length entry")
             val scaleUnitButton = onNodeWithContentDescription("Scale length unit selector")
             val nextSampleNumberField = onNodeWithContentDescription("Next sample number entry")
+            val barcodeToggle = onNodeWithContentDescription("Scan Barcodes? toggle")
+            val gpsToggle = onNodeWithContentDescription("Save GPS Location? toggle")
+            val backgroundToggle = onNodeWithContentDescription("Use Black Background? toggle")
+
+            val googleSignInOnSuccessSlot = slot<() -> Unit>()
+            val googleSignInOnFailureSlot = slot<(GoogleSignInFailureType) -> Unit>()
+            every {
+                googleSignInManager.signIn(
+                    any(),
+                    onSuccess = capture(googleSignInOnSuccessSlot),
+                    onFailure = capture(googleSignInOnFailureSlot),
+                )
+            } returns Unit
+
+            // Part 1: we start we default values
+            datasetNameField.assert(hasText("Herbivory Data"))
+            dataLocal.assert(isSelected())
+            dataGoogle.assert(isNotSelected())
+            imageLocal.assert(isSelected())
+            imageGoogle.assert(isNotSelected())
+            scaleLengthField.assert(hasText("10.0"))
+            scaleUnitButton.assert(hasText("cm"))
+            nextSampleNumberField.assert(hasText("1"))
+            barcodeToggle.performScrollTo().assertIsOff()
+            gpsToggle.performScrollTo().assertIsOff()
+            backgroundToggle.performScrollTo().assertIsOff()
+
+            dataGoogle.performScrollTo().performClick()
+            googleSignInOnSuccessSlot.captured()
+            imageGoogle.performClick()
+            googleSignInOnSuccessSlot.captured()
+            scaleLengthField.performTextReplacement("200")
+            scaleUnitButton.performClick()
+            onNodeWithText("m").performClick()
+            nextSampleNumberField.performTextReplacement("200")
+            barcodeToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
+            gpsToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
+            backgroundToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
+
+            // Part 1: switching to a new dataset gives default values
+            datasetNameField.performTextReplacement("new dataset")
+            dataLocal.assert(isSelected())
+            dataGoogle.assert(isNotSelected())
+            imageLocal.assert(isSelected())
+            imageGoogle.assert(isNotSelected())
+            scaleLengthField.assert(hasText("10.0"))
+            scaleUnitButton.assert(hasText("cm"))
+            nextSampleNumberField.assert(hasText("1"))
+            barcodeToggle.performScrollTo().assertIsOff()
+            gpsToggle.performScrollTo().assertIsOff()
+            backgroundToggle.performScrollTo().assertIsOff()
+        }
+    }
+
+    @Test
+    fun testCannotEditOtherSettingsWithEmptyDatasetName() {
+        runTest { settings, googleSignInManager ->
+            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to My Files")
+            val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to My Files")
+            val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
+            val scaleLengthField = onNodeWithContentDescription("Scale length entry")
+            val scaleUnitButton = onNodeWithContentDescription("Scale length unit selector")
+            val nextSampleNumberField = onNodeWithContentDescription("Next sample number entry")
+            val barcodeToggle = onNodeWithContentDescription("Scan Barcodes? toggle")
+            val gpsToggle = onNodeWithContentDescription("Save GPS Location? toggle")
+            val backgroundToggle = onNodeWithContentDescription("Use Black Background? toggle")
+
+            val googleSignInOnSuccessSlot = slot<() -> Unit>()
+            val googleSignInOnFailureSlot = slot<(GoogleSignInFailureType) -> Unit>()
+            every {
+                googleSignInManager.signIn(
+                    any(),
+                    onSuccess = capture(googleSignInOnSuccessSlot),
+                    onFailure = capture(googleSignInOnFailureSlot),
+                )
+            } returns Unit
+
+            datasetNameField.performTextReplacement("")
+            dataLocal.assert(isNotEnabled())
+            dataGoogle.assert(isNotEnabled())
+            imageLocal.assert(isNotEnabled())
+            imageGoogle.assert(isNotEnabled())
+            scaleLengthField.assert(isNotEnabled())
+            scaleUnitButton.assert(isNotEnabled())
+            nextSampleNumberField.assert(isNotEnabled())
+            barcodeToggle.performScrollTo().assertIsNotEnabled()
+            gpsToggle.performScrollTo().assertIsNotEnabled()
+            backgroundToggle.performScrollTo().assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun testChangingDatasetChangesOtherSettings() {
+        runTest { settings, googleSignInManager ->
+            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            val dataLocal = onNodeWithContentDescription("Set Data Save Location to My Files")
+            val dataGoogle = onNodeWithContentDescription("Set Data Save Location to Google Drive")
+            val imageLocal = onNodeWithContentDescription("Set Image Save Location to My Files")
+            val imageGoogle = onNodeWithContentDescription("Set Image Save Location to Google Drive")
+            val scaleLengthField = onNodeWithContentDescription("Scale length entry")
+            val scaleUnitButton = onNodeWithContentDescription("Scale length unit selector")
+            val nextSampleNumberField = onNodeWithContentDescription("Next sample number entry")
+            val barcodeToggle = onNodeWithContentDescription("Scan Barcodes? toggle")
+            val gpsToggle = onNodeWithContentDescription("Save GPS Location? toggle")
+            val backgroundToggle = onNodeWithContentDescription("Use Black Background? toggle")
+
+            val googleSignInOnSuccessSlot = slot<() -> Unit>()
+            val googleSignInOnFailureSlot = slot<(GoogleSignInFailureType) -> Unit>()
+            every {
+                googleSignInManager.signIn(
+                    any(),
+                    onSuccess = capture(googleSignInOnSuccessSlot),
+                    onFailure = capture(googleSignInOnFailureSlot),
+                )
+            } returns Unit
 
             datasetNameField.performTextReplacement("test1")
             settings.noteDatasetUsed()
+            dataLocal.performClick()
+            imageLocal.performClick()
             scaleLengthField.performTextReplacement("100")
             scaleUnitButton.performClick()
             onNodeWithText("ft").performClick()
@@ -461,24 +604,41 @@ class SettingsScreenTests : AbstractComposeTests {
 
             datasetNameField.performTextReplacement("test2")
             settings.noteDatasetUsed()
+            dataGoogle.performClick()
+            googleSignInOnSuccessSlot.captured()
+            imageGoogle.performClick()
+            googleSignInOnSuccessSlot.captured()
             scaleLengthField.performTextReplacement("200")
             scaleUnitButton.performClick()
             onNodeWithText("m").performClick()
             nextSampleNumberField.performTextReplacement("200")
+            barcodeToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
+            gpsToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
+            backgroundToggle
+                .performScrollTo()
+                .assertIsOff()
+                .assertIsEnabled()
+                .performClick()
+                .assertIsOn()
 
-            assertFlowEquals("test2", settings.getDatasetName())
-            datasetNameField.assert(hasText("test2"))
-            assertFlowEquals(200f, settings.getScaleLength())
-            scaleLengthField.assert(hasText("200"))
-            assertFlowEquals("m", settings.getScaleUnit())
-            scaleUnitButton.assert(hasText("m"))
-            assertFlowEquals(200, settings.getNextSampleNumber())
-            nextSampleNumberField.assert(hasText("200"))
-
-            onNodeWithText("Use previous dataset").performClick()
+            onNodeWithText("Use previous dataset").performScrollTo().performClick()
             onNodeWithText("test1").performClick()
 
             assertFlowEquals("test1", settings.getDatasetName())
+            dataLocal.assert(isSelected())
+            dataGoogle.assert(isNotSelected())
+            imageLocal.assert(isSelected())
+            imageGoogle.assert(isNotSelected())
             datasetNameField.assert(hasText("test1"))
             assertFlowEquals(100f, settings.getScaleLength())
             scaleLengthField.assert(hasText("100.0"))
@@ -486,6 +646,28 @@ class SettingsScreenTests : AbstractComposeTests {
             scaleUnitButton.assert(hasText("ft"))
             assertFlowEquals(100, settings.getNextSampleNumber())
             nextSampleNumberField.assert(hasText("100"))
+            barcodeToggle.performScrollTo().assertIsOff()
+            gpsToggle.performScrollTo().assertIsOff()
+            backgroundToggle.performScrollTo().assertIsOff()
+
+            onNodeWithText("Use previous dataset").performScrollTo().performClick()
+            onNodeWithText("test2").performClick()
+
+            assertFlowEquals("test2", settings.getDatasetName())
+            dataLocal.assert(isNotSelected())
+            dataGoogle.assert(isSelected())
+            imageLocal.assert(isNotSelected())
+            imageGoogle.assert(isSelected())
+            datasetNameField.assert(hasText("test2"))
+            assertFlowEquals(200f, settings.getScaleLength())
+            scaleLengthField.assert(hasText("200.0"))
+            assertFlowEquals("m", settings.getScaleUnit())
+            scaleUnitButton.assert(hasText("m"))
+            assertFlowEquals(200, settings.getNextSampleNumber())
+            nextSampleNumberField.assert(hasText("200"))
+            barcodeToggle.performScrollTo().assertIsOn()
+            gpsToggle.performScrollTo().assertIsOn()
+            backgroundToggle.performScrollTo().assertIsOn()
         }
     }
 
