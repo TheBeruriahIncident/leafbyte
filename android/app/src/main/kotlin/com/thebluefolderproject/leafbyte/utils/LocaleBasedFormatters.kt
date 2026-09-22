@@ -9,6 +9,16 @@ import java.text.ParseException
 import java.text.ParsePosition
 import java.util.Locale
 
+fun formatFloatInLocale(
+    float: Float,
+    locale: Locale,
+): String = getFloatFormatter(locale).format(float)
+
+fun formatIntInLocale(
+    int: Int,
+    locale: Locale,
+): String = getIntFormatter(locale).format(int)
+
 fun strictlyParseFloatInLocale(
     floatString: String,
     locale: Locale,
@@ -30,6 +40,7 @@ private fun getFloatFormatter(locale: Locale): NumberFormat =
 private fun getIntFormatter(locale: Locale): NumberFormat = intFormatterCache.getOrPut(locale, { NumberFormat.getIntegerInstance(locale) })
 
 // Inspired by https://stackoverflow.com/a/9317073/1092672
+@Suppress("detekt:style:ReturnCount")
 private fun <ReturnType> strictlyParseInLocale(
     numberString: String,
     localeBasedFormatter: NumberFormat,

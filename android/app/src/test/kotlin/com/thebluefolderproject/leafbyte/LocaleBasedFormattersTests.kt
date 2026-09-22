@@ -4,6 +4,8 @@
 
 package com.thebluefolderproject.leafbyte
 
+import com.thebluefolderproject.leafbyte.utils.formatFloatInLocale
+import com.thebluefolderproject.leafbyte.utils.formatIntInLocale
 import com.thebluefolderproject.leafbyte.utils.strictlyParseFloatInLocale
 import com.thebluefolderproject.leafbyte.utils.strictlyParseIntInLocale
 import org.junit.jupiter.api.Test
@@ -20,6 +22,8 @@ class LocaleBasedFormattersTests {
         assertEquals(null, strictlyParseIntInLocale("s", english))
         assertEquals(null, strictlyParseIntInLocale("5s", english))
         assertEquals(5123, strictlyParseIntInLocale("5,123", english))
+
+        assertEquals("5,123", formatIntInLocale(5123, english))
     }
 
     @Test
@@ -28,6 +32,8 @@ class LocaleBasedFormattersTests {
         assertEquals(null, strictlyParseIntInLocale("s", german))
         assertEquals(null, strictlyParseIntInLocale("5s", german))
         assertEquals(5123, strictlyParseIntInLocale("5.123", german))
+
+        assertEquals("5.123", formatIntInLocale(5123, german))
     }
 
     @Test
@@ -36,6 +42,8 @@ class LocaleBasedFormattersTests {
         assertEquals(null, strictlyParseFloatInLocale("s", english))
         assertEquals(null, strictlyParseFloatInLocale("5.3s", english))
         assertEquals(5123.35f, strictlyParseFloatInLocale("5,123.35", english))
+
+        assertEquals("5,123.35", formatFloatInLocale(5123.35f, english))
     }
 
     @Test
@@ -44,5 +52,7 @@ class LocaleBasedFormattersTests {
         assertEquals(null, strictlyParseFloatInLocale("s", german))
         assertEquals(null, strictlyParseFloatInLocale("5,3s", german))
         assertEquals(5123.35f, strictlyParseFloatInLocale("5.123,35", german))
+
+        assertEquals("5.123,35", formatFloatInLocale(5123.35f, german))
     }
 }
