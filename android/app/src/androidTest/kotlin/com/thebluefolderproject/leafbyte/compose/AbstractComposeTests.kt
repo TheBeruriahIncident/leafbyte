@@ -5,7 +5,10 @@
 package com.thebluefolderproject.leafbyte.compose
 
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.Locales
+import androidx.compose.ui.text.intl.LocaleList
 import com.thebluefolderproject.leafbyte.ComposeTestFailureException
 import com.thebluefolderproject.leafbyte.LeafByteNavigation
 import com.thebluefolderproject.leafbyte.TestClock
@@ -33,6 +36,7 @@ abstract class AbstractComposeTests(
 
     protected fun runTest(
         initializeSettings: (Settings) -> Unit = {},
+        localeLanguageTag: String? = null,
         test: ComposeContext.(settings: Settings, googleSignInManager: GoogleSignInManager) -> Unit,
     ) {
         initializeLogInterception()
@@ -52,8 +56,15 @@ abstract class AbstractComposeTests(
                     log("Initializing settings")
                     initializeSettings(settings)
 
-                    log("Starting up Compose app")
-                    LeafByteNavigation(settings = settings, googleSignInManager = googleSignInManager)
+                    if (localeLanguageTag != null) {
+                        log("Starting up Compose app with $localeLanguageTag locale")
+                        DeviceConfigurationOverride(DeviceConfigurationOverride.Locales(LocaleList(localeLanguageTag))) {
+                            LeafByteNavigation(settings = settings, googleSignInManager = googleSignInManager)
+                        }
+                    } else {
+                        log("Starting up Compose app with default locale")
+                        LeafByteNavigation(settings = settings, googleSignInManager = googleSignInManager)
+                    }
                 }
 
                 log("Navigating to correct screen for specific test")

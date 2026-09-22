@@ -4,6 +4,7 @@
 
 package com.thebluefolderproject.leafbyte.utils
 
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.ParsePosition
@@ -34,7 +35,15 @@ private val intFormatterCache = mutableMapOf<Locale, NumberFormat>()
 
 private fun getFloatFormatter(locale: Locale): NumberFormat =
     floatFormatterCache.getOrPut(locale, {
-        NumberFormat.getNumberInstance(locale)
+        val formatter = NumberFormat.getNumberInstance(locale)
+        if (formatter is DecimalFormat) {
+            // always show at least one digit after the decimal (even e.g., 5.0) to let users know that they can use decimals
+            formatter.minimumFractionDigits = 1
+        } else {
+            logError("NOT DECIMAL??")
+        }
+
+        return formatter
     })
 
 private fun getIntFormatter(locale: Locale): NumberFormat = intFormatterCache.getOrPut(locale, { NumberFormat.getIntegerInstance(locale) })
@@ -51,11 +60,20 @@ private fun <ReturnType> strictlyParseInLocale(
     val parsedNumber =
         try {
             localeBasedFormatter.parse(numberString, parsePosition)
-        } catch (_: ParseException) {
+        } catch (exception: ParseException) {
+            logUserIssue("Failed to parse $numberString as a number", exception)
             return null
         }
     // if the parse returned a number but actually failed or did not use the whole string, treat it as a failure
     if (parsePosition.errorIndex != -1 || parsePosition.index != numberString.length) {
+        logUserIssue(
+            "Failed to parse $numberString as a number; errorIndex=${parsePosition.errorIndex}, parsePosition=${parsePosition.index}",
+        )
+        return null
+    }
+    // this is expected at least in the case that the string is empty
+    if (parsedNumber == null) {
+        logUserIssue("Number string was parsed as null: $numberString")
         return null
     }
 

@@ -36,6 +36,23 @@ fun log(logData: Any) {
     logAnyType(Log.INFO, logData)
 }
 
+/**
+ * For logging things that resemble errors but are definitely not LeafByte bugs but are user-caused issues, e.g. entering an invalid number.
+ */
+fun logUserIssue(logData: Any) {
+    logAnyType(Log.WARN, logData)
+}
+
+/**
+ * For logging things that resemble errors but are definitely not LeafByte bugs but are user-caused issues, e.g. entering an invalid number.
+ */
+fun logUserIssue(
+    message: String,
+    throwable: Throwable,
+) {
+    logThrowable(Log.WARN, message, throwable)
+}
+
 fun logError(logData: Any) {
     logAnyType(Log.ERROR, logData)
 }

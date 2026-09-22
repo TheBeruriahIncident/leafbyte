@@ -4,6 +4,10 @@
 
 package com.thebluefolderproject.leafbyte
 
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.printToString
@@ -140,4 +144,8 @@ class ComposeTestFailureException(
                 "Message: ${cause.message}\n" +
                 "Original class: ${cause.javaClass.name}\n"
     }
+}
+
+fun SemanticsNodeInteraction.assertIsInErrorState() {
+    this.assert(SemanticsMatcher.expectValue(SemanticsProperties.Error, "Invalid input"))
 }

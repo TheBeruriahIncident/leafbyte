@@ -242,11 +242,13 @@ class SettingsScreenTests : AbstractComposeTests {
             // the placeholder and explanation are included
             datasetNameField.assert(hasText("Your dataset name"))
             datasetNameField.assert(hasText("Dataset name is required"))
+            datasetNameField.assertIsInErrorState()
 
             datasetNameField.performTextReplacement("    \n ")
             assertFlowEquals("Herbivory Data", settings.getDatasetName())
             // it's trimmed before comparison
             datasetNameField.assert(hasText("Dataset name is required"))
+            datasetNameField.assertIsInErrorState()
 
             datasetNameField.performTextReplacement("valid")
             assertFlowEquals("valid", settings.getDatasetName())
@@ -385,22 +387,30 @@ class SettingsScreenTests : AbstractComposeTests {
             assertFlowEquals(10f, settings.getScaleLength())
             // the placeholder is included
             scaleLengthEntry.assert(hasText("Your scale length"))
+            scaleLengthEntry.assertIsInErrorState()
 
             scaleLengthEntry.performTextReplacement("hello")
             assertFlowEquals(10f, settings.getScaleLength())
-            scaleLengthEntry.assert(hasText(""))
+            scaleLengthEntry.assert(hasText("hello"))
+            scaleLengthEntry.assertIsInErrorState()
 
             scaleLengthEntry.performTextReplacement("15.0000")
             assertFlowEquals(15f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("15.0000"))
 
+            scaleLengthEntry.performTextReplacement("15.1234")
+            assertFlowEquals(15.1234f, settings.getScaleLength())
+            scaleLengthEntry.assert(hasText("15.1234"))
+
             scaleLengthEntry.performTextReplacement("15.0.1")
             assertFlowEquals(10f, settings.getScaleLength())
             scaleLengthEntry.assert(hasText("15.0.1"))
+            scaleLengthEntry.assertIsInErrorState()
 
             scaleLengthEntry.performTextReplacement("-2")
-            assertFlowEquals(2f, settings.getScaleLength())
-            scaleLengthEntry.assert(hasText("2"))
+            assertFlowEquals(10f, settings.getScaleLength())
+            scaleLengthEntry.assert(hasText("-2"))
+            scaleLengthEntry.assertIsInErrorState()
         }
     }
 
@@ -430,22 +440,28 @@ class SettingsScreenTests : AbstractComposeTests {
 
             nextSampleNumberEntry.performTextClearance()
             assertFlowEquals(1, settings.getNextSampleNumber())
+            nextSampleNumberEntry.assert(hasText(""))
+            nextSampleNumberEntry.assertIsInErrorState()
 
             nextSampleNumberEntry.performTextReplacement("hello")
             assertFlowEquals(1, settings.getNextSampleNumber())
-            nextSampleNumberEntry.assert(hasText(""))
+            nextSampleNumberEntry.assert(hasText("hello"))
+            nextSampleNumberEntry.assertIsInErrorState()
 
             nextSampleNumberEntry.performTextReplacement("15.00")
-            assertFlowEquals(1500, settings.getNextSampleNumber())
-            nextSampleNumberEntry.assert(hasText("1500"))
+            assertFlowEquals(1, settings.getNextSampleNumber())
+            nextSampleNumberEntry.assert(hasText("15.00"))
+            nextSampleNumberEntry.assertIsInErrorState()
 
             nextSampleNumberEntry.performTextReplacement("15.0.1")
-            assertFlowEquals(1501, settings.getNextSampleNumber())
-            nextSampleNumberEntry.assert(hasText("1501"))
+            assertFlowEquals(1, settings.getNextSampleNumber())
+            nextSampleNumberEntry.assert(hasText("15.0.1"))
+            nextSampleNumberEntry.assertIsInErrorState()
 
             nextSampleNumberEntry.performTextReplacement("-2")
-            assertFlowEquals(2, settings.getNextSampleNumber())
-            nextSampleNumberEntry.assert(hasText("2"))
+            assertFlowEquals(1, settings.getNextSampleNumber())
+            nextSampleNumberEntry.assert(hasText("-2"))
+            nextSampleNumberEntry.assertIsInErrorState()
         }
     }
 
@@ -555,6 +571,7 @@ class SettingsScreenTests : AbstractComposeTests {
             } returns Unit
 
             datasetNameField.performTextReplacement("")
+            datasetNameField.assertIsInErrorState()
             dataLocal.assert(isNotEnabled())
             dataGoogle.assert(isNotEnabled())
             imageLocal.assert(isNotEnabled())
@@ -760,6 +777,31 @@ class SettingsScreenTests : AbstractComposeTests {
                 .performClick()
                 .assert(isOff())
             assertFlowEquals(false, settings.getUseBlackBackground())
+        }
+    }
+
+    @Test
+    fun testGermanLocaleNumberFormatting() {
+        runTest(localeLanguageTag = "de") { settings, googleSignInManager ->
+            val datasetNameField = onNodeWithContentDescription("Dataset name entry")
+            val scaleLengthEntry = onNodeWithContentDescription("Scale length entry")
+            val nextSampleNumberEntry = onNodeWithContentDescription("Next sample number entry")
+
+            datasetNameField.performTextReplacement("german")
+            scaleLengthEntry.performTextReplacement("1.215,5")
+            nextSampleNumberEntry.performTextReplacement("1.215")
+            assertFlowEquals(1215.5f, settings.getScaleLength())
+            assertFlowEquals(1215, settings.getNextSampleNumber())
+            scaleLengthEntry.assert(hasText("1.215,5"))
+            nextSampleNumberEntry.assert(hasText("1.215"))
+
+            // confirm that after switching away and back, the initial formatting is correct
+            datasetNameField.performTextReplacement("other dataset")
+            datasetNameField.performTextReplacement("german")
+            assertFlowEquals(1215.5f, settings.getScaleLength())
+            assertFlowEquals(1215, settings.getNextSampleNumber())
+            scaleLengthEntry.assert(hasText("1.215,5"))
+            nextSampleNumberEntry.assert(hasText("1.215"))
         }
     }
 
