@@ -92,13 +92,22 @@ class DataStoreBackedSettings(
     private fun edit(editAction: DatasetSpecificSettings.Builder.() -> DatasetSpecificSettings.Builder) {
         runBlocking {
             settingsStore.updateData { currentSerializedSettings ->
-                val settingsBuilder = currentSerializedSettings.toBuilder()
+                val currentDatasetName = currentSerializedSettings.currentDatasetNameNormalized()
+
+                val settingsBuilder =
+                    currentSerializedSettings
+                        .toBuilder()
+                        // Saving the current dataset name is not necessary, but it handles a niche and theoretical edge case: if someone
+                        //   uses the default dataset and never adjusts it, without this, just the empty string would be persisted for the
+                        //   dataset name. If we ever changed the default dataset name in that case, we'd implicitly be changing the dataset
+                        //   for anyone using the default. This way, they'd keep their existing, used dataset.
+                        .setCurrentDatasetName(currentDatasetName)
                 val datasetSpecificSettings = editAction(currentSerializedSettings.currentSettings().toBuilder()).build()
 
                 val settings =
                     settingsBuilder
                         .putDatasetNameToSettings(
-                            currentSerializedSettings.currentDatasetNameNormalized(),
+                            currentDatasetName,
                             datasetSpecificSettings,
                         ).build()
 
@@ -111,7 +120,6 @@ class DataStoreBackedSettings(
     override fun getDatasetName(): Flow<String> =
         fromTopLevelSettings { currentDatasetNameNormalized() }
 
-    // TODO can I nest other setters somehow under this? so we always set for the right dataset
     override fun setDatasetName(newDatasetName: String) {
         val normalizedNewDatasetName = normalizeDatasetName(newDatasetName)
         editTopLevel { setCurrentDatasetName(normalizedNewDatasetName) }
