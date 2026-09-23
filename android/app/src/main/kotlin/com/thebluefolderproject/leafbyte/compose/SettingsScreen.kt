@@ -81,6 +81,8 @@ import kotlinx.coroutines.flow.map
 import net.openid.appauth.AuthState
 import java.util.Locale
 
+private val EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX = Regex("[^0-9.,]")
+
 @Composable
 fun AppAwareSettingsScreen(
     backStack: SnapshotStateList<Any>,
@@ -413,11 +415,11 @@ private fun DatasetNameSetting(
             placeholder = {
                 Text("Your dataset name")
             },
-            supportingText = {
-                // Even if valid, there's a space here so that the height doesn't change
-                Text(if (isBlank) "Dataset name is required" else " ")
-            },
             isError = isBlank,
+        )
+        InvalidInputExplanation(
+            isInvalid = isBlank,
+            message = "Dataset name is required",
         )
         Box(contentAlignment = Alignment.Center) {
             TextButton(
@@ -549,19 +551,16 @@ private fun ScaleLengthSetting(
                         .constrainAs(lengthTextField) { centerTo(parent) }
                         .description("Scale length entry"),
                 onValueChange = {
-                    displayValue.value = it
+                    // We strip out everything but numbers, commas, and periods, so it's as if typing other characters doesn't do anything
+                    val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX.replace(it, "")
+                    displayValue.value = strippedNewStringValue
 
-                    val newFloatValue: Float? = strictlyParseFloatInLocale(it, locale)
+                    val newFloatValue: Float? = strictlyParseFloatInLocale(strippedNewStringValue, locale)
                     // fallback to an invalid value that the persistence will replace
                     settings.setScaleLength(newFloatValue ?: -1f)
                 },
                 placeholder = {
                     Text("Your scale length")
-                },
-                supportingText = {
-                    if (isInvalid) {
-                        Text("Must be a number >0")
-                    }
                 },
                 isError = isInvalid,
             )
@@ -601,6 +600,10 @@ private fun ScaleLengthSetting(
             }
         }
         Text("Length of one side of the scale square from dot center to dot center", size = TextSize.FOOTNOTE)
+        InvalidInputExplanation(
+            isInvalid = isInvalid,
+            message = "Must be a number >0",
+        )
     }
 }
 
@@ -626,17 +629,19 @@ private fun NextSampleNumberSetting(
                 ),
             modifier = Modifier.description("Next sample number entry"),
             onValueChange = {
-                displayValue.value = it
+                // We strip out everything but numbers, commas, and periods, so it's as if typing other characters doesn't do anything
+                val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX.replace(it, "")
+                displayValue.value = strippedNewStringValue
 
-                val newIntValue: Int? = strictlyParseIntInLocale(it, locale)
+                val newIntValue: Int? = strictlyParseIntInLocale(strippedNewStringValue, locale)
                 // fallback to an invalid value that the persistence will replace
                 settings.setNextSampleNumber(newIntValue ?: -1)
             },
-            supportingText = {
-                // Even if valid, there's a space here so that the height doesn't change
-                Text(if (isInvalid) "Must be a whole number >0" else " ")
-            },
             isError = isInvalid,
+        )
+        InvalidInputExplanation(
+            isInvalid = isInvalid,
+            message = "Must be a whole number >0",
         )
     }
 }
@@ -693,6 +698,23 @@ fun SingleSetting(
         Text(title)
         content()
     }
+}
+
+@Composable
+fun InvalidInputExplanation(
+    isInvalid: Boolean,
+    message: String,
+) {
+    Text(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
+        // Even if valid, there's a space here so that the height doesn't change
+        text = if (isInvalid) message else " ",
+        textAlign = TextAlign.Left,
+        color = errorLight,
+    )
 }
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 1500) // to show the entire screen without cutoff
