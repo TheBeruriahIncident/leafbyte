@@ -81,6 +81,8 @@ import kotlinx.coroutines.flow.map
 import net.openid.appauth.AuthState
 import java.util.Locale
 
+private val EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX = Regex("[^0-9.,]")
+
 @Composable
 fun AppAwareSettingsScreen(
     backStack: SnapshotStateList<Any>,
@@ -549,9 +551,11 @@ private fun ScaleLengthSetting(
                         .constrainAs(lengthTextField) { centerTo(parent) }
                         .description("Scale length entry"),
                 onValueChange = {
-                    displayValue.value = it
+                    // We strip out everything but numbers, commas, and periods, so it's as if typing other characters doesn't do anything
+                    val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX.replace(it, "")
+                    displayValue.value = strippedNewStringValue
 
-                    val newFloatValue: Float? = strictlyParseFloatInLocale(it, locale)
+                    val newFloatValue: Float? = strictlyParseFloatInLocale(strippedNewStringValue, locale)
                     // fallback to an invalid value that the persistence will replace
                     settings.setScaleLength(newFloatValue ?: -1f)
                 },
@@ -625,9 +629,11 @@ private fun NextSampleNumberSetting(
                 ),
             modifier = Modifier.description("Next sample number entry"),
             onValueChange = {
-                displayValue.value = it
+                // We strip out everything but numbers, commas, and periods, so it's as if typing other characters doesn't do anything
+                val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_COMMAS_AND_PERIODS_REGEX.replace(it, "")
+                displayValue.value = strippedNewStringValue
 
-                val newIntValue: Int? = strictlyParseIntInLocale(it, locale)
+                val newIntValue: Int? = strictlyParseIntInLocale(strippedNewStringValue, locale)
                 // fallback to an invalid value that the persistence will replace
                 settings.setNextSampleNumber(newIntValue ?: -1)
             },
