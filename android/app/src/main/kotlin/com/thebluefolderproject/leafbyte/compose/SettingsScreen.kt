@@ -560,7 +560,7 @@ private fun ScaleLengthSetting(
                 },
                 supportingText = {
                     if (isInvalid) {
-                        Text("Must be a number greater than 0")
+                        Text("Must be a number >0")
                     }
                 },
                 isError = isInvalid,
@@ -634,7 +634,7 @@ private fun NextSampleNumberSetting(
             },
             supportingText = {
                 // Even if valid, there's a space here so that the height doesn't change
-                Text(if (isInvalid) "Must be a whole number greater than 0" else " ")
+                Text(if (isInvalid) "Must be a whole number >0" else " ")
             },
             isError = isInvalid,
         )
