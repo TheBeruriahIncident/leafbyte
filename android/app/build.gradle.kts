@@ -107,6 +107,12 @@ android {
                 srcDir("src/main/proto")
             }
         }
+        named("test") {
+            kotlin.directories += "src/testShared/kotlin"
+        }
+        named("androidTest") {
+            kotlin.directories += "src/testShared/kotlin"
+        }
     }
 
     // Note that these versions must be kept in sync with the versions in OpenCV"s build.gradle. pull out variables
@@ -275,6 +281,9 @@ dependencies {
             libs.coroutines.test,
             libs.junit,
             libs.kotlin.test,
+            libs.mockk,
+            libs.mockk.core,
+            libs.mockk.dsl,
         )
     val androidTestImplementationDeps =
         listOf(

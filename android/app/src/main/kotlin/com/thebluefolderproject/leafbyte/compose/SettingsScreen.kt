@@ -69,14 +69,17 @@ import com.thebluefolderproject.leafbyte.utils.Text
 import com.thebluefolderproject.leafbyte.utils.TextSize
 import com.thebluefolderproject.leafbyte.utils.TopAppBar
 import com.thebluefolderproject.leafbyte.utils.description
+import com.thebluefolderproject.leafbyte.utils.formatFloatInLocale
+import com.thebluefolderproject.leafbyte.utils.formatIntInLocale
+import com.thebluefolderproject.leafbyte.utils.getRememberedLocale
 import com.thebluefolderproject.leafbyte.utils.load
+import com.thebluefolderproject.leafbyte.utils.strictlyParseFloatInLocale
+import com.thebluefolderproject.leafbyte.utils.strictlyParseIntInLocale
 import com.thebluefolderproject.leafbyte.utils.valueForCompose
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 import net.openid.appauth.AuthState
-
-private val EVERYTHING_BUT_NUMBERS_REGEX = Regex("[^0-9]")
-private val EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX = Regex("[^0-9.]")
+import java.util.Locale
 
 @Composable
 fun AppAwareSettingsScreen(
@@ -116,11 +119,15 @@ fun SettingsScreen(
     // exposed for @Previews
     initialAlert: SettingsAlertType? = null,
 ) {
+    val locale = getRememberedLocale()
+
     // don't use a MutableStateFlow here! using MutableStateFlow is a "best practice" but it breaks TextFields.
     // see https://medium.com/androiddevelopers/effective-state-management-for-textfield-in-compose-d6e5b070fbe5
     val datasetNameDisplayValue = remember { mutableStateOf(settings.getDatasetName().load()) }
-    val scaleLengthDisplayValue = remember { mutableStateOf(settings.getScaleLength().map(Float::toString).load()) }
-    val nextSampleNumberDisplayValue = remember { mutableStateOf(settings.getNextSampleNumber().map(Int::toString).load()) }
+    val scaleLengthDisplayValue =
+        remember { mutableStateOf(settings.getScaleLength().map { formatFloatInLocale(it, locale) }.load()) }
+    val nextSampleNumberDisplayValue =
+        remember { mutableStateOf(settings.getNextSampleNumber().map { formatIntInLocale(it, locale) }.load()) }
 
     val currentAlert: MutableState<SettingsAlertType?> = remember { mutableStateOf(initialAlert) }
 
@@ -169,8 +176,8 @@ fun SettingsScreen(
         // Settings are scoped to the particular dataset. Everything that doesn't have a separate display value will automatically update
         //   from the flow from the settings, but the display values that exist in order to make the editing experience better must be
         //   manually updated
-        scaleLengthDisplayValue.value = settings.getScaleLength().load().toString()
-        nextSampleNumberDisplayValue.value = settings.getNextSampleNumber().load().toString()
+        scaleLengthDisplayValue.value = formatFloatInLocale(settings.getScaleLength().load(), locale)
+        nextSampleNumberDisplayValue.value = formatIntInLocale(settings.getNextSampleNumber().load(), locale)
         dataSaveLocationDisplayValue.value = settings.getDataSaveLocation().load()
         imageSaveLocationDisplayValue.value = settings.getImageSaveLocation().load()
     }
@@ -254,11 +261,13 @@ fun SettingsScreen(
                 ScaleLengthSetting(
                     settings = settings,
                     enabled = datasetNameIsNotBlank,
+                    locale = locale,
                     displayValue = scaleLengthDisplayValue,
                 )
                 NextSampleNumberSetting(
                     settings = settings,
                     enabled = datasetNameIsNotBlank,
+                    locale = locale,
                     displayValue = nextSampleNumberDisplayValue,
                 )
                 ToggleableSetting(
@@ -511,9 +520,12 @@ fun SaveLocationSetting(
 private fun ScaleLengthSetting(
     enabled: Boolean,
     settings: Settings,
+    locale: Locale,
     displayValue: MutableState<String>,
 ) {
-    val isInvalid = displayValue.value.isBlank() || displayValue.value.toFloatOrNull() == null
+    val parsedValue = strictlyParseFloatInLocale(displayValue.value, locale)
+    val isInvalid = parsedValue == null || parsedValue <= 0
+
     var dropdownIsExpanded by remember { mutableStateOf(false) }
     val scaleUnit = settings.getScaleUnit().valueForCompose()
 
@@ -537,16 +549,19 @@ private fun ScaleLengthSetting(
                         .constrainAs(lengthTextField) { centerTo(parent) }
                         .description("Scale length entry"),
                 onValueChange = {
-                    // We strip out everything but numbers and decimals, so it's as if typing other characters doesn't do anything
-                    val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_AND_DECIMALS_REGEX.replace(it, "")
-                    // fallback to an invalid value that the persistence will replace
-                    val newFloatValue = strippedNewStringValue.toFloatOrNull() ?: -1f
+                    displayValue.value = it
 
-                    displayValue.value = strippedNewStringValue
-                    settings.setScaleLength(newFloatValue)
+                    val newFloatValue: Float? = strictlyParseFloatInLocale(it, locale)
+                    // fallback to an invalid value that the persistence will replace
+                    settings.setScaleLength(newFloatValue ?: -1f)
                 },
                 placeholder = {
                     Text("Your scale length")
+                },
+                supportingText = {
+                    if (isInvalid) {
+                        Text("Must be a number >0")
+                    }
                 },
                 isError = isInvalid,
             )
@@ -593,9 +608,11 @@ private fun ScaleLengthSetting(
 private fun NextSampleNumberSetting(
     enabled: Boolean,
     settings: Settings,
+    locale: Locale,
     displayValue: MutableState<String>,
 ) {
-    val isInvalid = displayValue.value.isBlank() || displayValue.value.toIntOrNull() == null
+    val parsedValue = strictlyParseIntInLocale(displayValue.value, locale)
+    val isInvalid = parsedValue == null || parsedValue <= 0
 
     SingleSetting("Next Sample Number") {
         TextField(
@@ -609,13 +626,15 @@ private fun NextSampleNumberSetting(
                 ),
             modifier = Modifier.description("Next sample number entry"),
             onValueChange = {
-                // We strip out everything but numbers, so it's as if typing other characters doesn't do anything
-                val strippedNewStringValue = EVERYTHING_BUT_NUMBERS_REGEX.replace(it, "")
-                // fallback to an invalid value that the persistence will replace
-                val newIntValue = strippedNewStringValue.toIntOrNull() ?: -1
+                displayValue.value = it
 
-                displayValue.value = strippedNewStringValue
-                settings.setNextSampleNumber(newIntValue)
+                val newIntValue: Int? = strictlyParseIntInLocale(it, locale)
+                // fallback to an invalid value that the persistence will replace
+                settings.setNextSampleNumber(newIntValue ?: -1)
+            },
+            supportingText = {
+                // Even if valid, there's a space here so that the height doesn't change
+                Text(if (isInvalid) "Must be a whole number >0" else " ")
             },
             isError = isInvalid,
         )
