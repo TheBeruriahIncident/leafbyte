@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import java.util.Locale
 import kotlin.test.assertEquals
 
-class LocaleBasedFormattersTests {
+class LocaleBasedFormattersTests : AbstractUnitTests() {
     val english: Locale = Locale.ENGLISH
     val german: Locale = Locale.GERMAN
 

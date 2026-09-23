@@ -15,7 +15,6 @@ import androidx.test.espresso.NoActivityResumedException
 import com.thebluefolderproject.leafbyte.utils.Clock
 import com.thebluefolderproject.leafbyte.utils.LOG_TAG
 import com.thebluefolderproject.leafbyte.utils.load
-import com.thebluefolderproject.leafbyte.utils.registerLogInterceptor
 import de.mannodermaus.junit5.compose.ComposeContext
 import io.mockk.clearMocks
 import kotlinx.coroutines.flow.Flow
@@ -83,41 +82,6 @@ fun assertClosesApp(actionThatShouldCloseApp: () -> Unit) {
             }
         }
     }
-}
-
-/**
- * Ideally we would have done something like https://www.braze.com/resources/articles/logcat-junit-android-tests and drawn logs directly
- *   from logcat, but I've had no success execing logcat from here. That approach may no longer be possible with Android's security model.
- */
-val interceptedLogs = mutableListOf<String>()
-fun initializeLogInterception() {
-    interceptedLogs.clear()
-    registerLogInterceptor { interceptedLogs.add(it) }
-}
-
-private fun gatherInterceptedLogs(): String {
-    if (interceptedLogs.isEmpty()) {
-        return "No logs\n"
-    }
-
-    val builder = StringBuilder()
-
-    interceptedLogs.forEach { log ->
-        var firstLineWithinLog = true
-        log.split('\n').forEach { lineWithinLog ->
-            if (firstLineWithinLog) {
-                builder.append("$lineWithinLog\n")
-
-                firstLineWithinLog = false
-            } else {
-                // this line is prepended with a braille blank character that is not recognized as whitespace so that the indenting is not
-                //   pruned by Junit reporting
-                builder.append("\u2800                                     $lineWithinLog\n")
-            }
-        }
-    }
-
-    return builder.toString()
 }
 
 // inspired by https://www.braze.com/resources/articles/logcat-junit-android-tests
