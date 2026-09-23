@@ -45,6 +45,7 @@ datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-version" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso-version" }
 hamcrest = "org.hamcrest:hamcrest:3.0"
+#noinspection NewerVersionAvailable JUnit 6 requires Android SDK 35, which we are not ready to require
 junit = "org.junit.jupiter:junit-jupiter-api:5.14.4"
 kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin-version" }
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0"
@@ -64,7 +65,7 @@ zoomable = "me.saket.telephoto:zoomable:0.19.0"
 
 [plugins]
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit-version" }
-dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.19.1"
+dependencyAnalysis = "com.autonomousapps.dependency-analysis:3.19.2"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
