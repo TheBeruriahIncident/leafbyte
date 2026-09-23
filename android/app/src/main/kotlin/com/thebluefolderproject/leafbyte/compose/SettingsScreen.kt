@@ -419,7 +419,7 @@ private fun DatasetNameSetting(
         )
         InvalidInputExplanation(
             isInvalid = isBlank,
-            message = "Dataset name is required"
+            message = "Dataset name is required",
         )
         Box(contentAlignment = Alignment.Center) {
             TextButton(
@@ -602,7 +602,7 @@ private fun ScaleLengthSetting(
         Text("Length of one side of the scale square from dot center to dot center", size = TextSize.FOOTNOTE)
         InvalidInputExplanation(
             isInvalid = isInvalid,
-            message = "Must be a number >0"
+            message = "Must be a number >0",
         )
     }
 }
@@ -641,7 +641,7 @@ private fun NextSampleNumberSetting(
         )
         InvalidInputExplanation(
             isInvalid = isInvalid,
-            message = "Must be a whole number >0"
+            message = "Must be a whole number >0",
         )
     }
 }
@@ -701,11 +701,15 @@ fun SingleSetting(
 }
 
 @Composable
-fun InvalidInputExplanation(isInvalid: Boolean, message: String) {
+fun InvalidInputExplanation(
+    isInvalid: Boolean,
+    message: String,
+) {
     Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 5.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
         // Even if valid, there's a space here so that the height doesn't change
         text = if (isInvalid) message else " ",
         textAlign = TextAlign.Left,
