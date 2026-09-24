@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GOOGLE_SIGN_IN_CLIENT_ID</key>
-	<string>$(GOOGLE_SIGN_IN_CLIENT_ID)</string>
-	<key>GOOGLE_SIGN_IN_REDIRECT_URL</key>
-	<string>$(GOOGLE_SIGN_IN_REDIRECT_URL)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -33,6 +29,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>GOOGLE_SIGN_IN_CLIENT_ID</key>
+	<string>$(GOOGLE_SIGN_IN_CLIENT_ID)</string>
+	<key>GOOGLE_SIGN_IN_REDIRECT_URL</key>
+	<string>$(GOOGLE_SIGN_IN_REDIRECT_URL)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
