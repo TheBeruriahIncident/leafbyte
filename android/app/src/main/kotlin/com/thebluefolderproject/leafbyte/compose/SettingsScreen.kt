@@ -113,7 +113,7 @@ fun AppAwareSettingsScreen(
 
 @Suppress("detekt:complexity:LongMethod")
 @Composable
-fun SettingsScreen(
+private fun SettingsScreen(
     settings: Settings,
     googleSignInManager: GoogleSignInManager,
     goBack: () -> Unit,
@@ -320,7 +320,8 @@ fun SettingsScreen(
     }
 }
 
-enum class SettingsAlertType {
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal enum class SettingsAlertType {
     BACK_WITHOUT_DATASET_NAME,
     GOOGLE_SIGN_IN_UNCONFIGURED,
     GOOGLE_SIGN_IN_NON_INTERACTIVE_STAGE_FAILURE,
@@ -360,7 +361,7 @@ private fun getAlertTitle(alertType: SettingsAlertType): String =
     }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-fun getAlertMessage(alertType: SettingsAlertType): String =
+internal fun getAlertMessage(alertType: SettingsAlertType): String =
     when (alertType) {
         SettingsAlertType.BACK_WITHOUT_DATASET_NAME -> "A dataset name is required. Please enter a dataset name."
         SettingsAlertType.GOOGLE_SIGN_IN_UNCONFIGURED ->
@@ -453,7 +454,7 @@ private fun DatasetNameSetting(
 }
 
 @Composable
-fun SaveLocationSetting(
+private fun SaveLocationSetting(
     locationSettingName: String,
     enabled: Boolean,
     currentLocation: MutableState<SaveLocation>,
@@ -652,7 +653,7 @@ private fun NextSampleNumberSetting(
 @Suppress("detekt:complexity:LongParameterList", "detekt:style:MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToggleableSetting(
+private fun ToggleableSetting(
     title: String,
     disabledBecauseEmptyDatasetName: Boolean = false,
     disabledBecauseNotSavingData: Boolean = false,
@@ -686,7 +687,7 @@ fun ToggleableSetting(
 }
 
 @Composable
-fun SingleSetting(
+private fun SingleSetting(
     title: String,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -703,7 +704,7 @@ fun SingleSetting(
 }
 
 @Composable
-fun InvalidInputExplanation(
+private fun InvalidInputExplanation(
     isInvalid: Boolean,
     message: String,
 ) {
