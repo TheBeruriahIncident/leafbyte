@@ -447,6 +447,7 @@ private fun DatasetNameSetting(
         Text(
             "When switching to a previous dataset, LeafByte will restore the settings used for that dataset.",
             textAlign = TextAlign.Center,
+            size = TextSize.FOOTNOTE,
         )
     }
 }
@@ -508,6 +509,7 @@ fun SaveLocationSetting(
                 ) {
                     Text(
                         text = option.userFacingName,
+                        textAlign = TextAlign.Center,
                         size = TextSize.IN_BUTTON,
                         bold = selected,
                     )
