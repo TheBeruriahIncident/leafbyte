@@ -58,6 +58,3 @@ identifier_name:
     - i
   max_length:
     warning: 50
-
-excluded:
-   - Pods
