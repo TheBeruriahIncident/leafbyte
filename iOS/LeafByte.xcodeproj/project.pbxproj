@@ -1031,7 +1031,7 @@
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
 			requirement = {
 				kind = exactVersion;
-				version = 1.7.6;
+				version = 3.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
