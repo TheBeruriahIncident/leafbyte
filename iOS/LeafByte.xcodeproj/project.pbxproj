@@ -460,6 +460,7 @@
 				C8A663BD2C66508100898E92 /* PBXBuildRule */,
 			);
 			dependencies = (
+				C8489AE8306706DE00D4DB25 /* PBXTargetDependency */,
 			);
 			name = LeafByte;
 			packageProductDependencies = (
@@ -547,6 +548,7 @@
 			mainGroup = 4621EE2E1FEB70AD004C3011;
 			packageReferences = (
 				C8489AE03067024400D4DB25 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			productRefGroup = 4621EE381FEB70AD004C3011 /* Products */;
 			projectDirPath = "";
@@ -692,6 +694,10 @@
 			isa = PBXTargetDependency;
 			target = 4621EE361FEB70AD004C3011 /* LeafByte */;
 			targetProxy = 4621EE571FEB70AD004C3011 /* PBXContainerItemProxy */;
+		};
+		C8489AE8306706DE00D4DB25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1034,6 +1040,14 @@
 				version = 3.0.0;
 			};
 		};
+		C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = exactVersion;
+				version = 0.65.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1041,6 +1055,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C8489AE03067024400D4DB25 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
+		};
+		C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
