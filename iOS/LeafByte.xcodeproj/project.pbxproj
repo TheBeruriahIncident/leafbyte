@@ -49,6 +49,7 @@
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
 		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
+		C8489ADF3066F43300D4DB25 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */; };
 		C85D52782C812E1C0016C2A5 /* PaperDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */; };
 		C85D527A2C81309E0016C2A5 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52792C81309E0016C2A5 /* TestUtils.swift */; };
 		C869407F2C86AD970007C2EA /* TM5.png in Resources */ = {isa = PBXBuildFile; fileRef = C86940612C86AD890007C2EA /* TM5.png */; };
@@ -187,6 +188,7 @@
 		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
 		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
+		C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperDataTests.swift; sourceTree = "<group>"; };
 		C85D52792C81309E0016C2A5 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		C86940612C86AD890007C2EA /* TM5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TM5.png; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 		4621EE391FEB70AD004C3011 /* LeafByte */ = {
 			isa = PBXGroup;
 			children = (
+				C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */,
 				4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */,
 				4621EE411FEB70AD004C3011 /* Assets.xcassets */,
 				46F1063920007ABC000B4B83 /* Data Structures */,
@@ -760,6 +763,7 @@
 				460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
 				C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */,
+				C8489ADF3066F43300D4DB25 /* SceneDelegate.swift in Sources */,
 				46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */,
 				460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */,
 				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
