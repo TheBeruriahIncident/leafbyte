@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2202501980BBACC8D50543F6 /* libPods-LeafByte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */; };
 		460F687120140A31002C8BA7 /* GoogleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687020140A31002C8BA7 /* GoogleSignInUtils.swift */; };
 		460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687220145AC5002C8BA7 /* RestUtils.swift */; };
 		460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F687420145E28002C8BA7 /* GoogleApiUtils.swift */; };
-		46130551200EEFDC00141B68 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 46130550200EEFDC00141B68 /* Podfile */; };
 		4621EE3B1FEB70AD004C3011 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */; };
 		4621EE3D1FEB70AD004C3011 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */; };
 		4621EE401FEB70AD004C3011 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4621EE3E1FEB70AD004C3011 /* Main.storyboard */; };
@@ -48,7 +46,8 @@
 		46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F10642200133CF000B4B83 /* DrawingManager.swift */; };
 		46F1064520013D6E000B4B83 /* LayeredIndexableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */; };
 		46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */; };
-		77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */; };
+		C8489ADF3066F43300D4DB25 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */; };
+		C8489AE23067024400D4DB25 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C8489AE13067024400D4DB25 /* AppAuth */; };
 		C85D52782C812E1C0016C2A5 /* PaperDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */; };
 		C85D527A2C81309E0016C2A5 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85D52792C81309E0016C2A5 /* TestUtils.swift */; };
 		C869407F2C86AD970007C2EA /* TM5.png in Resources */ = {isa = PBXBuildFile; fileRef = C86940612C86AD890007C2EA /* TM5.png */; };
@@ -138,7 +137,6 @@
 		460F687020140A31002C8BA7 /* GoogleSignInUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInUtils.swift; sourceTree = "<group>"; };
 		460F687220145AC5002C8BA7 /* RestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestUtils.swift; sourceTree = "<group>"; };
 		460F687420145E28002C8BA7 /* GoogleApiUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiUtils.swift; sourceTree = "<group>"; };
-		46130550200EEFDC00141B68 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4621EE371FEB70AD004C3011 /* LeafByte.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafByte.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4621EE3C1FEB70AD004C3011 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -181,12 +179,7 @@
 		46F10642200133CF000B4B83 /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
 		46F1064420013D6E000B4B83 /* LayeredIndexableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayeredIndexableImage.swift; sourceTree = "<group>"; };
 		46F243DB203540CC008EF984 /* BarcodeScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanningViewController.swift; sourceTree = "<group>"; };
-		505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByte.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByteTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByteTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests.release.xcconfig"; sourceTree = "<group>"; };
-		A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.release.xcconfig"; sourceTree = "<group>"; };
-		AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeafByteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafByte.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeafByte/Pods-LeafByte.debug.xcconfig"; sourceTree = "<group>"; };
+		C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C85D52772C812E1C0016C2A5 /* PaperDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperDataTests.swift; sourceTree = "<group>"; };
 		C85D52792C81309E0016C2A5 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		C86940612C86AD890007C2EA /* TM5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TM5.png; sourceTree = "<group>"; };
@@ -230,7 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2202501980BBACC8D50543F6 /* libPods-LeafByte.a in Frameworks */,
+				C8489AE23067024400D4DB25 /* AppAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +231,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77E3068C10AEC01F77A64D83 /* libPods-LeafByteTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,10 +250,7 @@
 				4621EE391FEB70AD004C3011 /* LeafByte */,
 				4621EE4E1FEB70AD004C3011 /* LeafByteTests */,
 				4621EE591FEB70AD004C3011 /* LeafByteUITests */,
-				46130550200EEFDC00141B68 /* Podfile */,
 				4621EE381FEB70AD004C3011 /* Products */,
-				70247F988495C25D3B5AEC7B /* Pods */,
-				556C555FB0D73897C163614B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -278,6 +267,7 @@
 		4621EE391FEB70AD004C3011 /* LeafByte */ = {
 			isa = PBXGroup;
 			children = (
+				C8489ADE3066F43100D4DB25 /* SceneDelegate.swift */,
 				4621EE3A1FEB70AD004C3011 /* AppDelegate.swift */,
 				4621EE411FEB70AD004C3011 /* Assets.xcassets */,
 				46F1063920007ABC000B4B83 /* Data Structures */,
@@ -417,26 +407,6 @@
 			path = "Data Structures";
 			sourceTree = "<group>";
 		};
-		556C555FB0D73897C163614B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				505EAE8C9D0B289C0F55A41F /* libPods-LeafByte.a */,
-				AD3D06FD527AB684DBC26BC8 /* libPods-LeafByteTests.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		70247F988495C25D3B5AEC7B /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */,
-				A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */,
-				93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */,
-				9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		C85D527B2C816B290016C2A5 /* Paper Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,20 +451,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4621EE5F1FEB70AD004C3011 /* Build configuration list for PBXNativeTarget "LeafByte" */;
 			buildPhases = (
-				7C8C53EA08FAF6B95E10E73B /* [CP] Check Pods Manifest.lock */,
 				4621EE331FEB70AD004C3011 /* Sources */,
 				4621EE341FEB70AD004C3011 /* Frameworks */,
 				4621EE351FEB70AD004C3011 /* Resources */,
-				372693C106CABA48D222044A /* [CP] Copy Pods Resources */,
-				C8C01DD12C23315F00A78453 /* ShellScript */,
 			);
 			buildRules = (
 				C8A663BC2C664FC600898E92 /* PBXBuildRule */,
 				C8A663BD2C66508100898E92 /* PBXBuildRule */,
 			);
 			dependencies = (
+				C8489AE8306706DE00D4DB25 /* PBXTargetDependency */,
 			);
 			name = LeafByte;
+			packageProductDependencies = (
+				C8489AE13067024400D4DB25 /* AppAuth */,
+			);
 			productName = LeafByte;
 			productReference = 4621EE371FEB70AD004C3011 /* LeafByte.app */;
 			productType = "com.apple.product-type.application";
@@ -503,11 +474,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4621EE621FEB70AD004C3011 /* Build configuration list for PBXNativeTarget "LeafByteTests" */;
 			buildPhases = (
-				2EA35A8CA060A3D8026E838C /* [CP] Check Pods Manifest.lock */,
 				4621EE471FEB70AD004C3011 /* Sources */,
 				4621EE481FEB70AD004C3011 /* Frameworks */,
 				4621EE491FEB70AD004C3011 /* Resources */,
-				9BDBBD81420EC154CBBE7372 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -543,8 +512,9 @@
 		4621EE2F1FEB70AD004C3011 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 2700;
 				ORGANIZATIONNAME = "The Blue Folder Project";
 				TargetAttributes = {
 					4621EE361FEB70AD004C3011 = {
@@ -577,6 +547,8 @@
 			);
 			mainGroup = 4621EE2E1FEB70AD004C3011;
 			packageReferences = (
+				C8489AE03067024400D4DB25 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			productRefGroup = 4621EE381FEB70AD004C3011 /* Products */;
 			projectDirPath = "";
@@ -597,7 +569,6 @@
 				C8C789062C226A31008D74F3 /* PrivacyInfo.xcprivacy in Resources */,
 				46A6D883209EAD110013891E /* Localizable.strings in Resources */,
 				4621EE451FEB70AD004C3011 /* LaunchScreen.storyboard in Resources */,
-				46130551200EEFDC00141B68 /* Podfile in Resources */,
 				4621EE421FEB70AD004C3011 /* Assets.xcassets in Resources */,
 				4621EE401FEB70AD004C3011 /* Main.storyboard in Resources */,
 			);
@@ -650,103 +621,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		2EA35A8CA060A3D8026E838C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LeafByteTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		372693C106CABA48D222044A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafByte/Pods-LeafByte-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuthCore_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthCore_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafByte/Pods-LeafByte-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7C8C53EA08FAF6B95E10E73B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LeafByte-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9BDBBD81420EC154CBBE7372 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth-Core/AppAuthCore_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthCore_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafByteTests/Pods-LeafByteTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8C01DD12C23315F00A78453 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		4621EE331FEB70AD004C3011 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -759,6 +633,7 @@
 				460F687320145AC5002C8BA7 /* RestUtils.swift in Sources */,
 				46DB8A8A1FFE9DAF00EF59BE /* Pixel.swift in Sources */,
 				C8A663BB2C664B4500898E92 /* ThresholdingFilter.coreimage.metal in Sources */,
+				C8489ADF3066F43300D4DB25 /* SceneDelegate.swift in Sources */,
 				46F243DC203540CC008EF984 /* BarcodeScanningViewController.swift in Sources */,
 				460F687520145E28002C8BA7 /* GoogleApiUtils.swift in Sources */,
 				46F10643200133CF000B4B83 /* DrawingManager.swift in Sources */,
@@ -820,6 +695,10 @@
 			target = 4621EE361FEB70AD004C3011 /* LeafByte */;
 			targetProxy = 4621EE571FEB70AD004C3011 /* PBXContainerItemProxy */;
 		};
+		C8489AE8306706DE00D4DB25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -855,6 +734,7 @@
 			baseConfigurationReference = C8A899482C21366A005A7950 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -877,6 +757,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -886,8 +767,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -902,10 +785,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -917,6 +801,7 @@
 			baseConfigurationReference = C8A899482C21366A005A7950 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -939,6 +824,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -948,8 +834,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
@@ -959,9 +847,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -970,18 +859,16 @@
 		};
 		4621EE601FEB70AD004C3011 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C29E139F2B6DC05CF736CB6B /* Pods-LeafByte.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1000,17 +887,15 @@
 		};
 		4621EE611FEB70AD004C3011 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9F9D5471047C266D61EF082 /* Pods-LeafByte.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_ACTIVITY_MODE = "";
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = LeafByte/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1029,13 +914,11 @@
 		};
 		4621EE631FEB70AD004C3011 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93717F264E61550FEB3C90B5 /* Pods-LeafByteTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByteTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1051,13 +934,11 @@
 		};
 		4621EE641FEB70AD004C3011 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A685AF4BEA0D5744DCE64C2 /* Pods-LeafByteTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByteTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1074,10 +955,9 @@
 		4621EE661FEB70AD004C3011 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByteUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1094,10 +974,9 @@
 		4621EE671FEB70AD004C3011 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N66NE6X3PJ;
 				INFOPLIST_FILE = LeafByteUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1151,6 +1030,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C8489AE03067024400D4DB25 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.0;
+			};
+		};
+		C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = exactVersion;
+				version = 0.65.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C8489AE13067024400D4DB25 /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8489AE03067024400D4DB25 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
+		};
+		C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4621EE2F1FEB70AD004C3011 /* Project object */;
 }

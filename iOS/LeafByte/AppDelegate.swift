@@ -13,8 +13,6 @@ import UIKit
 // If we wanted custom behavior for lifecycle events, such as when a user switches away from the app, this is where we'd handle that.
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
     func application(_: UIApplication, _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
