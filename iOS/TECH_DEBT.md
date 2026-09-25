@@ -3,6 +3,8 @@ Tech debt we may be able to improve now that Apple has forced our minimum iOS up
 * NSCoding was the preferred serialization method when LeafByte was originally written. It's now deprecated (with no plans to actually remove it), and Codable is preferred, except there isn't a clear migration path between the two or migration tooling on iOS. Thus, we'd have to be able to read from NSCoding and Codable and only write back to Codable. We could never be sure that all NSCoding data was gone, so we'd have to leave these two paths indefinitely. As such, switching to Codable would add indefinite complexity with little benefit and not even ever remove the deprecated usage.
 * The legacy UIImagePickerController required us to request "Privacy - Photo Library Usage" in the plist, while the modern PHPicker runs in a separate process and thus does not require LeafByte to request additional access. We use PHPicker if the device is iOS 14 and thus PHPicker is available, and otherwise fallback on UIImagePickerController. As such, we'd ideally drop that privacy request from the plist in newer iOS versions, but that's not possible. Once our minimum SDK is at least 14, we can delete UIImagePickerController and the privacy request.
 * SwiftLint is stuck on 0.51.0, because newer versions require a higher SDK. However, our CI runs latest SwiftLint.
+* If we move to Swift Package Manager, can Renovate bump versions?
+* Can we now use the thread safety system?
 
 
 Tech debt and things resembling tech debt that we are avoiding changing right now:

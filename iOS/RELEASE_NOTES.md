@@ -46,4 +46,4 @@
 * Various typos are fixed
 
 1.5.0 (???, the big 2026 refresh!)
-* After 8 years, our minimum iOS version has been raised from iOS 9 to iOS 15 due to requirements from Apple. We are no longer allowed to publish the app with less than an iOS 15 requirement, even though we are able to support iOS 9 and would like to support iOS 9. We know this affects existing lab devices, and we apologize. If Apple changes the policy to allow us to continue supporting iOS 9, we will do so, but that is unlikely.
+* After 8 years, our minimum iOS version has been raised from iOS 9 to iOS 15 due to requirements from Apple. We are no longer allowed to publish the app with less than an iOS 15 requirement, even though we are able to support iOS 9 and would like to support iOS 9. We know this affects existing lab devices, and we apologize.
