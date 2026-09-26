@@ -71,6 +71,7 @@ final class Settings: NSObject, NSCoding {
 
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
+        // swiftlint:disable variable_shadowing
         if let dataSaveLocation = decoder.decodeObject(forKey: PropertyKey.dataSaveLocation) as? String {
             self.dataSaveLocation = SaveLocation(rawValue: dataSaveLocation) ?? Self.defaultSaveLocation
         }
@@ -117,6 +118,7 @@ final class Settings: NSObject, NSCoding {
         if let userIdToTopLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.userIdToTopLevelGoogleFolderId) as? [String: String] {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
         }
+        // swiftlint:enable variable_shadowing
     }
 
     // This defines how to serialize (how to save a Settings to disk).
@@ -141,6 +143,7 @@ final class Settings: NSObject, NSCoding {
     // MARK: - NSObject
 
     override func isEqual(_ other: Any?) -> Bool {
+        // swiftlint:disable:next variable_shadowing
         guard let other = other as? Self else {
             return false
         }
