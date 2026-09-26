@@ -8,9 +8,9 @@ disabled_rules:
   - line_length
   - type_body_length
   # Opt-in rules we don't want
-  - balanced_xctest_lifecycle
   - closure_body_length
   - contrasted_opening_brace
+  - discouraged_default_parameter
   - discouraged_object_literal
   - discouraged_optional_boolean
   - discouraged_optional_collection
@@ -31,7 +31,6 @@ disabled_rules:
   - multiline_parameters_brackets
   - no_magic_numbers
   - one_declaration_per_file
-  - prefer_nimble
   - prefixed_toplevel_constant
   - private_action
   - private_outlet
