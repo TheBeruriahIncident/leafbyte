@@ -48,12 +48,12 @@ final class ThresholdingFilter: CIFilter {
 
     // Static in order to (lazily) compute only once
     private static let whiteBackgroundThresholdKernel: CIColorKernel = {
-        return getMetalThresholdingKernel(useBlackBackground: false)
+        getMetalThresholdingKernel(useBlackBackground: false)
     }()
 
     // Static in order to (lazily) compute only once
     private static let blackBackgroundThresholdKernel: CIColorKernel = {
-        return getMetalThresholdingKernel(useBlackBackground: true)
+        getMetalThresholdingKernel(useBlackBackground: true)
     }()
 
     private static func getMetalThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
