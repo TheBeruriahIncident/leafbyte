@@ -22,9 +22,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_: UIApplication, open url: URL, _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // This is boilerplate from AppAuth to handle the OAuth redirect flow: after Google sign-in is completed, Google sends the user back to LeafByte, passing through this flow
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
+        if let authorizationFlow = self.currentAuthorizationFlow {
+            do {
+                try authorizationFlow.resumeExternalUserAgentFlow(url)
+                self.currentAuthorizationFlow = nil
+                return true
+            } catch {
+                print("Authorization flow could not handle URL: \(error.localizedDescription)")
+            }
         }
 
         return false
