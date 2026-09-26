@@ -281,15 +281,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
         // If the segue is toBarcodeScanning, we're transitioning forward in the main flow, but with barcode scanning.
         else if segue.identifier == "toBarcodeScanning" {
-            if #available(iOS 10.0, *) {
-                guard let destination = segue.destination as? BarcodeScanningViewController else {
-                    fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
-                }
-
-                destination.settings = settings
-            } else {
-                fatalError("Attempting to use barcode scanning pre-iOS 10.0")
+            guard let destination = segue.destination as? BarcodeScanningViewController else {
+                fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
             }
+
+            destination.settings = settings
         } else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
@@ -449,7 +445,6 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - PHPickerViewControllerDelegate overrides
 
-    @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         finishWithPHPicker(
             self: self,
@@ -742,14 +737,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                 }
             })
 
-            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-            var localStorageName: String
-            if #available(iOS 11.0, *) {
-                localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
-            } else {
-                localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
-            }
-
+            let localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
             // swiftlint:disable:next trailing_closure
             let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails, to provide an alternative"), style: .default, handler: { _ in
                 DispatchQueue.main.async {
