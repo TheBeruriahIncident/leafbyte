@@ -39,7 +39,7 @@ func serialize(settings: Settings, image: UIImage, percentConsumed: String, leaf
         }, onFailure: onFailure)
     }
 
-    if settings.saveGpsData && settings.dataSaveLocation != .none {
+    if settings.saveGpsData, settings.dataSaveLocation != .none {
         // swiftlint:disable:next trailing_closure
         GpsManager.requestLocation(onLocation: onLocation, onError: { _ in onFailure(.gps) })
     } else {

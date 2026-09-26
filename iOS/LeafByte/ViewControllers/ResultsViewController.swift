@@ -367,7 +367,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
 
         // If there was a previous point, connect the dots.
-        if !currentTouchPath.isEmpty && mode == .drawing {
+        if !currentTouchPath.isEmpty, mode == .drawing {
             // swiftlint:disable:next force_unwrapping
             drawLine(fromPoint: currentTouchPath.last!, toPoint: candidatePoint)
         }

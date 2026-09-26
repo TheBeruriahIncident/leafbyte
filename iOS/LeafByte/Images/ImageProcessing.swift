@@ -302,7 +302,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
             }
 
             // Any empty pixels on the edge of the image are part of the "outside of the image" component.
-            if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
+            if !isOccupied, y == 0 || x == 0 || y == height - 1 || x == width - 1 {
                 equivalenceClasses.combineClassesContaining(label, and: backgroundLabel)
             }
 

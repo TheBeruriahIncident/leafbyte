@@ -233,7 +233,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {
-        if settings.dataSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
+        if settings.dataSaveLocation != .googleDrive, settings.imageSaveLocation != .googleDrive {
             return
         }
 
@@ -289,7 +289,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         let notSavedMessage: String
         if dataSaveLocation == .none || imageSaveLocation == .none {
             let notSavedMessageElements: String
-            if dataSaveLocation == .none && imageSaveLocation == .none {
+            if dataSaveLocation == .none, imageSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
             } else if dataSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data", comment: "Name for what's being saved")

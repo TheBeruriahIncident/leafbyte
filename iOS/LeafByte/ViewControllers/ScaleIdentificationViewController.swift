@@ -352,7 +352,7 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
 
         // Draw Xs at each valid point.
-        if numberOfValidScaleMarks > 0 && !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
+        if numberOfValidScaleMarks > 0, !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
             for index in 1...numberOfValidScaleMarks {
                 drawingManager.drawX(at: scaleMarks[index - 1], size: 5)
             }
