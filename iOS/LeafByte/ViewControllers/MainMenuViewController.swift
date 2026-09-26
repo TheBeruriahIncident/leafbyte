@@ -82,16 +82,19 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             return
         }
 
-        requestCameraAccess(self: self, onSuccess: {
-            DispatchQueue.main.async {
-                if self.settings.useBarcode {
-                    self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
-                } else {
-                    self.sourceMode = .camera
-                    presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
+        requestCameraAccess(
+            self: self,
+            onSuccess: {
+                DispatchQueue.main.async {
+                    if self.settings.useBarcode {
+                        self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                    } else {
+                        self.sourceMode = .camera
+                        presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
+                    }
                 }
-            }
-        }, onFailure: { self.segueEnabled = true })
+            },
+            onFailure: { self.segueEnabled = true })
     }
 
     @IBAction func pickImageFromPhotoLibrary(_: Any) {
@@ -252,7 +255,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                     presentFailedGoogleSignInAlert(cause: cause, self: self)
                     self.setSavingSummary()
                 }
-            }, callingViewController: self, settings: settings)
+            },
+            callingViewController: self,
+            settings: settings
+        )
     }
 
     private func setSavingSummary() {
