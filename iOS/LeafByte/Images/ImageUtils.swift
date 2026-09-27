@@ -8,11 +8,10 @@
 
 import UIKit
 
-// Fills an image view with a blank image.
+// Fills an image view with a blank, transparent image.
 func initializeImage(view: UIImageView, size: CGSize) {
-    UIGraphicsBeginImageContext(size)
-    view.image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+    let renderer = UIGraphicsImageRenderer(size: size)
+    view.image = renderer.image { _ in /* image is transparent if no action is taken */ }
 }
 
 func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: Int) -> CGImage {
