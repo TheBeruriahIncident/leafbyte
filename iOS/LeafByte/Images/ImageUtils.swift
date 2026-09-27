@@ -155,16 +155,14 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
 // Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     // Size the canvas to the first image (which is assumed to be the same as the rest).
-    UIGraphicsBeginImageContext(imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
+    let renderer = UIGraphicsImageRenderer(size: imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
 
-    // Draw each image into the canvas.
-    for imageView in imageViews {
-        imageView.image!.draw(at: CGPoint.zero) // swiftlint:disable:this force_unwrapping
+    return renderer.image { _ in
+        // Draw each image into the canvas.
+        for imageView in imageViews {
+            imageView.image!.draw(at: CGPoint.zero) // swiftlint:disable:this force_unwrapping
+        }
     }
-
-    let combinedImage = UIGraphicsGetImageFromCurrentImageContext()! // swiftlint:disable:this force_unwrapping
-    UIGraphicsEndImageContext()
-    return combinedImage
 }
 
 func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIImage {
