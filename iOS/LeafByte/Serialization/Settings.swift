@@ -10,7 +10,9 @@ import AppAuth
 import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
-final class Settings: NSObject, NSCoding {
+final class Settings: NSObject, NSCoding, NSSecureCoding {
+    static let supportsSecureCoding = true
+
     static let defaultDatasetName = "Herbivory Data"
     static let defaultNextSampleNumber = 1
     static let defaultSaveLocation = SaveLocation.local
@@ -172,7 +174,8 @@ final class Settings: NSObject, NSCoding {
             let settingsFile = Self.getSettingsFile(fromContainingFolder: serializedLocation)
 
             // If this crashes, we may not even be able to catch it as it isn't marked throwing
-            NSKeyedArchiver.archiveRootObject(self, toFile: settingsFile.path)
+            let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)
+            try data.write(to: settingsFile.standardizedFileURL)
         } catch {
             print("Failed to serialize settings: \(error)")
 
