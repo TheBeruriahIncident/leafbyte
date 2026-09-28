@@ -269,13 +269,18 @@ final class Settings: NSObject, NSCoding, NSSecureCoding {
     }
 
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
-        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation).path) as? Self
+        do {
+            let data = try Data(contentsOf: getSettingsFile(fromContainingFolder: serializedLocation).standardizedFileURL)
+            let deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: data)
 
-        guard let deserializedData else {
+            guard let deserializedData else {
+                return Self()
+            }
+            return deserializedData
+        } catch {
+            // the default DecodingFailurePolicy is to return nil, so this should be dead code unless the default changes
             return Self()
         }
-
-        return deserializedData
     }
 
     private static func getSettingsFile(fromContainingFolder folder: URL) -> URL {
