@@ -9,7 +9,7 @@
 import CoreGraphics
 import UIKit
 
-extension CGPoint: Hashable {
+extension CGPoint: @retroactive Hashable {
     // This allows CGPoints to be used in sets.
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.x)
