@@ -504,8 +504,10 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func drawLine(points: [CGPoint]) {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
-        drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
-        drawingManager.context.setLineWidth(2)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(DrawingManager.darkGreen.cgColor)
+            context.setLineWidth(2)
+        }
 
         if points.count == 1 {
             // swiftlint:disable:next force_unwrapping
@@ -584,9 +586,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
-        drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setLineCap(.square)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(DrawingManager.lightGreen.cgColor)
+            context.setLineWidth(2)
+            context.setLineCap(.square)
+        }
 
         let results = Self.useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: image, setNoLeafFound: { setNoLeafFound() }, setPointOnLeaf: { pointOnLeaf = $0 }, drawMarkers: { drawMarkers() }, floodFill: { image, floodStartPoint in floodFill(image: image, fromPoint: floodStartPoint, drawingTo: drawingManager) }, finishWithDrawingManager: { drawingManager.finish(imageView: leafHolesView) })
         guard let results else {
@@ -807,7 +811,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func initializeGrid() {
         let size = 25
         let drawingManager = DrawingManager(withCanvasSize: grid.frame.size)
-        drawingManager.context.setStrokeColor(gray: 0.5, alpha: 0.4)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(gray: 0.5, alpha: 0.4)
+        }
 
         for y in stride(from: 0, to: roundToInt(grid.frame.height, rule: .down), by: size) {
             drawingManager.drawLine(from: CGPoint(x: 0, y: y), to: CGPoint(x: grid.frame.width, y: CGFloat(y)))

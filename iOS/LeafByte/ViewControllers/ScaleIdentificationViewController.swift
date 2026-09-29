@@ -348,8 +348,10 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func drawMarkers() {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        drawingManager.configureContext { context in
+            context.setLineWidth(2)
+            context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        }
 
         // Draw Xs at each valid point.
         if numberOfValidScaleMarks > 0, !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
