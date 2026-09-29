@@ -47,3 +47,21 @@
 
 1.5.0 (???, the big 2026 refresh!)
 * After 8 years, our minimum iOS version has been raised from iOS 9 to iOS 15 due to requirements from Apple. We are no longer allowed to publish the app with less than an iOS 15 requirement, even though we are able to support iOS 9 and would like to support iOS 9. We know this affects existing lab devices, and we apologize.
+* We've moved to modern, safer image processing calls, which we hope will fix some rare stubborn errors on saving.
+* We've used a modern call to fix a (probably completely theoretical) vulnerability when deserializing settings.
+* We've removed lots of legacy codepaths throughout the app that supported older iOS versions, making the app easier to maintain and more friendly to external contributors.
+* TODO: We've made numbers properly localize. Instead of always presenting in the style 1,234.56, we use the locale of the phone. For example, if your phone is set to German or Georgian, you should see 1.234,56 (and you should be able to also enter numbers using your locale's format).
+* TODO: Make tutorial sensible regardless of setting https://github.com/TheBeruriahIncident/leafbyte/issues/513
+* TODO: Affordance that sample number is editable https://github.com/TheBeruriahIncident/leafbyte/issues/478
+* TODO: fix sylvia's bug
+* TODO: fix logged crashes (especially the one with multiple)
+* TODO: fix extraneous privacy requests. remove photo library and anything else
+
+1.?.?
+* Scope all settings to dataset name (maybe move to Codeable?)
+* Generally match any changes made in Android
+* Loading screen https://github.com/TheBeruriahIncident/leafbyte/issues/452
+* iOS settings behavior when not saving https://github.com/TheBeruriahIncident/leafbyte/issues/63
+* iOS app check https://github.com/TheBeruriahIncident/leafbyte/issues/37
+* improve rotation https://github.com/TheBeruriahIncident/leafbyte/issues/23
+* actors for thread safety
