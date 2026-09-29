@@ -52,25 +52,29 @@ final class DrawingManager {
     }
 
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
-        UIGraphicsBeginImageContext(canvasSize)
-        // Safe to unwrap, because we just initialized it
-        let context = UIGraphicsGetCurrentContext()! // swiftlint:disable:this force_unwrapping
-        // Make all the drawing precise.
-        // This avoids our drawn lines looking blurry (since you can zoom in).
-        // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
-        context.interpolationQuality = CGInterpolationQuality.high
-        context.setAllowsAntialiasing(false)
-        context.setShouldAntialias(false)
+        let format = UIGraphicsImageRendererFormat()
+        // we don't want device-specific scaling, as we're doing pixel-oriented operations
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: canvasSize, format: format)
+        
+        let image = renderer.image { rendererContext in
+            let context = rendererContext.cgContext
 
-        drawers.forEach { drawer in drawer.draw(context: context, projection: projection) }
+            // Make all the drawing precise.
+            // This avoids our drawn lines looking blurry (since you can zoom in).
+            // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
+            context.interpolationQuality = CGInterpolationQuality.high
+            context.setAllowsAntialiasing(false)
+            context.setShouldAntialias(false)
 
-        if addToPreviousImage {
-            imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
+            drawers.forEach { drawer in drawer.draw(context: context, projection: projection) }
+
+            if addToPreviousImage {
+                imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
+            }
         }
 
-        // swiftlint:disable:next force_unwrapping
-        imageView.image = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
+        imageView.image = image
     }
 }
 
