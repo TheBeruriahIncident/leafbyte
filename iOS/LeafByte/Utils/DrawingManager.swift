@@ -52,11 +52,7 @@ final class DrawingManager {
     }
 
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
-        let format = UIGraphicsImageRendererFormat()
-        // we don't want device-specific scaling, as we're doing pixel-oriented operations
-        format.scale = 1
-        let renderer = UIGraphicsImageRenderer(size: canvasSize, format: format)
-        
+        let renderer = getImageRenderer(canvasSize: canvasSize)
         let image = renderer.image { rendererContext in
             let context = rendererContext.cgContext
 

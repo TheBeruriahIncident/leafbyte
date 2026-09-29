@@ -10,7 +10,7 @@ import UIKit
 
 // Fills an image view with a blank, transparent image.
 func initializeImage(view: UIImageView, size: CGSize) {
-    let renderer = UIGraphicsImageRenderer(size: size)
+    let renderer = getImageRenderer(canvasSize: size)
     view.image = renderer.image { _ in /* image is transparent if no action is taken */ }
 }
 
@@ -155,7 +155,7 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
 // Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     // Size the canvas to the first image (which is assumed to be the same as the rest).
-    let renderer = UIGraphicsImageRenderer(size: imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
+    let renderer = getImageRenderer(canvasSize: imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
 
     return renderer.image { _ in
         // Draw each image into the canvas.
@@ -525,4 +525,11 @@ private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int
     return filledXRanges.contains { filledXRange in
         x >= filledXRange.0 && x <= filledXRange.1
     }
+}
+
+func getImageRenderer(canvasSize: CGSize) -> UIGraphicsImageRenderer {
+    let format = UIGraphicsImageRendererFormat()
+    // we don't want device-specific scaling, as we're doing pixel-oriented operations
+    format.scale = 1
+    return UIGraphicsImageRenderer(size: canvasSize, format: format)
 }
