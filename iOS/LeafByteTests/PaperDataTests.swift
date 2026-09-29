@@ -7,14 +7,14 @@
 //
 
 @testable import LeafByte
-import XCTest
+import CoreGraphics
+import Testing
 
 // This class uses images from the original LeafByte paper as fixture testing.
-// swiftlint:disable force_unwrapping
-final class PaperDataTests: XCTestCase {
+struct PaperDataTests {
     private let scaleMarkLengthCm: Double = 17
 
-    func testPaperData() {
+    @Test func testPaperData() {
         // swiftlint:disable:next todo
         // TODO: several files are commented out, because scale identification fails. we should fix that, or delete those lines and the associated images
 
@@ -70,10 +70,10 @@ final class PaperDataTests: XCTestCase {
 
             let scaleMark = getCentroidOfComponent(inImage: indexableThresholdedImage, fromPoint: CGPoint(x: memberPoint.0, y: memberPoint.1), minimumComponentSize: 1)
 
-            XCTAssertNotNil(scaleMark, "No scale mark found for member point \(memberPoint)")
+            #expect(scaleMark != nil, "No scale mark found for member point \(memberPoint)")
             return scaleMark!
         }
-        XCTAssertEqual(scaleMarks.count, 4, "For file \(filename), scale marks not found")
+        #expect(scaleMarks.count == 4, "For file \(filename), scale marks not found")
 
         let correctedImage = ScaleIdentificationViewController.getFixedImage(cgImage: ciToCgImage(thresholdedImage)!, ciImage: thresholdedImage, scaleMarks: scaleMarks)!
         let indexableCorrectedImage = IndexableImage(correctedImage)
@@ -87,8 +87,8 @@ final class PaperDataTests: XCTestCase {
         let scaleMarkPixelLength = (correctedImage.width + correctedImage.height) / 2
         let totalArea = ResultsViewController.convertPixelsToUnits2(pixels: results.leafAreaIncludingConsumedAreaInPixels, scaleMarkPixelLength: scaleMarkPixelLength, scaleMarkLength: scaleMarkLengthCm)
         let consumedArea = ResultsViewController.convertPixelsToUnits2(pixels: results.consumedAreaInPixels, scaleMarkPixelLength: scaleMarkPixelLength, scaleMarkLength: scaleMarkLengthCm)
-        XCTAssertEqual(totalArea, expectedTotalArea, accuracy: tolerance, "For image \(filename), total area was \(totalArea), not \(expectedTotalArea)")
-        XCTAssertEqual(consumedArea, expectedConsumedArea, accuracy: tolerance, "For image \(filename), consumed area was \(consumedArea), not \(expectedConsumedArea)")
+        #expect(abs(totalArea - expectedTotalArea) <= tolerance, "For image \(filename), total area was \(totalArea), not \(expectedTotalArea)")
+        #expect(abs(consumedArea - expectedConsumedArea) <= tolerance, "For image \(filename), consumed area was \(consumedArea), not \(expectedConsumedArea)")
     }
 
     // Note that there's a slight tolerance given. There are several possible sources of imprecision:
@@ -99,4 +99,3 @@ final class PaperDataTests: XCTestCase {
     // The specific reason why these values are just a bit different from the values in the paper is largely because of variations in image decompression between the runtime image loading vs the image loading in tests. We can go back and forth between the two and see that specific pixels are different (and neither load exactly the same pixel values as when you open the image itself in an editor). However, if you run the non-test codepath, the values are nearly identical to those in the paper.
     private let tolerance = 0.01
 }
-// swiftlint:enable force_unwrapping
