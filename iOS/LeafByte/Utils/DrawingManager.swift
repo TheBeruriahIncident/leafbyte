@@ -19,8 +19,6 @@ final class DrawingManager {
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
 
-    private let context: CGContext
-
     private let projection: Projection
     private let canvasSize: CGSize
 
@@ -28,15 +26,6 @@ final class DrawingManager {
 
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection? = nil) {
         self.canvasSize = canvasSize
-        UIGraphicsBeginImageContext(canvasSize)
-        // Safe to unwrap, because we just initialized it
-        context = UIGraphicsGetCurrentContext()! // swiftlint:disable:this force_unwrapping
-        // Make all the drawing precise.
-        // This avoids our drawn lines looking blurry (since you can zoom in).
-        // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
-        context.interpolationQuality = CGInterpolationQuality.high
-        context.setAllowsAntialiasing(false)
-        context.setShouldAntialias(false)
 
         if baseProjection == nil {
             self.projection = Projection(scale: 1, xOffset: Self.pixelOffset, yOffset: Self.pixelOffset, bounds: canvasSize)
@@ -63,6 +52,16 @@ final class DrawingManager {
     }
 
     func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
+        UIGraphicsBeginImageContext(canvasSize)
+        // Safe to unwrap, because we just initialized it
+        let context = UIGraphicsGetCurrentContext()! // swiftlint:disable:this force_unwrapping
+        // Make all the drawing precise.
+        // This avoids our drawn lines looking blurry (since you can zoom in).
+        // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
+        context.interpolationQuality = CGInterpolationQuality.high
+        context.setAllowsAntialiasing(false)
+        context.setShouldAntialias(false)
+
         drawers.forEach { drawer in drawer.draw(context: context, projection: projection) }
 
         if addToPreviousImage {
