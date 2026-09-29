@@ -28,6 +28,10 @@ jobs:
       # required to fetch internal or private CodeQL packs
       packages: read
 
+    defaults:
+      run:
+        working-directory: iOS
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
