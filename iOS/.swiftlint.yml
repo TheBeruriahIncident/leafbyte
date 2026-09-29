@@ -8,6 +8,7 @@ disabled_rules:
   - line_length
   - type_body_length
   # Opt-in rules we don't want
+  - balanced_xctest_lifecycle
   - closure_body_length
   - contrasted_opening_brace
   - discouraged_default_parameter
