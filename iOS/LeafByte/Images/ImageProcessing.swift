@@ -23,7 +23,7 @@ func getLumaHistogram(image: CGImage) -> [Int] {
         rowBytes: image.bytesPerRow)
 
     // vImageMatrixMultiply_ARGB8888 operates in place, pixel-by-pixel, so it's sometimes possible to use the same vImage for input and output.
-    // However, images from UIGraphicsGetImageFromCurrentImageContext, which is where the initial image comes from, are readonly.
+    // However, images from UIGraphicsImageRenderer, which is where the initial image comes from, are readonly.
     let mutableBuffer = CFDataCreateMutable(nil, image.bytesPerRow * image.height)
     var lumaVImage = vImage_Buffer(
         data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(mutableBuffer)),

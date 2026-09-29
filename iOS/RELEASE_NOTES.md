@@ -56,6 +56,8 @@
 * TODO: fix sylvia's bug
 * TODO: fix logged crashes (especially the one with multiple)
 * TODO: fix extraneous privacy requests. remove photo library and anything else
+* TODO: fix icon colors on new devices/simulators
+* TODO: disable swiping while drawing
 
 1.?.?
 * Scope all settings to dataset name (maybe move to Codeable?)
