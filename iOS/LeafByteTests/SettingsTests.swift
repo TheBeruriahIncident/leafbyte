@@ -6,13 +6,14 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-@testable import LeafByte
 import Foundation
+@testable import LeafByte
 import Testing
 import XCTest
 
 struct SettingsTests {
-    @Test func testSerializationRoundTrip() {
+    @Test
+    func testSerializationRoundTrip() {
         let settings = Settings()
         settings.datasetName = "The Tale of Genji"
         settings.datasetNameToEpochTimeOfLastUse = ["Le Morte a'Arthur": 1_485, "The Tale of Genji": 1_021]
@@ -46,7 +47,8 @@ struct SettingsTests {
         #expect(settings == deserializedSettings)
     }
 
-    @Test() func testDeserializingMissingSettings() {
+    @Test()
+    func testDeserializingMissingSettings() {
         let url = NSURL.fileURL(withPath: (NSTemporaryDirectory() as NSString).appendingPathComponent("no-settings-here"), isDirectory: true)
         let deserializedSettings = Settings.deserialize(from: url)
 

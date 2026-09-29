@@ -6,15 +6,17 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-@testable import LeafByte
 import CoreGraphics
+@testable import LeafByte
 import Testing
 
+// swiftlint:disable force_unwrapping
 // This class uses images from the original LeafByte paper as fixture testing.
 struct PaperDataTests {
     private let scaleMarkLengthCm: Double = 17
 
-    @Test func testPaperData() {
+    @Test
+    func testPaperData() {
         // swiftlint:disable:next todo
         // TODO: several files are commented out, because scale identification fails. we should fix that, or delete those lines and the associated images
 
@@ -99,3 +101,4 @@ struct PaperDataTests {
     // The specific reason why these values are just a bit different from the values in the paper is largely because of variations in image decompression between the runtime image loading vs the image loading in tests. We can go back and forth between the two and see that specific pixels are different (and neither load exactly the same pixel values as when you open the image itself in an editor). However, if you run the non-test codepath, the values are nearly identical to those in the paper.
     private let tolerance = 0.01
 }
+// swiftlint:enable force_unwrapping

@@ -6,12 +6,13 @@
 //  Copyright © 2024 Abigail Getman-Pickering. All rights reserved.
 //
 
-@testable import LeafByte
 import CoreGraphics
+@testable import LeafByte
 import Testing
 
 struct QueueTests {
-    @Test func testQueue() {
+    @Test
+    func testQueue() {
         var queue = Queue()
         let point1 = CGPoint(x: 1, y: 2)
         let point2 = CGPoint(x: 4, y: 3)

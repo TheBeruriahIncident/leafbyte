@@ -10,7 +10,8 @@
 import Testing
 
 struct UnionFindTests {
-    @Test func testUnionFind() throws {
+    @Test
+    func testUnionFind() throws {
         let unionFind = UnionFind()
         unionFind.createSubsetWith(1)
         unionFind.createSubsetWith(-1)

@@ -10,7 +10,8 @@
 import Testing
 
 struct ImageProcessingTests {
-    @Test func testThresholdingFilter() throws {
+    @Test
+    func testThresholdingFilter() throws {
         let image = try #require(uiToCgImage(loadImage(named: "leafWithScale")))
 
         let filter = ThresholdingFilter()
@@ -25,7 +26,8 @@ struct ImageProcessingTests {
         #expect(indexableImage.getPixel(x: 1_740, y: 1_820).isVisible())
     }
 
-    @Test func testSuggestedThreshold() throws {
+    @Test
+    func testSuggestedThreshold() throws {
         let uiImage = loadImage(named: "leafWithScale")
         let cgImage = try #require(uiToCgImage(uiImage))
 
@@ -33,7 +35,8 @@ struct ImageProcessingTests {
         #expect(139 == roundToInt(suggestedThreshold * 255))
     }
 
-    @Test func testConnectedComponents() throws {
+    @Test
+    func testConnectedComponents() throws {
         let originalImage = try #require(resizeImage(loadImage(named: "leafWithScale")))
 
         let filter = ThresholdingFilter()
@@ -51,5 +54,4 @@ struct ImageProcessingTests {
         #expect([3_358, 970_002] == whiteAreaSizes.suffix(2))
         #expect([1_178, 105_400] == nonWhiteAreaSizes.suffix(2))
     }
-
 }
