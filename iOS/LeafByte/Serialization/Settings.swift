@@ -10,7 +10,7 @@ import AppAuth
 import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
-final class Settings: NSObject, NSCoding, NSSecureCoding {
+final class Settings: NSObject, NSSecureCoding {
     static let supportsSecureCoding = true
 
     static let defaultDatasetName = "Herbivory Data"
@@ -64,6 +64,17 @@ final class Settings: NSObject, NSCoding, NSSecureCoding {
     var useBarcode = false
     var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
+
+    // Adapted from https://medium.com/@YogevSitton/use-auto-describing-objects-with-customstringconvertible-49528b55f446
+    override var description: String {
+        var description = "*****\(type(of: self))****\n"
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
+            description += "\(child.label ?? "unlabeled"): \(child.value)\n"
+        }
+
+        return description
+    }
 
     // This empty block is required for overriding
     // swiftlint:disable:next no_empty_block
