@@ -49,7 +49,7 @@ jobs:
           platform: ${{ 'iOS Simulator' }}
         run: |
           # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device_id=`xcrun simctl list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
+          device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
           if [ -z "$device_id" ]; then
             echo "No available iPhone simulator"
             exit 1
@@ -65,7 +65,7 @@ jobs:
           platform: ${{ 'iOS Simulator' }}
         run: |
           # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device_id=`xcrun simctl list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
+          device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
           if [ -z "$device_id" ]; then
             echo "No available iPhone simulator"
             exit 1
