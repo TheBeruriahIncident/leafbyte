@@ -1,5 +1,5 @@
 //
-//  LeafByteTests.swift
+//  ImageProcessingTests.swift
 //  LeafByteTests
 //
 //  Created by Abigail Getman-Pickering on 12/20/17.
@@ -10,7 +10,7 @@
 import XCTest
 
 // swiftlint:disable force_unwrapping
-final class LeafByteTests: XCTestCase {
+final class ImageProcessingTests: XCTestCase {
     func testThresholdingFilter() {
         let image = uiToCgImage(loadImage(named: "leafWithScale"))!
 
