@@ -19,6 +19,14 @@ final class Settings: NSObject, NSSecureCoding {
     static let defaultScaleMarkLength = 10.0
     static let defaultUnit = "cm"
 
+    // With NSSecureCoding, we must list all classes that we allow deserializing (not just the root), in order to prevent substitution attacks
+    static let deserializableClasses: [AnyClass] = [
+        Settings.self,
+        NSDictionary.self,
+        NSNumber.self,
+        NSString.self
+    ]
+
     enum SaveLocation: String {
         // We redundantly define the string for these enums to ensure that the serialization format is stable, regardless of any future refactors/renames
         // swiftlint:disable redundant_string_enum_value
@@ -67,13 +75,13 @@ final class Settings: NSObject, NSSecureCoding {
 
     // Adapted from https://medium.com/@YogevSitton/use-auto-describing-objects-with-customstringconvertible-49528b55f446
     override var description: String {
-        var description = "*****\(type(of: self))****\n"
+        var buildableDescription = "*****\(type(of: self))****\n"
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
-            description += "\(child.label ?? "unlabeled"): \(child.value)\n"
+            buildableDescription += "\(child.label ?? "unlabeled"): \(child.value)\n"
         }
 
-        return description
+        return buildableDescription
     }
 
     // This empty block is required for overriding
@@ -282,7 +290,7 @@ final class Settings: NSObject, NSSecureCoding {
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
         do {
             let data = try Data(contentsOf: getSettingsFile(fromContainingFolder: serializedLocation).standardizedFileURL)
-            let deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: data)
+            let deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClasses: deserializableClasses, from: data) as? Self
 
             guard let deserializedData else {
                 return Self()
