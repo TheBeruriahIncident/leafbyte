@@ -9,8 +9,10 @@
 import Foundation
 import UIKit
 
+private final class LeafByteTestUtils {}
+
 func loadImage(named name: String) -> UIImage {
-    let bundle = Bundle(for: LeafByteTests.self)
+    let bundle = Bundle(for: LeafByteTestUtils.self)
     guard let path = bundle.path(forResource: name, ofType: "png") else {
         fatalError("Image \(name) not found")
     }
