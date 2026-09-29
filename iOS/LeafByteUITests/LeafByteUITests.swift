@@ -32,10 +32,10 @@ final class LeafByteUITests: XCTestCase {
 
         // Make sure the device is not using a black background, or the test will fail later
         let blackBackgroundToggle = XCUIApplication().switches["Toggle using black background"]
-        if blackBackgroundToggle.value! as! String != "0" {
+        if blackBackgroundToggle.value as? String != "0" {
             blackBackgroundToggle.tap()
         }
-        XCTAssertEqual("0", blackBackgroundToggle.value! as! String)
+        XCTAssertEqual("0", blackBackgroundToggle.value as? String)
 
         // Tap Save
         app.navigationBars["Settings"].buttons["Save"].tap()

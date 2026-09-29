@@ -481,6 +481,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C88F168F306C4D4B005AE03C /* PBXTargetDependency */,
 				4621EE4D1FEB70AD004C3011 /* PBXTargetDependency */,
 			);
 			name = LeafByteTests;
@@ -499,6 +500,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C88F1691306C4D51005AE03C /* PBXTargetDependency */,
 				4621EE581FEB70AD004C3011 /* PBXTargetDependency */,
 			);
 			name = LeafByteUITests;
@@ -698,6 +700,14 @@
 		C8489AE8306706DE00D4DB25 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */;
+		};
+		C88F168F306C4D4B005AE03C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C88F168E306C4D4B005AE03C /* SwiftLintBuildToolPlugin */;
+		};
+		C88F1691306C4D51005AE03C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C88F1690306C4D51005AE03C /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1057,6 +1067,16 @@
 			productName = AppAuth;
 		};
 		C8489AE7306706DE00D4DB25 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		C88F168E306C4D4B005AE03C /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		C88F1690306C4D51005AE03C /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C8489AE6306706A300D4DB25 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
