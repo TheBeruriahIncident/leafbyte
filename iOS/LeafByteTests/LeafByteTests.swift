@@ -71,45 +71,5 @@ final class LeafByteTests: XCTestCase {
         XCTAssertEqual([1_178, 105_400], nonWhiteAreaSizes.suffix(2))
     }
 
-    func testSettingsSerialization() {
-        let settings = Settings()
-        settings.datasetName = "The Tale of Genji"
-        settings.datasetNameToEpochTimeOfLastUse = ["Le Morte a'Arthur": 1_485, "The Tale of Genji": 1_021]
-        settings.datasetNameToNextSampleNumber = ["Le Morte a'Arthur": 10, "The Tale of Genji": 45]
-        settings.datasetNameToUnit = ["Le Morte a'Arthur": "cm", "The Tale of Genji": "in"]
-        settings.datasetNameToUnitInFirstLocalFile = ["The Tale of Genji": "in"]
-        settings.datasetNameToUnitToUserIdToGoogleSpreadsheetId =
-            // swiftlint:disable indentation_width
-            ["Le Morte a'Arthur":
-                ["cm":
-                    ["abigailgp": "a"]],
-             "The Tale of Genji":
-                ["cm":
-                    ["zoegp": "b",
-                     "abigailgp": "c"],
-                 "in":
-                    ["abigailgp": "d"]]]
-        // swiftlint:enable indentation_width
-        settings.imageSaveLocation = .googleDrive
-        settings.dataSaveLocation = .googleDrive
-        settings.saveGpsData = true
-        settings.scaleMarkLength = 32
-        settings.useBarcode = true
-        settings.useBlackBackground = true
-        settings.userIdToTopLevelGoogleFolderId = ["abigailgp": "d", "zoegp": "e"]
-
-        let url = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
-        settings.serialize(at: url)
-        let deserializedSettings = Settings.deserialize(from: url)
-
-        XCTAssertEqual(settings, deserializedSettings)
-    }
-
-    func testDeserializeMissingSettings() {
-        let url = NSURL.fileURL(withPath: (NSTemporaryDirectory() as NSString).appendingPathComponent("no-settings-here"), isDirectory: true)
-        let deserializedSettings = Settings.deserialize(from: url)
-
-        XCTAssertEqual(Settings(), deserializedSettings)
-    }
 }
 // swiftlint:enable force_unwrapping
