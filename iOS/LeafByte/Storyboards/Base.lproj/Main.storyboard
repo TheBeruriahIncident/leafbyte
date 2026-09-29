@@ -724,6 +724,7 @@
                                             </label>
                                             <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xi-47-qHi" userLabel="Use Barcodes Toggle">
                                                 <rect key="frame" x="157" y="529" width="63" height="28"/>
+                                                <accessibility key="accessibilityConfiguration" label="Toggle using barcodes"/>
                                                 <connections>
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="VYj-39-eDu"/>
                                                     <action selector="useBarcodesChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="CTT-L6-Y2a"/>
@@ -740,6 +741,7 @@
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Nr-u4-Yuh" userLabel="Save GPS Toggle">
                                                 <rect key="frame" x="159.5" y="608" width="63" height="28"/>
+                                                <accessibility key="accessibilityConfiguration" label="Toggle saving GPS"/>
                                                 <connections>
                                                     <action selector="saveGpsChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="iH9-91-GJ6"/>
                                                 </connections>
@@ -818,6 +820,7 @@
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9r-LJ-W69" userLabel="Black Background Toggle">
                                                 <rect key="frame" x="157" y="703" width="63" height="28"/>
+                                                <accessibility key="accessibilityConfiguration" label="Toggle using black background"/>
                                                 <connections>
                                                     <action selector="blackBackgroundChanged:" destination="ayx-Do-FJf" eventType="valueChanged" id="it7-SD-fTc"/>
                                                 </connections>
