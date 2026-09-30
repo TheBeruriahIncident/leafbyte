@@ -71,6 +71,8 @@ jobs:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
+          # Download the Metal Toolchain component if missing
+          xcodebuild -downloadComponent MetalToolchain || true
           # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
           device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
           if [ -z "$device_id" ]; then
