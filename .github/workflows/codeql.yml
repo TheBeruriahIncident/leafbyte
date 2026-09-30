@@ -81,7 +81,7 @@ jobs:
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           # skip validation so that SwiftLint plugin can run headless
-          xcodebuild build -skipPackagePluginValidation -skipMacroValidation -scheme "$scheme" -sdk iphonesimulator -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,id=$device_id" CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES CURRENT_ARCH=arm64 TOOLCHAINS=default
+          xcodebuild build -skipPackagePluginValidation -skipMacroValidation -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,id=$device_id" CURRENT_ARCH=arm64
       - name: Perform CodeQL Analysis
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: github/codeql-action/analyze@v4
