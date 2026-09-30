@@ -86,8 +86,13 @@ final class BackgroundRemovalViewController: UIViewController, UIScrollViewDeleg
 
         setSampleNumberButtonText(sampleNumberButton, settings: settings)
 
-        // Disable swiping right to go back in the navigation controller (it gets in the way when zooming/drawing).
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        // Disable swiping right to go back (it gets in the way when zooming/panning/drawing).
+        // Naively, it may seem like we should do this in the MainMenuViewController to affect the entire app, but it can only be done once the navigation controller exists.
+        // Adapted from https://stackoverflow.com/questions/31731751/disable-swipe-back-gesture-in-swift
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        if #available(iOS 26.0, *) {
+            navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = false
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
