@@ -114,7 +114,7 @@
 				"$(METAL_LIBRARY_OUTPUT_DIR)/$(INPUT_FILE_BASE).metallib",
 			);
 			runOncePerArchitecture = 0;
-			script = "xcrun metallib -cikernel \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			script = "if [ -n \"$CODEQL_DIST\" ] || [ -n \"$CODEQL_RUNNER\" ]; then\n  echo \"CodeQL detected: Skipping Air compilation, because Metal toolchain is not easily available\"\n  touch \"$SCRIPT_OUTPUT_FILE_0\"\n  exit 0\nfi\n\nxcrun metallib -cikernel \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
 /* End PBXBuildRule section */
 
