@@ -10,12 +10,22 @@ import AppAuth
 import Foundation
 
 // This represents state for the settings. Implementing NSCoding allows this to be serialized and deserialized so that settings last across sessions.
-final class Settings: NSObject, NSCoding {
+final class Settings: NSObject, NSSecureCoding {
+    static let supportsSecureCoding = true
+
     static let defaultDatasetName = "Herbivory Data"
     static let defaultNextSampleNumber = 1
     static let defaultSaveLocation = SaveLocation.local
     static let defaultScaleMarkLength = 10.0
     static let defaultUnit = "cm"
+
+    // With NSSecureCoding, we must list all classes that we allow deserializing (not just the root), in order to prevent substitution attacks
+    static let deserializableClasses: [AnyClass] = [
+        Settings.self,
+        NSDictionary.self,
+        NSNumber.self,
+        NSString.self
+    ]
 
     enum SaveLocation: String {
         // We redundantly define the string for these enums to ensure that the serialization format is stable, regardless of any future refactors/renames
@@ -63,6 +73,17 @@ final class Settings: NSObject, NSCoding {
     var useBlackBackground = false
     var userIdToTopLevelGoogleFolderId = [String: String]()
 
+    // Adapted from https://medium.com/@YogevSitton/use-auto-describing-objects-with-customstringconvertible-49528b55f446
+    override var description: String {
+        var buildableDescription = "*****\(type(of: self))****\n"
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
+            buildableDescription += "\(child.label ?? "unlabeled"): \(child.value)\n"
+        }
+
+        return buildableDescription
+    }
+
     // This empty block is required for overriding
     // swiftlint:disable:next no_empty_block
     override required init() {}
@@ -71,6 +92,7 @@ final class Settings: NSObject, NSCoding {
 
     // This defines how to deserialize (how to load a saved Settings from disk).
     required init(coder decoder: NSCoder) {
+        // swiftlint:disable variable_shadowing
         if let dataSaveLocation = decoder.decodeObject(forKey: PropertyKey.dataSaveLocation) as? String {
             self.dataSaveLocation = SaveLocation(rawValue: dataSaveLocation) ?? Self.defaultSaveLocation
         }
@@ -117,6 +139,7 @@ final class Settings: NSObject, NSCoding {
         if let userIdToTopLevelGoogleFolderId = decoder.decodeObject(forKey: PropertyKey.userIdToTopLevelGoogleFolderId) as? [String: String] {
             self.userIdToTopLevelGoogleFolderId = userIdToTopLevelGoogleFolderId
         }
+        // swiftlint:enable variable_shadowing
     }
 
     // This defines how to serialize (how to save a Settings to disk).
@@ -141,6 +164,7 @@ final class Settings: NSObject, NSCoding {
     // MARK: - NSObject
 
     override func isEqual(_ other: Any?) -> Bool {
+        // swiftlint:disable:next variable_shadowing
         guard let other = other as? Self else {
             return false
         }
@@ -169,7 +193,8 @@ final class Settings: NSObject, NSCoding {
             let settingsFile = Self.getSettingsFile(fromContainingFolder: serializedLocation)
 
             // If this crashes, we may not even be able to catch it as it isn't marked throwing
-            NSKeyedArchiver.archiveRootObject(self, toFile: settingsFile.path)
+            let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)
+            try data.write(to: settingsFile.standardizedFileURL)
         } catch {
             print("Failed to serialize settings: \(error)")
 
@@ -263,13 +288,18 @@ final class Settings: NSObject, NSCoding {
     }
 
     static func deserialize(from serializedLocation: URL = getUrlForInvisibleFiles()) -> Settings {
-        let deserializedData = NSKeyedUnarchiver.unarchiveObject(withFile: getSettingsFile(fromContainingFolder: serializedLocation).path) as? Self
+        do {
+            let data = try Data(contentsOf: getSettingsFile(fromContainingFolder: serializedLocation).standardizedFileURL)
+            let deserializedData = try NSKeyedUnarchiver.unarchivedObject(ofClasses: deserializableClasses, from: data) as? Self
 
-        guard let deserializedData else {
+            guard let deserializedData else {
+                return Self()
+            }
+            return deserializedData
+        } catch {
+            // the default DecodingFailurePolicy is to return nil, so this should be dead code unless the default changes
             return Self()
         }
-
-        return deserializedData
     }
 
     private static func getSettingsFile(fromContainingFolder folder: URL) -> URL {

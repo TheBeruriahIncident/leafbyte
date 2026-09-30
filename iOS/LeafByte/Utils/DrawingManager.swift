@@ -19,22 +19,13 @@ final class DrawingManager {
     // See "Points and Pixels" at https://www.raywenderlich.com/162315/core-graphics-tutorial-part-1-getting-started for why this exists.
     private static let pixelOffset = 0.5
 
-    let context: CGContext
-
     private let projection: Projection
     private let canvasSize: CGSize
 
+    private var drawers = [Drawer]()
+
     init(withCanvasSize canvasSize: CGSize, withProjection baseProjection: Projection? = nil) {
         self.canvasSize = canvasSize
-        UIGraphicsBeginImageContext(canvasSize)
-        // Safe to unwrap, because we just initialized it
-        context = UIGraphicsGetCurrentContext()! // swiftlint:disable:this force_unwrapping
-        // Make all the drawing precise.
-        // This avoids our drawn lines looking blurry (since you can zoom in).
-        // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
-        context.interpolationQuality = CGInterpolationQuality.high
-        context.setAllowsAntialiasing(false)
-        context.setShouldAntialias(false)
 
         if baseProjection == nil {
             self.projection = Projection(scale: 1, xOffset: Self.pixelOffset, yOffset: Self.pixelOffset, bounds: canvasSize)
@@ -44,22 +35,83 @@ final class DrawingManager {
         }
     }
 
-    func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-        let projectedFromPoint = projection.project(point: fromPoint)
+    func drawLine(from start: CGPoint, to end: CGPoint) {
+        drawers.append(LineDrawer(start: start, end: end))
+    }
+
+    func drawLeaf(atPoint point: CGPoint, size: CGFloat) {
+        drawers.append(LeafDrawer(point: point, size: size))
+    }
+
+    func drawX(at point: CGPoint, size: CGFloat) {
+        drawers.append(XDrawer(point: point, size: size))
+    }
+
+    func configureContext(configAction: @escaping (CGContext) -> Void) {
+        drawers.append(ConfiguringDrawer(configAction: configAction))
+    }
+
+    func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
+        let renderer = getImageRenderer(canvasSize: canvasSize)
+        let image = renderer.image { rendererContext in
+            let context = rendererContext.cgContext
+
+            // Make all the drawing precise.
+            // This avoids our drawn lines looking blurry (since you can zoom in).
+            // It looks particularly bad for the shaded in holes, since the alternating blurred lines look like stripes.
+            context.interpolationQuality = CGInterpolationQuality.high
+            context.setAllowsAntialiasing(false)
+            context.setShouldAntialias(false)
+
+            drawers.forEach { drawer in drawer.draw(context: context, projection: projection) }
+
+            if addToPreviousImage {
+                imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
+            }
+        }
+
+        imageView.image = image
+    }
+}
+
+protocol Drawer {
+    func draw(context: CGContext, projection: Projection)
+}
+
+class LineDrawer: Drawer {
+    let start, end: CGPoint
+
+    init(start: CGPoint, end: CGPoint) {
+        self.start = start
+        self.end = end
+    }
+
+    func draw(context: CGContext, projection: Projection) {
+        let projectedFromPoint = projection.project(point: start)
 
         // A line from a point to itself doesn't show up, so draw a 1 pixel rectangle.
-        if fromPoint == toPoint {
+        if start == end {
             context.addRect(CGRect(origin: projectedFromPoint, size: CGSize(width: 1.0, height: 1.0)))
         }
 
-        let projectedToPoint = projection.project(point: toPoint)
+        let projectedToPoint = projection.project(point: end)
 
         context.move(to: projectedFromPoint)
         context.addLine(to: projectedToPoint)
         context.strokePath()
     }
+}
 
-    func drawLeaf(atPoint point: CGPoint, size: CGFloat) {
+class LeafDrawer: Drawer {
+    let point: CGPoint
+    let size: CGFloat
+
+    init(point: CGPoint, size: CGFloat) {
+        self.point = point
+        self.size = size
+    }
+
+    func draw(context: CGContext, projection: Projection) {
         context.setAlpha(0.5)
 
         // This leaf is drawn with respect to the point where the petiole begins.
@@ -68,7 +120,7 @@ final class DrawingManager {
         // Draw dot at the specied point to make it clearer what's being marked.
         let dotSize = size / 13
         context.setLineCap(.round)
-        context.setStrokeColor(Self.darkRed.cgColor)
+        context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(dotSize + 1)
         context.addEllipse(in: CGRect(origin: CGPoint(x: projectedPoint.x - dotSize, y: projectedPoint.y - dotSize), size: CGSize(width: dotSize * 2, height: dotSize * 2)))
         context.strokePath()
@@ -84,15 +136,15 @@ final class DrawingManager {
 
         // Draw dark outline for the leaf.
         let startOfLeaf = CGPoint(x: projectedPoint.x + petioleLength, y: projectedPoint.y - petioleLength)
-        context.setFillColor(Self.darkRed.cgColor)
+        context.setFillColor(DrawingManager.darkRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size, withOffset: 2)
 
         // Draw light "filling" of the leaf.
-        context.setFillColor(Self.lightRed.cgColor)
+        context.setFillColor(DrawingManager.lightRed.cgColor)
         drawLeafOutline(leafBase: startOfLeaf, withSize: size)
 
         // Draw petiole and midrib.
-        context.setStrokeColor(Self.darkRed.cgColor)
+        context.setStrokeColor(DrawingManager.darkRed.cgColor)
         context.setLineWidth(1.25)
         context.setLineCap(.round)
         context.move(to: projectedPoint)
@@ -115,8 +167,18 @@ final class DrawingManager {
         leafOutline.close()
         leafOutline.fill()
     }
+}
 
-    func drawX(at point: CGPoint, size: CGFloat) {
+class XDrawer: Drawer {
+    let point: CGPoint
+    let size: CGFloat
+
+    init(point: CGPoint, size: CGFloat) {
+        self.point = point
+        self.size = size
+    }
+
+    func draw(context: CGContext, projection: Projection) {
         let projectedPoint = projection.project(point: point)
         context.setLineCap(.round)
 
@@ -128,14 +190,16 @@ final class DrawingManager {
 
         context.strokePath()
     }
+}
 
-    func finish(imageView: UIImageView, addToPreviousImage: Bool = false) {
-        if addToPreviousImage {
-            imageView.image?.draw(in: CGRect(origin: CGPoint.zero, size: canvasSize))
-        }
+class ConfiguringDrawer: Drawer {
+    let configAction: (CGContext) -> Void
 
-        // swiftlint:disable:next force_unwrapping
-        imageView.image = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
+    init(configAction: @escaping (CGContext) -> Void) {
+        self.configAction = configAction
+    }
+
+    func draw(context: CGContext, projection _: Projection) {
+        configAction(context)
     }
 }

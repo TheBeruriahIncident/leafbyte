@@ -14,7 +14,7 @@ import UIKit
 final class MainMenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     // MARK: - Fields
 
-    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte-faqs")! // swiftlint:disable:this force_unwrapping
+    private let leafbyteWebsiteUrl = URL(string: "https://zoegp.science/leafbyte-faqs")!
 
     // This is set in viewDidLoad.
     // swiftlint:disable:next implicitly_unwrapped_optional
@@ -62,12 +62,8 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
     }
 
     @IBAction func openWebsite(_: Any) {
-        if #available(iOS 10.0, *) {
-            // Note that, unlike the deprecated openURL method, this is async, which will hopefully resolve the cryptic crash report on openURL that I'm guessing was a timeout on the main thread
-            UIApplication.shared.open(leafbyteWebsiteUrl)
-        } else {
-            UIApplication.shared.openURL(leafbyteWebsiteUrl)
-        }
+        // Note that, unlike the deprecated openURL method, this is async, which will hopefully resolve the cryptic crash report on openURL that I'm guessing was a timeout on the main thread
+        UIApplication.shared.open(leafbyteWebsiteUrl)
     }
 
     @IBAction func pickImageFromCamera(_: Any) {
@@ -82,16 +78,19 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             return
         }
 
-        requestCameraAccess(self: self, onSuccess: {
-            DispatchQueue.main.async {
-                if self.settings.useBarcode {
-                    self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
-                } else {
-                    self.sourceMode = .camera
-                    presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
+        requestCameraAccess(
+            self: self,
+            onSuccess: {
+                DispatchQueue.main.async {
+                    if self.settings.useBarcode {
+                        self.performSegue(withIdentifier: "toBarcodeScanning", sender: self)
+                    } else {
+                        self.sourceMode = .camera
+                        presentImagePickerOrPHPicker(self: self, presentationControllerDelegate: self.pHPickerPresentationControllerDelegate, imagePicker: self.imagePicker, sourceMode: .camera)
+                    }
                 }
-            }
-        }, onFailure: { self.segueEnabled = true })
+            },
+            onFailure: { self.segueEnabled = true })
     }
 
     @IBAction func pickImageFromPhotoLibrary(_: Any) {
@@ -186,18 +185,14 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         }
         // If the segue is toBarcodeScanning, we're starting the main flow, but with barcode scanning at the start instead of image picking.
         else if segue.identifier == "toBarcodeScanning" {
-            if #available(iOS 10.0, *) {
-                guard let navigationController = segue.destination as? UINavigationController else {
-                    fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
-                }
-                guard let destination = navigationController.topViewController as? BarcodeScanningViewController else {
-                    fatalError("Expected the view inside the navigation controller to be the barcode scanning view but is  \(String(describing: navigationController.topViewController))")
-                }
-
-                destination.settings = settings
-            } else {
-                fatalError("Attempting to use barcode scanning pre-iOS 10.0")
+            guard let navigationController = segue.destination as? UINavigationController else {
+                fatalError("Expected the next view to be wrapped in a navigation controller, but next view is \(segue.destination)")
             }
+            guard let destination = navigationController.topViewController as? BarcodeScanningViewController else {
+                fatalError("Expected the view inside the navigation controller to be the barcode scanning view but is  \(String(describing: navigationController.topViewController))")
+            }
+
+            destination.settings = settings
         }
     }
 
@@ -221,7 +216,6 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - PHPickerViewControllerDelegate overrides
 
-    @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // When this picker is dismissed, viewDidAppear is not called, unlike when the imagePicker is dismissed, so we have to separately re-enable interactions
         segueEnabled = true
@@ -233,7 +227,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
 
     // Sign in to Google if necessary.
     private func maybeDoGoogleSignIn() {
-        if settings.dataSaveLocation != .googleDrive && settings.imageSaveLocation != .googleDrive {
+        if settings.dataSaveLocation != .googleDrive, settings.imageSaveLocation != .googleDrive {
             return
         }
 
@@ -252,7 +246,10 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
                     presentFailedGoogleSignInAlert(cause: cause, self: self)
                     self.setSavingSummary()
                 }
-            }, callingViewController: self, settings: settings)
+            },
+            callingViewController: self,
+            settings: settings
+        )
     }
 
     private func setSavingSummary() {
@@ -289,7 +286,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
         let notSavedMessage: String
         if dataSaveLocation == .none || imageSaveLocation == .none {
             let notSavedMessageElements: String
-            if dataSaveLocation == .none && imageSaveLocation == .none {
+            if dataSaveLocation == .none, imageSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data and images", comment: "Name for what's being saved")
             } else if dataSaveLocation == .none {
                 notSavedMessageElements = NSLocalizedString("Data", comment: "Name for what's being saved")
@@ -323,12 +320,7 @@ final class MainMenuViewController: UIViewController, UIImagePickerControllerDel
             return NSLocalizedString("none", comment: "Not saving")
 
         case .local:
-            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-            if #available(iOS 11.0, *) {
-                return NSLocalizedString("the Files App", comment: "Name for local storage on iOS 11 and newer")
-            } else {
-                return NSLocalizedString("the phone", comment: "Name for local storage before iOS 11")
-            }
+            return NSLocalizedString("the Files App", comment: "Name for local storage on iOS 11 and newer")
 
         case .googleDrive:
             return NSLocalizedString("Google Drive", comment: "Name of Google Drive")

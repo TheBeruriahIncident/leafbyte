@@ -25,10 +25,19 @@ final class LeafByteUITests: XCTestCase {
         app.buttons["Settings"].tap()
         sleep(1)
 
-        // Settings, tap None for both types of saving, tap Back
+        // Settings, tap None for both types of saving
         let elementsQuery = app.scrollViews.otherElements
         elementsQuery.children(matching: .segmentedControl).element(boundBy: 0).buttons["None"].tap()
         elementsQuery.children(matching: .segmentedControl).element(boundBy: 1).buttons["None"].tap()
+
+        // Make sure the device is not using a black background, or the test will fail later
+        let blackBackgroundToggle = XCUIApplication().switches["Toggle using black background"]
+        if blackBackgroundToggle.value as? String != "0" {
+            blackBackgroundToggle.tap()
+        }
+        XCTAssertEqual("0", blackBackgroundToggle.value as? String)
+
+        // Tap Save
         app.navigationBars["Settings"].buttons["Save"].tap()
         sleep(1)
 

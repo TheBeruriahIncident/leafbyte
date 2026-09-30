@@ -120,7 +120,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                         self.signOutOfGoogle()
                         presentFailedGoogleSignInAlert(cause: cause, self: self)
                     }
-                }, callingViewController: self, settings: settings)
+                },
+                callingViewController: self,
+                settings: settings
+            )
         } else {
             persistChange()
         }
@@ -147,7 +150,10 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
                         self.signOutOfGoogle()
                         presentFailedGoogleSignInAlert(cause: cause, self: self)
                     }
-                }, callingViewController: self, settings: settings)
+                },
+                callingViewController: self,
+                settings: settings
+            )
         } else {
             persistChange()
         }
@@ -231,13 +237,8 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         blackBackground.setOn(settings.useBlackBackground, animated: false)
         scaleMarkLength.text = String(settings.scaleMarkLength)
 
-        // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-        var localStorageName: String
-        if #available(iOS 11.0, *) {
-            localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
-        } else {
-            localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
-        }
+        // In addition to the Files App, saved data can be accessed in iTunes File Sharing.
+        let localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
         dataSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
         imageSaveLocation.setTitle(localStorageName, forSegmentAt: saveLocationToIndex(.local))
 
@@ -267,14 +268,8 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
         // swiftlint:disable:next force_unwrapping
         previousDatasetButton.titleLabel!.lineBreakMode = .byWordWrapping
 
-        if #available(iOS 10.0, *) {
-            useBarcode.isHidden = false
-            useBarcodeLabel.isHidden = false
-        } else {
-            useBarcodeLabel.text = "Barcode Scanning requires iOS 10"
-            useBarcodeLabel.isEnabled = false
-            useBarcodeLabel.isHidden = false
-        }
+        useBarcode.isHidden = false
+        useBarcodeLabel.isHidden = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -425,20 +420,15 @@ final class SettingsViewController: UIViewController, UITextFieldDelegate, UIPic
             // swiftlint:disable:next force_unwrapping
             visibleFrame.size.height -= self.navigationController!.navigationBar.frame.height
         }
-        let statusBarHeight: CGFloat
-        if #available(iOS 13.0, *) {
-            // Default from https://stackoverflow.com/questions/12991935/how-to-programmatically-get-ios-status-bar-height
-            statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
-        } else {
-            statusBarHeight = UIApplication.shared.statusBarFrame.height
-        }
+        // Default from https://stackoverflow.com/questions/12991935/how-to-programmatically-get-ios-status-bar-height
+        let statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
         visibleFrame.size.height -= statusBarHeight
 
         // Account for any scrolling that has already happened.
         visibleFrame.size.height += scrollView.contentOffset.y
 
         // Check if the field is out of the view.
-        if activeField != nil && visibleFrame.size.height < activeField!.frame.maxY { // swiftlint:disable:this force_unwrapping
+        if activeField != nil, visibleFrame.size.height < activeField!.frame.maxY { // swiftlint:disable:this force_unwrapping
             // Scroll down if so.
             scrollView.contentOffset = CGPoint(x: 0, y: (activeField!.frame.maxY - visibleFrame.size.height) + scrollView.contentOffset.y)  // swiftlint:disable:this force_unwrapping
         }

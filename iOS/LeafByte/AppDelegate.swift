@@ -13,8 +13,6 @@ import UIKit
 // If we wanted custom behavior for lifecycle events, such as when a user switches away from the app, this is where we'd handle that.
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
     func application(_: UIApplication, _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -24,9 +22,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_: UIApplication, open url: URL, _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // This is boilerplate from AppAuth to handle the OAuth redirect flow: after Google sign-in is completed, Google sends the user back to LeafByte, passing through this flow
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
+        if let authorizationFlow = self.currentAuthorizationFlow {
+            do {
+                try authorizationFlow.resumeExternalUserAgentFlow(url)
+                self.currentAuthorizationFlow = nil
+                return true
+            } catch {
+                print("Authorization flow could not handle URL: \(error.localizedDescription)")
+            }
         }
 
         return false

@@ -42,9 +42,10 @@ private func decodeJWTPayload(_ rawPayload: String) -> [String: Any]? {
     guard
         let unparsedPayload = decodeBase64Url(rawPayload),
         let jsonPayload = try? JSONSerialization.jsonObject(with: unparsedPayload, options: []),
-        let payload = jsonPayload as? [String: Any] else {
-            print("Could not decode JWT payload: \(rawPayload)")
-            return nil
+        let payload = jsonPayload as? [String: Any]
+    else {
+        print("Could not decode JWT payload: \(rawPayload)")
+        return nil
     }
 
     return payload

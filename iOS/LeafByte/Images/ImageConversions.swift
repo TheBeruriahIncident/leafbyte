@@ -25,7 +25,7 @@ func cgToUiImage(_ cgImage: CGImage) -> UIImage {
 let context = CIContext(options: nil)
 func ciToCgImage(_ ciImage: CIImage) -> CGImage? {
     // It's appealing to lead with something like:
-    // if #available(iOS 10.0, *), ciImage.cgImage != nil {
+    // if ciImage.cgImage != nil {
     //     return ciImage.cgImage!
     // }
     // But it turns out that this gives you a downsampled version.

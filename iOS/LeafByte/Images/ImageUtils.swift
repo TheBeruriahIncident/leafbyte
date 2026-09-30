@@ -8,11 +8,10 @@
 
 import UIKit
 
-// Fills an image view with a blank image.
+// Fills an image view with a blank, transparent image.
 func initializeImage(view: UIImageView, size: CGSize) {
-    UIGraphicsBeginImageContext(size)
-    view.image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+    let renderer = getImageRenderer(canvasSize: size)
+    view.image = renderer.image { _ in /* image is transparent if no action is taken */ }
 }
 
 func resizeImageIgnoringAspectRatioAndOrientation(_ image: CGImage, x: Int, y: Int) -> CGImage {
@@ -44,7 +43,7 @@ func resizeImage(_ image: UIImage, within newBounds: CGSize) -> CGImage? {
     }
 
     // Check if transformation is necessary.
-    if image.imageOrientation == .up && image.size.width <= newBounds.width && image.size.height <= newBounds.height {
+    if image.imageOrientation == .up, image.size.width <= newBounds.width, image.size.height <= newBounds.height {
         return cgImage
     }
 
@@ -156,16 +155,14 @@ private func getTransformToCorrectUIImage(withOrientation orientation: UIImage.O
 // Combine a list of images with equivalent sizes.
 func combineImages(_ imageViews: [UIImageView]) -> UIImage {
     // Size the canvas to the first image (which is assumed to be the same as the rest).
-    UIGraphicsBeginImageContext(imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
+    let renderer = getImageRenderer(canvasSize: imageViews[0].image!.size) // swiftlint:disable:this force_unwrapping
 
-    // Draw each image into the canvas.
-    for imageView in imageViews {
-        imageView.image!.draw(at: CGPoint.zero) // swiftlint:disable:this force_unwrapping
+    return renderer.image { _ in
+        // Draw each image into the canvas.
+        for imageView in imageViews {
+            imageView.image!.draw(at: CGPoint.zero) // swiftlint:disable:this force_unwrapping
+        }
     }
-
-    let combinedImage = UIGraphicsGetImageFromCurrentImageContext()! // swiftlint:disable:this force_unwrapping
-    UIGraphicsEndImageContext()
-    return combinedImage
 }
 
 func createImageFromQuadrilateral(in image: CIImage, corners: [CGPoint]) -> CIImage {
@@ -224,19 +221,19 @@ func getCentroidOfComponent(inImage image: IndexableImage, fromPoint startingPoi
         yRunningTotal += y
 
         let westPoint = CGPoint(x: x - 1, y: y)
-        if x > 0 && image.getPixel(x: x - 1, y: y).isVisible() && !explored.contains(westPoint) {
+        if x > 0, image.getPixel(x: x - 1, y: y).isVisible(), !explored.contains(westPoint) {
             queue.enqueue(westPoint)
         }
         let eastPoint = CGPoint(x: x + 1, y: y)
-        if x < width - 1 && image.getPixel(x: x + 1, y: y).isVisible() && !explored.contains(eastPoint) {
+        if x < width - 1, image.getPixel(x: x + 1, y: y).isVisible(), !explored.contains(eastPoint) {
             queue.enqueue(eastPoint)
         }
         let southPoint = CGPoint(x: x, y: y - 1)
-        if y > 0 && image.getPixel(x: x, y: y - 1).isVisible() && !explored.contains(southPoint) {
+        if y > 0, image.getPixel(x: x, y: y - 1).isVisible(), !explored.contains(southPoint) {
             queue.enqueue(southPoint)
         }
         let northPoint = CGPoint(x: x, y: y + 1)
-        if y < height - 1 && image.getPixel(x: x, y: y + 1).isVisible() && !explored.contains(northPoint) {
+        if y < height - 1, image.getPixel(x: x, y: y + 1).isVisible(), !explored.contains(northPoint) {
             queue.enqueue(northPoint)
         }
 
@@ -431,10 +428,10 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         }
 
         // Check if the points above or below the point should be added to the queue.
-        if y < image.height - 1 && !image.getPixel(x: x, y: y + 1) && !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
+        if y < image.height - 1, !image.getPixel(x: x, y: y + 1), !isFilled(x: x, y: y + 1, referringTo: filledRanges) {
             queue.insert(CGPoint(x: x, y: y + 1))
         }
-        if y > 0 && !image.getPixel(x: x, y: y - 1) && !isFilled(x: x, y: y - 1, referringTo: filledRanges) {
+        if y > 0, !image.getPixel(x: x, y: y - 1), !isFilled(x: x, y: y - 1, referringTo: filledRanges) {
             queue.insert(CGPoint(x: x, y: y - 1))
         }
         // As an optimization, as we move left and right, we only need to consider the above or below points for adding to the queue if we've passed a filled point.
@@ -447,7 +444,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         var eligibleForQueueNorth = initialEligibleForQueueNorth
         var eligibleForQueueSouth = initialEligibleForQueueSouth
         // Move left as far as possible.
-        while leftmostX > 0 && !image.getPixel(x: leftmostX - 1, y: y) {
+        while leftmostX > 0, !image.getPixel(x: leftmostX - 1, y: y) {
             leftmostX -= 1
 
             // Check if the northern pixel should be added to the queue, and update eligibility.
@@ -479,7 +476,7 @@ func floodFill(image: LayeredIndexableImage, fromPoint startingPoint: CGPoint, d
         eligibleForQueueNorth = initialEligibleForQueueNorth
         eligibleForQueueSouth = initialEligibleForQueueSouth
         // Move right as far as possible.
-        while rightmostX < image.width - 1 && !image.getPixel(x: rightmostX + 1, y: y) {
+        while rightmostX < image.width - 1, !image.getPixel(x: rightmostX + 1, y: y) {
             rightmostX += 1
 
             // Check if the northern pixel should be added to the queue, and update eligibility.
@@ -528,4 +525,11 @@ private func isFilled(x: Int, y: Int, referringTo filledRanges: [Int: [(Int, Int
     return filledXRanges.contains { filledXRange in
         x >= filledXRange.0 && x <= filledXRange.1
     }
+}
+
+func getImageRenderer(canvasSize: CGSize) -> UIGraphicsImageRenderer {
+    let format = UIGraphicsImageRendererFormat()
+    // we don't want device-specific scaling, as we're doing pixel-oriented operations
+    format.scale = 1
+    return UIGraphicsImageRenderer(size: canvasSize, format: format)
 }

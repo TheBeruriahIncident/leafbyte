@@ -23,7 +23,7 @@ func getLumaHistogram(image: CGImage) -> [Int] {
         rowBytes: image.bytesPerRow)
 
     // vImageMatrixMultiply_ARGB8888 operates in place, pixel-by-pixel, so it's sometimes possible to use the same vImage for input and output.
-    // However, images from UIGraphicsGetImageFromCurrentImageContext, which is where the initial image comes from, are readonly.
+    // However, images from UIGraphicsImageRenderer, which is where the initial image comes from, are readonly.
     let mutableBuffer = CFDataCreateMutable(nil, image.bytesPerRow * image.height)
     var lumaVImage = vImage_Buffer(
         data: UnsafeMutableRawPointer(mutating: CFDataGetBytePtr(mutableBuffer)),
@@ -302,7 +302,7 @@ func labelConnectedComponents(image: LayeredIndexableImage, pointsToIdentify: [P
             }
 
             // Any empty pixels on the edge of the image are part of the "outside of the image" component.
-            if !isOccupied && (y == 0 || x == 0 || y == height - 1 || x == width - 1) {
+            if !isOccupied, y == 0 || x == 0 || y == height - 1 || x == width - 1 {
                 equivalenceClasses.combineClassesContaining(label, and: backgroundLabel)
             }
 

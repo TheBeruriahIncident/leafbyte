@@ -348,11 +348,13 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
     private func drawMarkers() {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        drawingManager.configureContext { context in
+            context.setLineWidth(2)
+            context.setStrokeColor(DrawingManager.darkRed.cgColor)
+        }
 
         // Draw Xs at each valid point.
-        if numberOfValidScaleMarks > 0 && !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
+        if numberOfValidScaleMarks > 0, !(numberOfValidScaleMarks == 4 && mode == .identifyingScale) {
             for index in 1...numberOfValidScaleMarks {
                 drawingManager.drawX(at: scaleMarks[index - 1], size: 5)
             }
@@ -367,10 +369,10 @@ final class ScaleIdentificationViewController: UIViewController, UIScrollViewDel
         let adjustedCenters = scaleMarks.map { point in CGPoint(x: point.x, y: CGFloat(cgImage.height) - point.y) }
         let imageInsideScaleMarks = createImageFromQuadrilateral(in: ciImage, corners: adjustedCenters)
         let sizeToAdjustTo = min(1_200, roundToInt(min(imageInsideScaleMarks.extent.width, imageInsideScaleMarks.extent.height), rule: FloatingPointRoundingRule.down))
-        guard let cgImage = ciToCgImage(imageInsideScaleMarks) else {
+        guard let cgImageInsideScaleMarks = ciToCgImage(imageInsideScaleMarks) else {
             return nil
         }
-        return resizeImageIgnoringAspectRatioAndOrientation(cgImage, x: sizeToAdjustTo, y: sizeToAdjustTo)
+        return resizeImageIgnoringAspectRatioAndOrientation(cgImageInsideScaleMarks, x: sizeToAdjustTo, y: sizeToAdjustTo)
     }
 
     private func setScaleFound() {

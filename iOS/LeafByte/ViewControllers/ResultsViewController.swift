@@ -281,15 +281,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
         // If the segue is toBarcodeScanning, we're transitioning forward in the main flow, but with barcode scanning.
         else if segue.identifier == "toBarcodeScanning" {
-            if #available(iOS 10.0, *) {
-                guard let destination = segue.destination as? BarcodeScanningViewController else {
-                    fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
-                }
-
-                destination.settings = settings
-            } else {
-                fatalError("Attempting to use barcode scanning pre-iOS 10.0")
+            guard let destination = segue.destination as? BarcodeScanningViewController else {
+                fatalError("Expected the next view to be the barcode scanning view but is \(segue.destination)")
             }
+
+            destination.settings = settings
         } else if segue.identifier == "helpPopover" {
             setupPopoverViewController(segue.destination, self: self)
         }
@@ -367,7 +363,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
         }
 
         // If there was a previous point, connect the dots.
-        if !currentTouchPath.isEmpty && mode == .drawing {
+        if !currentTouchPath.isEmpty, mode == .drawing {
             // swiftlint:disable:next force_unwrapping
             drawLine(fromPoint: currentTouchPath.last!, toPoint: candidatePoint)
         }
@@ -449,12 +445,17 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
 
     // MARK: - PHPickerViewControllerDelegate overrides
 
-    @available(iOS 14.0, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        finishWithPHPicker(self: self, picker: picker, didFinishPicking: results, onCancel: {
-            // If the phpicker is canceled, go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
-            dismissNavigationController(self: self)
-        }, selectImage: { self.selectedImage = $0 })
+        finishWithPHPicker(
+            self: self,
+            picker: picker,
+            didFinishPicking: results,
+            onCancel: {
+                // If the phpicker is canceled, go back to the home screen, to sidestep complications around re-saving the same data (it's as if you're in the original image picker).
+                dismissNavigationController(self: self)
+            },
+            selectImage: { self.selectedImage = $0 }
+        )
     }
 
     // MARK: - UITextFieldDelegate overrides
@@ -503,8 +504,10 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func drawLine(points: [CGPoint]) {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: baseImageView.image!.size, withProjection: userDrawingToBaseImage)
-        drawingManager.context.setStrokeColor(DrawingManager.darkGreen.cgColor)
-        drawingManager.context.setLineWidth(2)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(DrawingManager.darkGreen.cgColor)
+            context.setLineWidth(2)
+        }
 
         if points.count == 1 {
             // swiftlint:disable:next force_unwrapping
@@ -583,9 +586,11 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func useConnectedComponentsResults(connectedComponentsInfo: ConnectedComponentsInfo, image: LayeredIndexableImage) {
         // swiftlint:disable:next force_unwrapping
         let drawingManager = DrawingManager(withCanvasSize: leafHolesView.image!.size)
-        drawingManager.context.setStrokeColor(DrawingManager.lightGreen.cgColor)
-        drawingManager.context.setLineWidth(2)
-        drawingManager.context.setLineCap(.square)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(DrawingManager.lightGreen.cgColor)
+            context.setLineWidth(2)
+            context.setLineCap(.square)
+        }
 
         let results = Self.useConnectedComponentsResults(connectedComponentsInfo: connectedComponentsInfo, image: image, setNoLeafFound: { setNoLeafFound() }, setPointOnLeaf: { pointOnLeaf = $0 }, drawMarkers: { drawMarkers() }, floodFill: { image, floodStartPoint in floodFill(image: image, fromPoint: floodStartPoint, drawingTo: drawingManager) }, finishWithDrawingManager: { drawingManager.finish(imageView: leafHolesView) })
         guard let results else {
@@ -736,14 +741,7 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
                 }
             })
 
-            // The Files App was added in iOS 11, but saved data can be accessed in iTunes File Sharing in any version.
-            var localStorageName: String
-            if #available(iOS 11.0, *) {
-                localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
-            } else {
-                localStorageName = NSLocalizedString("Phone", comment: "Name for local storage before iOS 11")
-            }
-
+            let localStorageName = NSLocalizedString("Files App", comment: "Name for local storage on iOS 11 and newer")
             // swiftlint:disable:next trailing_closure
             let switchToLocalAction = UIAlertAction(title: NSLocalizedString("Save to " + localStorageName, comment: "Shown if saving to Google Drive fails, to provide an alternative"), style: .default, handler: { _ in
                 DispatchQueue.main.async {
@@ -813,7 +811,9 @@ final class ResultsViewController: UIViewController, UIScrollViewDelegate, UIIma
     private func initializeGrid() {
         let size = 25
         let drawingManager = DrawingManager(withCanvasSize: grid.frame.size)
-        drawingManager.context.setStrokeColor(gray: 0.5, alpha: 0.4)
+        drawingManager.configureContext { context in
+            context.setStrokeColor(gray: 0.5, alpha: 0.4)
+        }
 
         for y in stride(from: 0, to: roundToInt(grid.frame.height, rule: .down), by: size) {
             drawingManager.drawLine(from: CGPoint(x: 0, y: y), to: CGPoint(x: grid.frame.width, y: CGFloat(y)))

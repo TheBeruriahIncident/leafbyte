@@ -48,52 +48,31 @@ jobs:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+          device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
+          if [ -z "$device_id" ]; then
+            echo "No available iPhone simulator"
+            exit 1
+          fi
           if [ $scheme = default ]; then scheme=$(cat default); fi
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+          # skip validation so that SwiftLint plugin can run headless
+          xcodebuild build-for-testing -skipPackagePluginValidation -skipMacroValidation -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,id=$device_id"
       - name: Test
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+          device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
+          if [ -z "$device_id" ]; then
+            echo "No available iPhone simulator"
+            exit 1
+          fi
           if [ $scheme = default ]; then scheme=$(cat default); fi
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
-  # The SwiftLint in our normal build is a pretty old version of SwiftLint, because we're developing for an old SDK to support older
-  # devices. That means that it doesn't catch everything that latest will. This job will run a much newer SwiftLint. If it catches
-  # something that doesn't show up locally, it's very hard to debug from its logs. But, sometimes it will put comments onto the GitHub
-  # diff, and if not, you can add SwiftLint via the Swift Package Manager and enable it under Build Phases/Run Build Tool Plug-ins. This is
-  # the only way we can get newer SwiftLint running for us until we take a newer SDK, but running SwiftLint this way breaks current XCode.
-  swiftLint:
-    name: SwiftLint iOS
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: iOS
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
-      - name: Get changed iOS files
-        id: changed-files
-        uses: tj-actions/changed-files@v47
-        with:
-          files: iOS/**
-      - name: Note if iOS files not changed
-        if: steps.changed-files.outputs.any_changed != 'true'
-        run: echo "iOS is not affected"
-      - name: SwiftLint
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: norio-nomura/action-swiftlint@master
-        with:
-          args: --strict
+          # skip validation so that SwiftLint plugin can run headless
+          xcodebuild test-without-building -skipPackagePluginValidation -skipMacroValidation -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,id=$device_id"

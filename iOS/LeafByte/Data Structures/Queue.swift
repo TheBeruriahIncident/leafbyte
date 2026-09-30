@@ -33,7 +33,7 @@ public struct Queue {
 
         // If the array is more than half nil, eliminate the dequeued spots.
         // Don't bother with this on small arrays (smaller than 50).
-        if array.count > 50 && Double(head) / Double(array.count) > 0.5 {
+        if array.count > 50, Double(head) / Double(array.count) > 0.5 {
             array.removeFirst(head)
             head = 0
         }

@@ -11,6 +11,7 @@ disabled_rules:
   - balanced_xctest_lifecycle
   - closure_body_length
   - contrasted_opening_brace
+  - discouraged_default_parameter
   - discouraged_object_literal
   - discouraged_optional_boolean
   - discouraged_optional_collection
@@ -58,6 +59,3 @@ identifier_name:
     - i
   max_length:
     warning: 50
-
-excluded:
-   - Pods

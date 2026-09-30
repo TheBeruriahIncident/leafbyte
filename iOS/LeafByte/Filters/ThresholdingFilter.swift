@@ -48,23 +48,14 @@ final class ThresholdingFilter: CIFilter {
 
     // Static in order to (lazily) compute only once
     private static let whiteBackgroundThresholdKernel: CIColorKernel = {
-        if #available(iOS 11.0, *) {
-            return getMetalThresholdingKernel(useBlackBackground: false)
-        } else {
-            return getLegacyThresholdingKernel(useBlackBackground: false)
-        }
+        getMetalThresholdingKernel(useBlackBackground: false)
     }()
 
     // Static in order to (lazily) compute only once
     private static let blackBackgroundThresholdKernel: CIColorKernel = {
-        if #available(iOS 11.0, *) {
-            return getMetalThresholdingKernel(useBlackBackground: true)
-        } else {
-            return getLegacyThresholdingKernel(useBlackBackground: true)
-        }
+        getMetalThresholdingKernel(useBlackBackground: true)
     }()
 
-    @available(iOS 11.0, *)
     private static func getMetalThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
         guard let url = Bundle.main.url(forResource: "ThresholdingFilter", withExtension: "coreimage.metallib") else {
             fatalError("Invalid url for ThresholdingFilter.coreimage.metallib")
@@ -83,30 +74,5 @@ final class ThresholdingFilter: CIFilter {
         } catch {
             fatalError("Failed to load CIColorKernel from ThresholdingFilter.coreimage.metallib: \(error)")
         }
-    }
-
-    private static func getLegacyThresholdingKernel(useBlackBackground: Bool) -> CIColorKernel {
-        // Normally a leaf is more intense than the background, but with a black background, it's less intense.
-        let comparisonOperator = useBlackBackground ? ">" : "<"
-
-        // This string represents a routine in the Core Image kernel language that transforms the image one pixel at a time ( https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageUnitTutorial/WritingKernels/WritingKernels.html ).
-        let kernelCode = "kernel vec4 thresholdKernel(sampler originalImage, sampler saturatedImage, float threshold) {" +
-            // Since this kernel is applied to each pixel individually, extract the pixels in question.
-            "  vec4 originalPixel = sample(originalImage, samplerCoord(originalImage));" +
-            "  vec4 saturatedPixel = sample(saturatedImage, samplerCoord(saturatedImage));" +
-            // This vector transforms RGB to luma, or intensity ( https://en.wikipedia.org/wiki/YUV#Conversion_to/from_RGB ).
-            "  const vec3 rgbToLuma = vec3(0.299, 0.587, 0.114);" +
-            "  float luma = dot(originalPixel.rgb, rgbToLuma);" +
-            // 0 for alpha ( https://en.wikipedia.org/wiki/Alpha_compositing ) makes it invisible.
-            "const vec4 invisiblePixel = vec4(0.0);" +
-            // If the pixel is more/less intense (based on the background color), return invisible; otherwise, return a pixel of the actual (saturated) image.
-            "  return luma " + comparisonOperator + " threshold ? vec4(saturatedPixel.rgb, 1) : invisiblePixel;" +
-            "}"
-
-        // Only null if the kernel code is invalid
-        guard let kernel = CIColorKernel(source: kernelCode) else {
-            fatalError("Failed to compile kernel code")
-        }
-        return kernel
     }
 }

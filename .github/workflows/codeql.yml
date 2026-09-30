@@ -28,6 +28,10 @@ jobs:
       # required to fetch internal or private CodeQL packs
       packages: read
 
+    defaults:
+      run:
+        working-directory: iOS
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -48,13 +52,36 @@ jobs:
         uses: github/codeql-action/init@v4
         with:
           languages: swift
-          build-mode: autobuild
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
 
           # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           # queries: security-extended,security-and-quality
+      - name: Set Default Scheme
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo $default | cat >default
+          echo Using default scheme: $default
+      - name: Manual Build
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          scheme: ${{ 'default' }}
+          platform: ${{ 'iOS Simulator' }}
+        run: |
+          # some xcrun commands like xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+          device_id=`xcrun simctl list devices 2>&1 | grep -E 'iPhone.*?[^\(]+' | grep -oE '[A-F0-9-]{36}' | head -1`
+          if [ -z "$device_id" ]; then
+            echo "No available iPhone simulator"
+            exit 1
+          fi
+          if [ $scheme = default ]; then scheme=$(cat default); fi
+          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
+          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
+          # skip validation so that SwiftLint plugin can run headless
+          xcodebuild build -skipPackagePluginValidation -skipMacroValidation -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,id=$device_id" CURRENT_ARCH=arm64
       - name: Perform CodeQL Analysis
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: github/codeql-action/analyze@v4

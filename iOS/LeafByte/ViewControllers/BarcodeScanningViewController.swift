@@ -9,7 +9,6 @@
 import AVFoundation
 import UIKit
 
-@available(iOS 10.0, *)
 final class BarcodeScanningViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Fields
 

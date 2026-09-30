@@ -28,18 +28,14 @@ func setupImagePicker(imagePicker: UIImagePickerController, self viewController:
 // viewController must be a PHPickerViewControllerDelegate!
 func presentImagePickerOrPHPicker(self viewController: UIViewController, presentationControllerDelegate: UIAdaptivePresentationControllerDelegate, imagePicker: UIImagePickerController, sourceMode: ImageSourceMode) {
 
-    if sourceMode == .photoLibrary, #available(iOS 14.0, *) {
+    if sourceMode == .photoLibrary {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
         // Use the current format to avoid slow conversions
         configuration.preferredAssetRepresentationMode = .current
 
         // The picker has been successfully tested with standard photos, bursts, live photos, depth-effect photos, panoramas, and screenshots. It seems like filtering to just .images still includes all of those, but we add all the different types just to make sure sure. Note that we don't include any video types, as they can't be coerced to UIImages.
-        var filters: [PHPickerFilter] = [.images, .livePhotos]
-        if #available(iOS 15.0, *) {
-            filters.append(.panoramas)
-            filters.append(.screenshots)
-        }
+        var filters: [PHPickerFilter] = [.images, .livePhotos, .panoramas, .screenshots]
         if #available(iOS 16.0, *) {
             filters.append(.bursts)
             filters.append(.depthEffectPhotos)
@@ -57,14 +53,7 @@ func presentImagePickerOrPHPicker(self viewController: UIViewController, present
 
         viewController.present(picker, animated: true, completion: nil)
     } else {
-        switch sourceMode {
-        case .camera:
-            imagePicker.sourceType = .camera
-
-        case .photoLibrary:
-            imagePicker.sourceType = .photoLibrary
-        }
-
+        imagePicker.sourceType = .camera
         viewController.present(imagePicker, animated: true, completion: nil)
     }
 }
@@ -105,7 +94,6 @@ func finishWithImagePicker(self viewController: UIViewController, info: [UIImage
     viewController.dismiss(animated: false, completion: onDismissingPicker)
 }
 
-@available(iOS 14.0, *)
 func finishWithPHPicker(self viewController: UIViewController, picker: PHPickerViewController, didFinishPicking results: [PHPickerResult], onCancel: @escaping () -> Void = {}, selectImage: @escaping (CGImage) -> Void) { // swiftlint:disable:this no_empty_block
     picker.delegate = nil
     // This logic must be wrapped in the completion callback or you get problems with race conditions. E.g. picker.dismiss seems to also dismiss any view controller that opens before it finishes running, so if the thresholding page opens fast enough, it gets closed.
