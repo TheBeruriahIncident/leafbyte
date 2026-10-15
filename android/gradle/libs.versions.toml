@@ -16,7 +16,7 @@ android-core = "androidx.core:core-ktx:1.19.0"
 android-gradle = "com.android.tools.build:gradle:9.3.3"
 android-junit = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "android-junit-version" }
 android-test = "androidx.test:core:1.7.0"
-annotation = "androidx.annotation:annotation:1.10.0"
+annotation = "androidx.annotation:annotation:1.11.0"
 appauth = "net.openid:appauth:0.11.1"
 appcompat = "androidx.appcompat:appcompat:1.8.0"
 collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.2"
