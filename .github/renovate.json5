@@ -13,6 +13,14 @@
   "extends": [
     "config:recommended"
   ],
+  "hostRules": [
+    {
+      // Maven's rate limits have been causing lots of failures (manifesting as lockfiles not properly updating)
+      "matchHost": "repo.maven.apache.org",
+      "concurrentRequestLimit": 2,
+      "maxRequestsPerSecond": 2
+    }
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
